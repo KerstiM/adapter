@@ -1,0 +1,57 @@
+{
+  "account": {
+    "iban": "DE2310010010123456788"
+  },
+  "transactions": {
+    "booked": [
+      {
+        "transactionId": "1234567",
+        "creditorName": "John Miles",
+        "creditorAccount": {
+          "iban": "DE67100100101306118605"
+        },
+        "transactionAmount": {
+          "currency": "EUR",
+          "amount": "256.67"
+        },
+        "bookingDate": "2017-10-25",
+        "valueDate": "2017-10-26",
+        "remittanceInformationUnstructured": "Example 1"
+      },
+      {
+        "transactionId": "1234568",
+        "debtorName": "Paul Simpson",
+        "debtorAccount": {
+          "iban": "NL76RABO0359400371"
+        },
+        "transactionAmount": {
+          "currency": "EUR",
+          "amount": "343.01"
+        },
+        "bookingDate": "2017-10-25",
+        "valueDate": "2017-10-26",
+        "remittanceInformationUnstructured": "Example 2"
+      }
+    ],
+    "pending": [
+      {
+        "transactionId": "1234569",
+        "creditorName": "Claude Renault",
+        "creditorAccount": {
+          "iban": "FR7612345987650123456789014"
+        },
+        "transactionAmount": {
+          "currency": "EUR",
+          "amount": "-100.03"
+        },
+        "valueDate": "2017-10-26",
+        "remittanceInformationUnstructured": "Example 3"
+      }
+    ],
+    "_links": {
+      "account": {
+        "href": "/psd2/v1/accounts/3dc3d5b3-7023-4848-9853- f5400a64e80f"
+      }
+    }
+  }
+}

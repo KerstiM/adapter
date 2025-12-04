@@ -1,0 +1,48 @@
+# Python backend
+backend/venv/
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Node / Vue frontend
+node_modules/
+dist/
+dist-ssr/
+coverage/
+frontend/vue-project/.vite/
+*.local
+
+# Logid
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# IDE ja projektifailid
+.idea/
+.vscode/
+*.iml
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS-spetsiifiline
+.DS_Store
+Thumbs.db
+
+# TypeScript / lint
+*.tsbuildinfo
+.eslintcache
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+
+# Vitest
+__screenshots__/
