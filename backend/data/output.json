@@ -1,0 +1,1291 @@
+{
+  "account": {
+    "iban": "EE117700701001654123",
+    "currency": "EUR"
+  },
+  "transactions": {
+    "booked": [
+      {
+        "transactionId": "45909418",
+        "bookingDate": "2016-10-01",
+        "valueDate": "2016-10-01",
+        "transactionAmount": {
+          "amount": "6.60",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-09-29 09:41 Toits City   Tallinn  10145 ESTEST",
+        "creditorName": "Toits City"
+      },
+      {
+        "transactionId": "45916301",
+        "bookingDate": "2016-10-01",
+        "valueDate": "2016-10-01",
+        "transactionAmount": {
+          "amount": "2.25",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-09-29 10:18 Tornimae Rimi   Tallinn  10145 ESTEST",
+        "creditorName": "Tornimae Rimi"
+      },
+      {
+        "transactionId": "45958061",
+        "bookingDate": "2016-10-02",
+        "valueDate": "2016-10-02",
+        "transactionAmount": {
+          "amount": "1.41",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-10-01 10:46 Laagri Maksimarketi ap  Harjumaa  76401 ESTEST",
+        "creditorName": "Laagri Maksimarketi ap"
+      },
+      {
+        "transactionId": "45962516",
+        "bookingDate": "2016-10-02",
+        "valueDate": "2016-10-02",
+        "transactionAmount": {
+          "amount": "3.30",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-09-30 12:04 Raamatukogu kohvik   Tallinn  12618 ESTEST",
+        "creditorName": "Raamatukogu kohvik"
+      },
+      {
+        "transactionId": "45964883",
+        "bookingDate": "2016-10-02",
+        "valueDate": "2016-10-02",
+        "transactionAmount": {
+          "amount": "6.93",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-10-01 10:42 Laagri Maksimarket   Saue vald  76401 ESTEST",
+        "creditorName": "Laagri Maksimarket"
+      },
+      {
+        "transactionId": "46052144",
+        "bookingDate": "2016-10-03",
+        "valueDate": "2016-10-03",
+        "transactionAmount": {
+          "amount": "200.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "raha",
+        "debtorName": "Hando Harakas",
+        "debtorAccount": {
+          "iban": "EE092200001100654123"
+        }
+      },
+      {
+        "transactionId": "46109078",
+        "bookingDate": "2016-10-04",
+        "valueDate": "2016-10-04",
+        "transactionAmount": {
+          "amount": "59.22",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Selver AS, selver.ee, 2113000584123 (1093432)",
+        "remittanceInformationStructured": "1,00000000000086E+019",
+        "creditorName": "Maksekeskus AS",
+        "creditorAccount": {
+          "iban": "EE947700771001609739"
+        }
+      },
+      {
+        "transactionId": "46227641",
+        "bookingDate": "2016-10-05",
+        "valueDate": "2016-10-05",
+        "transactionAmount": {
+          "amount": "9.44",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-10-03 15:44 Torupilli Selver   Tallinn  10126 ESTEST",
+        "creditorName": "Torupilli Selver"
+      },
+      {
+        "transactionId": "46293080",
+        "bookingDate": "2016-10-06",
+        "valueDate": "2016-10-06",
+        "transactionAmount": {
+          "amount": "2.99",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Refund/Payment 1093432 (selver.ee, ref. 2113000584123)",
+        "remittanceInformationStructured": "2201719088",
+        "debtorName": "Maksekeskus AS",
+        "debtorAccount": {
+          "iban": "EE397700771000921447"
+        }
+      },
+      {
+        "transactionId": "46321202",
+        "bookingDate": "2016-10-06",
+        "valueDate": "2016-10-06",
+        "transactionAmount": {
+          "amount": "4.30",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-10-04 12:27 Raamatukogu kohvik   Tallinn  12618 ESTEST",
+        "creditorName": "Raamatukogu kohvik"
+      },
+      {
+        "transactionId": "46328218",
+        "bookingDate": "2016-10-06",
+        "valueDate": "2016-10-06",
+        "transactionAmount": {
+          "amount": "2.80",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-10-04 16:14 Raamatukogu kohvik   Tallinn  12618 ESTEST",
+        "creditorName": "Raamatukogu kohvik"
+      },
+      {
+        "transactionId": "46402521",
+        "bookingDate": "2016-10-07",
+        "valueDate": "2016-10-07",
+        "transactionAmount": {
+          "amount": "6.85",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-10-05 17:29 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
+        "creditorName": "R-Kiosk 257 Sole Nest"
+      },
+      {
+        "transactionId": "46408372",
+        "bookingDate": "2016-10-07",
+        "valueDate": "2016-10-07",
+        "transactionAmount": {
+          "amount": "2.25",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-10-06 22:08 Statoil Kristiine   Tallinn  10613 ESTEST",
+        "creditorName": "Statoil Kristiine"
+      },
+      {
+        "transactionId": "46502142",
+        "bookingDate": "2016-10-08",
+        "valueDate": "2016-10-08",
+        "transactionAmount": {
+          "amount": "2.90",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-10-06 18:07 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
+        "creditorName": "R-Kiosk 257 Sole Nest"
+      },
+      {
+        "transactionId": "46540866",
+        "bookingDate": "2016-10-09",
+        "valueDate": "2016-10-09",
+        "transactionAmount": {
+          "amount": "30.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-10-08 15:54 Pelgulinna synnitusmaj  Tallinn  10614 ESTEST",
+        "creditorName": "Pelgulinna synnitusmaj"
+      },
+      {
+        "transactionId": "46605079",
+        "bookingDate": "2016-10-10",
+        "valueDate": "2016-10-10",
+        "transactionAmount": {
+          "amount": "3.30",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-10-09 18:03 Staap   Tallinn  13425 ESTEST",
+        "creditorName": "Staap"
+      },
+      {
+        "transactionId": "46611804",
+        "bookingDate": "2016-10-10",
+        "valueDate": "2016-10-10",
+        "transactionAmount": {
+          "amount": "9.50",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-10-08 17:26 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
+        "creditorName": "R-Kiosk 257 Sole Nest"
+      },
+      {
+        "transactionId": "46741724",
+        "bookingDate": "2016-10-11",
+        "valueDate": "2016-10-11",
+        "transactionAmount": {
+          "amount": "4.50",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-10-10 19:32 Staap   Tallinn  13425 ESTEST",
+        "creditorName": "Staap"
+      },
+      {
+        "transactionId": "46846589",
+        "bookingDate": "2016-10-12",
+        "valueDate": "2016-10-12",
+        "transactionAmount": {
+          "amount": "22.50",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-10-11 13:43 Pelgulinna synnitusmaj  Tallinn  10614 ESTEST",
+        "creditorName": "Pelgulinna synnitusmaj"
+      },
+      {
+        "transactionId": "46931806",
+        "bookingDate": "2016-10-13",
+        "valueDate": "2016-10-13",
+        "transactionAmount": {
+          "amount": "22.89",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-10-11 13:19 Kristiine Prisma isete  Tallinn  10615 ESTEST",
+        "creditorName": "Kristiine Prisma isete"
+      },
+      {
+        "transactionId": "47009166",
+        "bookingDate": "2016-10-14",
+        "valueDate": "2016-10-14",
+        "transactionAmount": {
+          "amount": "11.76",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-10-13 15:21 Laagri Rimi apteek   Laagri  76401 ESTEST",
+        "creditorName": "Laagri Rimi apteek"
+      },
+      {
+        "transactionId": "47062570",
+        "bookingDate": "2016-10-14",
+        "valueDate": "2016-10-14",
+        "transactionAmount": {
+          "amount": "50.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Ülekanne",
+        "debtorName": "Kerli Kerliste",
+        "debtorAccount": {
+          "iban": "EE157700771001555666"
+        }
+      },
+      {
+        "transactionId": "47102053",
+        "bookingDate": "2016-10-15",
+        "valueDate": "2016-10-15",
+        "transactionAmount": {
+          "amount": "20.19",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-10-14 21:21 BUS & TOG MOBILBILLET TELEGADE 2 TAASTRUP 2630 DNK (150 DKK)",
+        "creditorName": "BUS & TOG MOBILBILLET"
+      },
+      {
+        "transactionId": "47177536",
+        "bookingDate": "2016-10-17",
+        "valueDate": "2016-10-17",
+        "transactionAmount": {
+          "amount": "5.85",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Arve nr: 121716034",
+        "remittanceInformationStructured": "100000798681",
+        "creditorName": "220 Energia OÜ",
+        "creditorAccount": {
+          "iban": "EE262200221055855869"
+        }
+      },
+      {
+        "transactionId": "47177585",
+        "bookingDate": "2016-10-17",
+        "valueDate": "2016-10-17",
+        "transactionAmount": {
+          "amount": "50.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Ülekanne kommud",
+        "debtorName": "Kerli Kerliste",
+        "debtorAccount": {
+          "iban": "EE157700771001555666"
+        }
+      },
+      {
+        "transactionId": "47177607",
+        "bookingDate": "2016-10-17",
+        "valueDate": "2016-10-17",
+        "transactionAmount": {
+          "amount": "56.15",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Männi 42-12 September",
+        "creditorName": "Männi tn. 42 KÜ",
+        "creditorAccount": {
+          "iban": "EE122200221020804298"
+        }
+      },
+      {
+        "transactionId": "47210131",
+        "bookingDate": "2016-10-17",
+        "valueDate": "2016-10-17",
+        "transactionAmount": {
+          "amount": "40.40",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..3409) 2016-10-14 18:43 DANSKE BANK  416075  KOBENHAVN NV  2400 DNKDNK (300 DKK)",
+        "creditorName": "DANSKE BANK"
+      },
+      {
+        "transactionId": "47210131",
+        "bookingDate": "2016-10-17",
+        "valueDate": "2016-10-17",
+        "transactionAmount": {
+          "amount": "1.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Sularaha väljamakse tasu: (..3409) 2016-10-14 18:43 DANSKE BANK  416075  KOBENHAVN NV  2400 DNKDNK (300 DKK)",
+        "creditorName": "nan"
+      },
+      {
+        "transactionId": "47456146",
+        "bookingDate": "2016-10-20",
+        "valueDate": "2016-10-20",
+        "transactionAmount": {
+          "amount": "65.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Ülekanne",
+        "debtorName": "Kerli Kerliste",
+        "debtorAccount": {
+          "iban": "EE327700771001467683"
+        }
+      },
+      {
+        "transactionId": "47456417",
+        "bookingDate": "2016-10-20",
+        "valueDate": "2016-10-20",
+        "transactionAmount": {
+          "amount": "38.95",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "81501010",
+        "remittanceInformationStructured": "81501010",
+        "creditorName": "Elisa Eesti AS",
+        "creditorAccount": {
+          "iban": "EE082200221001181561"
+        }
+      },
+      {
+        "transactionId": "47471953",
+        "bookingDate": "2016-10-20",
+        "valueDate": "2016-10-20",
+        "transactionAmount": {
+          "amount": "160.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Sünnitoetus Tallinna linnalt",
+        "remittanceInformationStructured": "5265000203560006",
+        "debtorName": "TALLINNA LINNAKANTSELEI",
+        "debtorAccount": {
+          "iban": "EE091010220061008015"
+        }
+      },
+      {
+        "transactionId": "47476585",
+        "bookingDate": "2016-10-20",
+        "valueDate": "2016-10-20",
+        "transactionAmount": {
+          "amount": "160.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "TLN 160",
+        "creditorName": "Kerli Kerliste",
+        "creditorAccount": {
+          "iban": "EE137700771002278266"
+        }
+      },
+      {
+        "transactionId": "47510425",
+        "bookingDate": "2016-10-21",
+        "valueDate": "2016-10-21",
+        "transactionAmount": {
+          "amount": "4.90",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-10-20 13:08 Taxify 16.10.20 1054 Altmetsa poik 1 Viimsi 74008 ESTEST",
+        "creditorName": "Taxify 16.10.20 1054"
+      },
+      {
+        "transactionId": "47517657",
+        "bookingDate": "2016-10-21",
+        "valueDate": "2016-10-21",
+        "transactionAmount": {
+          "amount": "4.10",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-10-20 15:26 Taxify 16.10.20 1307 Altmetsa poik 1 Viimsi 74008 ESTEST",
+        "creditorName": "Taxify 16.10.20 1307"
+      },
+      {
+        "transactionId": "47529704",
+        "bookingDate": "2016-10-21",
+        "valueDate": "2016-10-21",
+        "transactionAmount": {
+          "amount": "40.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Ülekanne",
+        "debtorName": "Kerli Kerliste",
+        "debtorAccount": {
+          "iban": "EE157700771001555666"
+        }
+      },
+      {
+        "transactionId": "47529812",
+        "bookingDate": "2016-10-21",
+        "valueDate": "2016-10-21",
+        "transactionAmount": {
+          "amount": "40.17",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Selver AS, selver.ee, 2113000632839 (1185082)",
+        "remittanceInformationStructured": "1,0000000000009E+019",
+        "creditorName": "Maksekeskus AS",
+        "creditorAccount": {
+          "iban": "EE947700771001609739"
+        }
+      },
+      {
+        "transactionId": "47530033",
+        "bookingDate": "2016-10-21",
+        "valueDate": "2016-10-21",
+        "transactionAmount": {
+          "amount": "16.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Ülekanne",
+        "debtorName": "Kerli Kerliste",
+        "debtorAccount": {
+          "iban": "EE157700771001555666"
+        }
+      },
+      {
+        "transactionId": "47530451",
+        "bookingDate": "2016-10-21",
+        "valueDate": "2016-10-21",
+        "transactionAmount": {
+          "amount": "40.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Kampsun",
+        "creditorName": "MARGIT Maasikas",
+        "creditorAccount": {
+          "iban": "EE352200221028984767"
+        }
+      },
+      {
+        "transactionId": "47643754",
+        "bookingDate": "2016-10-23",
+        "valueDate": "2016-10-23",
+        "transactionAmount": {
+          "amount": "40.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Ülekanne",
+        "debtorName": "Kerli Kerliste",
+        "debtorAccount": {
+          "iban": "EE157700771001555666"
+        }
+      },
+      {
+        "transactionId": "47672559",
+        "bookingDate": "2016-10-24",
+        "valueDate": "2016-10-24",
+        "transactionAmount": {
+          "amount": "4.14",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-10-23 18:03 Ylikooli Apteegi YA Kr  Tallinn  10615 ESTEST",
+        "creditorName": "Ylikooli Apteegi YA Kr"
+      },
+      {
+        "transactionId": "47679436",
+        "bookingDate": "2016-10-24",
+        "valueDate": "2016-10-24",
+        "transactionAmount": {
+          "amount": "4.60",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-10-23 17:49 Kristiine Kaubanduskes  Tallinn  10615 ESTEST",
+        "creditorName": "Kristiine Kaubanduskes"
+      },
+      {
+        "transactionId": "47683609",
+        "bookingDate": "2016-10-24",
+        "valueDate": "2016-10-24",
+        "transactionAmount": {
+          "amount": "5.60",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-10-23 17:59 Knopka Kristiine kesk  Tallinn  10615 ESTEST",
+        "creditorName": "Knopka Kristiine kesk"
+      },
+      {
+        "transactionId": "47711495",
+        "bookingDate": "2016-10-24",
+        "valueDate": "2016-10-24",
+        "transactionAmount": {
+          "amount": "475.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Ülekanne 2",
+        "debtorName": "Kerli Kerliste",
+        "debtorAccount": {
+          "iban": "EE687700771001873853"
+        }
+      },
+      {
+        "transactionId": "47724728",
+        "bookingDate": "2016-10-24",
+        "valueDate": "2016-10-24",
+        "transactionAmount": {
+          "amount": "450.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "ülekanne",
+        "creditorName": "Hando Harakas",
+        "creditorAccount": {
+          "iban": "EE997700770001288811"
+        }
+      },
+      {
+        "transactionId": "47724945",
+        "bookingDate": "2016-10-24",
+        "valueDate": "2016-10-24",
+        "transactionAmount": {
+          "amount": "210.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Ülekanne rupsilt",
+        "debtorName": "Kerli Kerliste",
+        "debtorAccount": {
+          "iban": "EE137700771002278266"
+        }
+      },
+      {
+        "transactionId": "47724966",
+        "bookingDate": "2016-10-24",
+        "valueDate": "2016-10-24",
+        "transactionAmount": {
+          "amount": "210.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Rupsilt",
+        "creditorName": "Hando Harakas",
+        "creditorAccount": {
+          "iban": "EE997700770001288811"
+        }
+      },
+      {
+        "transactionId": "47750497",
+        "bookingDate": "2016-10-25",
+        "valueDate": "2016-10-25",
+        "transactionAmount": {
+          "amount": "23.18",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-10-24 14:48 Ylikooli Apteegi YA Kr  Tallinn  10615 ESTEST",
+        "creditorName": "Ylikooli Apteegi YA Kr"
+      },
+      {
+        "transactionId": "47839766",
+        "bookingDate": "2016-10-26",
+        "valueDate": "2016-10-26",
+        "transactionAmount": {
+          "amount": "2.51",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Refund/Payment 1185082 (selver.ee, ref. 2113000632839)",
+        "remittanceInformationStructured": "2201820919",
+        "debtorName": "Maksekeskus AS",
+        "debtorAccount": {
+          "iban": "EE397700771000921447"
+        }
+      },
+      {
+        "transactionId": "47867655",
+        "bookingDate": "2016-10-26",
+        "valueDate": "2016-10-26",
+        "transactionAmount": {
+          "amount": "30.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Rupsilt",
+        "creditorName": "Hando Harakas",
+        "creditorAccount": {
+          "iban": "EE997700770001288811"
+        }
+      },
+      {
+        "transactionId": "47908972",
+        "bookingDate": "2016-10-27",
+        "valueDate": "2016-10-27",
+        "transactionAmount": {
+          "amount": "40.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Ülekanne",
+        "debtorName": "Kerli Kerliste",
+        "debtorAccount": {
+          "iban": "EE137700771002278266"
+        }
+      },
+      {
+        "transactionId": "47909188",
+        "bookingDate": "2016-10-27",
+        "valueDate": "2016-10-27",
+        "transactionAmount": {
+          "amount": "40.42",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Selver AS, selver.ee, 2113000649424 (1201030)",
+        "remittanceInformationStructured": "1,00000000000091E+019",
+        "creditorName": "Maksekeskus AS",
+        "creditorAccount": {
+          "iban": "EE947700771001609739"
+        }
+      },
+      {
+        "transactionId": "47929297",
+        "bookingDate": "2016-10-27",
+        "valueDate": "2016-10-27",
+        "transactionAmount": {
+          "amount": "15.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Ülekanne",
+        "debtorName": "Kerli Kerliste",
+        "debtorAccount": {
+          "iban": "EE137700771002278266"
+        }
+      },
+      {
+        "transactionId": "47961183",
+        "bookingDate": "2016-10-28",
+        "valueDate": "2016-10-28",
+        "transactionAmount": {
+          "amount": "3.70",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-10-27 17:50 Taxify 16.10.27 1536 Altmetsa poik 1 Viimsi 74008 ESTEST",
+        "creditorName": "Taxify 16.10.27 1536"
+      },
+      {
+        "transactionId": "47981715",
+        "bookingDate": "2016-10-28",
+        "valueDate": "2016-10-28",
+        "transactionAmount": {
+          "amount": "200.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "raha",
+        "debtorName": "Hando Harakas",
+        "debtorAccount": {
+          "iban": "EE092200001100654123"
+        }
+      },
+      {
+        "transactionId": "48028656",
+        "bookingDate": "2016-10-29",
+        "valueDate": "2016-10-29",
+        "transactionAmount": {
+          "amount": "4.40",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-10-28 13:03 Taxify 16.10.28 1047 Altmetsa poik 1 Viimsi 74008 ESTEST",
+        "creditorName": "Taxify 16.10.28 1047"
+      },
+      {
+        "transactionId": "48080523",
+        "bookingDate": "2016-10-30",
+        "valueDate": "2016-10-30",
+        "transactionAmount": {
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "ülekanne",
+        "creditorName": "Lee Mets",
+        "creditorAccount": {
+          "iban": "EE503300335873990009"
+        }
+      },
+      {
+        "transactionId": "48094936",
+        "bookingDate": "2016-10-31",
+        "valueDate": "2016-10-31",
+        "transactionAmount": {
+          "amount": "0.22",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Refund/Payment 1201030 (selver.ee, ref. 2113000649424)",
+        "remittanceInformationStructured": "2201833210",
+        "debtorName": "Maksekeskus AS",
+        "debtorAccount": {
+          "iban": "EE397700771000921447"
+        }
+      },
+      {
+        "transactionId": "48322475",
+        "bookingDate": "2016-11-02",
+        "valueDate": "2016-11-02",
+        "transactionAmount": {
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Ülekanne Leegi tagasi",
+        "debtorName": "Kerli Kerliste",
+        "debtorAccount": {
+          "iban": "EE687700771001873853"
+        }
+      },
+      {
+        "transactionId": "48330081",
+        "bookingDate": "2016-11-02",
+        "valueDate": "2016-11-02",
+        "transactionAmount": {
+          "amount": "46.04",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Selver AS, selver.ee, 2113000667338 (1220238)",
+        "remittanceInformationStructured": "1,00000000000093E+019",
+        "creditorName": "Maksekeskus AS",
+        "creditorAccount": {
+          "iban": "EE947700771001609739"
+        }
+      },
+      {
+        "transactionId": "48373023",
+        "bookingDate": "2016-11-03",
+        "valueDate": "2016-11-03",
+        "transactionAmount": {
+          "amount": "15.95",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-02 19:25 Mosaic Kristiine   Tallinn  10615 ESTEST",
+        "creditorName": "Mosaic Kristiine"
+      },
+      {
+        "transactionId": "48380127",
+        "bookingDate": "2016-11-03",
+        "valueDate": "2016-11-03",
+        "transactionAmount": {
+          "amount": "5.50",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-02 19:15 Happy Socks   Tallinn  10615 ESTEST",
+        "creditorName": "Happy Socks"
+      },
+      {
+        "transactionId": "48382460",
+        "bookingDate": "2016-11-03",
+        "valueDate": "2016-11-03",
+        "transactionAmount": {
+          "amount": "3.90",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-02 19:12 Sokisahtel   Tallinn  10116 ESTEST",
+        "creditorName": "Sokisahtel"
+      },
+      {
+        "transactionId": "48425815",
+        "bookingDate": "2016-11-03",
+        "valueDate": "2016-11-03",
+        "transactionAmount": {
+          "amount": "75.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Õppelaen",
+        "creditorName": "Kerli Kerliste",
+        "creditorAccount": {
+          "iban": "EE482200221029110051"
+        }
+      },
+      {
+        "transactionId": "48497611",
+        "bookingDate": "2016-11-04",
+        "valueDate": "2016-11-04",
+        "transactionAmount": {
+          "amount": "3.38",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Refund/Payment 1220238 (selver.ee, ref. 2113000667338)",
+        "remittanceInformationStructured": "2201869381",
+        "debtorName": "Maksekeskus AS",
+        "debtorAccount": {
+          "iban": "EE397700771000921447"
+        }
+      },
+      {
+        "transactionId": "48544040",
+        "bookingDate": "2016-11-05",
+        "valueDate": "2016-11-05",
+        "transactionAmount": {
+          "amount": "35.17",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-04 20:58 403 H&M Kristiine   Tallinn  10615 ESTEST",
+        "creditorName": "403 H&M Kristiine"
+      },
+      {
+        "transactionId": "48564402",
+        "bookingDate": "2016-11-05",
+        "valueDate": "2016-11-05",
+        "transactionAmount": {
+          "amount": "450.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Ülekanne madrats",
+        "debtorName": "Kerli Kerliste",
+        "debtorAccount": {
+          "iban": "EE137700771002278266"
+        }
+      },
+      {
+        "transactionId": "48592416",
+        "bookingDate": "2016-11-06",
+        "valueDate": "2016-11-06",
+        "transactionAmount": {
+          "amount": "385.60",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-05 12:15 Mooblimaja   Tallinn  10611 ESTEST",
+        "creditorName": "Mooblimaja"
+      },
+      {
+        "transactionId": "48597017",
+        "bookingDate": "2016-11-06",
+        "valueDate": "2016-11-06",
+        "transactionAmount": {
+          "amount": "7.98",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-04 20:41 Jysk Linnenn Furniture  Tallinn  10615 ESTEST",
+        "creditorName": "Jysk Linnenn Furniture"
+      },
+      {
+        "transactionId": "48603748",
+        "bookingDate": "2016-11-06",
+        "valueDate": "2016-11-06",
+        "transactionAmount": {
+          "amount": "12.50",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-05 12:22 Mooblimaja   Tallinn  10611 ESTEST",
+        "creditorName": "Mooblimaja"
+      },
+      {
+        "transactionId": "48805397",
+        "bookingDate": "2016-11-08",
+        "valueDate": "2016-11-08",
+        "transactionAmount": {
+          "amount": "500.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "raha",
+        "debtorName": "Hando Harakas",
+        "debtorAccount": {
+          "iban": "EE092200001100654123"
+        }
+      },
+      {
+        "transactionId": "48822546",
+        "bookingDate": "2016-11-08",
+        "valueDate": "2016-11-08",
+        "transactionAmount": {
+          "amount": "8.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Arve nr: 121741865",
+        "remittanceInformationStructured": "100001113540",
+        "creditorName": "220 Energia OÜ",
+        "creditorAccount": {
+          "iban": "EE262200221055855869"
+        }
+      },
+      {
+        "transactionId": "48822662",
+        "bookingDate": "2016-11-08",
+        "valueDate": "2016-11-08",
+        "transactionAmount": {
+          "amount": "40.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "A-28650768",
+        "remittanceInformationStructured": "8997856",
+        "creditorName": "AS Starman",
+        "creditorAccount": {
+          "iban": "EE882200001180000796"
+        }
+      },
+      {
+        "transactionId": "48822868",
+        "bookingDate": "2016-11-08",
+        "valueDate": "2016-11-08",
+        "transactionAmount": {
+          "amount": "130.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "11206 Hando Harakas",
+        "remittanceInformationStructured": "11206",
+        "creditorName": "KÜ Nõmme tee 11",
+        "creditorAccount": {
+          "iban": "EE772200221019373057"
+        }
+      },
+      {
+        "transactionId": "48828273",
+        "bookingDate": "2016-11-09",
+        "valueDate": "2016-11-09",
+        "transactionAmount": {
+          "amount": "5.80",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-08 09:20 Taxify 16.11.08 0803 Altmetsa poik 1 Viimsi 74008 ESTEST",
+        "creditorName": "Taxify 16.11.08 0803"
+      },
+      {
+        "transactionId": "48828515",
+        "bookingDate": "2016-11-09",
+        "valueDate": "2016-11-09",
+        "transactionAmount": {
+          "amount": "3.80",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-08 10:35 Taxify 16.11.08 0923 Altmetsa poik 1 Viimsi 74008 ESTEST",
+        "creditorName": "Taxify 16.11.08 0923"
+      },
+      {
+        "transactionId": "48880514",
+        "bookingDate": "2016-11-09",
+        "valueDate": "2016-11-09",
+        "transactionAmount": {
+          "amount": "13.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Arve nr 642352775672",
+        "remittanceInformationStructured": "64259086785",
+        "creditorName": "Eesti Energia AS",
+        "creditorAccount": {
+          "iban": "EE232200001180005555"
+        }
+      },
+      {
+        "transactionId": "49073958",
+        "bookingDate": "2016-11-11",
+        "valueDate": "2016-11-11",
+        "transactionAmount": {
+          "amount": "16.29",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-10 12:09 Maxima X T205   Tallinn  11312 ESTEST",
+        "creditorName": "Maxima X T205"
+      },
+      {
+        "transactionId": "49153743",
+        "bookingDate": "2016-11-12",
+        "valueDate": "2016-11-12",
+        "transactionAmount": {
+          "amount": "5.90",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-11 22:23 Sesoon kohvik   Tallinn  10414 ESTEST",
+        "creditorName": "Sesoon kohvik"
+      },
+      {
+        "transactionId": "49188350",
+        "bookingDate": "2016-11-12",
+        "valueDate": "2016-11-12",
+        "transactionAmount": {
+          "amount": "41.60",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Selver AS, selver.ee, 2113000700648 (1257213)",
+        "remittanceInformationStructured": "1,00000000000096E+019",
+        "creditorName": "Maksekeskus AS",
+        "creditorAccount": {
+          "iban": "EE947700771001609739"
+        }
+      },
+      {
+        "transactionId": "49207659",
+        "bookingDate": "2016-11-13",
+        "valueDate": "2016-11-13",
+        "transactionAmount": {
+          "amount": "12.70",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-12 12:48 Kristiine Kaubanduskes  Tallinn  10615 ESTEST",
+        "creditorName": "Kristiine Kaubanduskes"
+      },
+      {
+        "transactionId": "49241426",
+        "bookingDate": "2016-11-14",
+        "valueDate": "2016-11-14",
+        "transactionAmount": {
+          "amount": "5.38",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Refund/Payment 1257213 (selver.ee, ref. 2113000700648)",
+        "remittanceInformationStructured": "2201915934",
+        "debtorName": "Maksekeskus AS",
+        "debtorAccount": {
+          "iban": "EE397700771000921447"
+        }
+      },
+      {
+        "transactionId": "49372197",
+        "bookingDate": "2016-11-15",
+        "valueDate": "2016-11-15",
+        "transactionAmount": {
+          "amount": "3.50",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-14 20:33 Kehrwieder   Tallinn  10146 ESTEST",
+        "creditorName": "Kehrwieder"
+      },
+      {
+        "transactionId": "49459411",
+        "bookingDate": "2016-11-16",
+        "valueDate": "2016-11-16",
+        "transactionAmount": {
+          "amount": "6.10",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-15 13:26 Antalya restoran   Tallinn  11315 ESTEST",
+        "creditorName": "Antalya restoran"
+      },
+      {
+        "transactionId": "49525129",
+        "bookingDate": "2016-11-17",
+        "valueDate": "2016-11-17",
+        "transactionAmount": {
+          "amount": "36.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-16 13:38 Mooblimaja   Tallinn  10611 ESTEST",
+        "creditorName": "Mooblimaja"
+      },
+      {
+        "transactionId": "49527644",
+        "bookingDate": "2016-11-17",
+        "valueDate": "2016-11-17",
+        "transactionAmount": {
+          "amount": "18.90",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-16 12:25 Sky Mobile Kristiine   Tallinn  10615 ESTEST",
+        "creditorName": "Sky Mobile Kristiine"
+      },
+      {
+        "transactionId": "49715962",
+        "bookingDate": "2016-11-20",
+        "valueDate": "2016-11-20",
+        "transactionAmount": {
+          "amount": "6.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-19 14:11 Kristiine postkontor   Tallinn  10701 ESTEST",
+        "creditorName": "Kristiine postkontor"
+      },
+      {
+        "transactionId": "49752103",
+        "bookingDate": "2016-11-20",
+        "valueDate": "2016-11-20",
+        "transactionAmount": {
+          "amount": "41.52",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Selver AS, selver.ee, 2113000727317 (1284342)",
+        "remittanceInformationStructured": "1,00000000000098E+019",
+        "creditorName": "Maksekeskus AS",
+        "creditorAccount": {
+          "iban": "EE947700771001609739"
+        }
+      },
+      {
+        "transactionId": "49780652",
+        "bookingDate": "2016-11-21",
+        "valueDate": "2016-11-21",
+        "transactionAmount": {
+          "amount": "5.30",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-19 14:22 Taxify 16.11.19 1305 Altmetsa poik 1 Viimsi 74008 ESTEST",
+        "creditorName": "Taxify 16.11.19 1305"
+      },
+      {
+        "transactionId": "49786279",
+        "bookingDate": "2016-11-21",
+        "valueDate": "2016-11-21",
+        "transactionAmount": {
+          "amount": "6.10",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-20 16:19 Taxify 16.11.20 1455 Altmetsa poik 1 Viimsi 74008 ESTEST",
+        "creditorName": "Taxify 16.11.20 1455"
+      },
+      {
+        "transactionId": "49828816",
+        "bookingDate": "2016-11-21",
+        "valueDate": "2016-11-21",
+        "transactionAmount": {
+          "amount": "5.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "üüriks",
+        "creditorName": "Hando Harakas",
+        "creditorAccount": {
+          "iban": "EE997700770001288811"
+        }
+      },
+      {
+        "transactionId": "49856467",
+        "bookingDate": "2016-11-22",
+        "valueDate": "2016-11-22",
+        "transactionAmount": {
+          "amount": "20.14",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-21 12:47 Kristiine Prisma isete  Tallinn  10615 ESTEST",
+        "creditorName": "Kristiine Prisma isete"
+      },
+      {
+        "transactionId": "49888777",
+        "bookingDate": "2016-11-22",
+        "valueDate": "2016-11-22",
+        "transactionAmount": {
+          "amount": "10.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "RAHA",
+        "creditorName": "Lee Mets",
+        "creditorAccount": {
+          "iban": "EE672200221010958002"
+        }
+      },
+      {
+        "transactionId": "49888946",
+        "bookingDate": "2016-11-22",
+        "valueDate": "2016-11-22",
+        "transactionAmount": {
+          "amount": "38.95",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "81501010",
+        "remittanceInformationStructured": "81501010",
+        "creditorName": "Elisa Eesti AS",
+        "creditorAccount": {
+          "iban": "EE082200221001181561"
+        }
+      },
+      {
+        "transactionId": "49915430",
+        "bookingDate": "2016-11-23",
+        "valueDate": "2016-11-23",
+        "transactionAmount": {
+          "amount": "4.81",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Refund/Payment 1284342 (selver.ee, ref. 2113000727317)",
+        "remittanceInformationStructured": "2201968185",
+        "debtorName": "Maksekeskus AS",
+        "debtorAccount": {
+          "iban": "EE397700771000921447"
+        }
+      },
+      {
+        "transactionId": "50036116",
+        "bookingDate": "2016-11-24",
+        "valueDate": "2016-11-24",
+        "transactionAmount": {
+          "amount": "12.72",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-22 16:11 ALI*aliexpress.com No.699, Wangshang Road HANGZHOU 310099 CHN (13.4 USD)",
+        "creditorName": "ALI*aliexpress.com"
+      },
+      {
+        "transactionId": "50147774",
+        "bookingDate": "2016-11-26",
+        "valueDate": "2016-11-26",
+        "transactionAmount": {
+          "amount": "9.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-25 16:16 Pelgulinna Synnitusmaj  Tallinn  10614 ESTEST",
+        "creditorName": "Pelgulinna Synnitusmaj"
+      },
+      {
+        "transactionId": "50172205",
+        "bookingDate": "2016-11-26",
+        "valueDate": "2016-11-26",
+        "transactionAmount": {
+          "amount": "15.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Kino!",
+        "creditorName": "Lee Mets",
+        "creditorAccount": {
+          "iban": "EE672200221010958002"
+        }
+      },
+      {
+        "transactionId": "50385286",
+        "bookingDate": "2016-11-29",
+        "valueDate": "2016-11-29",
+        "transactionAmount": {
+          "amount": "42.03",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Selver AS, selver.ee, 2113000756922 (1316602)",
+        "remittanceInformationStructured": "1,000000000001E+019",
+        "creditorName": "Maksekeskus AS",
+        "creditorAccount": {
+          "iban": "EE947700771001609739"
+        }
+      },
+      {
+        "transactionId": "50404096",
+        "bookingDate": "2016-11-30",
+        "valueDate": "2016-11-30",
+        "transactionAmount": {
+          "amount": "0.01",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Refund/Payment 1316602 (selver.ee, ref. 2113000756922)",
+        "remittanceInformationStructured": "2202013767",
+        "debtorName": "Maksekeskus AS",
+        "debtorAccount": {
+          "iban": "EE397700771000921447"
+        }
+      },
+      {
+        "transactionId": "50413743",
+        "bookingDate": "2016-11-30",
+        "valueDate": "2016-11-30",
+        "transactionAmount": {
+          "amount": "3.50",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "(..2868) 2016-11-29 12:57 Antalya restoran   Tallinn  11315 ESTEST",
+        "creditorName": "Antalya restoran"
+      },
+      {
+        "transactionId": "50458350",
+        "bookingDate": "2016-11-30",
+        "valueDate": "2016-11-30",
+        "transactionAmount": {
+          "amount": "200.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "raha",
+        "debtorName": "Hando Harakas",
+        "debtorAccount": {
+          "iban": "EE092200001100654123"
+        }
+      }
+    ],
+    "pending": []
+  }
+}
