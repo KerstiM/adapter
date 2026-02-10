@@ -125,9 +125,9 @@ mapping:
         required: true
 
       - sv: "balances"
-        from: "$.balances"
-        transform: "balances_array_or_empty"
-        required: false
+        from: "derived"
+        transform: "empty_array"
+        required: true
 
       - sv: "extensions"
         from: "$"
