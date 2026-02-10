@@ -76,10 +76,12 @@ rules:
     message: "counterparty present but all fields null."
 
 partial_success_policy:
-  # kuidas jooksu staatus kujuneb
   fail_on:
     - any_severity: CRITICAL
       threshold: 1
   partial_on:
+    - any_severity: ERROR
+      threshold: 1
     - any_severity: WARN
       threshold: 1
+
