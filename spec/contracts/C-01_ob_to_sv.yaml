@@ -50,16 +50,6 @@ mapping:
         transform: "string"
         required: true
 
-      - sv: "run.run_id"
-        from: "derived"
-        transform: "uuid4"
-        required: true
-
-      - sv: "run.created_at_utc"
-        from: "derived"
-        transform: "now_utc_iso"
-        required: true
-
       - sv: "run.adapter_version"
         from: "config"
         transform: "string"
