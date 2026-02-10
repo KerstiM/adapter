@@ -35,6 +35,21 @@ mapping:
   run:
     sv_path: "run"
     fields:
+      - sv: "sv_schema_version"
+        from: "config.target_sv_schema_version"
+        transform: "string"
+        required: true
+
+      - sv: "run.run_id"
+        from: "config.fixed_run_id"
+        transform: "string"
+        required: true
+
+      - sv: "run.created_at_utc"
+        from: "config.fixed_created_at_utc"
+        transform: "string"
+        required: true
+
       - sv: "run.run_id"
         from: "derived"
         transform: "uuid4"
