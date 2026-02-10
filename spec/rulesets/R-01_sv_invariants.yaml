@@ -37,8 +37,8 @@ rules:
     severity: WARN
     scope: TRANSACTION
     when: "not sign_matches(direction, amount)"
-    action: FLAG_ONLY
-    message: "amount sign mismatch (should have been normalized before record_id)."
+    action: NORMALIZE_AND_FLAG
+    message: "amount sign mismatched direction; normalized to match direction."
 
   - id: INV-06_CURRENCY_ISO4217
     severity: ERROR
