@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "S-03_llm_context_schema.json",
+  "title": "LLMContext v1",
+  "type": "object",
+  "required": ["meta", "account_context", "transactions"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["run_id", "sv_schema_version", "projection_id", "projection_version", "windowing"],
+      "properties": {
+        "run_id": { "type": "string", "minLength": 1 },
+        "sv_schema_version": { "type": "string", "minLength": 1 },
+        "projection_id": { "type": "string", "minLength": 1 },
+        "projection_version": { "type": "string", "minLength": 1 },
+        "windowing": {
+          "type": "object",
+          "required": ["mode"],
+          "properties": {
+            "mode": { "type": "string", "enum": ["FULL", "LAST_N", "DATE_RANGE"] },
+            "N": { "type": ["integer", "null"], "minimum": 1 },
+            "from_utc": { "type": ["string", "null"], "format": "date-time" },
+            "to_utc": { "type": ["string", "null"], "format": "date-time" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "account_context": {
+      "type": "object",
+      "required": ["account_id"],
+      "properties": {
+        "account_id": { "type": "string", "minLength": 1 },
+        "currency": { "type": ["string", "null"], "pattern": "^[A-Z]{3}$" }
+      },
+      "additionalProperties": false
+    },
+
+    "transactions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["record_id", "t", "amt", "cur", "direction", "counterparty", "desc"],
+        "properties": {
+          "record_id": { "type": "string", "minLength": 1 },
+          "t": { "type": "string", "format": "date-time", "pattern": "Z$" },
+          "amt": { "type": "string", "pattern": "^-?\\d+(\\.\\d+)?$" },
+          "cur": { "type": "string", "pattern": "^[A-Z]{3}$" },
+          "direction": { "type": "string", "enum": ["DEBIT", "CREDIT"] },
+          "counterparty": {
+            "type": "object",
+            "required": ["name", "iban", "bic"],
+            "properties": {
+              "name": { "type": ["string", "null"] },
+              "iban": { "type": ["string", "null"], "pattern": "^[A-Z]{2}[0-9A-Z]{13,32}$" },
+              "bic": { "type": ["string", "null"], "pattern": "^[A-Z0-9]{8}([A-Z0-9]{3})?$" }
+            },
+            "additionalProperties": false
+          },
+          "desc": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "S-04_llm_output_schema.json",
+  "title": "LLMOutput v1",
+  "type": "object",
+  "required": ["task_id", "results"],
+  "properties": {
+    "task_id": { "type": "string", "minLength": 1 },
+
+    "model": {
+      "type": ["object", "null"],
+      "properties": {
+        "name": { "type": ["string", "null"] },
+        "version": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["record_id", "label"],
+        "properties": {
+          "record_id": { "type": "string", "minLength": 1 },
+          "label": { "type": "string", "minLength": 1 },
+          "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+          "rationale": { "type": ["string", "null"], "maxLength": 200 },
+          "evidence_record_ids": {
+            "type": ["array", "null"],
+            "items": { "type": "string", "minLength": 1 }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

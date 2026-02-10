@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "S-02_ml_projection_schema.json",
+  "title": "MLProjectionRow v1",
+  "type": "object",
+  "required": [
+    "row_id",
+    "account_id",
+    "booking_time_utc",
+    "amount",
+    "amount_abs",
+    "direction",
+    "currency",
+    "desc_norm"
+  ],
+  "properties": {
+    "row_id": { "type": "string", "minLength": 1 },
+    "account_id": { "type": "string", "minLength": 1 },
+    "booking_time_utc": { "type": "string", "format": "date-time", "pattern": "Z$" },
+
+    "amount": { "type": "string", "pattern": "^-?\\d+(\\.\\d+)?$" },
+    "amount_abs": { "type": "string", "pattern": "^\\d+(\\.\\d+)?$" },
+
+    "direction": { "type": "string", "enum": ["DEBIT", "CREDIT"] },
+    "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+
+    "desc_norm": { "type": "string" },
+
+    "month": { "type": ["integer", "null"], "minimum": 1, "maximum": 12 },
+    "weekday": { "type": ["integer", "null"], "minimum": 0, "maximum": 6 }
+  },
+  "additionalProperties": false
+}

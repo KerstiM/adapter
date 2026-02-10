@@ -1,0 +1,56 @@
+contract_id: C-03_sv_to_llm
+contract_version: "1.0.0"
+input_sv_schema_version: "1.0.0"
+output_schema_id: "S-03_llm_context_schema.json"
+
+projection:
+  projection_id: "llm_context"
+  projection_version: "1.0.0"
+  output_format: "json"
+  grain: "ACCOUNT"
+
+filters:
+  status_allowlist: ["BOOKED"]
+
+ordering:
+  sort_key: ["booking_time_utc", "record_id"]
+
+windowing:
+  mode: "LAST_N"        # FULL | LAST_N | DATE_RANGE
+  N: 200
+
+truncation:
+  max_transactions: 200
+  max_desc_chars: 160
+
+null_policy:
+  on_required_null: "DROP_TRANSACTION"    # DROP_TRANSACTION | FAIL_RUN
+  on_optional_null: "ALLOW_NULL"
+
+mapping:
+  meta:
+    run_id: "SV.run.run_id"
+    sv_schema_version: "SV.sv_schema_version"
+    projection_id: "config.projection_id"
+    projection_version: "config.projection_version"
+    windowing: "config.windowing"
+
+  account_context:
+    account_id: "Account.account_id"
+    currency: "Account.account_ref.currency"
+
+  transactions:
+    iterate: "Account.transactions[]"
+    steps:
+      - "filter(status in status_allowlist)"
+      - "sort_by(ordering.sort_key)"
+      - "apply_window(windowing)"
+      - "truncate(desc_norm to max_desc_chars)"
+    fields:
+      record_id: "SVTransaction.record_id"
+      t: "SVTransaction.booking_time_utc"
+      amt: "SVTransaction.amount"
+      cur: "SVTransaction.currency"
+      direction: "SVTransaction.direction"
+      counterparty: "SVTransaction.counterparty"
+      desc: "SVTransaction.description_norm"

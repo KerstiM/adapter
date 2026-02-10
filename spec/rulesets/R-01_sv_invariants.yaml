@@ -1,0 +1,85 @@
+ruleset_id: R-01_sv_invariants
+ruleset_version: "1.0.0"
+applies_to_sv_schema_version: "1.0.0"
+
+severities: ["INFO", "WARN", "ERROR", "CRITICAL"]
+
+rules:
+  - id: INV-01_REQUIRED_MIN_FIELDS
+    severity: CRITICAL
+    scope: TRANSACTION
+    when: "missing_any(record_id, account_id, booking_time_utc, amount, currency, direction, description_norm, origin.source_record_id, origin.source_lineage)"
+    action: DROP_RECORD
+    message: "Missing required minimum SVTransaction fields."
+
+  - id: INV-02_BOOKING_TIME_PARSEABLE
+    severity: CRITICAL
+    scope: TRANSACTION
+    when: "not is_datetime_utc(booking_time_utc)"
+    action: DROP_RECORD
+    message: "booking_time_utc not parseable/UTC."
+
+  - id: INV-03_DIRECTION_ENUM
+    severity: CRITICAL
+    scope: TRANSACTION
+    when: "direction not_in ['DEBIT','CREDIT']"
+    action: DROP_RECORD
+    message: "direction must be DEBIT or CREDIT."
+
+  - id: INV-04_AMOUNT_DECIMAL
+    severity: CRITICAL
+    scope: TRANSACTION
+    when: "not is_decimal_string(amount)"
+    action: DROP_RECORD
+    message: "amount must be a decimal string."
+
+  - id: INV-05_AMOUNT_SIGN_MATCHES_DIRECTION
+    severity: WARN
+    scope: TRANSACTION
+    when: "not sign_matches(direction, amount)"
+    action: NORMALIZE_AND_FLAG
+    message: "amount sign normalized to match direction."
+
+  - id: INV-06_CURRENCY_ISO4217
+    severity: CRITICAL
+    scope: TRANSACTION
+    when: "not matches_regex(currency, '^[A-Z]{3}$')"
+    action: DROP_RECORD
+    message: "currency must be ISO4217 uppercase."
+
+  - id: INV-07_DESC_NORM_NONEMPTY
+    severity: WARN
+    scope: TRANSACTION
+    when: "is_empty(description_norm)"
+    action: FLAG_ONLY
+    message: "description_norm empty."
+
+  - id: INV-08_ORIGIN_PRESENT
+    severity: CRITICAL
+    scope: TRANSACTION
+    when: "missing_any(origin.source_format, origin.source_record_id, origin.source_lineage)"
+    action: DROP_RECORD
+    message: "origin.* required for auditability."
+
+  - id: INV-09_DUPLICATE_RECORD_ID
+    severity: WARN
+    scope: ACCOUNT
+    when: "has_duplicates(transactions[].record_id)"
+    action: KEEP_FIRST_DETERMINISTIC
+    message: "Duplicate record_id within account; keeping first deterministically."
+
+  - id: INV-10_COUNTERPARTY_CONTAINER
+    severity: WARN
+    scope: TRANSACTION
+    when: "counterparty is null"
+    action: FLAG_ONLY
+    message: "counterparty missing container."
+
+partial_success_policy:
+  # kuidas jooksu staatus kujuneb
+  fail_on:
+    - any_severity: CRITICAL
+      threshold: 1
+  partial_on:
+    - any_severity: WARN
+      threshold: 1

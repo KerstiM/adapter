@@ -1,0 +1,250 @@
+contract_id: C-01_ob_to_sv
+contract_version: "1.0.0"
+target_sv_schema_version: "1.0.0"
+
+source:
+  allowed_source_types: ["open_banking_api", "psd2_json_fixture"]
+  endpoints:
+    accounts: "/accounts"
+    transactions: "/accounts/{account_id}/transactions"
+
+policies:
+  required_missing: "ERROR"          # ERROR | WARN | DROP_RECORD
+  parse_error: "DROP_RECORD"         # eriti timestamp/amount puhul
+  optional_missing: "WARN"
+  passthrough_extensions: true
+
+normalization:
+  text:
+    lowercase: true
+    trim: true
+    collapse_whitespace: true
+  time:
+    timezone: "UTC"
+    date_only_to_midnight_utc: true
+  currency:
+    uppercase: true
+
+id_rules:
+  account_id:
+    description: "provider_id + ':' + provider_account_resource_id"
+  record_id:
+    description: "sha256_16(account_id|source_record_id|booking_time_utc|amount|currency|description_norm|cp_iban|cp_name)"
+
+mapping:
+  run:
+    sv_path: "run"
+    fields:
+      - sv: "run.run_id"
+        from: "derived"
+        transform: "uuid4"
+        required: true
+
+      - sv: "run.created_at_utc"
+        from: "derived"
+        transform: "now_utc_iso"
+        required: true
+
+      - sv: "run.adapter_version"
+        from: "config"
+        transform: "string"
+        required: true
+
+      - sv: "run.mapping_version"
+        from: "config"
+        transform: "string"
+        required: true
+
+      - sv: "run.ruleset_version"
+        from: "config"
+        transform: "string"
+        required: true
+
+      - sv: "run.source.source_type"
+        from: "input_meta.source_type"
+        transform: "string"
+        required: true
+
+      - sv: "run.source.source_refs"
+        from: "input_meta.source_refs"
+        transform: "array_of_ref_type_ref"
+        required: true
+
+      - sv: "run.source.period.from_utc"
+        from: "input_meta.period.from_utc"
+        transform: "datetime_utc_or_null"
+        required: false
+
+      - sv: "run.source.period.to_utc"
+        from: "input_meta.period.to_utc"
+        transform: "datetime_utc_or_null"
+        required: false
+
+  accounts:
+    iterate: "$.accounts[*]"
+    to: "accounts[]"
+    fields:
+      - sv: "account_id"
+        from: "$.resourceId"
+        transform: "concat(config.provider_id, ':', value)"
+        required: true
+
+      - sv: "account_ref.iban"
+        from: "$.iban"
+        transform: "string_or_null"
+        required: false
+
+      - sv: "account_ref.currency"
+        from: "$.currency"
+        transform: "upper_iso4217_or_null"
+        required: true
+
+      - sv: "statement_period.from_utc"
+        from: "input_meta.period.from_utc"
+        transform: "datetime_utc_or_null"
+        required: false
+
+      - sv: "statement_period.to_utc"
+        from: "input_meta.period.to_utc"
+        transform: "datetime_utc_or_null"
+        required: false
+
+      - sv: "balances"
+        from: "$.balances"
+        transform: "balances_array_or_empty"
+        required: false
+
+      - sv: "extensions"
+        from: "$"
+        transform: "passthrough_remaining_fields"
+        required: false
+
+  transactions:
+    # NB: see iterate toimub per konto tehinguvastuse sees (booked + pending)
+    per_account: true
+    sources:
+      booked: "$.transactions.booked[*]"
+      pending: "$.transactions.pending[*]"
+    to: "accounts[].transactions[]"
+    fields:
+      - sv: "account_id"
+        from: "context.account.account_id"
+        transform: "identity"
+        required: true
+
+      - sv: "status"
+        from: "context.status"
+        transform: "identity"
+        required: false
+
+      - sv: "booking_time_utc"
+        from:
+          booked: "$.bookingDateTime"
+          booked_fallback: "$.bookingDate"
+          pending: "$.transactionDateTime"
+          pending_fallback: "$.reservationDate"
+        transform: "parse_datetime_or_date_to_utc"
+        required: true
+
+      - sv: "value_time_utc"
+        from: "$.valueDate"
+        transform: "parse_date_to_utc_or_null"
+        required: false
+
+      - sv: "currency"
+        from: "$.transactionAmount.currency"
+        transform: "upper_iso4217"
+        required: true
+
+      - sv: "amount"
+        from: "$.transactionAmount.amount"
+        transform: "parse_decimal_string"
+        required: true
+
+      - sv: "direction"
+        from: "derived"
+        transform: "infer_direction(amount, debtorAccount, creditorAccount, context.account)"
+        required: true
+
+      - sv: "amount"
+        from: "derived"
+        transform: "normalize_amount_sign(amount, direction)"
+        required: true
+
+      - sv: "remittance.unstructured"
+        from: "$.remittanceInformationUnstructured"
+        transform: "string_or_null"
+        required: false
+
+      - sv: "remittance.structured"
+        from: "$.remittanceInformationStructured"
+        transform: "string_or_null"
+        required: false
+
+      - sv: "transaction_code"
+        from:
+          - "$.bankTransactionCode"
+          - "$.proprietaryBankTransactionCode"
+        transform: "first_nonempty_string_or_null"
+        required: false
+
+      - sv: "description_raw"
+        from:
+          - "$.remittanceInformationUnstructured"
+          - "$.remittanceInformationStructured"
+          - "$.bankTransactionCode"
+        transform: "join_nonempty(', ', ...)"
+        required: true
+
+      - sv: "description_norm"
+        from: "derived"
+        transform: "normalize_text(description_raw)"
+        required: true
+
+      - sv: "counterparty.name"
+        from: "derived"
+        transform: "pick_counterparty_name(direction, creditorName, debtorName)"
+        required: false
+
+      - sv: "counterparty.iban"
+        from: "derived"
+        transform: "pick_counterparty_iban(direction, creditorAccount.iban, debtorAccount.iban)"
+        required: false
+
+      - sv: "counterparty.bic"
+        from: "derived"
+        transform: "pick_counterparty_bic(direction, creditorAgent.bic, debtorAgent.bic)"
+        required: false
+
+      - sv: "origin.source_format"
+        from: "config.source_format"
+        transform: "string"
+        required: true
+
+      - sv: "origin.source_record_id"
+        from:
+          booked: "$.entryReference"
+          booked_fallback: "$.transactionId"
+          pending: "$.transactionId"
+        transform: "string_or_hash_fallback"
+        required: true
+
+      - sv: "origin.source_lineage"
+        from: "derived"
+        transform: "json_pointer"
+        required: true
+
+      - sv: "record_id"
+        from: "derived"
+        transform: "hash_record_id"
+        required: true
+
+      - sv: "flags"
+        from: "derived"
+        transform: "collect_warnings_and_invariants"
+        required: true
+
+      - sv: "extensions"
+        from: "$"
+        transform: "passthrough_remaining_fields"
+        required: false

@@ -1,0 +1,19 @@
+profile_id: default
+sv_schema: S-01_sv_schema.json
+ruleset: R-01_sv_invariants.yaml
+contracts:
+  ob_to_sv: C-01_ob_to_sv.yaml
+  sv_to_ml: C-02_sv_to_ml.yaml
+  sv_to_llm: C-03_sv_to_llm.yaml
+schemas:
+  ml: S-02_ml_projection_schema.json
+  llm_context: S-03_llm_context_schema.json
+  llm_output: S-04_llm_output_schema.json
+  report: S-05_collected_report_schema.json
+
+policies:
+  drop_on_required_null: true
+  status_allowlist: ["BOOKED"]
+  llm_window:
+    mode: LAST_N
+    N: 200
