@@ -6,28 +6,28 @@ severities: ["INFO", "WARN", "ERROR", "CRITICAL"]
 
 rules:
   - id: INV-01_REQUIRED_MIN_FIELDS
-    severity: CRITICAL
+    severity: ERROR
     scope: TRANSACTION
     when: "missing_any(record_id, account_id, booking_time_utc, amount, currency, direction, description_norm, origin.source_record_id, origin.source_lineage)"
     action: DROP_RECORD
     message: "Missing required minimum SVTransaction fields."
 
   - id: INV-02_BOOKING_TIME_PARSEABLE
-    severity: CRITICAL
+    severity: ERROR
     scope: TRANSACTION
     when: "not is_datetime_utc(booking_time_utc)"
     action: DROP_RECORD
     message: "booking_time_utc not parseable/UTC."
 
   - id: INV-03_DIRECTION_ENUM
-    severity: CRITICAL
+    severity: ERROR
     scope: TRANSACTION
     when: "direction not_in ['DEBIT','CREDIT']"
     action: DROP_RECORD
     message: "direction must be DEBIT or CREDIT."
 
   - id: INV-04_AMOUNT_DECIMAL
-    severity: CRITICAL
+    severity: ERROR
     scope: TRANSACTION
     when: "not is_decimal_string(amount)"
     action: DROP_RECORD
@@ -37,11 +37,11 @@ rules:
     severity: WARN
     scope: TRANSACTION
     when: "not sign_matches(direction, amount)"
-    action: NORMALIZE_AND_FLAG
-    message: "amount sign normalized to match direction."
+    action: FLAG_ONLY
+    message: "amount sign mismatch (should have been normalized before record_id)."
 
   - id: INV-06_CURRENCY_ISO4217
-    severity: CRITICAL
+    severity: ERROR
     scope: TRANSACTION
     when: "not matches_regex(currency, '^[A-Z]{3}$')"
     action: DROP_RECORD
@@ -55,7 +55,7 @@ rules:
     message: "description_norm empty."
 
   - id: INV-08_ORIGIN_PRESENT
-    severity: CRITICAL
+    severity: ERROR
     scope: TRANSACTION
     when: "missing_any(origin.source_format, origin.source_record_id, origin.source_lineage)"
     action: DROP_RECORD
@@ -68,12 +68,12 @@ rules:
     action: KEEP_FIRST_DETERMINISTIC
     message: "Duplicate record_id within account; keeping first deterministically."
 
-  - id: INV-10_COUNTERPARTY_CONTAINER
+  - id: INV-10_COUNTERPARTY_ALL_NULL
     severity: WARN
     scope: TRANSACTION
-    when: "counterparty is null"
+    when: "is_null(counterparty.name) and is_null(counterparty.iban) and is_null(counterparty.bic)"
     action: FLAG_ONLY
-    message: "counterparty missing container."
+    message: "counterparty present but all fields null."
 
 partial_success_policy:
   # kuidas jooksu staatus kujuneb
