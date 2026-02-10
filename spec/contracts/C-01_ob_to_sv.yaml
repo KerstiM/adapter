@@ -73,12 +73,12 @@ mapping:
       - sv: "run.source.period.from_utc"
         from: "input_meta.period.from_utc"
         transform: "datetime_utc_or_null"
-        required: false
+        required: true
 
       - sv: "run.source.period.to_utc"
         from: "input_meta.period.to_utc"
         transform: "datetime_utc_or_null"
-        required: false
+        required: true
 
   accounts:
     iterate: "$.accounts[*]"
@@ -92,7 +92,7 @@ mapping:
       - sv: "account_ref.iban"
         from: "$.iban"
         transform: "string_or_null"
-        required: false
+        required: true
 
       - sv: "account_ref.currency"
         from: "$.currency"
@@ -102,12 +102,12 @@ mapping:
       - sv: "statement_period.from_utc"
         from: "input_meta.period.from_utc"
         transform: "datetime_utc_or_null"
-        required: false
+        required: true
 
       - sv: "statement_period.to_utc"
         from: "input_meta.period.to_utc"
         transform: "datetime_utc_or_null"
-        required: false
+        required: true
 
       - sv: "balances"
         from: "$.balances"
@@ -204,17 +204,17 @@ mapping:
       - sv: "counterparty.name"
         from: "derived"
         transform: "pick_counterparty_name(direction, creditorName, debtorName)"
-        required: false
+        required: true
 
       - sv: "counterparty.iban"
         from: "derived"
         transform: "pick_counterparty_iban(direction, creditorAccount.iban, debtorAccount.iban)"
-        required: false
+        required: true
 
       - sv: "counterparty.bic"
         from: "derived"
         transform: "pick_counterparty_bic(direction, creditorAgent.bic, debtorAgent.bic)"
-        required: false
+        required: true
 
       - sv: "origin.source_format"
         from: "config.source_format"
