@@ -33,7 +33,6 @@ id_rules:
 
 mapping:
   run:
-    sv_path: "run"
     fields:
       - sv: "sv_schema_version"
         from: "config.target_sv_schema_version"
@@ -51,17 +50,17 @@ mapping:
         required: true
 
       - sv: "run.adapter_version"
-        from: "config"
+        from: "config.adapter_version"
         transform: "string"
         required: true
-
+      
       - sv: "run.mapping_version"
-        from: "config"
+        from: "config.mapping_version"
         transform: "string"
         required: true
-
+      
       - sv: "run.ruleset_version"
-        from: "config"
+        from: "config.ruleset_version"
         transform: "string"
         required: true
 
