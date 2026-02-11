@@ -20,18 +20,26 @@ def main() -> None:
     output_dir = Path(sys.argv[2]) if len(sys.argv) > 2 else Path(__file__).resolve().parent / "out"
 
     print(f"Pipeline: {data_dir} -> {output_dir}")
-    report = run_pipeline(data_dir, output_dir)
+    summary = run_pipeline(data_dir, output_dir)
 
-    status = report["outcome"]["status"]
-    counts = report["summary"]["counts"]
-    print(f"Outcome: {status}")
+    print(f"Outcome: {summary['outcome']}")
+    counts = summary["counts"]
     print(f"  accounts:     {counts['accounts_total']}")
     print(f"  transactions: {counts['transactions_total']}")
     print(f"  emitted (SV): {counts['transactions_emitted_sv']}")
     print(f"  dropped:      {counts['transactions_dropped']}")
+    print(f"  ML rows:      {counts['ml_rows']}")
+    print(f"  LLM contexts: {counts['llm_contexts']}")
 
-    if report["issues"]:
-        print(f"  issues:       {len(report['issues'])}")
+    if summary["run_flags"]:
+        print(f"  run_flags:    {len(summary['run_flags'])}")
+        for flag in summary["run_flags"]:
+            print(f"    [{flag['severity']}] {flag['id']}: {flag['message']}")
+
+    if summary["issues"]:
+        print(f"  issues:       {len(summary['issues'])}")
+        for issue in summary["issues"]:
+            print(f"    {issue}")
     else:
         print("  issues:       0")
 
