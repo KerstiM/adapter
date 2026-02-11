@@ -111,16 +111,17 @@ Adapter/                          # projekti juurkaust (repo)
     adapter/                      # adapteri Pythoni moodul
       __init__.py                 # ekspordib run_pipeline
       pipeline.py                 # täielik pipeline: RAW → SV → ML/LLM → raport
-      core.py                     # vanem äriloogika (Excel → JSON)
 
-    out/                          # pipeline väljundid (D1 andmestikuga)
-      sv_bundle.json              # kanooniline SVBundle
-      ml_projection.csv           # ML projektsioon (CSV)
-      llm_context.json            # LLM kontekst (JSON)
-      report.json                 # pipeline käivituse aruanne
+    out/                          # pipeline väljundid (run-kaustadena)
+      <timestamp>_<run_id>/       # ühe käivituse kaust
+        sv.json                   # kanooniline SVBundle
+        report.json               # pipeline käivituse aruanne
+        projections/
+          ml_v1.csv               # ML projektsioon (CSV)
+          llm_context_v1.json     # LLM kontekst (JSON)
 
     tests/                        # automaattestid
-      tests.py                    # 26 happy-path testi (pytest)
+      tests.py                    # 36 happy-path testi (pytest)
 
   frontend/                       # Vue/JavaScript kasutajaliides / demo
 ```
