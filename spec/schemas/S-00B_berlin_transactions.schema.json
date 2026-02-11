@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "S-00B_berlin_transactions.schema.json",
+  "title": "Berlin AIS TransactionList (minimal subset for adapter)",
+  "description": "Validates Berlin Group AIS /accounts/{id}/transactions response shape. Minimal subset covering fields used by C-01 mapping.",
+  "type": "object",
+  "required": ["account", "transactions"],
+  "properties": {
+    "account": {
+      "type": "object",
+      "required": ["iban"],
+      "properties": {
+        "iban": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}[0-9A-Z]{13,32}$"
+        }
+      },
+      "additionalProperties": true
+    },
+    "transactions": {
+      "type": "object",
+      "required": ["booked"],
+      "properties": {
+        "booked": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/TransactionDetails" }
+        },
+        "pending": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/TransactionDetails" }
+        },
+        "_links": { "type": "object" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true,
+
+  "$defs": {
+    "TransactionDetails": {
+      "type": "object",
+      "required": ["transactionAmount"],
+      "properties": {
+        "transactionId": { "type": ["string", "null"] },
+        "entryReference": { "type": ["string", "null"] },
+        "bookingDate": { "type": "string", "format": "date" },
+        "bookingDateTime": { "type": "string", "format": "date-time" },
+        "valueDate": { "type": "string", "format": "date" },
+        "transactionAmount": {
+          "type": "object",
+          "required": ["currency", "amount"],
+          "properties": {
+            "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+            "amount": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "creditorName": { "type": ["string", "null"] },
+        "creditorAccount": {
+          "type": "object",
+          "properties": {
+            "iban": { "type": "string" },
+            "bban": { "type": "string" }
+          },
+          "additionalProperties": true
+        },
+        "creditorAgent": {
+          "type": "object",
+          "properties": {
+            "bic": { "type": "string" }
+          },
+          "additionalProperties": true
+        },
+        "debtorName": { "type": ["string", "null"] },
+        "debtorAccount": {
+          "type": "object",
+          "properties": {
+            "iban": { "type": "string" },
+            "bban": { "type": "string" }
+          },
+          "additionalProperties": true
+        },
+        "debtorAgent": {
+          "type": "object",
+          "properties": {
+            "bic": { "type": "string" }
+          },
+          "additionalProperties": true
+        },
+        "remittanceInformationUnstructured": { "type": ["string", "null"] },
+        "remittanceInformationStructured": { "type": ["string", "null"] },
+        "bankTransactionCode": { "type": ["string", "null"] },
+        "proprietaryBankTransactionCode": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    }
+  }
+}
