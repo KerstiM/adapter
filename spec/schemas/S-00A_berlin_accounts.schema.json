@@ -1,19 +1,26 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "S-00A_berlin_accounts.schema.json",
-  "title": "Berlin AIS AccountList (minimal subset for adapter)",
-  "description": "Validates Berlin Group AIS /accounts response shape. Minimal subset covering fields used by C-01 mapping.",
+  "$id": "https://example.local/schemas/S-00_berlin_accounts.schema.json",
+  "title": "Berlin Group AIS - Read Account List (minimal subset)",
   "type": "object",
-  "required": ["accounts"],
+  "required": [
+    "accounts"
+  ],
   "properties": {
     "accounts": {
       "type": "array",
-      "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["resourceId", "iban", "currency"],
+        "required": [
+          "resourceId",
+          "iban",
+          "currency"
+        ],
         "properties": {
-          "resourceId": { "type": "string", "minLength": 1 },
+          "resourceId": {
+            "type": "string",
+            "minLength": 1
+          },
           "iban": {
             "type": "string",
             "pattern": "^[A-Z]{2}[0-9A-Z]{13,32}$"
@@ -22,10 +29,18 @@
             "type": "string",
             "pattern": "^[A-Z]{3}$"
           },
-          "name": { "type": ["string", "null"] },
-          "product": { "type": ["string", "null"] },
-          "cashAccountType": { "type": ["string", "null"] },
-          "_links": { "type": "object" }
+          "product": {
+            "type": "string"
+          },
+          "cashAccountType": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "_links": {
+            "type": "object"
+          }
         },
         "additionalProperties": true
       }

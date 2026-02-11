@@ -6,7 +6,6 @@
     "booked": [
       {
         "transactionId": "1234567",
-        "entryReference": "RF-2017-001",
         "creditorName": "John Miles",
         "creditorAccount": {
           "iban": "DE67100100101306118605"
@@ -21,7 +20,6 @@
       },
       {
         "transactionId": "1234568",
-        "entryReference": "RF-2017-002",
         "debtorName": "Paul Simpson",
         "debtorAccount": {
           "iban": "NL76RABO0359400371"
@@ -33,51 +31,6 @@
         "bookingDate": "2017-10-25",
         "valueDate": "2017-10-26",
         "remittanceInformationUnstructured": "Example 2"
-      },
-      {
-        "transactionId": "1234570",
-        "entryReference": "RF-2017-003",
-        "creditorName": "Telekom Deutschland",
-        "creditorAccount": {
-          "iban": "DE89370400440532013000"
-        },
-        "transactionAmount": {
-          "currency": "EUR",
-          "amount": "39.99"
-        },
-        "bookingDate": "2017-10-20",
-        "valueDate": "2017-10-20",
-        "remittanceInformationUnstructured": "Mobilfunkrechnung Oktober 2017"
-      },
-      {
-        "transactionId": "1234571",
-        "entryReference": "RF-2017-004",
-        "debtorName": "Employer GmbH",
-        "debtorAccount": {
-          "iban": "DE75512108001245126199"
-        },
-        "transactionAmount": {
-          "currency": "EUR",
-          "amount": "2750.00"
-        },
-        "bookingDate": "2017-10-01",
-        "valueDate": "2017-10-01",
-        "remittanceInformationUnstructured": "Gehalt Oktober 2017"
-      },
-      {
-        "transactionId": "1234572",
-        "entryReference": "RF-2017-005",
-        "creditorName": "REWE Markt",
-        "creditorAccount": {
-          "iban": "DE27100777770209299700"
-        },
-        "transactionAmount": {
-          "currency": "EUR",
-          "amount": "67.32"
-        },
-        "bookingDate": "2017-10-15",
-        "valueDate": "2017-10-15",
-        "remittanceInformationUnstructured": "Einkauf REWE Filiale 1234"
       }
     ],
     "pending": [
@@ -97,7 +50,7 @@
     ],
     "_links": {
       "account": {
-        "href": "/v1/accounts/3dc3d5b3-7023-4848-9853-f5400a64e80f"
+        "href": "/psd2/v1/accounts/3dc3d5b3-7023-4848-9853-f5400a64e80f"
       }
     }
   }

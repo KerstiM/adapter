@@ -1,96 +1,170 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "S-00B_berlin_transactions.schema.json",
-  "title": "Berlin AIS TransactionList (minimal subset for adapter)",
-  "description": "Validates Berlin Group AIS /accounts/{id}/transactions response shape. Minimal subset covering fields used by C-01 mapping.",
-  "type": "object",
-  "required": ["account", "transactions"],
-  "properties": {
-    "account": {
+  "$id": "https://example.local/schemas/S-00_berlin_transactions.schema.json",
+  "title": "Berlin Group AIS - Read Transaction List (minimal subset + download-only)",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/ReportResponse"
+    },
+    {
+      "$ref": "#/$defs/DownloadOnlyResponse"
+    }
+  ],
+  "$defs": {
+    "Iban": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}[0-9A-Z]{13,32}$"
+    },
+    "IsoDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "Amount": {
       "type": "object",
-      "required": ["iban"],
+      "required": [
+        "currency",
+        "amount"
+      ],
       "properties": {
-        "iban": {
+        "currency": {
           "type": "string",
-          "pattern": "^[A-Z]{2}[0-9A-Z]{13,32}$"
+          "pattern": "^[A-Z]{3}$"
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^-?\\d+(\\.\\d{1,3})?$"
         }
       },
       "additionalProperties": true
     },
-    "transactions": {
+    "Tx": {
       "type": "object",
-      "required": ["booked"],
+      "required": [
+        "transactionAmount",
+        "valueDate"
+      ],
       "properties": {
-        "booked": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/TransactionDetails" }
+        "transactionId": {
+          "type": "string"
         },
-        "pending": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/TransactionDetails" }
+        "creditorName": {
+          "type": "string"
         },
-        "_links": { "type": "object" }
-      },
-      "additionalProperties": true
-    }
-  },
-  "additionalProperties": true,
-
-  "$defs": {
-    "TransactionDetails": {
-      "type": "object",
-      "required": ["transactionAmount"],
-      "properties": {
-        "transactionId": { "type": ["string", "null"] },
-        "entryReference": { "type": ["string", "null"] },
-        "bookingDate": { "type": "string", "format": "date" },
-        "bookingDateTime": { "type": "string", "format": "date-time" },
-        "valueDate": { "type": "string", "format": "date" },
-        "transactionAmount": {
-          "type": "object",
-          "required": ["currency", "amount"],
-          "properties": {
-            "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
-            "amount": { "type": "string" }
-          },
-          "additionalProperties": false
-        },
-        "creditorName": { "type": ["string", "null"] },
         "creditorAccount": {
           "type": "object",
           "properties": {
-            "iban": { "type": "string" },
-            "bban": { "type": "string" }
+            "iban": {
+              "$ref": "#/$defs/Iban"
+            }
           },
           "additionalProperties": true
         },
-        "creditorAgent": {
-          "type": "object",
-          "properties": {
-            "bic": { "type": "string" }
-          },
-          "additionalProperties": true
+        "debtorName": {
+          "type": "string"
         },
-        "debtorName": { "type": ["string", "null"] },
         "debtorAccount": {
           "type": "object",
           "properties": {
-            "iban": { "type": "string" },
-            "bban": { "type": "string" }
+            "iban": {
+              "$ref": "#/$defs/Iban"
+            }
           },
           "additionalProperties": true
         },
-        "debtorAgent": {
+        "transactionAmount": {
+          "$ref": "#/$defs/Amount"
+        },
+        "bookingDate": {
+          "$ref": "#/$defs/IsoDate"
+        },
+        "valueDate": {
+          "$ref": "#/$defs/IsoDate"
+        },
+        "remittanceInformationUnstructured": {
+          "type": "string"
+        },
+        "bankTransactionCode": {
+          "type": "string"
+        },
+        "additionalInformationStructured": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ReportResponse": {
+      "type": "object",
+      "required": [
+        "transactions"
+      ],
+      "properties": {
+        "account": {
           "type": "object",
           "properties": {
-            "bic": { "type": "string" }
+            "iban": {
+              "$ref": "#/$defs/Iban"
+            }
           },
           "additionalProperties": true
         },
-        "remittanceInformationUnstructured": { "type": ["string", "null"] },
-        "remittanceInformationStructured": { "type": ["string", "null"] },
-        "bankTransactionCode": { "type": ["string", "null"] },
-        "proprietaryBankTransactionCode": { "type": ["string", "null"] }
+        "transactions": {
+          "type": "object",
+          "properties": {
+            "booked": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Tx"
+              }
+            },
+            "pending": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Tx"
+              }
+            },
+            "information": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Tx"
+              }
+            },
+            "_links": {
+              "type": "object"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "DownloadOnlyResponse": {
+      "type": "object",
+      "required": [
+        "_links"
+      ],
+      "properties": {
+        "_links": {
+          "type": "object",
+          "required": [
+            "download"
+          ],
+          "properties": {
+            "download": {
+              "type": "object",
+              "required": [
+                "href"
+              ],
+              "properties": {
+                "href": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        }
       },
       "additionalProperties": true
     }

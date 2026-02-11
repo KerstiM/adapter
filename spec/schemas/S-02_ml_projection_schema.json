@@ -1,33 +1,79 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "S-02_ml_projection_schema.json",
-  "title": "MLProjectionRow v1",
+  "$id": "https://example.local/schemas/S-02_ml_projection_schema.json",
+  "title": "ML projection row (v1.0.0)",
   "type": "object",
+  "additionalProperties": false,
   "required": [
     "row_id",
     "account_id",
-    "booking_time_utc",
-    "amount",
-    "amount_abs",
+    "record_id",
+    "status",
+    "value_date",
     "direction",
     "currency",
-    "desc_norm"
+    "signed_amount",
+    "abs_amount"
   ],
   "properties": {
-    "row_id": { "type": "string", "minLength": 1 },
-    "account_id": { "type": "string", "minLength": 1 },
-    "booking_time_utc": { "type": "string", "format": "date-time", "pattern": "Z$" },
-
-    "amount": { "type": "string", "pattern": "^-?\\d+(\\.\\d+)?$" },
-    "amount_abs": { "type": "string", "pattern": "^\\d+(\\.\\d+)?$" },
-
-    "direction": { "type": "string", "enum": ["DEBIT", "CREDIT"] },
-    "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
-
-    "desc_norm": { "type": "string" },
-
-    "month": { "type": ["integer", "null"], "minimum": 1, "maximum": 12 },
-    "weekday": { "type": ["integer", "null"], "minimum": 0, "maximum": 6 }
-  },
-  "additionalProperties": false
+    "row_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "account_id": {
+      "type": "string"
+    },
+    "record_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "BOOKED",
+        "PENDING"
+      ]
+    },
+    "booking_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "value_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "IN",
+        "OUT"
+      ]
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "signed_amount": {
+      "type": "string",
+      "pattern": "^-?\\d+(\\.\\d{1,3})?$"
+    },
+    "abs_amount": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d{1,3})?$"
+    },
+    "counterparty_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "remittance": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
 }

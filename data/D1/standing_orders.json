@@ -1,0 +1,35 @@
+{
+  "account": {
+    "iban": "DE2310010010123456788"
+  },
+  "transactions": {
+    "information": [
+      {
+        "creditorName": "John Miles",
+        "creditorAccount": {
+          "iban": "DE67100100101306118605"
+        },
+        "transactionAmount": {
+          "currency": "EUR",
+          "amount": "256.67"
+        },
+        "remittanceInformationUnstructured": "Standing order example",
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "additionalInformationStructured": {
+          "standingOrderDetails": {
+            "startDate": "2018-03-01",
+            "endDate": "2020-06-30",
+            "executionRule": "preceding",
+            "frequency": "Monthly",
+            "dayOfExecution": "24"
+          }
+        }
+      }
+    ],
+    "_links": {
+      "account": {
+        "href": "/psd2/v1/accounts/3dc3d5b3-7023-4848-9853-f5400a64e80f"
+      }
+    }
+  }
+}

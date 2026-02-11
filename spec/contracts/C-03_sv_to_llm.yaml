@@ -1,56 +1,37 @@
-contract_id: C-03_sv_to_llm
-contract_version: "1.0.0"
-input_sv_schema_version: "1.0.0"
-output_schema_id: "S-03_llm_context_schema.json"
+id: C-03_SV_TO_LLM
+version: "1.0.0"
 
-projection:
-  projection_id: "llm_context"
-  projection_version: "1.0.0"
-  output_format: "json"
-  grain: "ACCOUNT"
+filter:
+  include_status: ["BOOKED", "PENDING"]
 
-filters:
-  status_allowlist: ["BOOKED"]
+sort:
+  keys: ["value_date", "record_id"]
+  order: ASC
 
-ordering:
-  sort_key: ["booking_time_utc", "record_id"]
+window:
+  last_n: 200
 
-windowing:
-  mode: "LAST_N"        # FULL | LAST_N | DATE_RANGE
-  N: 200
+truncate:
+  counterparty_name_max_len: 80
+  remittance_max_len: 160
 
-truncation:
-  max_transactions: 200
-  max_desc_chars: 160
+output:
+  format: JSON
+  file: "out/llm_context.json"
 
-null_policy:
-  on_required_null: "DROP_TRANSACTION"    # DROP_TRANSACTION | FAIL_RUN
-  on_optional_null: "ALLOW_NULL"
-
-mapping:
+shape:
   meta:
-    run_id: "SV.run.run_id"
-    sv_schema_version: "SV.sv_schema_version"
-    projection_id: "config.projection_id"
-    projection_version: "config.projection_version"
-    windowing: "config.windowing"
-
-  account_context:
-    account_id: "Account.account_id"
-    currency: "Account.account_ref.currency"
-
-  transactions:
-    iterate: "Account.transactions[]"
-    steps:
-      - "filter(status in status_allowlist)"
-      - "sort_by(ordering.sort_key)"
-      - "apply_window(windowing)"
-      - "truncate(desc_norm to max_desc_chars)"
-    fields:
-      record_id: "SVTransaction.record_id"
-      t: "SVTransaction.booking_time_utc"
-      amt: "SVTransaction.amount"
-      cur: "SVTransaction.currency"
-      direction: "SVTransaction.direction"
-      counterparty: "SVTransaction.counterparty"
-      desc: "SVTransaction.description_norm"
+    run_id: "$.meta.run_id"
+    created_at_utc: "$.meta.created_at_utc"
+    account_id: "$.accounts[0].account_id"
+    iban: "$.accounts[0].iban"
+    currency: "$.accounts[0].currency"
+  tx:
+    - id: "$.record_id"
+      d: "$.value_date"
+      s: "$.status"
+      dir: "$.direction"
+      a: "$.amount.signed"
+      c: "$.amount.currency"
+      cp: "$.counterparty.name|truncate(80)"
+      r: "$.remittance|truncate(160)"

@@ -1,63 +1,39 @@
-contract_id: C-02_sv_to_ml
-contract_version: "1.0.0"
-input_sv_schema_version: "1.0.0"
-output_schema_id: "S-02_ml_projection_schema.json"
+id: C-02_SV_TO_ML
+version: "1.0.0"
 
-projection:
-  projection_id: "ml_projection"
-  projection_version: "1.0.0"
-  output_format: "csv"
-  row_grain: "TRANSACTION"
+filter:
+  include_status: ["BOOKED", "PENDING"]
 
-filters:
-  status_allowlist: ["BOOKED"]
+sort:
+  keys: ["account_id", "value_date", "record_id"]
 
-ordering:
-  sort_key: ["account_id", "booking_time_utc", "record_id"]
+output:
+  format: CSV
+  file: "out/ml_projection.csv"
+  columns:
+    - row_id
+    - account_id
+    - record_id
+    - status
+    - booking_date
+    - value_date
+    - direction
+    - currency
+    - signed_amount
+    - abs_amount
+    - counterparty_name
+    - remittance
 
-null_policy:
-  on_required_null: "DROP_ROW"     # DROP_ROW | FAIL_RUN
-  on_optional_null: "ALLOW_NULL"
-
-mapping:
-  - out: "row_id"
-    in: "transactions[].record_id"
-    transform: "identity"
-
-  - out: "account_id"
-    in: "transactions[].account_id"
-    transform: "identity"
-
-  - out: "booking_time_utc"
-    in: "transactions[].booking_time_utc"
-    transform: "identity_utc"
-
-  - out: "amount"
-    in: "transactions[].amount"
-    transform: "identity_signed_decimal"
-
-  - out: "amount_abs"
-    in: "transactions[].amount"
-    transform: "abs_decimal"
-
-  - out: "direction"
-    in: "transactions[].direction"
-    transform: "identity"
-
-  - out: "currency"
-    in: "transactions[].currency"
-    transform: "upper_iso4217"
-
-  - out: "desc_norm"
-    in: "transactions[].description_norm"
-    transform: "identity"
-
-  - out: "month"
-    in: "transactions[].booking_time_utc"
-    transform: "month_or_null"
-    optional: true
-
-  - out: "weekday"
-    in: "transactions[].booking_time_utc"
-    transform: "weekday_or_null"
-    optional: true
+map:
+  row_id: "row_number()"
+  account_id: "$.account_id"
+  record_id: "$.record_id"
+  status: "$.status"
+  booking_date: "$.booking_date"
+  value_date: "$.value_date"
+  direction: "$.direction"
+  currency: "$.amount.currency"
+  signed_amount: "$.amount.signed"
+  abs_amount: "$.amount.abs"
+  counterparty_name: "$.counterparty.name"
+  remittance: "$.remittance"
