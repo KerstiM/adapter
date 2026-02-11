@@ -47,6 +47,6 @@ cypress/screenshots/
 # Vitest
 __screenshots__/
 
-# Pipeline outputs
-backend/out/
-out/
+# Pipeline outputs (tracked for thesis reference)
+# backend/out/
+# out/

@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "run_id": "7f661fb95fab",
+    "sv_schema_version": "1.0.0",
+    "projection_id": "llm_context",
+    "projection_version": "1.0.0",
+    "windowing": {
+      "mode": "LAST_N",
+      "N": 200
+    }
+  },
+  "account_context": {
+    "account_id": "fixture:3dc3d5b3-7023-4848-9853-f5400a64e80f",
+    "currency": "EUR"
+  },
+  "transactions": [
+    {
+      "record_id": "9d7e8524fc1e12f0",
+      "t": "2017-10-01T00:00:00Z",
+      "amt": "2750",
+      "cur": "EUR",
+      "direction": "CREDIT",
+      "counterparty": {
+        "name": "Employer GmbH",
+        "iban": "DE75512108001245126199",
+        "bic": null
+      },
+      "desc": "gehalt oktober 2017"
+    },
+    {
+      "record_id": "c0e2a76acddce9ae",
+      "t": "2017-10-15T00:00:00Z",
+      "amt": "-67.32",
+      "cur": "EUR",
+      "direction": "DEBIT",
+      "counterparty": {
+        "name": "REWE Markt",
+        "iban": "DE27100777770209299700",
+        "bic": null
+      },
+      "desc": "einkauf rewe filiale 1234"
+    },
+    {
+      "record_id": "298329464384760f",
+      "t": "2017-10-20T00:00:00Z",
+      "amt": "-39.99",
+      "cur": "EUR",
+      "direction": "DEBIT",
+      "counterparty": {
+        "name": "Telekom Deutschland",
+        "iban": "DE89370400440532013000",
+        "bic": null
+      },
+      "desc": "mobilfunkrechnung oktober 2017"
+    },
+    {
+      "record_id": "66c3bd71cb38284e",
+      "t": "2017-10-25T00:00:00Z",
+      "amt": "-256.67",
+      "cur": "EUR",
+      "direction": "DEBIT",
+      "counterparty": {
+        "name": "John Miles",
+        "iban": "DE67100100101306118605",
+        "bic": null
+      },
+      "desc": "example 1"
+    },
+    {
+      "record_id": "bbb56c1f40a81e2c",
+      "t": "2017-10-25T00:00:00Z",
+      "amt": "343.01",
+      "cur": "EUR",
+      "direction": "CREDIT",
+      "counterparty": {
+        "name": "Paul Simpson",
+        "iban": "NL76RABO0359400371",
+        "bic": null
+      },
+      "desc": "example 2"
+    }
+  ]
+}
