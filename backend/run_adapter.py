@@ -22,7 +22,8 @@ def main() -> None:
     print(f"Pipeline: {data_dir} -> {output_dir}")
     summary = run_pipeline(data_dir, output_dir)
 
-    print(f"Outcome: {summary['outcome']}")
+    print(f"Outcome:    {summary['outcome']}")
+    print(f"Run folder: {summary['run_folder']}")
     counts = summary["counts"]
     print(f"  accounts:     {counts['accounts_total']}")
     print(f"  transactions: {counts['transactions_total']}")
@@ -30,6 +31,10 @@ def main() -> None:
     print(f"  dropped:      {counts['transactions_dropped']}")
     print(f"  ML rows:      {counts['ml_rows']}")
     print(f"  LLM contexts: {counts['llm_contexts']}")
+
+    sev = summary.get("by_severity", {})
+    if any(v > 0 for v in sev.values()):
+        print(f"  by_severity:  {sev}")
 
     if summary["run_flags"]:
         print(f"  run_flags:    {len(summary['run_flags'])}")

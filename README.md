@@ -41,33 +41,88 @@ pip install openpyxl
 pip freeze > requirements.txt
 ```
 
+## 2026-02-11 – Happy-path pipeline ja skeemid
+
+### Mida tegin
+- [x] Lisasin Berlin AIS (PSD2) sisendandmete skeemid: `S-00A_berlin_accounts.schema.json`, `S-00B_berlin_transactions.schema.json`
+- [x] Lisasin väljundskeemid: `S-01_sv_schema.json` (SVBundle), `S-02_ml_projection_schema.json`, `S-03_llm_context_schema.json`
+- [x] Lisasin lepingud (contracts): `C-01_berlin_to_sv.yaml`, `C-02_sv_to_ml.yaml`, `C-03_sv_to_llm.yaml`
+- [x] Lisasin reeglid: `R-01_sv_invariants.yaml` (6 invarianti)
+- [x] Lisasin D1 testiandmestiku: `accounts.json`, `transactions.json`, `standing_orders.json`, `transactions_download.json`
+- [x] Realiseerisin `backend/adapter/pipeline.py` — täielik pipeline RAW (Berlin AIS JSON) → SV (kanooniline) → ML projektsioon (CSV) + LLM projektsioon (JSON) + raport
+- [x] Kirjutasin 26 happy-path testi (`backend/tests/tests.py`): SV skeemivalidatsioon, suuna tuletamine, summade normaliseerimine, ML/LLM projektsioonide kontroll, determinismi test
+- [x] Kõik 26 testi läbivad edukalt
+
+### Miks
+- **Pipeline** realiseerib lõputöö prototüübi tuumiku: sisend (Berlin AIS) → standardiseeritud vaheesitus (SV) → mudelispetsiifilised projektsioonid (ML ja LLM)
+- **Skeemid** ja **lepingud** tagavad, et pipeline käitumine on deklaratiivselt määratud ja valideeritav
+- **Testid** tõendavad, et D1 andmestiku happy-path töötab korrektselt ja on determineeritud (sama sisend → sama väljund)
+
+### Tehniline ülevaade
+- **Suuna tuletamine (C-01):** `debtorName` → IN, `creditorName` → OUT, varuvariant summa märgi põhjal
+- **Summa objekt (S-01):** `{currency, raw, signed, abs}` — OUT = negatiivne signed, IN = positiivne signed
+- **Mitme sisendfaili tugi:** `transactions.json` + `standing_orders.json` + download-only tuvastus
+- **Invariandid (R-01):** valuuta kontroll, value_date kohustuslik, summa parsimine, booking_date valideerimine, summa märk vs suund, counterparty kontroll
+- **ML projektsioon (C-02):** BOOKED + PENDING, sorteeritud (account_id, value_date, record_id), row_id täisarvuna
+- **LLM projektsioon (C-03):** lühikesed väljanimede (id, d, s, dir, a, c, cp, r), viimased 200 kirjet
+
+### Väljundfailid (`backend/out/`)
+- `sv_bundle.json` — kanooniline SVBundle (3 transaktsiooni)
+- `ml_projection.csv` — ML projektsioon (3 rida, 12 veergu)
+- `llm_context.json` — LLM kontekst lühikeste väljanimedega
+- `report.json` — pipeline käivituse aruanne
+
+---
+
 ## Projekti struktuur
 
 ```text
-Adapter/                     # projekti juurkaust (repo)
-  README.md                  # projekti ülevaade ja arenduslogi
+Adapter/                          # projekti juurkaust (repo)
+  README.md                       # projekti ülevaade ja arenduslogi
 
-  backend/                   # Pythoni adapter (andmete töötlemine)
-    run_adapter.py           # peamine käivitusfail; käivitab adapteri pipeline'i
-    requirements.txt         # projekti Pythoni sõltuvused (pip freeze väljund)
-    venv/                    # Pythoni virtuaalkeskkond (projektispetsiifiline Python + paketid)
+  spec/                           # deklaratiivsed spetsifikatsioonid
+    schemas/                      # JSON Schema failid
+      S-00A_berlin_accounts.schema.json   # Berlin AIS kontode sisendi skeema
+      S-00B_berlin_transactions.schema.json # Berlin AIS tehingute sisendi skeema
+      S-01_sv_schema.json                 # SVBundle väljundi skeema (kanooniline vaheesitus)
+      S-02_ml_projection_schema.json      # ML projektsiooni skeema
+      S-03_llm_context_schema.json        # LLM konteksti skeema
+    contracts/                    # lepingud (transformatsioonireeglid)
+      C-01_berlin_to_sv.yaml      # Berlin AIS → SV kaardistus
+      C-02_sv_to_ml.yaml          # SV → ML projektsioon
+      C-03_sv_to_llm.yaml         # SV → LLM projektsioon
+    rulesets/                     # invariandid ja reeglid
+      R-01_sv_invariants.yaml     # SV kvaliteedi invariandid (6 reeglit)
+    profiles/                     # profiilid
+      default.yaml                # vaikimisi profiil (viitab kõigile spec-failidele)
 
-    adapter/                 # adapteri Pythoni moodul (äri- ja I/O loogika)
-      __init__.py            # teeb kaustast mooduli; ekspordib core-funktsioonid
-      core.py                # põhiline äriloogika: Exceli read -> canonical transaction JSON
-      io_excel.py            # sisend-I/O: Exceli failide lugemine DataFrame'iks
-      io_json.py             # väljund-I/O: valmis JSON-struktuuri salvestamine failiks 
+  data/                           # testiandmestikud (Berlin AIS JSON)
+    D1/                           # esimene andmestik (happy-path)
+      accounts.json               # 1 konto (DE IBAN, EUR)
+      transactions.json           # 2 booked + 1 pending tehing
+      standing_orders.json        # 1 information püsikorraldus (ilma valueDate)
+      transactions_download.json  # download-only vastus (lipuga tuvastatud)
 
-    data/                    # näidisandmed ja adapteri väljundid
-      bank.xlsx              # esmane konto väljavõtte Excel (Kaggle/allikas)
-      bank 2.xlsx            # teine testfail (sama struktuuriga)
-      output.json            # adapteri poolt genereeritud canonical transaction JSON
+  backend/                        # Pythoni adapter (andmete töötlemine)
+    run_adapter.py                # peamine käivitusfail; käivitab pipeline'i
+    requirements.txt              # Pythoni sõltuvused (jsonschema, PyYAML, ...)
+    venv/                         # Pythoni virtuaalkeskkond
 
-    tests/                   # automaattestid adapteri jaoks
-      tests.py               # pytest testid (Excel -> JSON konversiooni kontroll)
+    adapter/                      # adapteri Pythoni moodul
+      __init__.py                 # ekspordib run_pipeline
+      pipeline.py                 # täielik pipeline: RAW → SV → ML/LLM → raport
+      core.py                     # vanem äriloogika (Excel → JSON)
 
-  frontend/                  # Vue/JavaScript kasutajaliides / demo
-                             # praegu keskendub projekt backend/adapteri prototüübi realiseerimisele
+    out/                          # pipeline väljundid (D1 andmestikuga)
+      sv_bundle.json              # kanooniline SVBundle
+      ml_projection.csv           # ML projektsioon (CSV)
+      llm_context.json            # LLM kontekst (JSON)
+      report.json                 # pipeline käivituse aruanne
+
+    tests/                        # automaattestid
+      tests.py                    # 26 happy-path testi (pytest)
+
+  frontend/                       # Vue/JavaScript kasutajaliides / demo
 ```
 ---
 
