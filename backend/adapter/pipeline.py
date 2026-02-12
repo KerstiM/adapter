@@ -216,8 +216,13 @@ def _map_single_transaction(
 
     booking_date = raw_tx.get("bookingDate")
     value_date = raw_tx.get("valueDate")
+    value_date_fell_back = False
     if not value_date:
-        return None  # unmappable without valueDate
+        if booking_date and _is_iso_date(booking_date):
+            value_date = booking_date
+            value_date_fell_back = True
+        else:
+            return None  # unmappable: no valueDate and no valid bookingDate fallback
 
     direction = _infer_direction(raw_tx, amount_raw)
 
@@ -227,8 +232,16 @@ def _map_single_transaction(
     else:
         amount_signed = amount_abs
 
-    # INV-05: check if raw sign mismatches derived direction -> flag
+    # MAP-01: valueDate fallback flag
     flags: list[dict] = []
+    if value_date_fell_back:
+        flags.append({
+            "id": "MAP-01_VALUE_DATE_FALLBACK",
+            "severity": "WARN",
+            "message": "valueDate missing; fell back to bookingDate.",
+        })
+
+    # INV-05: check if raw sign mismatches derived direction -> flag
     raw_is_negative = amount_raw.strip().startswith("-")
     if (direction == "OUT" and not raw_is_negative and amt != 0) or \
        (direction == "IN" and raw_is_negative):
@@ -284,10 +297,16 @@ def _flatten_report_file(
     tx_data: dict,
     account_id: str,
     source_file: str,
-) -> list[dict]:
-    """Flatten a single report file into SV transactions (C-01 flatten rules)."""
+) -> tuple[list[dict], list[dict]]:
+    """Flatten a single report file into SV transactions (C-01 flatten rules).
+
+    Returns (mapped_transactions, mapping_drops).
+    mapping_drops contains info dicts for raw transactions that could not be
+    mapped (e.g. missing valueDate with no bookingDate fallback).
+    """
     transactions_obj = tx_data.get("transactions") or {}
-    sv_txs = []
+    sv_txs: list[dict] = []
+    mapping_drops: list[dict] = []
 
     status_map = {
         "booked": "BOOKED",
@@ -303,8 +322,28 @@ def _flatten_report_file(
             )
             if sv_tx:
                 sv_txs.append(sv_tx)
+            else:
+                # Determine drop reason
+                amount_obj = raw_tx.get("transactionAmount") or {}
+                has_amount = amount_obj.get("amount") is not None and _parse_decimal(amount_obj.get("amount")) is not None
+                has_value_date = bool(raw_tx.get("valueDate"))
+                has_booking_date = bool(raw_tx.get("bookingDate") and _is_iso_date(raw_tx.get("bookingDate")))
 
-    return sv_txs
+                if not has_amount:
+                    reason = "transactionAmount missing or unparseable"
+                elif not has_value_date and not has_booking_date:
+                    reason = "valueDate missing and no valid bookingDate for fallback"
+                else:
+                    reason = "unmappable (unknown cause)"
+
+                mapping_drops.append({
+                    "source_file": source_file,
+                    "input_path": f"$.transactions.{key}[{i}]",
+                    "transaction_id": raw_tx.get("transactionId"),
+                    "drop_reason": reason,
+                })
+
+    return sv_txs, mapping_drops
 
 
 def _build_sv_bundle(
@@ -313,11 +352,15 @@ def _build_sv_bundle(
     run_id: str,
     created_at_utc: str,
     profile: dict,
-) -> dict:
-    """Build the full SVBundle from accounts + flattened report files."""
+) -> tuple[dict, list[dict]]:
+    """Build the full SVBundle from accounts + flattened report files.
+
+    Returns (sv_bundle, mapping_drops) where mapping_drops lists raw
+    transactions that could not be mapped to SV format.
+    """
     raw_accounts = accounts_data.get("accounts", [])
     if not raw_accounts:
-        return {"meta": {}, "accounts": [], "transactions": []}
+        return {"meta": {}, "accounts": [], "transactions": []}, []
 
     sv_accounts = []
     iban_to_account_id: dict[str, str] = {}
@@ -335,11 +378,13 @@ def _build_sv_bundle(
         })
 
     all_transactions: list[dict] = []
+    all_mapping_drops: list[dict] = []
     for source_file, tx_data in report_files:
         report_iban = (tx_data.get("account") or {}).get("iban")
         account_id = iban_to_account_id.get(report_iban, sv_accounts[0]["account_id"])
-        sv_txs = _flatten_report_file(tx_data, account_id, source_file)
+        sv_txs, mapping_drops = _flatten_report_file(tx_data, account_id, source_file)
         all_transactions.extend(sv_txs)
+        all_mapping_drops.extend(mapping_drops)
 
     # Build spec_versions from profile contracts/rulesets
     spec_versions = {}
@@ -364,7 +409,7 @@ def _build_sv_bundle(
         "meta": meta,
         "accounts": sv_accounts,
         "transactions": all_transactions,
-    }
+    }, all_mapping_drops
 
 
 # ---------------------------------------------------------------------------
@@ -591,6 +636,7 @@ def _build_report(
     stage_log: dict[str, dict],
     run_flags: list[dict],
     issues: list[str],
+    dropped_details: list[dict] | None = None,
 ) -> dict:
     """Build report.json structure."""
     return {
@@ -616,6 +662,7 @@ def _build_report(
         },
         "run_flags": run_flags,
         "issues": issues,
+        "dropped_details": dropped_details or [],
     }
 
 
@@ -725,14 +772,15 @@ def run_pipeline(
     # ================================================================
     # Stage 2: STANDARDIZE_TO_SV — map RAW -> SV (C-01)
     # ================================================================
-    sv_bundle = _build_sv_bundle(
+    sv_bundle, mapping_drops = _build_sv_bundle(
         accounts_data, report_files, run_id, created_at_utc, profile,
     )
 
+    stage2_warnings = len(mapping_drops)
     stage_log["STANDARDIZE_TO_SV"] = {
-        "status": "OK",
+        "status": "OK" if stage2_warnings == 0 else "WARN",
         "errors": 0,
-        "warnings": 0,
+        "warnings": stage2_warnings,
     }
 
     # ================================================================
@@ -835,6 +883,21 @@ def run_pipeline(
     else:
         outcome = "SUCCESS"
 
+    # Combine invariant drops + mapping drops for total dropped count
+    total_dropped = len(dropped_txs) + len(mapping_drops)
+
+    # Build dropped_details: invariant drops + mapping drops
+    all_dropped_details: list[dict] = []
+    for tx in dropped_txs:
+        error_flags = [f for f in tx.get("flags", []) if f["severity"] == "ERROR"]
+        all_dropped_details.append({
+            "source_file": tx.get("source", {}).get("input_file"),
+            "input_path": tx.get("source", {}).get("input_path"),
+            "transaction_id": tx.get("transaction_id"),
+            "drop_reason": "; ".join(f["message"] for f in error_flags) or "invariant check failed",
+        })
+    all_dropped_details.extend(mapping_drops)
+
     # report.json
     report = _build_report(
         run_id=run_id,
@@ -845,13 +908,14 @@ def run_pipeline(
         accounts_total=len(sv_bundle.get("accounts", [])),
         transactions_total=total_raw,
         transactions_emitted_sv=len(valid_txs),
-        transactions_dropped=len(dropped_txs),
+        transactions_dropped=total_dropped,
         ml_rows_count=len(ml_rows),
         llm_contexts_count=len(llm_contexts),
         by_severity=by_severity,
         stage_log=stage_log,
         run_flags=run_flags,
         issues=issues,
+        dropped_details=all_dropped_details,
     )
     with open(run_folder / "report.json", "w", encoding="utf-8") as f:
         f.write(_stable_json(report))
@@ -872,11 +936,12 @@ def run_pipeline(
             "accounts_total": len(sv_bundle.get("accounts", [])),
             "transactions_total": total_raw,
             "transactions_emitted_sv": len(valid_txs),
-            "transactions_dropped": len(dropped_txs),
+            "transactions_dropped": total_dropped,
             "ml_rows": len(ml_rows),
             "llm_contexts": len(llm_contexts),
         },
         "by_severity": by_severity,
         "run_flags": run_flags,
         "issues": issues,
+        "dropped_details": all_dropped_details,
     }
