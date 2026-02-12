@@ -1,0 +1,12 @@
+{
+  "accounts": [
+    {
+      "cashAccountType": "CACC",
+      "currency": "EUR",
+      "iban": "DE10433218196001338908",
+      "name": "D4 Error Injection Account",
+      "product": "Current Account",
+      "resourceId": "b38a088ca65e4389b74d0fb132e70629"
+    }
+  ]
+}

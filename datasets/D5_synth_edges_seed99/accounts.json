@@ -1,0 +1,12 @@
+{
+  "accounts": [
+    {
+      "cashAccountType": "CACC",
+      "currency": "EUR",
+      "iban": "DE66392332146881973699",
+      "name": "D5 Edge Cases Account",
+      "product": "Current Account",
+      "resourceId": "c9cf158de6e94d458ae8c077377925b3"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "accounts": [
+    {
+      "cashAccountType": "CACC",
+      "currency": "EUR",
+      "iban": "DE01152449390926685878",
+      "name": "D2 Mixed Large Account",
+      "product": "Current Account",
+      "resourceId": "defc044a09324626a6b58de744ab6cce"
+    }
+  ]
+}
