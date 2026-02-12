@@ -108,16 +108,18 @@ class TestAcceptanceChecks:
             assert report["summary"]["by_stage"]["CHECK_INVARIANTS"]["warnings"] >= 1
 
     def test_D_d1_counts(self, d1_output: tuple) -> None:
-        """D) D1: accounts_total=1, transactions_total=4, dropped=0.
+        """D) D1: accounts_total=1, transactions_total=4, dropped=1.
         Note: D1 has 2 booked + 1 pending + 1 information = 4 raw.
-        The information tx lacks valueDate and is unmappable -> emitted=3, dropped=0.
+        The information tx lacks valueDate (and bookingDate) -> emitted=3, dropped=1.
+        Invariant: total == emitted + dropped.
         """
         summary, _ = d1_output
         counts = summary["counts"]
         assert counts["accounts_total"] == 1
         assert counts["transactions_total"] == 4
-        assert counts["transactions_dropped"] == 0
+        assert counts["transactions_dropped"] == 1
         assert counts["transactions_emitted_sv"] == 3
+        assert counts["transactions_total"] == counts["transactions_emitted_sv"] + counts["transactions_dropped"]
 
 
 # ---------------------------------------------------------------------------
@@ -298,7 +300,7 @@ class TestHappyPathPipeline:
             assert tx["source"]["input_path"].startswith("$.transactions.")
 
     def test_sv_standing_order_skipped(self, d1_output: tuple) -> None:
-        """standing_orders.json information tx lacks valueDate -> not in SV."""
+        """standing_orders.json information tx lacks valueDate (and bookingDate) -> dropped, not in SV."""
         _, run_folder = d1_output
         with open(run_folder / "sv.json", encoding="utf-8") as f:
             sv = json.load(f)
@@ -431,6 +433,26 @@ class TestHappyPathPipeline:
         schema_issues = [i for i in summary["issues"] if "validation" in i.lower()]
         assert len(schema_issues) == 1
         assert "valueDate" in schema_issues[0]
+
+    def test_dropped_details_in_report(self, d1_output: tuple) -> None:
+        """Dropped transactions must have source lineage and drop_reason in report."""
+        _, run_folder = d1_output
+        with open(run_folder / "report.json", encoding="utf-8") as f:
+            report = json.load(f)
+
+        dropped = report.get("dropped_details", [])
+        assert len(dropped) == 1
+        entry = dropped[0]
+        assert entry["source_file"] == "standing_orders.json"
+        assert entry["input_path"] == "$.transactions.information[0]"
+        assert "valueDate" in entry["drop_reason"]
+
+    def test_dropped_details_in_summary(self, d1_output: tuple) -> None:
+        """Summary dropped_details must match report."""
+        summary, _ = d1_output
+        dropped = summary.get("dropped_details", [])
+        assert len(dropped) == 1
+        assert dropped[0]["source_file"] == "standing_orders.json"
 
     # --- JSON determinism ---
 
