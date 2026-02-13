@@ -30,7 +30,7 @@ Adapteri käitumine on täielikult määratud versioonitud spetsifikatsioonifail
 
 | Fail | Mida kirjeldab |
 |------|----------------|
-| **R-01** `sv_invariants.yaml` | 10 invarianti, mida iga SV tehing peab täitma. Iga reegli juures on tõsidus (`CRITICAL`/`WARN`) ja toime (`DROP_RECORD`, `FLAG_ONLY`, `NORMALIZE_AND_FLAG`). Nt: `booking_time_utc` peab olema parsitav UTC; `currency` peab vastama ISO 4217; duplikaadid eemaldatakse deterministlikult. |
+| **R-01** `sv_invariants.yaml` | 7 invarianti (v1.1.0), mida iga SV tehing peab täitma. Iga reegli juures on tõsidus (`ERROR`/`WARN`) ja toime (`DROP_RECORD`, `FLAG_ONLY`). Nt: `currency` peab vastama `^[A-Z]{3}$` (INV-01 ERROR → DROP); `value_date` peab olema olemas (INV-02 ERROR → DROP); duplikaadid (INV-09 WARN → DROP) eemaldatakse deterministlikult `record_id` alusel. Fail gate: kui ERROR-taseme droppide suhtarv ületab `default.yaml` `ratio_over_records` (5%), on tulemus FAILED. |
 | `error_catalog.yaml` | Veakoodide kataloog (praegu tühi kohatäide). |
 
 ---
