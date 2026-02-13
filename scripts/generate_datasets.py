@@ -621,7 +621,14 @@ def generate_d5(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
 
 
 def generate_d6(gen: DatasetGenerator, start_date: date, end_date: date, n: int | None) -> dict:
-    """D6_synth_dupes_seed99: exact and near-duplicate transactions."""
+    """D6_synth_dupes_seed99: tests INV-09 duplicate record_id detection.
+
+    Exact copies produce the same record_id after mapping (same hash inputs).
+    The adapter keeps the first occurrence deterministically and drops the rest
+    with INV-09 WARN.  Near-duplicates (different amount/remittance/txId) produce
+    different record_ids and are NOT dropped — they verify that the hash is
+    sensitive to field changes.
+    """
     n_booked = n or 15
     n_pending = max(3, n_booked // 5)
     acct = gen.generate_account(country="DE", name="D6 Duplicates Account")
@@ -632,52 +639,64 @@ def generate_d6(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
     )
 
     variations = []
+    expected_dropped = 0
 
-    # DUP01: exact duplicate (same transactionId, same everything)
+    # DUP01: exact duplicate of booked[0] — same record_id → INV-09 DROP
     if booked:
         original = booked[0]
         exact_dup = json.loads(json.dumps(original))  # deep copy
         booked.append(exact_dup)
-        variations.append(f"DUP01_EXACT: exact copy of booked[0] (transactionId={original['transactionId']})")
+        variations.append(f"DUP01_EXACT: exact copy of booked[0] (transactionId={original['transactionId']}) → INV-09 DROP")
+        expected_dropped += 1
 
-    # DUP02: same transactionId but different amount (near-dupe)
+    # DUP02: second exact duplicate of booked[0] — same record_id → INV-09 DROP
+    if booked:
+        exact_dup2 = json.loads(json.dumps(booked[0]))
+        booked.append(exact_dup2)
+        variations.append(f"DUP02_EXACT: second copy of booked[0] (transactionId={booked[0]['transactionId']}) → INV-09 DROP")
+        expected_dropped += 1
+
+    # DUP03: exact duplicate of booked[1] — same record_id → INV-09 DROP
     if len(booked) > 1:
-        base = json.loads(json.dumps(booked[1]))
-        base["transactionAmount"]["amount"] = str(float(base["transactionAmount"]["amount"]) + 0.01)
-        booked.append(base)
-        variations.append(f"DUP02_NEAR_AMOUNT: same txId={base['transactionId']}, amount differs by 0.01")
+        original2 = booked[1]
+        exact_dup3 = json.loads(json.dumps(original2))
+        booked.append(exact_dup3)
+        variations.append(f"DUP03_EXACT: exact copy of booked[1] (transactionId={original2['transactionId']}) → INV-09 DROP")
+        expected_dropped += 1
 
-    # DUP03: same amount/date but different transactionId (structural near-dupe)
+    # NEAR01: same txId but different amount — different record_id → NOT dropped
     if len(booked) > 2:
-        base = json.loads(json.dumps(booked[2]))
-        base["transactionId"] = gen._next_tx_id()
-        booked.append(base)
-        variations.append(f"DUP03_NEAR_TXID: same content, different transactionId={base['transactionId']}")
+        near1 = json.loads(json.dumps(booked[2]))
+        near1["transactionAmount"]["amount"] = str(float(near1["transactionAmount"]["amount"]) + 0.01)
+        booked.append(near1)
+        variations.append(f"NEAR01_DIFF_AMOUNT: same txId={near1['transactionId']}, amount differs → different record_id, kept")
 
-    # DUP04: same fields except remittance
-    dup04_base = gen.generate_transaction(
+    # NEAR02: same fields except remittance — different record_id → NOT dropped
+    near2_base = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         match_sign_to_direction=True,
-        remittance="DUP04 original remittance",
+        remittance="NEAR02 original remittance",
     )
-    dup04_copy = json.loads(json.dumps(dup04_base))
-    dup04_copy["remittanceInformationUnstructured"] = "DUP04 modified remittance"
-    booked.append(dup04_base)
-    booked.append(dup04_copy)
-    variations.append(f"DUP04_NEAR_REMITTANCE: same txId={dup04_base['transactionId']}, remittance differs")
+    near2_copy = json.loads(json.dumps(near2_base))
+    near2_copy["remittanceInformationUnstructured"] = "NEAR02 modified remittance"
+    booked.append(near2_base)
+    booked.append(near2_copy)
+    variations.append(f"NEAR02_DIFF_REMITTANCE: same txId={near2_base['transactionId']}, remittance differs → different record_id, both kept")
 
     return {
         "name": "D6_synth_dupes_seed99",
-        "description": "Duplicate detection dataset with exact duplicates (DUP01), "
-                        "near-duplicates differing by amount (DUP02), transactionId "
-                        "(DUP03), or remittance (DUP04). Tests record_id hash uniqueness.",
-        "expected_outcome": "SUCCESS",
+        "description": "Tests INV-09 duplicate record_id detection. Contains 3 exact "
+                        "duplicates (same hash inputs → same record_id → dropped with "
+                        "INV-09 WARN, keeping first deterministically) and 2 near-duplicates "
+                        "(different amount or remittance → different record_id → kept). "
+                        "Adapter should produce PARTIAL_SUCCESS with 3 INV-09 WARNs.",
+        "expected_outcome": "PARTIAL_SUCCESS",
         "accounts": _build_accounts_json([acct]),
         "transactions": _build_transactions_json(acct["iban"], booked, pending),
         "meta": {
             "n_booked": len(booked),
             "n_pending": len(pending),
-            "expected_dropped": 0,
+            "expected_dropped": expected_dropped,
             "variations": variations,
         },
     }

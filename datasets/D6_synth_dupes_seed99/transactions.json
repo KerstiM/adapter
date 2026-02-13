@@ -245,6 +245,21 @@
         "valueDate": "2024-01-10"
       },
       {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-01-09",
+        "creditorAccount": {
+          "iban": "PL10023359410616157686845514"
+        },
+        "creditorName": "Andres Saar",
+        "remittanceInformationUnstructured": "Freelance payment I7HLD5WI",
+        "transactionAmount": {
+          "amount": "-8898.59",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000013",
+        "valueDate": "2024-01-10"
+      },
+      {
         "bankTransactionCode": "PMNT-IRCT-ESCT",
         "bookingDate": "2024-01-12",
         "creditorAccount": {
@@ -253,7 +268,7 @@
         "creditorName": "Luca Mets",
         "remittanceInformationUnstructured": "Grocery store purchase",
         "transactionAmount": {
-          "amount": "-6838.95",
+          "amount": "-6838.96",
           "currency": "EUR"
         },
         "transactionId": "TX00000002",
@@ -268,10 +283,10 @@
         "debtorName": "Olivia Tamm",
         "remittanceInformationUnstructured": "Grocery store purchase",
         "transactionAmount": {
-          "amount": "9971.84",
+          "amount": "9971.85",
           "currency": "EUR"
         },
-        "transactionId": "TX00000019",
+        "transactionId": "TX00000007",
         "valueDate": "2024-02-08"
       },
       {
@@ -281,12 +296,12 @@
           "iban": "FR9641352141056593919446222"
         },
         "debtorName": "Luca Berg",
-        "remittanceInformationUnstructured": "DUP04 original remittance",
+        "remittanceInformationUnstructured": "NEAR02 original remittance",
         "transactionAmount": {
           "amount": "4748.98",
           "currency": "EUR"
         },
-        "transactionId": "TX00000020",
+        "transactionId": "TX00000019",
         "valueDate": "2024-01-21"
       },
       {
@@ -296,12 +311,12 @@
           "iban": "FR9641352141056593919446222"
         },
         "debtorName": "Luca Berg",
-        "remittanceInformationUnstructured": "DUP04 modified remittance",
+        "remittanceInformationUnstructured": "NEAR02 modified remittance",
         "transactionAmount": {
           "amount": "4748.98",
           "currency": "EUR"
         },
-        "transactionId": "TX00000020",
+        "transactionId": "TX00000019",
         "valueDate": "2024-01-21"
       }
     ],
