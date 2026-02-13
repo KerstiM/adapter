@@ -1,13 +1,13 @@
 """
 Adapter pipeline: RAW (Berlin AIS) -> SV -> ML/LLM projections.
 
-Implements the happy path:
+Implements the full pipeline:
   1. Read & validate RAW input (S-00A, S-00B) — multiple report files + download-only
   2. Map to SV (C-01) — flatten booked/pending/information, derive direction/counterparty/amounts
   3. Validate SV schema (S-01)
-  4. Check invariants (R-01)
+  4. Check invariants (R-01) — field-level rules + INV-09 dedupe by (account_id, record_id)
   5. Project to ML CSV (C-02) and LLM context JSON (C-03)
-  6. Write outputs into a single run folder
+  6. Write outputs + fail-gate check (default.yaml run_policy)
 """
 
 import csv
@@ -341,6 +341,7 @@ def _flatten_report_file(
                     "input_path": f"$.transactions.{key}[{i}]",
                     "transaction_id": raw_tx.get("transactionId"),
                     "drop_reason": reason,
+                    "status": status,
                 })
 
     return sv_txs, mapping_drops
@@ -498,6 +499,57 @@ def _check_invariants(sv_bundle: dict) -> tuple[list[dict], list[dict]]:
         valid.append(tx)
 
     return valid, dropped
+
+
+def _deduplicate_transactions(
+    transactions: list[dict],
+) -> tuple[list[dict], list[dict]]:
+    """
+    Deduplicate SV transactions by (account_id, record_id) — INV-09.
+
+    Within each group of duplicates the "winner" is chosen deterministically
+    by sorting on (source.input_file, source.input_path, status, value_date,
+    booking_date, transaction_id).  All others are flagged WARN and dropped.
+
+    Returns (kept, dedupe_drops).
+    """
+    from collections import OrderedDict
+
+    def _sort_key(tx: dict) -> tuple:
+        src = tx.get("source", {})
+        return (
+            src.get("input_file", ""),
+            src.get("input_path", ""),
+            tx.get("status", ""),
+            tx.get("value_date", ""),
+            tx.get("booking_date") or "",
+            tx.get("transaction_id") or "",
+        )
+
+    # Group by (account_id, record_id), preserving insertion order.
+    groups: dict[tuple[str, str], list[dict]] = OrderedDict()
+    for tx in transactions:
+        key = (tx["account_id"], tx["record_id"])
+        groups.setdefault(key, []).append(tx)
+
+    kept: list[dict] = []
+    dedupe_drops: list[dict] = []
+    for (_aid, _rid), group in groups.items():
+        if len(group) == 1:
+            kept.append(group[0])
+            continue
+        # Sort deterministically; keep first.
+        group.sort(key=_sort_key)
+        kept.append(group[0])
+        for dup in group[1:]:
+            dup["flags"].append({
+                "id": "INV-09_DUPLICATE_RECORD_ID",
+                "severity": "WARN",
+                "message": "Duplicate record_id within account; keeping first deterministically.",
+            })
+            dedupe_drops.append(dup)
+
+    return kept, dedupe_drops
 
 
 # ---------------------------------------------------------------------------
@@ -796,15 +848,18 @@ def run_pipeline(
     }
 
     # ================================================================
-    # Stage 4: CHECK_INVARIANTS — R-01
+    # Stage 4: CHECK_INVARIANTS — R-01 (field-level rules)
     # ================================================================
     valid_txs, dropped_txs = _check_invariants(sv_bundle)
-    sv_bundle["transactions"] = valid_txs
 
-    # Count flags from invariants (on valid + dropped txs)
+    # Stage 4b: Deduplicate by (account_id, record_id) — INV-09
+    deduped_txs, dedupe_drops = _deduplicate_transactions(valid_txs)
+    sv_bundle["transactions"] = deduped_txs
+
+    # Count flags from invariants (on valid + dropped + dedupe-dropped txs)
     inv_warnings = 0
     inv_errors = 0
-    for tx in valid_txs + dropped_txs:
+    for tx in deduped_txs + dropped_txs + dedupe_drops:
         for flag in tx.get("flags", []):
             if flag["severity"] == "WARN":
                 inv_warnings += 1
@@ -871,22 +926,13 @@ def run_pipeline(
         f.write("\n")
 
     # Count flag severities across all transactions for report
-    by_severity = _count_flags_by_severity(valid_txs, dropped_txs)
+    all_dropped_for_severity = dropped_txs + dedupe_drops
+    by_severity = _count_flags_by_severity(deduped_txs, all_dropped_for_severity)
 
-    # Determine outcome
-    has_error_flags = by_severity["ERROR"] > 0
-    has_hard_issues = any("ERROR" in str(i) or "S-01 validation" in str(i) for i in issues)
-    if has_error_flags or has_hard_issues:
-        outcome = "PARTIAL_SUCCESS"
-    elif run_flags or by_severity["WARN"] > 0:
-        outcome = "PARTIAL_SUCCESS"
-    else:
-        outcome = "SUCCESS"
+    # Combine invariant drops + mapping drops + dedupe drops for total dropped count
+    total_dropped = len(dropped_txs) + len(mapping_drops) + len(dedupe_drops)
 
-    # Combine invariant drops + mapping drops for total dropped count
-    total_dropped = len(dropped_txs) + len(mapping_drops)
-
-    # Build dropped_details: invariant drops + mapping drops
+    # Build dropped_details: invariant drops + mapping drops + dedupe drops
     all_dropped_details: list[dict] = []
     for tx in dropped_txs:
         error_flags = [f for f in tx.get("flags", []) if f["severity"] == "ERROR"]
@@ -896,7 +942,49 @@ def run_pipeline(
             "transaction_id": tx.get("transaction_id"),
             "drop_reason": "; ".join(f["message"] for f in error_flags) or "invariant check failed",
         })
+    for tx in dedupe_drops:
+        all_dropped_details.append({
+            "source_file": tx.get("source", {}).get("input_file"),
+            "input_path": tx.get("source", {}).get("input_path"),
+            "transaction_id": tx.get("transaction_id"),
+            "record_id": tx.get("record_id"),
+            "drop_reason": "duplicate record_id",
+        })
     all_dropped_details.extend(mapping_drops)
+
+    # Determine outcome using run_policy fail gate from default.yaml
+    # fail_on: any_severity=ERROR, ratio_over_records=0.05
+    run_policy = profile.get("run_policy", {}).get("partial_success_policy", {})
+    fail_on = run_policy.get("fail_on", {})
+    fail_severity = fail_on.get("any_severity", "ERROR")
+    fail_ratio = fail_on.get("ratio_over_records", 0.05)
+
+    # Count drops at the fail severity or higher.
+    # INFORMATION txs that fail to map are expected omissions, not data errors,
+    # so exclude them from the fail-gate ratio.
+    severity_rank = {"INFO": 0, "WARN": 1, "ERROR": 2, "CRITICAL": 3}
+    fail_rank = severity_rank.get(fail_severity, 2)
+    error_drops = 0
+    for tx in dropped_txs:
+        if tx.get("status") == "INFORMATION":
+            continue
+        for flag in tx.get("flags", []):
+            if severity_rank.get(flag["severity"], 0) >= fail_rank:
+                error_drops += 1
+                break
+    for md in mapping_drops:
+        if md.get("status") != "INFORMATION":
+            error_drops += 1
+
+    drop_ratio = error_drops / total_raw if total_raw > 0 else 0.0
+    if drop_ratio > fail_ratio:
+        outcome = "FAILED"
+    elif by_severity["ERROR"] > 0 or any("S-01 validation" in str(i) for i in issues):
+        outcome = "PARTIAL_SUCCESS"
+    elif run_flags or by_severity["WARN"] > 0:
+        outcome = "PARTIAL_SUCCESS"
+    else:
+        outcome = "SUCCESS"
 
     # report.json
     report = _build_report(
@@ -907,7 +995,7 @@ def run_pipeline(
         outcome=outcome,
         accounts_total=len(sv_bundle.get("accounts", [])),
         transactions_total=total_raw,
-        transactions_emitted_sv=len(valid_txs),
+        transactions_emitted_sv=len(deduped_txs),
         transactions_dropped=total_dropped,
         ml_rows_count=len(ml_rows),
         llm_contexts_count=len(llm_contexts),
@@ -935,7 +1023,7 @@ def run_pipeline(
         "counts": {
             "accounts_total": len(sv_bundle.get("accounts", [])),
             "transactions_total": total_raw,
-            "transactions_emitted_sv": len(valid_txs),
+            "transactions_emitted_sv": len(deduped_txs),
             "transactions_dropped": total_dropped,
             "ml_rows": len(ml_rows),
             "llm_contexts": len(llm_contexts),
