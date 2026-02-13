@@ -475,7 +475,7 @@
           "iban": "DE60607159696641605297"
         },
         "debtorName": "Viktor Kowalski",
-        "remittanceInformationUnstructured": "E02 missing valueDate no fallback",
+        "remittanceInformationUnstructured": "E02 missing valueDate",
         "transactionAmount": {
           "amount": "5003.12",
           "currency": "EUR"
@@ -511,35 +511,6 @@
         },
         "transactionId": "TX00000039",
         "valueDate": "2024-03-29"
-      },
-      {
-        "bankTransactionCode": "PMNT-IRCT-ESCT",
-        "bookingDate": "2024-01-28",
-        "debtorAccount": {
-          "iban": "DE54119986798079359782"
-        },
-        "debtorName": "Emma Kask",
-        "remittanceInformationUnstructured": "E05 missing valueDate with bookingDate fallback",
-        "transactionAmount": {
-          "amount": "3104.76",
-          "currency": "EUR"
-        },
-        "transactionId": "TX00000040"
-      },
-      {
-        "bankTransactionCode": "PMNT-IRCT-XBCT",
-        "bookingDate": "2024-08-18",
-        "creditorAccount": {
-          "iban": "DE37788925546659051518"
-        },
-        "creditorName": "Marie Mueller",
-        "remittanceInformationUnstructured": "E06 lowercase currency",
-        "transactionAmount": {
-          "amount": "-9823.86",
-          "currency": "eur"
-        },
-        "transactionId": "TX00000041",
-        "valueDate": "2024-08-18"
       }
     ],
     "pending": [

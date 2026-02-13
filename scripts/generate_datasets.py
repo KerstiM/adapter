@@ -417,8 +417,10 @@ def generate_d3(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
 
 
 def generate_d4(gen: DatasetGenerator, start_date: date, end_date: date, n: int | None) -> dict:
-    """D4_synth_errors_seed42: targeted error injections E01–E06.
-    Some transactions should be DROPPED by the adapter.
+    """D4_synth_errors_seed42: targeted error injections E01–E04.
+    4 transactions are invalid and should be DROPPED by the adapter.
+    With default.yaml policy (fail_on: any_severity=ERROR, ratio_over_records=0.05),
+    the drop ratio exceeds 5% → expected outcome is FAILED.
     """
     n_booked = n or 30
     n_pending = max(5, n_booked // 6)
@@ -433,7 +435,7 @@ def generate_d4(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
     variations = []
     expected_dropped = 0
 
-    # E01: invalid currency (INV-01 → DROP)
+    # E01: invalid currency (violates ^[A-Z]{3}$ → ERROR-level DROP)
     e01 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         bad_currency="EURO",  # 4 chars, violates ^[A-Z]{3}$
@@ -441,32 +443,32 @@ def generate_d4(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
         remittance="E01 invalid currency EURO",
     )
     booked.append(e01)
-    variations.append("E01_INVALID_CURRENCY: currency='EURO' (4 chars) → INV-01 DROP")
+    variations.append("E01_INVALID_CURRENCY: currency='EURO' (4 chars) → ERROR DROP")
     expected_dropped += 1
 
-    # E02: missing valueDate (no bookingDate fallback → DROP)
+    # E02: missing valueDate (C-01 maps directly from $.valueDate; no fallback → DROP)
     e02 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         omit_value_date=True,
         include_booking_date=False,
         match_sign_to_direction=True,
-        remittance="E02 missing valueDate no fallback",
+        remittance="E02 missing valueDate",
     )
     booked.append(e02)
-    variations.append("E02_MISSING_VALUE_DATE: no valueDate, no bookingDate → mapping DROP")
+    variations.append("E02_MISSING_VALUE_DATE: no valueDate → ERROR DROP")
     expected_dropped += 1
 
-    # E03: unparseable amount (mapping DROP — _parse_decimal fails)
+    # E03: unparseable amount (amount='not_a_number' → ERROR DROP)
     e03 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         bad_amount="not_a_number",
         remittance="E03 unparseable amount",
     )
     booked.append(e03)
-    variations.append("E03_UNPARSEABLE_AMOUNT: amount='not_a_number' → mapping DROP (parse failure)")
+    variations.append("E03_UNPARSEABLE_AMOUNT: amount='not_a_number' → ERROR DROP")
     expected_dropped += 1
 
-    # E04: empty currency string (INV-01 → DROP)
+    # E04: empty currency string (violates ^[A-Z]{3}$ → ERROR DROP)
     e04 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         bad_currency="",
@@ -474,36 +476,27 @@ def generate_d4(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
         remittance="E04 empty currency",
     )
     booked.append(e04)
-    variations.append("E04_EMPTY_CURRENCY: currency='' → INV-01 DROP")
+    variations.append("E04_EMPTY_CURRENCY: currency='' → ERROR DROP")
     expected_dropped += 1
 
-    # E05: missing valueDate WITH bookingDate fallback → NOT dropped (MAP-01 WARN)
-    e05 = gen.generate_transaction(
-        acct["iban"], start_date, end_date,
-        omit_value_date=True,
-        include_booking_date=True,
-        match_sign_to_direction=True,
-        remittance="E05 missing valueDate with bookingDate fallback",
-    )
-    booked.append(e05)
-    variations.append("E05_VALUE_DATE_FALLBACK: no valueDate, has bookingDate → MAP-01 WARN, no drop")
-
-    # E06: lowercase currency — pipeline .upper() normalizes, no drop
-    e06 = gen.generate_transaction(
-        acct["iban"], start_date, end_date,
-        bad_currency="eur",
-        match_sign_to_direction=True,
-        remittance="E06 lowercase currency",
-    )
-    booked.append(e06)
-    variations.append("E06_LOWERCASE_CURRENCY: currency='eur' → pipeline uppercases, valid after normalize")
+    # Sanity check: drop ratio must exceed the 5% fail threshold
+    total_records = len(booked) + len(pending)
+    drop_ratio = expected_dropped / total_records
+    if drop_ratio <= 0.05:
+        raise ValueError(
+            f"D4 sanity check failed: expected_dropped/total = "
+            f"{expected_dropped}/{total_records} = {drop_ratio:.4f} <= 0.05. "
+            f"Reduce baseline count or add more error injections."
+        )
 
     return {
         "name": "D4_synth_errors_seed42",
-        "description": "Targeted error injections testing each invariant rule and "
-                        "mapping-stage drop path. E01–E04 should be dropped, E05 falls "
-                        "back to bookingDate, E06 is normalized by the pipeline.",
-        "expected_outcome": "PARTIAL_SUCCESS",
+        "description": "Targeted error injections (E01–E04) that each violate S-00B "
+                        "schema constraints and produce ERROR-level drops. With 4 drops "
+                        f"out of {total_records} records ({drop_ratio:.1%}), the drop ratio "
+                        "exceeds the default.yaml threshold of 5%, so the adapter "
+                        "outcome is FAILED.",
+        "expected_outcome": "FAILED",
         "accounts": _build_accounts_json([acct]),
         "transactions": _build_transactions_json(acct["iban"], booked, pending),
         "meta": {
@@ -720,7 +713,6 @@ def validate_dataset(name: str, accounts_data: dict, tx_data: dict, meta: dict) 
             warnings.append(f"{name}: transactions.json account.iban '{tx_account_iban}' not in accounts.json")
 
     # --- S-00B: each Tx ---
-    is_error_dataset = "error" in name.lower()
     tx_obj = tx_data.get("transactions", {})
     for status_key in ("booked", "pending"):
         for j, tx in enumerate(tx_obj.get(status_key, [])):
@@ -729,22 +721,18 @@ def validate_dataset(name: str, accounts_data: dict, tx_data: dict, meta: dict) 
             # Required: transactionAmount
             ta = tx.get("transactionAmount")
             if not ta:
-                if not is_error_dataset:
-                    warnings.append(f"{name}: {path} missing transactionAmount")
+                warnings.append(f"{name}: {path} missing transactionAmount")
             else:
                 amt = ta.get("amount", "")
                 if amt and not re.match(r"^-?\d+(\.\d{1,3})?$", amt):
-                    if not is_error_dataset:
-                        warnings.append(f"{name}: {path} amount '{amt}' does not match pattern")
+                    warnings.append(f"{name}: {path} amount '{amt}' does not match pattern")
                 cur = ta.get("currency", "")
-                if cur and not _currency_valid(cur):
-                    if not is_error_dataset:
-                        warnings.append(f"{name}: {path} currency '{cur}' invalid")
+                if not _currency_valid(cur):
+                    warnings.append(f"{name}: {path} currency '{cur}' invalid")
 
             # Required: valueDate
             if not tx.get("valueDate"):
-                if not is_error_dataset:
-                    warnings.append(f"{name}: {path} missing valueDate")
+                warnings.append(f"{name}: {path} missing valueDate")
 
             # Pending should NOT have bookingDate
             if status_key == "pending" and "bookingDate" in tx:
