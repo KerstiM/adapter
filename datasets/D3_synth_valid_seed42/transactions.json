@@ -1,6 +1,6 @@
 {
   "account": {
-    "iban": "DE10433218196001338908"
+    "iban": "DE43321819600133890838"
   },
   "transactions": {
     "booked": [
@@ -28,7 +28,7 @@
         "creditorName": "Olivia Kask",
         "remittanceInformationUnstructured": "Freelance payment ODS1EEUR",
         "transactionAmount": {
-          "amount": "542.22",
+          "amount": "-542.22",
           "currency": "EUR"
         },
         "transactionId": "TX00000145",
@@ -43,7 +43,7 @@
         "creditorName": "Sophie Mueller",
         "remittanceInformationUnstructured": "Tax payment CAT9MX2X",
         "transactionAmount": {
-          "amount": "6689.06",
+          "amount": "-6689.06",
           "currency": "EUR"
         },
         "transactionId": "TX00000015",
@@ -58,7 +58,7 @@
         "creditorName": "Liisa Kowalski",
         "remittanceInformationUnstructured": "Grocery store purchase",
         "transactionAmount": {
-          "amount": "1819.21",
+          "amount": "-1819.21",
           "currency": "EUR"
         },
         "transactionId": "TX00000018",
@@ -73,7 +73,7 @@
         "creditorName": "Emma Paju",
         "remittanceInformationUnstructured": "Loan repayment January",
         "transactionAmount": {
-          "amount": "7835.69",
+          "amount": "-7835.69",
           "currency": "EUR"
         },
         "transactionId": "TX00000068",
@@ -103,7 +103,7 @@
         "creditorName": "Elena Paju",
         "remittanceInformationUnstructured": "Subscription renewal",
         "transactionAmount": {
-          "amount": "8603.82",
+          "amount": "-8603.82",
           "currency": "EUR"
         },
         "transactionId": "TX00000135",
@@ -163,7 +163,7 @@
         "creditorName": "Liisa Rossi",
         "remittanceInformationUnstructured": "Donation to charity",
         "transactionAmount": {
-          "amount": "4390.28",
+          "amount": "-4390.28",
           "currency": "EUR"
         },
         "transactionId": "TX00000127",
@@ -193,7 +193,7 @@
         "creditorName": "Felix Paju",
         "remittanceInformationUnstructured": "Freelance payment FFLZM764",
         "transactionAmount": {
-          "amount": "9995.94",
+          "amount": "-9995.94",
           "currency": "EUR"
         },
         "transactionId": "TX00000048",
@@ -208,7 +208,7 @@
         "creditorName": "Jan Tamm",
         "remittanceInformationUnstructured": "Donation to charity",
         "transactionAmount": {
-          "amount": "8293.64",
+          "amount": "-8293.64",
           "currency": "EUR"
         },
         "transactionId": "TX00000009",
@@ -253,7 +253,7 @@
         "creditorName": "Stefan Kask",
         "remittanceInformationUnstructured": "Rent payment February",
         "transactionAmount": {
-          "amount": "1664.22",
+          "amount": "-1664.22",
           "currency": "EUR"
         },
         "transactionId": "TX00000072",
@@ -343,7 +343,7 @@
         "creditorName": "Ingrid Mets",
         "remittanceInformationUnstructured": "Utility bill March",
         "transactionAmount": {
-          "amount": "3723.02",
+          "amount": "-3723.02",
           "currency": "EUR"
         },
         "transactionId": "TX00000088",
@@ -388,7 +388,7 @@
         "creditorName": "Felix Oja",
         "remittanceInformationUnstructured": "Transfer to savings",
         "transactionAmount": {
-          "amount": "3710.74",
+          "amount": "-3710.74",
           "currency": "EUR"
         },
         "transactionId": "TX00000030",
@@ -403,7 +403,7 @@
         "creditorName": "Sophie Kuusk",
         "remittanceInformationUnstructured": "Transfer to savings",
         "transactionAmount": {
-          "amount": "3745.23",
+          "amount": "-3745.23",
           "currency": "EUR"
         },
         "transactionId": "TX00000060",
@@ -418,7 +418,7 @@
         "creditorName": "Andres Rossi",
         "remittanceInformationUnstructured": "Grocery store purchase",
         "transactionAmount": {
-          "amount": "6446.55",
+          "amount": "-6446.55",
           "currency": "EUR"
         },
         "transactionId": "TX00000081",
@@ -433,7 +433,7 @@
         "creditorName": "Emma Smith",
         "remittanceInformationUnstructured": "Refund order KZA3OA52",
         "transactionAmount": {
-          "amount": "6379.40",
+          "amount": "-6379.40",
           "currency": "EUR"
         },
         "transactionId": "TX00000027",
@@ -493,7 +493,7 @@
         "creditorName": "Liisa Nilsson",
         "remittanceInformationUnstructured": "Transfer to savings",
         "transactionAmount": {
-          "amount": "4843.02",
+          "amount": "-4843.02",
           "currency": "EUR"
         },
         "transactionId": "TX00000050",
@@ -508,7 +508,7 @@
         "creditorName": "Tomas Paju",
         "remittanceInformationUnstructured": "Online purchase JNOBBUNK",
         "transactionAmount": {
-          "amount": "4988.09",
+          "amount": "-4988.09",
           "currency": "EUR"
         },
         "transactionId": "TX00000051",
@@ -523,7 +523,7 @@
         "creditorName": "Liisa Paju",
         "remittanceInformationUnstructured": "Invoice PZTC69QK",
         "transactionAmount": {
-          "amount": "1163.28",
+          "amount": "-1163.28",
           "currency": "EUR"
         },
         "transactionId": "TX00000059",
@@ -568,7 +568,7 @@
         "creditorName": "Peeter Dubois",
         "remittanceInformationUnstructured": "Insurance premium Q2",
         "transactionAmount": {
-          "amount": "8282.68",
+          "amount": "-8282.68",
           "currency": "EUR"
         },
         "transactionId": "TX00000138",
@@ -583,7 +583,7 @@
         "creditorName": "Tomas Mets",
         "remittanceInformationUnstructured": "Insurance premium Q2",
         "transactionAmount": {
-          "amount": "1252.58",
+          "amount": "-1252.58",
           "currency": "EUR"
         },
         "transactionId": "TX00000049",
@@ -598,7 +598,7 @@
         "creditorName": "Julia Dubois",
         "remittanceInformationUnstructured": "Rent payment April",
         "transactionAmount": {
-          "amount": "4139.88",
+          "amount": "-4139.88",
           "currency": "EUR"
         },
         "transactionId": "TX00000064",
@@ -628,7 +628,7 @@
         "creditorName": "Peeter Mets",
         "remittanceInformationUnstructured": "Utility bill April",
         "transactionAmount": {
-          "amount": "4634.00",
+          "amount": "-4634.00",
           "currency": "EUR"
         },
         "transactionId": "TX00000087",
@@ -643,7 +643,7 @@
         "creditorName": "Carlos Mets",
         "remittanceInformationUnstructured": "Loan repayment April",
         "transactionAmount": {
-          "amount": "1325.43",
+          "amount": "-1325.43",
           "currency": "EUR"
         },
         "transactionId": "TX00000008",
@@ -658,7 +658,7 @@
         "creditorName": "Luca Nilsson",
         "remittanceInformationUnstructured": "Utility bill April",
         "transactionAmount": {
-          "amount": "8881.01",
+          "amount": "-8881.01",
           "currency": "EUR"
         },
         "transactionId": "TX00000033",
@@ -673,7 +673,7 @@
         "creditorName": "Jan Dubois",
         "remittanceInformationUnstructured": "Freelance payment R14FFYVN",
         "transactionAmount": {
-          "amount": "8428.67",
+          "amount": "-8428.67",
           "currency": "EUR"
         },
         "transactionId": "TX00000002",
@@ -733,7 +733,7 @@
         "creditorName": "Liisa Saar",
         "remittanceInformationUnstructured": "Transfer to savings",
         "transactionAmount": {
-          "amount": "8563.22",
+          "amount": "-8563.22",
           "currency": "EUR"
         },
         "transactionId": "TX00000132",
@@ -748,7 +748,7 @@
         "creditorName": "Stefan Oja",
         "remittanceInformationUnstructured": "Transfer to savings",
         "transactionAmount": {
-          "amount": "8610.62",
+          "amount": "-8610.62",
           "currency": "EUR"
         },
         "transactionId": "TX00000077",
@@ -793,7 +793,7 @@
         "creditorName": "Liisa Kuusk",
         "remittanceInformationUnstructured": "Utility bill May",
         "transactionAmount": {
-          "amount": "5938.46",
+          "amount": "-5938.46",
           "currency": "EUR"
         },
         "transactionId": "TX00000070",
@@ -808,7 +808,7 @@
         "creditorName": "Peeter Lepp",
         "remittanceInformationUnstructured": "Invoice SP7BM41Q",
         "transactionAmount": {
-          "amount": "1560.80",
+          "amount": "-1560.80",
           "currency": "EUR"
         },
         "transactionId": "TX00000130",
@@ -823,7 +823,7 @@
         "creditorName": "Markus Rossi",
         "remittanceInformationUnstructured": "Insurance premium Q2",
         "transactionAmount": {
-          "amount": "7066.55",
+          "amount": "-7066.55",
           "currency": "EUR"
         },
         "transactionId": "TX00000140",
@@ -853,26 +853,11 @@
         "creditorName": "Stefan Rossi",
         "remittanceInformationUnstructured": "Subscription renewal",
         "transactionAmount": {
-          "amount": "2146.49",
+          "amount": "-2146.49",
           "currency": "EUR"
         },
         "transactionId": "TX00000047",
         "valueDate": "2024-05-13"
-      },
-      {
-        "bankTransactionCode": "PMNT-MCOP-OTHR",
-        "bookingDate": "2024-05-15",
-        "creditorAccount": {
-          "iban": "GB49593103413164752553"
-        },
-        "creditorName": "Sophie Mets",
-        "remittanceInformationUnstructured": "Donation to charity",
-        "transactionAmount": {
-          "amount": "5362.74",
-          "currency": "EUR"
-        },
-        "transactionId": "TX00000001",
-        "valueDate": "2024-05-15"
       },
       {
         "bankTransactionCode": "PMNT-MCOP-OTHR",
@@ -928,7 +913,7 @@
         "creditorName": "Anna Saar",
         "remittanceInformationUnstructured": "Insurance premium Q2",
         "transactionAmount": {
-          "amount": "1878.70",
+          "amount": "-1878.70",
           "currency": "EUR"
         },
         "transactionId": "TX00000137",
@@ -958,7 +943,7 @@
         "creditorName": "Katrin Paju",
         "remittanceInformationUnstructured": "Subscription renewal",
         "transactionAmount": {
-          "amount": "2143.15",
+          "amount": "-2143.15",
           "currency": "EUR"
         },
         "transactionId": "TX00000005",
@@ -973,7 +958,7 @@
         "creditorName": "Mart Kask",
         "remittanceInformationUnstructured": "Transfer to savings",
         "transactionAmount": {
-          "amount": "4405.24",
+          "amount": "-4405.24",
           "currency": "EUR"
         },
         "transactionId": "TX00000020",
@@ -1018,7 +1003,7 @@
         "creditorName": "Emma Paju",
         "remittanceInformationUnstructured": "Tax payment 4D6AF58C",
         "transactionAmount": {
-          "amount": "8652.73",
+          "amount": "-8652.73",
           "currency": "EUR"
         },
         "transactionId": "TX00000025",
@@ -1033,7 +1018,7 @@
         "creditorName": "Olivia Paju",
         "remittanceInformationUnstructured": "Donation to charity",
         "transactionAmount": {
-          "amount": "5073.64",
+          "amount": "-5073.64",
           "currency": "EUR"
         },
         "transactionId": "TX00000053",
@@ -1078,7 +1063,7 @@
         "creditorName": "Felix Smith",
         "remittanceInformationUnstructured": "Subscription renewal",
         "transactionAmount": {
-          "amount": "5605.31",
+          "amount": "-5605.31",
           "currency": "EUR"
         },
         "transactionId": "TX00000055",
@@ -1093,7 +1078,7 @@
         "creditorName": "Sophie Kask",
         "remittanceInformationUnstructured": "Service fee",
         "transactionAmount": {
-          "amount": "2882.89",
+          "amount": "-2882.89",
           "currency": "EUR"
         },
         "transactionId": "TX00000023",
@@ -1138,7 +1123,7 @@
         "creditorName": "Elena Berg",
         "remittanceInformationUnstructured": "Freelance payment OYGGVNYR",
         "transactionAmount": {
-          "amount": "6498.71",
+          "amount": "-6498.71",
           "currency": "EUR"
         },
         "transactionId": "TX00000026",
@@ -1153,7 +1138,7 @@
         "creditorName": "Katrin Dubois",
         "remittanceInformationUnstructured": "Online purchase ZXEBB9EI",
         "transactionAmount": {
-          "amount": "9628.96",
+          "amount": "-9628.96",
           "currency": "EUR"
         },
         "transactionId": "TX00000029",
@@ -1183,7 +1168,7 @@
         "creditorName": "Liisa Kuusk",
         "remittanceInformationUnstructured": "Loan repayment June",
         "transactionAmount": {
-          "amount": "2263.73",
+          "amount": "-2263.73",
           "currency": "EUR"
         },
         "transactionId": "TX00000128",
@@ -1198,7 +1183,7 @@
         "creditorName": "Sophie Kuusk",
         "remittanceInformationUnstructured": "Online purchase TBH55RBC",
         "transactionAmount": {
-          "amount": "791.11",
+          "amount": "-791.11",
           "currency": "EUR"
         },
         "transactionId": "TX00000066",
@@ -1228,7 +1213,7 @@
         "creditorName": "Carlos Mueller",
         "remittanceInformationUnstructured": "Invoice 43PT5R5R",
         "transactionAmount": {
-          "amount": "8855.03",
+          "amount": "-8855.03",
           "currency": "EUR"
         },
         "transactionId": "TX00000095",
@@ -1273,7 +1258,7 @@
         "creditorName": "Olivia Oja",
         "remittanceInformationUnstructured": "Transfer to savings",
         "transactionAmount": {
-          "amount": "6286.07",
+          "amount": "-6286.07",
           "currency": "EUR"
         },
         "transactionId": "TX00000082",
@@ -1288,7 +1273,7 @@
         "creditorName": "Felix Mets",
         "remittanceInformationUnstructured": "Salary July",
         "transactionAmount": {
-          "amount": "4585.12",
+          "amount": "-4585.12",
           "currency": "EUR"
         },
         "transactionId": "TX00000086",
@@ -1303,7 +1288,7 @@
         "creditorName": "Marie Tamm",
         "remittanceInformationUnstructured": "Loan repayment July",
         "transactionAmount": {
-          "amount": "4887.50",
+          "amount": "-4887.50",
           "currency": "EUR"
         },
         "transactionId": "TX00000076",
@@ -1363,7 +1348,7 @@
         "creditorName": "Stefan Mets",
         "remittanceInformationUnstructured": "Invoice G5HCBBMH",
         "transactionAmount": {
-          "amount": "7288.26",
+          "amount": "-7288.26",
           "currency": "EUR"
         },
         "transactionId": "TX00000098",
@@ -1378,7 +1363,7 @@
         "creditorName": "Emma Dubois",
         "remittanceInformationUnstructured": "Tax payment N7ZSEDFQ",
         "transactionAmount": {
-          "amount": "7524.15",
+          "amount": "-7524.15",
           "currency": "EUR"
         },
         "transactionId": "TX00000041",
@@ -1400,6 +1385,21 @@
         "valueDate": "2024-08-19"
       },
       {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-08-21",
+        "debtorAccount": {
+          "iban": "GB49593103413164752553"
+        },
+        "debtorName": "Sophie Mets",
+        "remittanceInformationUnstructured": "Donation to charity",
+        "transactionAmount": {
+          "amount": "9731.17",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000001",
+        "valueDate": "2024-08-23"
+      },
+      {
         "bankTransactionCode": "PMNT-IRCT-ESCT",
         "bookingDate": "2024-08-23",
         "creditorAccount": {
@@ -1408,7 +1408,7 @@
         "creditorName": "Peeter Tamm",
         "remittanceInformationUnstructured": "Invoice FU84XYJO",
         "transactionAmount": {
-          "amount": "6354.46",
+          "amount": "-6354.46",
           "currency": "EUR"
         },
         "transactionId": "TX00000099",
@@ -1423,7 +1423,7 @@
         "creditorName": "Anna Lepp",
         "remittanceInformationUnstructured": "Service fee",
         "transactionAmount": {
-          "amount": "9710.80",
+          "amount": "-9710.80",
           "currency": "EUR"
         },
         "transactionId": "TX00000003",
@@ -1453,7 +1453,7 @@
         "creditorName": "Ingrid Dubois",
         "remittanceInformationUnstructured": "Rent payment September",
         "transactionAmount": {
-          "amount": "676.47",
+          "amount": "-676.47",
           "currency": "EUR"
         },
         "transactionId": "TX00000129",
@@ -1468,7 +1468,7 @@
         "creditorName": "Clara Berg",
         "remittanceInformationUnstructured": "Salary September",
         "transactionAmount": {
-          "amount": "5776.93",
+          "amount": "-5776.93",
           "currency": "EUR"
         },
         "transactionId": "TX00000126",
@@ -1498,7 +1498,7 @@
         "creditorName": "Stefan Lepp",
         "remittanceInformationUnstructured": "Loan repayment September",
         "transactionAmount": {
-          "amount": "8253.28",
+          "amount": "-8253.28",
           "currency": "EUR"
         },
         "transactionId": "TX00000052",
@@ -1513,7 +1513,7 @@
         "creditorName": "Stefan Lepp",
         "remittanceInformationUnstructured": "Grocery store purchase",
         "transactionAmount": {
-          "amount": "8265.31",
+          "amount": "-8265.31",
           "currency": "EUR"
         },
         "transactionId": "TX00000124",
@@ -1603,7 +1603,7 @@
         "creditorName": "Viktor Kowalski",
         "remittanceInformationUnstructured": "Transfer to savings",
         "transactionAmount": {
-          "amount": "5327.91",
+          "amount": "-5327.91",
           "currency": "EUR"
         },
         "transactionId": "TX00000017",
@@ -1648,7 +1648,7 @@
         "creditorName": "Tomas Dubois",
         "remittanceInformationUnstructured": "Rent payment November",
         "transactionAmount": {
-          "amount": "8328.55",
+          "amount": "-8328.55",
           "currency": "EUR"
         },
         "transactionId": "TX00000028",
@@ -1663,7 +1663,7 @@
         "creditorName": "Jan Kowalski",
         "remittanceInformationUnstructured": "Rent payment November",
         "transactionAmount": {
-          "amount": "5558.95",
+          "amount": "-5558.95",
           "currency": "EUR"
         },
         "transactionId": "TX00000062",
@@ -1678,7 +1678,7 @@
         "creditorName": "Carlos Mets",
         "remittanceInformationUnstructured": "Insurance premium Q4",
         "transactionAmount": {
-          "amount": "5914.60",
+          "amount": "-5914.60",
           "currency": "EUR"
         },
         "transactionId": "TX00000038",
@@ -1693,7 +1693,7 @@
         "creditorName": "Jan Nilsson",
         "remittanceInformationUnstructured": "Donation to charity",
         "transactionAmount": {
-          "amount": "3570.38",
+          "amount": "-3570.38",
           "currency": "EUR"
         },
         "transactionId": "TX00000045",
@@ -1708,7 +1708,7 @@
         "creditorName": "Markus Paju",
         "remittanceInformationUnstructured": "Transfer to savings",
         "transactionAmount": {
-          "amount": "4120.51",
+          "amount": "-4120.51",
           "currency": "EUR"
         },
         "transactionId": "TX00000089",
@@ -1723,7 +1723,7 @@
         "creditorName": "Viktor Jansen",
         "remittanceInformationUnstructured": "Utility bill December",
         "transactionAmount": {
-          "amount": "4418.41",
+          "amount": "-4418.41",
           "currency": "EUR"
         },
         "transactionId": "TX00000012",
@@ -1753,7 +1753,7 @@
         "creditorName": "Elena Nilsson",
         "remittanceInformationUnstructured": "Subscription renewal",
         "transactionAmount": {
-          "amount": "9335.26",
+          "amount": "-9335.26",
           "currency": "EUR"
         },
         "transactionId": "TX00000143",
@@ -1768,7 +1768,7 @@
         "creditorName": "Jan Dubois",
         "remittanceInformationUnstructured": "Grocery store purchase",
         "transactionAmount": {
-          "amount": "9391.80",
+          "amount": "-9391.80",
           "currency": "EUR"
         },
         "transactionId": "TX00000121",
@@ -1783,7 +1783,7 @@
         "creditorName": "Viktor Paju",
         "remittanceInformationUnstructured": "Loan repayment December",
         "transactionAmount": {
-          "amount": "1899.50",
+          "amount": "-1899.50",
           "currency": "EUR"
         },
         "transactionId": "TX00000141",
@@ -1843,7 +1843,7 @@
         "creditorName": "Ingrid Mueller",
         "remittanceInformationUnstructured": "Freelance payment 984UVKYR",
         "transactionAmount": {
-          "amount": "9115.23",
+          "amount": "-9115.23",
           "currency": "EUR"
         },
         "transactionId": "TX00000100",
@@ -1858,7 +1858,7 @@
         "creditorName": "Anna Tamm",
         "remittanceInformationUnstructured": "Loan repayment December",
         "transactionAmount": {
-          "amount": "3157.19",
+          "amount": "-3157.19",
           "currency": "EUR"
         },
         "transactionId": "TX00000131",
@@ -1873,7 +1873,7 @@
         "creditorName": "Markus Oja",
         "remittanceInformationUnstructured": "Loan repayment December",
         "transactionAmount": {
-          "amount": "5508.83",
+          "amount": "-5508.83",
           "currency": "EUR"
         },
         "transactionId": "TX00000024",
@@ -1931,7 +1931,7 @@
         "creditorName": "Laura Smith",
         "remittanceInformationUnstructured": "Freelance payment M2LHGCSO",
         "transactionAmount": {
-          "amount": "407.30",
+          "amount": "-407.30",
           "currency": "EUR"
         },
         "transactionId": "TX00000114",
@@ -1945,7 +1945,7 @@
         "creditorName": "Julia Saar",
         "remittanceInformationUnstructured": "Online purchase N961J88Q",
         "transactionAmount": {
-          "amount": "4574.42",
+          "amount": "-4574.42",
           "currency": "EUR"
         },
         "transactionId": "TX00000111",
@@ -1959,7 +1959,7 @@
         "creditorName": "Felix Rossi",
         "remittanceInformationUnstructured": "Salary March",
         "transactionAmount": {
-          "amount": "6025.64",
+          "amount": "-6025.64",
           "currency": "EUR"
         },
         "transactionId": "TX00000112",
@@ -2001,7 +2001,7 @@
         "creditorName": "Olivia Saar",
         "remittanceInformationUnstructured": "Salary April",
         "transactionAmount": {
-          "amount": "9056.37",
+          "amount": "-9056.37",
           "currency": "EUR"
         },
         "transactionId": "TX00000118",
@@ -2015,7 +2015,7 @@
         "creditorName": "Peeter Berg",
         "remittanceInformationUnstructured": "Invoice I0E0VGNX",
         "transactionAmount": {
-          "amount": "3121.61",
+          "amount": "-3121.61",
           "currency": "EUR"
         },
         "transactionId": "TX00000104",
@@ -2029,7 +2029,7 @@
         "creditorName": "Clara Lepp",
         "remittanceInformationUnstructured": "Transfer to savings",
         "transactionAmount": {
-          "amount": "5085.89",
+          "amount": "-5085.89",
           "currency": "EUR"
         },
         "transactionId": "TX00000148",
@@ -2043,7 +2043,7 @@
         "creditorName": "Laura Rossi",
         "remittanceInformationUnstructured": "Refund order ZUG0IT26",
         "transactionAmount": {
-          "amount": "8615.05",
+          "amount": "-8615.05",
           "currency": "EUR"
         },
         "transactionId": "TX00000101",
@@ -2057,7 +2057,7 @@
         "creditorName": "Stefan Rossi",
         "remittanceInformationUnstructured": "Insurance premium Q2",
         "transactionAmount": {
-          "amount": "4507.00",
+          "amount": "-4507.00",
           "currency": "EUR"
         },
         "transactionId": "TX00000119",
@@ -2085,7 +2085,7 @@
         "creditorName": "Andres Kuusk",
         "remittanceInformationUnstructured": "Subscription renewal",
         "transactionAmount": {
-          "amount": "8253.28",
+          "amount": "-8253.28",
           "currency": "EUR"
         },
         "transactionId": "TX00000110",
@@ -2099,7 +2099,7 @@
         "creditorName": "Marie Berg",
         "remittanceInformationUnstructured": "Loan repayment June",
         "transactionAmount": {
-          "amount": "6569.65",
+          "amount": "-6569.65",
           "currency": "EUR"
         },
         "transactionId": "TX00000149",
@@ -2113,7 +2113,7 @@
         "creditorName": "Emma Saar",
         "remittanceInformationUnstructured": "Invoice T0861TAA",
         "transactionAmount": {
-          "amount": "9871.92",
+          "amount": "-9871.92",
           "currency": "EUR"
         },
         "transactionId": "TX00000103",
@@ -2141,7 +2141,7 @@
         "creditorName": "Stefan Kask",
         "remittanceInformationUnstructured": "Refund order VE3DZEED",
         "transactionAmount": {
-          "amount": "7712.72",
+          "amount": "-7712.72",
           "currency": "EUR"
         },
         "transactionId": "TX00000105",
@@ -2169,7 +2169,7 @@
         "creditorName": "Luca Kuusk",
         "remittanceInformationUnstructured": "Online purchase 9BXF445C",
         "transactionAmount": {
-          "amount": "1130.26",
+          "amount": "-1130.26",
           "currency": "EUR"
         },
         "transactionId": "TX00000108",
@@ -2183,7 +2183,7 @@
         "creditorName": "Viktor Mueller",
         "remittanceInformationUnstructured": "Salary September",
         "transactionAmount": {
-          "amount": "8454.34",
+          "amount": "-8454.34",
           "currency": "EUR"
         },
         "transactionId": "TX00000102",
@@ -2211,7 +2211,7 @@
         "creditorName": "Markus Kask",
         "remittanceInformationUnstructured": "Freelance payment 0H0GQ9C8",
         "transactionAmount": {
-          "amount": "2040.80",
+          "amount": "-2040.80",
           "currency": "EUR"
         },
         "transactionId": "TX00000113",

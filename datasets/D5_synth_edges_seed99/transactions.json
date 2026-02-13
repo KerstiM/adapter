@@ -1,6 +1,6 @@
 {
   "account": {
-    "iban": "DE66392332146881973699"
+    "iban": "DE23321468819736993563"
   },
   "transactions": {
     "booked": [
@@ -13,11 +13,26 @@
         "creditorName": "Andres Saar",
         "remittanceInformationUnstructured": "Freelance payment I7HLD5WI",
         "transactionAmount": {
-          "amount": "8898.59",
+          "amount": "-8898.59",
           "currency": "EUR"
         },
         "transactionId": "TX00000013",
         "valueDate": "2024-01-10"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-01-12",
+        "creditorAccount": {
+          "iban": "EE124906528630374862"
+        },
+        "creditorName": "Luca Mets",
+        "remittanceInformationUnstructured": "Grocery store purchase",
+        "transactionAmount": {
+          "amount": "-6838.96",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000002",
+        "valueDate": "2024-01-12"
       },
       {
         "bankTransactionCode": "PMNT-MCOP-OTHR",
@@ -58,7 +73,7 @@
         "creditorName": "Katrin Smith",
         "remittanceInformationUnstructured": "Grocery store purchase",
         "transactionAmount": {
-          "amount": "1917.48",
+          "amount": "-1917.48",
           "currency": "EUR"
         },
         "transactionId": "TX00000017",
@@ -103,11 +118,26 @@
         "creditorName": "Sophie Mets",
         "remittanceInformationUnstructured": "Donation to charity",
         "transactionAmount": {
-          "amount": "4342.69",
+          "amount": "-4342.69",
           "currency": "EUR"
         },
         "transactionId": "TX00000020",
         "valueDate": "2024-03-06"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-03-17",
+        "debtorAccount": {
+          "iban": "SE8175604806358178397052"
+        },
+        "debtorName": "Elena Mets",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "8499.81",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000001",
+        "valueDate": "2024-03-18"
       },
       {
         "bankTransactionCode": "PMNT-IRCT-ESCT",
@@ -118,7 +148,7 @@
         "creditorName": "Marie Jansen",
         "remittanceInformationUnstructured": "Transfer to savings",
         "transactionAmount": {
-          "amount": "6568.72",
+          "amount": "-6568.72",
           "currency": "EUR"
         },
         "transactionId": "TX00000008",
@@ -148,7 +178,7 @@
         "creditorName": "Stefan Mets",
         "remittanceInformationUnstructured": "Refund order Y4X28NJI",
         "transactionAmount": {
-          "amount": "7330.29",
+          "amount": "-7330.29",
           "currency": "EUR"
         },
         "transactionId": "TX00000009",
@@ -163,26 +193,11 @@
         "creditorName": "Peeter Tamm",
         "remittanceInformationUnstructured": "Loan repayment June",
         "transactionAmount": {
-          "amount": "4957.46",
+          "amount": "-4957.46",
           "currency": "EUR"
         },
         "transactionId": "TX00000012",
         "valueDate": "2024-06-14"
-      },
-      {
-        "bankTransactionCode": "PMNT-ICDT-STDO",
-        "bookingDate": "2024-07-09",
-        "debtorAccount": {
-          "iban": "PL95181756048063581783970523"
-        },
-        "debtorName": "Viktor Mueller",
-        "remittanceInformationUnstructured": "Online purchase Z0P7GSGD",
-        "transactionAmount": {
-          "amount": "1523.61",
-          "currency": "EUR"
-        },
-        "transactionId": "TX00000001",
-        "valueDate": "2024-07-10"
       },
       {
         "bankTransactionCode": "PMNT-IRCT-ESCT",
@@ -215,21 +230,6 @@
         "valueDate": "2024-07-23"
       },
       {
-        "bankTransactionCode": "PMNT-IRCT-ESCT",
-        "bookingDate": "2024-08-28",
-        "creditorAccount": {
-          "iban": "NL4906528630374862"
-        },
-        "creditorName": "Luca Mets",
-        "remittanceInformationUnstructured": "Grocery store purchase",
-        "transactionAmount": {
-          "amount": "812.52",
-          "currency": "EUR"
-        },
-        "transactionId": "TX00000002",
-        "valueDate": "2024-08-30"
-      },
-      {
         "bankTransactionCode": "PMNT-ICDT-STDO",
         "bookingDate": "2024-09-12",
         "creditorAccount": {
@@ -238,7 +238,7 @@
         "creditorName": "Laura Mueller",
         "remittanceInformationUnstructured": "Invoice M2O2ADQD",
         "transactionAmount": {
-          "amount": "2523.57",
+          "amount": "-2523.57",
           "currency": "EUR"
         },
         "transactionId": "TX00000016",
@@ -253,7 +253,7 @@
         "creditorName": "Julia Dubois",
         "remittanceInformationUnstructured": "Online purchase 5TISYPSC",
         "transactionAmount": {
-          "amount": "741.15",
+          "amount": "-741.15",
           "currency": "EUR"
         },
         "transactionId": "TX00000011",
@@ -268,7 +268,7 @@
         "creditorName": "Stefan Kowalski",
         "remittanceInformationUnstructured": "Freelance payment L8Y0KYMH",
         "transactionAmount": {
-          "amount": "9605.35",
+          "amount": "-9605.35",
           "currency": "EUR"
         },
         "transactionId": "TX00000018",
@@ -328,7 +328,7 @@
         "creditorName": "Elena Smith",
         "remittanceInformationUnstructured": "EDGE02 large amount 3 decimal places",
         "transactionAmount": {
-          "amount": "9999999.999",
+          "amount": "-9999999.999",
           "currency": "EUR"
         },
         "transactionId": "TX00000027",
@@ -343,7 +343,7 @@
         "creditorName": "Mart Tamm",
         "remittanceInformationUnstructured": "EDGE03 integer amount no decimals",
         "transactionAmount": {
-          "amount": "1",
+          "amount": "-1",
           "currency": "EUR"
         },
         "transactionId": "TX00000028",
@@ -388,7 +388,7 @@
         "creditorName": "Jan Oja",
         "remittanceInformationUnstructured": "EDGE06 same booking and value date",
         "transactionAmount": {
-          "amount": "3854.68",
+          "amount": "-3854.68",
           "currency": "EUR"
         },
         "transactionId": "TX00000031",
@@ -430,7 +430,7 @@
         "creditorName": "Stefan Tamm",
         "remittanceInformationUnstructured": "Tax payment CZZJVRU1",
         "transactionAmount": {
-          "amount": "2885.84",
+          "amount": "-2885.84",
           "currency": "EUR"
         },
         "transactionId": "TX00000021",
@@ -472,7 +472,7 @@
         "creditorName": "Ingrid Oja",
         "remittanceInformationUnstructured": "Online purchase 6QERN5LC",
         "transactionAmount": {
-          "amount": "5964.94",
+          "amount": "-5964.94",
           "currency": "EUR"
         },
         "transactionId": "TX00000024",
@@ -486,7 +486,7 @@
         "creditorName": "Viktor Tamm",
         "remittanceInformationUnstructured": "Insurance premium Q4",
         "transactionAmount": {
-          "amount": "2318.67",
+          "amount": "-2318.67",
           "currency": "EUR"
         },
         "transactionId": "TX00000022",

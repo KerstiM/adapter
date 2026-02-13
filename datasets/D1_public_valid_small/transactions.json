@@ -1,6 +1,6 @@
 {
   "account": {
-    "iban": "DE29141777631706690743"
+    "iban": "DE14177763170669074391"
   },
   "transactions": {
     "booked": [
@@ -73,7 +73,7 @@
         "creditorName": "Henrik Berg",
         "remittanceInformationUnstructured": "Invoice L4WUXGIA",
         "transactionAmount": {
-          "amount": "2842.31",
+          "amount": "-2842.31",
           "currency": "EUR"
         },
         "transactionId": "TX00000002",
@@ -103,7 +103,7 @@
         "creditorName": "Luca Smith",
         "remittanceInformationUnstructured": "Refund order YPGDXKRL",
         "transactionAmount": {
-          "amount": "7438.67",
+          "amount": "-7438.67",
           "currency": "EUR"
         },
         "transactionId": "TX00000006",
