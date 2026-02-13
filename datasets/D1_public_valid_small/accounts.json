@@ -3,10 +3,10 @@
     {
       "cashAccountType": "CACC",
       "currency": "EUR",
-      "iban": "DE29141777631706690743",
+      "iban": "DE14177763170669074391",
       "name": "D1 Smoke Test Account",
       "product": "Current Account",
-      "resourceId": "e6c3f3391a2b4f1fb1fd42a29755d4c1"
+      "resourceId": "cd613e30-d8f1-4adf-91b7-584a2265b1f5"
     }
   ]
 }

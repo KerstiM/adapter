@@ -3,10 +3,10 @@
     {
       "cashAccountType": "CACC",
       "currency": "EUR",
-      "iban": "DE66392332146881973699",
+      "iban": "DE23321468819736993563",
       "name": "D6 Duplicates Account",
       "product": "Current Account",
-      "resourceId": "c9cf158de6e94d458ae8c077377925b3"
+      "resourceId": "9974d75b-3338-44fe-a179-0134676b1b69"
     }
   ]
 }

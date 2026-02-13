@@ -1,5 +1,9 @@
 # D5_synth_edges_seed99
 
+Schema-valid edge cases testing boundary conditions: zero amount, large amount, integer amount, sign conventions, same dates, long remittance, and missing counterparty (INV-10 WARN).
+
+## Properties
+
 | Property | Value |
 |---|---|
 | Seed | 99 |
@@ -7,6 +11,11 @@
 | Booked | 28 |
 | Pending | 5 |
 | Expected dropped | 0 |
+| Expected outcome | PARTIAL_SUCCESS |
+
+## What this dataset tests
+
+Schema-valid edge cases testing boundary conditions: zero amount, large amount, integer amount, sign conventions, same dates, long remittance, and missing counterparty (INV-10 WARN).
 
 ## Variations / injected codes
 

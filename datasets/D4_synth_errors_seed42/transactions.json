@@ -1,6 +1,6 @@
 {
   "account": {
-    "iban": "DE10433218196001338908"
+    "iban": "DE43321819600133890838"
   },
   "transactions": {
     "booked": [
@@ -13,7 +13,7 @@
         "creditorName": "Julia Kask",
         "remittanceInformationUnstructured": "Grocery store purchase",
         "transactionAmount": {
-          "amount": "2745.53",
+          "amount": "-2745.53",
           "currency": "EUR"
         },
         "transactionId": "TX00000028",
@@ -58,11 +58,26 @@
         "creditorName": "Peeter Dubois",
         "remittanceInformationUnstructured": "Salary February",
         "transactionAmount": {
-          "amount": "8006.12",
+          "amount": "-8006.12",
           "currency": "EUR"
         },
         "transactionId": "TX00000006",
         "valueDate": "2024-02-01"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-02-20",
+        "creditorAccount": {
+          "iban": "FR5341928327648350305641395"
+        },
+        "creditorName": "Carlos Mueller",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "-4534.65",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000002",
+        "valueDate": "2024-02-21"
       },
       {
         "bankTransactionCode": "PMNT-IRCT-XBCT",
@@ -110,21 +125,6 @@
         "valueDate": "2024-03-14"
       },
       {
-        "bankTransactionCode": "PMNT-MCOP-OTHR",
-        "bookingDate": "2024-03-23",
-        "creditorAccount": {
-          "iban": "GB28327648350305641395"
-        },
-        "creditorName": "Laura Mets",
-        "remittanceInformationUnstructured": "Subscription renewal",
-        "transactionAmount": {
-          "amount": "2095.86",
-          "currency": "EUR"
-        },
-        "transactionId": "TX00000002",
-        "valueDate": "2024-03-24"
-      },
-      {
         "bankTransactionCode": "PMNT-RDDT-ESDD",
         "bookingDate": "2024-03-28",
         "debtorAccount": {
@@ -148,7 +148,7 @@
         "creditorName": "Felix Paju",
         "remittanceInformationUnstructured": "Freelance payment CGVYIE6I",
         "transactionAmount": {
-          "amount": "4230.65",
+          "amount": "-4230.65",
           "currency": "EUR"
         },
         "transactionId": "TX00000007",
@@ -163,7 +163,7 @@
         "creditorName": "Tomas Kowalski",
         "remittanceInformationUnstructured": "Subscription renewal",
         "transactionAmount": {
-          "amount": "6918.17",
+          "amount": "-6918.17",
           "currency": "EUR"
         },
         "transactionId": "TX00000019",
@@ -178,7 +178,7 @@
         "creditorName": "Elena Berg",
         "remittanceInformationUnstructured": "Insurance premium Q2",
         "transactionAmount": {
-          "amount": "6669.26",
+          "amount": "-6669.26",
           "currency": "EUR"
         },
         "transactionId": "TX00000012",
@@ -223,7 +223,7 @@
         "creditorName": "Tomas Rossi",
         "remittanceInformationUnstructured": "Insurance premium Q2",
         "transactionAmount": {
-          "amount": "8205.67",
+          "amount": "-8205.67",
           "currency": "EUR"
         },
         "transactionId": "TX00000025",
@@ -238,7 +238,7 @@
         "creditorName": "Markus Saar",
         "remittanceInformationUnstructured": "Rent payment July",
         "transactionAmount": {
-          "amount": "142.47",
+          "amount": "-142.47",
           "currency": "EUR"
         },
         "transactionId": "TX00000020",
@@ -260,6 +260,21 @@
         "valueDate": "2024-07-18"
       },
       {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-08-02",
+        "creditorAccount": {
+          "iban": "SE6542351161559407816184"
+        },
+        "creditorName": "Anna Mueller",
+        "remittanceInformationUnstructured": "Tax payment W5NGCX19",
+        "transactionAmount": {
+          "amount": "-5893.06",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000001",
+        "valueDate": "2024-08-02"
+      },
+      {
         "bankTransactionCode": "PMNT-RDDT-ESDD",
         "bookingDate": "2024-08-05",
         "creditorAccount": {
@@ -268,7 +283,7 @@
         "creditorName": "Katrin Paju",
         "remittanceInformationUnstructured": "Transfer to savings",
         "transactionAmount": {
-          "amount": "3620.60",
+          "amount": "-3620.60",
           "currency": "EUR"
         },
         "transactionId": "TX00000003",
@@ -283,7 +298,7 @@
         "creditorName": "Andres Mets",
         "remittanceInformationUnstructured": "Service fee",
         "transactionAmount": {
-          "amount": "1210.92",
+          "amount": "-1210.92",
           "currency": "EUR"
         },
         "transactionId": "TX00000005",
@@ -298,7 +313,7 @@
         "creditorName": "Emma Mets",
         "remittanceInformationUnstructured": "Salary September",
         "transactionAmount": {
-          "amount": "8042.51",
+          "amount": "-8042.51",
           "currency": "EUR"
         },
         "transactionId": "TX00000029",
@@ -313,7 +328,7 @@
         "creditorName": "Tomas Oja",
         "remittanceInformationUnstructured": "Loan repayment September",
         "transactionAmount": {
-          "amount": "9085.13",
+          "amount": "-9085.13",
           "currency": "EUR"
         },
         "transactionId": "TX00000021",
@@ -333,21 +348,6 @@
         },
         "transactionId": "TX00000022",
         "valueDate": "2024-10-05"
-      },
-      {
-        "bankTransactionCode": "PMNT-RDDT-ESDD",
-        "bookingDate": "2024-10-05",
-        "debtorAccount": {
-          "iban": "PL26542351161559407816184959"
-        },
-        "debtorName": "Laura Tamm",
-        "remittanceInformationUnstructured": "Subscription renewal",
-        "transactionAmount": {
-          "amount": "4492.64",
-          "currency": "EUR"
-        },
-        "transactionId": "TX00000001",
-        "valueDate": "2024-10-06"
       },
       {
         "bankTransactionCode": "PMNT-IRCT-XBCT",
@@ -403,7 +403,7 @@
         "creditorName": "Felix Smith",
         "remittanceInformationUnstructured": "Subscription renewal",
         "transactionAmount": {
-          "amount": "4649.27",
+          "amount": "-4649.27",
           "currency": "EUR"
         },
         "transactionId": "TX00000018",
@@ -433,7 +433,7 @@
         "creditorName": "Stefan Lepp",
         "remittanceInformationUnstructured": "Invoice 43D8W3ZP",
         "transactionAmount": {
-          "amount": "1678.72",
+          "amount": "-1678.72",
           "currency": "EUR"
         },
         "transactionId": "TX00000017",
@@ -448,7 +448,7 @@
         "creditorName": "Jan Kask",
         "remittanceInformationUnstructured": "Tax payment N9N6XCJ8",
         "transactionAmount": {
-          "amount": "1167.64",
+          "amount": "-1167.64",
           "currency": "EUR"
         },
         "transactionId": "TX00000030",
@@ -475,7 +475,7 @@
           "iban": "DE60607159696641605297"
         },
         "debtorName": "Viktor Kowalski",
-        "remittanceInformationUnstructured": "E02 missing valueDate no fallback",
+        "remittanceInformationUnstructured": "E02 missing valueDate",
         "transactionAmount": {
           "amount": "5003.12",
           "currency": "EUR"
@@ -511,35 +511,6 @@
         },
         "transactionId": "TX00000039",
         "valueDate": "2024-03-29"
-      },
-      {
-        "bankTransactionCode": "PMNT-IRCT-ESCT",
-        "bookingDate": "2024-01-28",
-        "debtorAccount": {
-          "iban": "DE54119986798079359782"
-        },
-        "debtorName": "Emma Kask",
-        "remittanceInformationUnstructured": "E05 missing valueDate with bookingDate fallback",
-        "transactionAmount": {
-          "amount": "3104.76",
-          "currency": "EUR"
-        },
-        "transactionId": "TX00000040"
-      },
-      {
-        "bankTransactionCode": "PMNT-IRCT-XBCT",
-        "bookingDate": "2024-08-18",
-        "creditorAccount": {
-          "iban": "DE37788925546659051518"
-        },
-        "creditorName": "Marie Mueller",
-        "remittanceInformationUnstructured": "E06 lowercase currency",
-        "transactionAmount": {
-          "amount": "9823.86",
-          "currency": "eur"
-        },
-        "transactionId": "TX00000041",
-        "valueDate": "2024-08-18"
       }
     ],
     "pending": [
@@ -579,7 +550,7 @@
         "creditorName": "Felix Mets",
         "remittanceInformationUnstructured": "Donation to charity",
         "transactionAmount": {
-          "amount": "5261.32",
+          "amount": "-5261.32",
           "currency": "EUR"
         },
         "transactionId": "TX00000032",
@@ -607,7 +578,7 @@
         "creditorName": "Stefan Rossi",
         "remittanceInformationUnstructured": "Grocery store purchase",
         "transactionAmount": {
-          "amount": "3809.66",
+          "amount": "-3809.66",
           "currency": "EUR"
         },
         "transactionId": "TX00000033",

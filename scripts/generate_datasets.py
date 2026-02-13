@@ -31,6 +31,7 @@ OPEN QUESTIONS:
 import argparse
 import json
 import random
+import re
 import string
 import uuid
 from datetime import date, timedelta
@@ -112,6 +113,9 @@ class DatasetGenerator:
         digits = "".join(str(self.rng.randint(0, 9)) for _ in range(spec["len"]))
         return f"{country}{digits}"
 
+    def _random_uuid(self) -> str:
+        return str(uuid.UUID(int=self.rng.getrandbits(128), version=4))
+
     def _random_name(self) -> str:
         return f"{self.rng.choice(FIRST_NAMES)} {self.rng.choice(LAST_NAMES)}"
 
@@ -142,11 +146,11 @@ class DatasetGenerator:
         currency: str = "EUR",
         name: str = "Main Account",
         resource_id: str | None = None,
+        iban: str | None = None,
     ) -> dict:
-        iban = self._random_iban(country)
         return {
-            "resourceId": resource_id or uuid.UUID(int=self.rng.getrandbits(128), version=4).hex,
-            "iban": iban,
+            "resourceId": resource_id or self._random_uuid(),
+            "iban": iban or self._random_iban(country),
             "currency": currency,
             "product": "Current Account",
             "cashAccountType": "CACC",
@@ -170,13 +174,19 @@ class DatasetGenerator:
         bad_currency: str | None = None,
         bad_amount: str | None = None,
         force_sign_mismatch: bool = False,
+        match_sign_to_direction: bool = False,
         counterparty_name: str | None = None,
         counterparty_iban: str | None = None,
         omit_counterparty: bool = False,
         transaction_id: str | None = None,
         remittance: str | None = None,
     ) -> dict:
-        """Generate a single Berlin AIS transaction."""
+        """Generate a single Berlin AIS transaction.
+
+        match_sign_to_direction: if True, OUT amounts get "-" prefix and IN
+            amounts stay positive, so that INV-05 does NOT fire.
+        force_sign_mismatch: if True, forces sign that WILL trigger INV-05.
+        """
         vd = date.fromisoformat(value_date_str) if value_date_str else self._random_date(start_date, end_date)
         bd = vd - timedelta(days=self.rng.randint(0, 2)) if include_booking_date else None
         if booking_date_str:
@@ -192,13 +202,21 @@ class DatasetGenerator:
         if omit_amount:
             raw_amount = None
 
-        # Sign: Berlin Group convention — amount is typically unsigned,
-        # but some banks send negative for outgoing.
-        # For IN: positive amount, debtorName present
-        # For OUT: positive amount, creditorName present
-        # force_sign_mismatch: send negative for IN (or positive OUT without creditor)
-        if force_sign_mismatch and raw_amount and not raw_amount.startswith("-"):
-            raw_amount = "-" + raw_amount
+        # Sign convention
+        if raw_amount is not None:
+            if match_sign_to_direction:
+                # Ensure sign matches direction (no INV-05)
+                abs_val = raw_amount.lstrip("-")
+                if direction == "OUT":
+                    raw_amount = "-" + abs_val
+                else:
+                    raw_amount = abs_val
+            elif force_sign_mismatch:
+                # Force sign that will trigger INV-05
+                if direction == "IN" and not raw_amount.startswith("-"):
+                    raw_amount = "-" + raw_amount
+                elif direction == "OUT" and raw_amount.startswith("-"):
+                    raw_amount = raw_amount.lstrip("-")
 
         tx: dict = {}
         tx["transactionId"] = transaction_id or self._next_tx_id()
@@ -222,6 +240,7 @@ class DatasetGenerator:
                 "amount": self._random_amount(),
             }
 
+        # bookingDate: only emit if we have a value (never emit null)
         if bd is not None:
             tx["bookingDate"] = bd.isoformat()
 
@@ -241,13 +260,18 @@ class DatasetGenerator:
         start_date: date,
         end_date: date,
         currency: str = "EUR",
+        match_sign: bool = False,
     ) -> tuple[list[dict], list[dict]]:
-        """Generate clean booked + pending transaction lists."""
+        """Generate clean booked + pending transaction lists.
+
+        match_sign: if True, raw amount sign matches direction (no INV-05).
+        """
         booked = []
         for _ in range(n_booked):
             tx = self.generate_transaction(
                 account_iban, start_date, end_date,
                 include_booking_date=True, currency=currency,
+                match_sign_to_direction=match_sign,
             )
             booked.append(tx)
 
@@ -256,10 +280,10 @@ class DatasetGenerator:
             tx = self.generate_transaction(
                 account_iban, start_date, end_date,
                 include_booking_date=False, currency=currency,
+                match_sign_to_direction=match_sign,
             )
             pending.append(tx)
 
-        # Sort booked by valueDate for realism
         booked.sort(key=lambda t: t.get("valueDate", ""))
         pending.sort(key=lambda t: t.get("valueDate", ""))
 
@@ -285,15 +309,20 @@ def _build_transactions_json(account_iban: str, booked: list, pending: list) -> 
 
 
 def generate_d1(gen: DatasetGenerator, start_date: date, end_date: date, n: int | None) -> dict:
-    """D1_public_valid_small: small smoke-test, all valid, drop=0."""
+    """D1_public_valid_small: small smoke-test, all valid, 0 drops, 0 WARNs → SUCCESS."""
     n_booked = n or 5
     n_pending = max(2, n_booked // 3)
     acct = gen.generate_account(country="DE", name="D1 Smoke Test Account")
     booked, pending = gen.generate_transactions_batch(
         acct["iban"], n_booked, n_pending, start_date, end_date,
+        match_sign=True,
     )
     return {
         "name": "D1_public_valid_small",
+        "description": "Clean happy-path smoke test. All transactions valid, amounts "
+                        "sign-match direction, every required field present. "
+                        "Adapter should produce SUCCESS with 0 drops and 0 WARNs.",
+        "expected_outcome": "SUCCESS",
         "accounts": _build_accounts_json([acct]),
         "transactions": _build_transactions_json(acct["iban"], booked, pending),
         "meta": {
@@ -312,26 +341,29 @@ def generate_d2(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
     n_pending = max(15, n_booked // 3)
     acct = gen.generate_account(country="DE", name="D2 Mixed Large Account")
 
+    # Generate baseline without sign matching — Berlin Group convention
+    # (positive amounts regardless of direction), which triggers INV-05 WARNs
     booked, pending = gen.generate_transactions_batch(
         acct["iban"], n_booked, n_pending, start_date, end_date,
     )
 
-    # Inject INV-05 sign mismatches on ~10% of booked transactions
+    # Inject deliberate INV-05 sign mismatches on IN transactions
     variations = []
-    mismatch_indices = gen.rng.sample(range(len(booked)), min(5, len(booked)))
+    in_indices = [i for i, tx in enumerate(booked) if "debtorName" in tx]
+    mismatch_indices = gen.rng.sample(in_indices, min(5, len(in_indices)))
     for idx in mismatch_indices:
         tx = booked[idx]
         amt = tx["transactionAmount"]["amount"]
         if not amt.startswith("-"):
-            # creditorName present (OUT direction) but amount is positive → INV-05 WARN
-            # This is actually the normal Berlin Group case, adapter already handles it.
-            # To trigger INV-05: debtorName present (IN) but negative amount
-            if "debtorName" in tx:
-                tx["transactionAmount"]["amount"] = "-" + amt
-                variations.append(f"WARN_INV05: booked[{idx}] sign mismatch (IN with negative amount)")
+            tx["transactionAmount"]["amount"] = "-" + amt
+            variations.append(f"WARN_INV05: booked[{idx}] sign mismatch (IN with negative amount)")
 
     return {
         "name": "D2_public_mixed_large",
+        "description": "Large mixed dataset with natural Berlin Group sign convention "
+                        "(positive amounts on OUT) causing INV-05 WARNs. Pending "
+                        "transactions omit bookingDate. No drops expected.",
+        "expected_outcome": "PARTIAL_SUCCESS",
         "accounts": _build_accounts_json([acct]),
         "transactions": _build_transactions_json(acct["iban"], booked, pending),
         "meta": {
@@ -344,7 +376,7 @@ def generate_d2(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
 
 
 def generate_d3(gen: DatasetGenerator, start_date: date, end_date: date, n: int | None) -> dict:
-    """D3_synth_valid_seed42: synthetic baseline, 0 error injections."""
+    """D3_synth_valid_seed42: synthetic baseline, sign-matched, 0 error injections."""
     n_booked = n or 100
     n_pending = max(20, n_booked // 5)
 
@@ -353,15 +385,15 @@ def generate_d3(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
 
     booked1, pending1 = gen.generate_transactions_batch(
         acct1["iban"], n_booked, n_pending, start_date, end_date,
+        match_sign=True,
     )
     booked2, pending2 = gen.generate_transactions_batch(
         acct2["iban"], n_booked // 4, n_pending // 4, start_date, end_date,
+        match_sign=True,
     )
 
-    # Two separate transactions.json files would need multi-file support,
-    # but the generator produces one file per dataset. We combine into one account's file.
-    # OPEN QUESTION: adapter loads transactions.json per dataset folder, one file.
-    # For multi-account, we use account1's iban in the transactions file.
+    # Adapter loads one transactions.json per folder with one account.iban.
+    # All transactions are resolved to the account matched by $.account.iban.
     all_booked = booked1 + booked2
     all_pending = pending1 + pending2
     all_booked.sort(key=lambda t: t.get("valueDate", ""))
@@ -369,6 +401,10 @@ def generate_d3(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
 
     return {
         "name": "D3_synth_valid_seed42",
+        "description": "Synthetic baseline with two accounts and sign-matched amounts. "
+                        "No error injections. Tests volume handling and multi-account "
+                        "accounts.json with single transactions.json.",
+        "expected_outcome": "SUCCESS",
         "accounts": _build_accounts_json([acct1, acct2]),
         "transactions": _build_transactions_json(acct1["iban"], all_booked, all_pending),
         "meta": {
@@ -381,85 +417,86 @@ def generate_d3(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
 
 
 def generate_d4(gen: DatasetGenerator, start_date: date, end_date: date, n: int | None) -> dict:
-    """D4_synth_errors_seed42: targeted error injections E01–E06.
-    Some transactions should be DROPPED by the adapter.
+    """D4_synth_errors_seed42: targeted error injections E01–E04.
+    4 transactions are invalid and should be DROPPED by the adapter.
+    With default.yaml policy (fail_on: any_severity=ERROR, ratio_over_records=0.05),
+    the drop ratio exceeds 5% → expected outcome is FAILED.
     """
     n_booked = n or 30
     n_pending = max(5, n_booked // 6)
     acct = gen.generate_account(country="DE", name="D4 Error Injection Account")
 
-    # Generate a clean baseline
+    # Generate clean baseline with sign matching
     booked, pending = gen.generate_transactions_batch(
         acct["iban"], n_booked, n_pending, start_date, end_date,
+        match_sign=True,
     )
 
     variations = []
     expected_dropped = 0
 
-    # E01: invalid currency (INV-01 → DROP)
+    # E01: invalid currency (violates ^[A-Z]{3}$ → ERROR-level DROP)
     e01 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         bad_currency="EURO",  # 4 chars, violates ^[A-Z]{3}$
+        match_sign_to_direction=True,
         remittance="E01 invalid currency EURO",
     )
     booked.append(e01)
-    variations.append("E01_INVALID_CURRENCY: currency='EURO' (4 chars) → INV-01 DROP")
+    variations.append("E01_INVALID_CURRENCY: currency='EURO' (4 chars) → ERROR DROP")
     expected_dropped += 1
 
-    # E02: missing valueDate (no bookingDate fallback → DROP)
+    # E02: missing valueDate (C-01 maps directly from $.valueDate; no fallback → DROP)
     e02 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         omit_value_date=True,
         include_booking_date=False,
-        remittance="E02 missing valueDate no fallback",
+        match_sign_to_direction=True,
+        remittance="E02 missing valueDate",
     )
     booked.append(e02)
-    variations.append("E02_MISSING_VALUE_DATE: no valueDate, no bookingDate → mapping DROP")
+    variations.append("E02_MISSING_VALUE_DATE: no valueDate → ERROR DROP")
     expected_dropped += 1
 
-    # E03: unparseable amount (INV-03 → DROP)
+    # E03: unparseable amount (amount='not_a_number' → ERROR DROP)
     e03 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         bad_amount="not_a_number",
         remittance="E03 unparseable amount",
     )
     booked.append(e03)
-    variations.append("E03_UNPARSEABLE_AMOUNT: amount='not_a_number' → mapping DROP (parse failure)")
+    variations.append("E03_UNPARSEABLE_AMOUNT: amount='not_a_number' → ERROR DROP")
     expected_dropped += 1
 
-    # E04: empty currency string (INV-01 → DROP)
+    # E04: empty currency string (violates ^[A-Z]{3}$ → ERROR DROP)
     e04 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         bad_currency="",
+        match_sign_to_direction=True,
         remittance="E04 empty currency",
     )
     booked.append(e04)
-    variations.append("E04_EMPTY_CURRENCY: currency='' → INV-01 DROP")
+    variations.append("E04_EMPTY_CURRENCY: currency='' → ERROR DROP")
     expected_dropped += 1
 
-    # E05: missing valueDate WITH bookingDate fallback → should NOT drop (fallback applies)
-    e05 = gen.generate_transaction(
-        acct["iban"], start_date, end_date,
-        omit_value_date=True,
-        include_booking_date=True,
-        remittance="E05 missing valueDate with bookingDate fallback",
-    )
-    booked.append(e05)
-    variations.append("E05_VALUE_DATE_FALLBACK: no valueDate, has bookingDate → MAP-01 WARN, no drop")
-
-    # E06: lowercase currency (INV-01 → DROP since schema pattern is ^[A-Z]{3}$)
-    e06 = gen.generate_transaction(
-        acct["iban"], start_date, end_date,
-        bad_currency="eur",
-        remittance="E06 lowercase currency",
-    )
-    booked.append(e06)
-    variations.append("E06_LOWERCASE_CURRENCY: currency='eur' → pipeline uppercases it, valid after normalize")
-    # Note: pipeline does .upper() on currency, so 'eur' → 'EUR' and passes INV-01.
-    # This is NOT a drop — it's handled by the adapter normalization.
+    # Sanity check: drop ratio must exceed the 5% fail threshold
+    total_records = len(booked) + len(pending)
+    drop_ratio = expected_dropped / total_records
+    if drop_ratio <= 0.05:
+        raise ValueError(
+            f"D4 sanity check failed: expected_dropped/total = "
+            f"{expected_dropped}/{total_records} = {drop_ratio:.4f} <= 0.05. "
+            f"Reduce baseline count or add more error injections."
+        )
 
     return {
         "name": "D4_synth_errors_seed42",
+        "description": "Targeted error injections (E01–E04) that each violate S-00B "
+                        "schema constraints and produce ERROR-level drops. With 4 drops "
+                        f"out of {total_records} records ({drop_ratio:.1%}), the drop ratio "
+                        "exceeds the default.yaml threshold of 5%, so the adapter "
+                        "outcome is FAILED.",
+        "expected_outcome": "FAILED",
         "accounts": _build_accounts_json([acct]),
         "transactions": _build_transactions_json(acct["iban"], booked, pending),
         "meta": {
@@ -479,6 +516,7 @@ def generate_d5(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
 
     booked, pending = gen.generate_transactions_batch(
         acct["iban"], n_booked, n_pending, start_date, end_date,
+        match_sign=True,
     )
 
     variations = []
@@ -487,6 +525,7 @@ def generate_d5(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
     edge01 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         amount_str="0.00",
+        match_sign_to_direction=True,
         remittance="EDGE01 zero amount",
     )
     booked.append(edge01)
@@ -496,21 +535,23 @@ def generate_d5(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
     edge02 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         amount_str="9999999.999",
+        match_sign_to_direction=True,
         remittance="EDGE02 large amount 3 decimal places",
     )
     booked.append(edge02)
     variations.append("EDGE02_LARGE_AMOUNT: amount='9999999.999' — max precision")
 
-    # EDGE03: single digit amount
+    # EDGE03: single digit amount (no decimals)
     edge03 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         amount_str="1",
+        match_sign_to_direction=True,
         remittance="EDGE03 integer amount no decimals",
     )
     booked.append(edge03)
     variations.append("EDGE03_INTEGER_AMOUNT: amount='1' — valid per pattern ^-?\\d+(\\.\\d{1,3})?$")
 
-    # EDGE04: negative amount with creditorName (OUT direction, sign matches)
+    # EDGE04: negative amount with creditorName (OUT, sign matches)
     edge04 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         direction="OUT",
@@ -520,7 +561,7 @@ def generate_d5(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
     booked.append(edge04)
     variations.append("EDGE04_NEGATIVE_OUT: amount='-50.00' + creditorName → OUT, sign matches, no INV-05")
 
-    # EDGE05: positive amount with debtorName (IN direction, sign matches) — no warn
+    # EDGE05: positive amount with debtorName (IN, sign matches)
     edge05 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         direction="IN",
@@ -536,15 +577,17 @@ def generate_d5(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
         acct["iban"], start_date, end_date,
         value_date_str=same_date.isoformat(),
         booking_date_str=same_date.isoformat(),
+        match_sign_to_direction=True,
         remittance="EDGE06 same booking and value date",
     )
     booked.append(edge06)
     variations.append(f"EDGE06_SAME_DATES: bookingDate == valueDate == {same_date.isoformat()}")
 
-    # EDGE07: very long remittance (valid, just long)
+    # EDGE07: very long remittance (valid, LLM projection truncates to 160)
     long_rem = "EDGE07 " + "A" * 300
     edge07 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
+        match_sign_to_direction=True,
         remittance=long_rem,
     )
     booked.append(edge07)
@@ -562,6 +605,10 @@ def generate_d5(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
 
     return {
         "name": "D5_synth_edges_seed99",
+        "description": "Schema-valid edge cases testing boundary conditions: zero amount, "
+                        "large amount, integer amount, sign conventions, same dates, long "
+                        "remittance, and missing counterparty (INV-10 WARN).",
+        "expected_outcome": "PARTIAL_SUCCESS",
         "accounts": _build_accounts_json([acct]),
         "transactions": _build_transactions_json(acct["iban"], booked, pending),
         "meta": {
@@ -581,6 +628,7 @@ def generate_d6(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
 
     booked, pending = gen.generate_transactions_batch(
         acct["iban"], n_booked, n_pending, start_date, end_date,
+        match_sign=True,
     )
 
     variations = []
@@ -609,6 +657,7 @@ def generate_d6(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
     # DUP04: same fields except remittance
     dup04_base = gen.generate_transaction(
         acct["iban"], start_date, end_date,
+        match_sign_to_direction=True,
         remittance="DUP04 original remittance",
     )
     dup04_copy = json.loads(json.dumps(dup04_base))
@@ -619,6 +668,10 @@ def generate_d6(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
 
     return {
         "name": "D6_synth_dupes_seed99",
+        "description": "Duplicate detection dataset with exact duplicates (DUP01), "
+                        "near-duplicates differing by amount (DUP02), transactionId "
+                        "(DUP03), or remittance (DUP04). Tests record_id hash uniqueness.",
+        "expected_outcome": "SUCCESS",
         "accounts": _build_accounts_json([acct]),
         "transactions": _build_transactions_json(acct["iban"], booked, pending),
         "meta": {
@@ -635,22 +688,31 @@ def generate_d6(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
 # ---------------------------------------------------------------------------
 
 def validate_dataset(name: str, accounts_data: dict, tx_data: dict, meta: dict) -> list[str]:
-    """Minimal quality checks: required fields per S-00A / S-00B."""
+    """Validate generated data against S-00A / S-00B requirements."""
     warnings = []
 
-    # S-00A checks
+    # --- S-00A: accounts.json ---
     for i, acct in enumerate(accounts_data.get("accounts", [])):
         for field in ("resourceId", "iban", "currency"):
             if not acct.get(field):
                 warnings.append(f"{name}: accounts[{i}] missing required '{field}'")
         iban = acct.get("iban", "")
         if not _iban_valid(iban):
-            warnings.append(f"{name}: accounts[{i}].iban '{iban}' does not match pattern")
+            warnings.append(f"{name}: accounts[{i}].iban '{iban}' does not match S-00A pattern")
         cur = acct.get("currency", "")
         if not _currency_valid(cur):
             warnings.append(f"{name}: accounts[{i}].currency '{cur}' invalid")
 
-    # S-00B checks
+    # --- C-01: account.iban must be present for account_resolution ---
+    tx_account_iban = (tx_data.get("account") or {}).get("iban")
+    if not tx_account_iban:
+        warnings.append(f"{name}: transactions.json missing account.iban (needed by C-01)")
+    else:
+        acct_ibans = {a["iban"] for a in accounts_data.get("accounts", [])}
+        if tx_account_iban not in acct_ibans:
+            warnings.append(f"{name}: transactions.json account.iban '{tx_account_iban}' not in accounts.json")
+
+    # --- S-00B: each Tx ---
     tx_obj = tx_data.get("transactions", {})
     for status_key in ("booked", "pending"):
         for j, tx in enumerate(tx_obj.get(status_key, [])):
@@ -661,27 +723,29 @@ def validate_dataset(name: str, accounts_data: dict, tx_data: dict, meta: dict) 
             if not ta:
                 warnings.append(f"{name}: {path} missing transactionAmount")
             else:
-                if not ta.get("amount"):
-                    warnings.append(f"{name}: {path} missing transactionAmount.amount")
-                if not _currency_valid(ta.get("currency", "")):
-                    # Deliberate error datasets may have bad currency
-                    pass
+                amt = ta.get("amount", "")
+                if amt and not re.match(r"^-?\d+(\.\d{1,3})?$", amt):
+                    warnings.append(f"{name}: {path} amount '{amt}' does not match pattern")
+                cur = ta.get("currency", "")
+                if not _currency_valid(cur):
+                    warnings.append(f"{name}: {path} currency '{cur}' invalid")
 
             # Required: valueDate
             if not tx.get("valueDate"):
-                # May be deliberate (error datasets)
-                pass
+                warnings.append(f"{name}: {path} missing valueDate")
+
+            # Pending should NOT have bookingDate
+            if status_key == "pending" and "bookingDate" in tx:
+                warnings.append(f"{name}: {path} pending tx has bookingDate (should omit)")
 
     return warnings
 
 
 def _iban_valid(s: str) -> bool:
-    import re
     return bool(re.match(r"^[A-Z]{2}[0-9A-Z]{13,32}$", s))
 
 
 def _currency_valid(s: str) -> bool:
-    import re
     return bool(re.match(r"^[A-Z]{3}$", s))
 
 
@@ -698,7 +762,7 @@ def write_dataset(out_dir: Path, dataset: dict, seed: int, start_date: date, end
     transactions = dataset["transactions"]
     meta = dataset["meta"]
 
-    # Write JSON files
+    # Write JSON files (no meta embedded — meta goes only in README)
     with open(folder / "accounts.json", "w", encoding="utf-8") as f:
         json.dump(accounts, f, indent=2, sort_keys=True, ensure_ascii=False)
         f.write("\n")
@@ -710,9 +774,16 @@ def write_dataset(out_dir: Path, dataset: dict, seed: int, start_date: date, end
     # Quality gate
     warnings = validate_dataset(name, accounts, transactions, meta)
 
-    # Write README.md
+    # Build README
+    description = dataset.get("description", "")
+    expected_outcome = dataset.get("expected_outcome", "PARTIAL_SUCCESS")
     variations_list = "\n".join(f"  - `{v}`" for v in meta["variations"]) if meta["variations"] else "  (none)"
+
     readme = f"""# {name}
+
+{description}
+
+## Properties
 
 | Property | Value |
 |---|---|
@@ -721,6 +792,11 @@ def write_dataset(out_dir: Path, dataset: dict, seed: int, start_date: date, end
 | Booked | {meta['n_booked']} |
 | Pending | {meta['n_pending']} |
 | Expected dropped | {meta['expected_dropped']} |
+| Expected outcome | {expected_outcome} |
+
+## What this dataset tests
+
+{description}
 
 ## Variations / injected codes
 
@@ -736,7 +812,8 @@ def write_dataset(out_dir: Path, dataset: dict, seed: int, start_date: date, end
     # Print summary
     total = meta["n_booked"] + meta["n_pending"]
     print(f"  {name}: {total} total ({meta['n_booked']} booked + {meta['n_pending']} pending), "
-          f"expected_dropped={meta['expected_dropped']}, quality_warnings={len(warnings)}")
+          f"expected_dropped={meta['expected_dropped']}, expected_outcome={expected_outcome}, "
+          f"quality_warnings={len(warnings)}")
     for w in warnings:
         print(f"    WARN: {w}")
 
