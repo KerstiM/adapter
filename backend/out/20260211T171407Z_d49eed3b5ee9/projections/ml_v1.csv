@@ -1,4 +1,0 @@
-row_id,account_id,record_id,status,booking_date,value_date,direction,currency,signed_amount,abs_amount,counterparty_name,remittance
-1,3dc3d5b3-7023-4848-9853-f5400a64e80f,122d849af440a280,BOOKED,2017-10-25,2017-10-26,IN,EUR,343.01,343.01,Paul Simpson,Example 2
-2,3dc3d5b3-7023-4848-9853-f5400a64e80f,34079ee863406007,PENDING,,2017-10-26,OUT,EUR,-100.03,100.03,Claude Renault,Example 3
-3,3dc3d5b3-7023-4848-9853-f5400a64e80f,86bbf5e22c5d2fb3,BOOKED,2017-10-25,2017-10-26,OUT,EUR,-256.67,256.67,John Miles,Example 1

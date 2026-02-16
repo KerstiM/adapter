@@ -1,8 +1,0 @@
-row_id,account_id,record_id,status,booking_date,value_date,direction,currency,signed_amount,abs_amount,counterparty_name,remittance
-1,cd613e30-d8f1-4adf-91b7-584a2265b1f5,f003251df1d4c77b,BOOKED,2024-05-07,2024-05-09,IN,EUR,9655.66,9655.66,Luca Tamm,Donation to charity
-2,cd613e30-d8f1-4adf-91b7-584a2265b1f5,7a229491c41a65cd,PENDING,,2024-05-24,IN,EUR,1570.49,1570.49,Elena Saar,Grocery store purchase
-3,cd613e30-d8f1-4adf-91b7-584a2265b1f5,2700787d62cecca4,PENDING,,2024-06-07,OUT,EUR,-7438.67,7438.67,Luca Smith,Refund order YPGDXKRL
-4,cd613e30-d8f1-4adf-91b7-584a2265b1f5,f5c96c85975bd694,BOOKED,2024-06-11,2024-06-11,IN,EUR,255.43,255.43,Markus Tamm,Rent payment June
-5,cd613e30-d8f1-4adf-91b7-584a2265b1f5,0d46b1c1ecdf0027,BOOKED,2024-10-01,2024-10-03,IN,EUR,4045.14,4045.14,Carlos Kowalski,Utility bill October
-6,cd613e30-d8f1-4adf-91b7-584a2265b1f5,c271c2d070399275,BOOKED,2024-11-21,2024-11-21,IN,EUR,8610.22,8610.22,Markus Smith,Donation to charity
-7,cd613e30-d8f1-4adf-91b7-584a2265b1f5,7e57bf2432b8b643,BOOKED,2024-12-09,2024-12-09,OUT,EUR,-2842.31,2842.31,Henrik Berg,Invoice L4WUXGIA
