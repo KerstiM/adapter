@@ -7,6 +7,7 @@ schemas:
   S-01:  "spec/schemas/S-01_sv_schema.json"
   S-02:  "spec/schemas/S-02_ml_projection_schema.json"
   S-03:  "spec/schemas/S-03_llm_context_schema.json"
+  S-05:  "spec/schemas/S-05_collected_report_schema.json"
 
 contracts:
   C-01: "spec/contracts/C-01_berlin_to_sv.yaml"

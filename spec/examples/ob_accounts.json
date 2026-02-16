@@ -1,0 +1,36 @@
+{
+  "accounts": [
+    {
+      "currency": "string",
+      "resourceId": "string",
+      "iban": "string",
+      "name": "string",
+      "displayName": "string",
+      "product": "string",
+      "cashAccountType": "string",
+      "status": "enabled",
+      "bic": "string",
+      "usage": "PRIV",
+      "balances": [
+        {
+          "balanceAmount": {
+            "currency": "string",
+            "amount": "string"
+          },
+          "balanceType": "closingBooked",
+          "creditLimitIncluded": true,
+          "referenceDate": "2026-05-04"
+        }
+      ],
+      "_links": {
+        "balances": {
+          "href": "string"
+        },
+        "transactions": {
+          "href": "string"
+        }
+      },
+      "ownerName": "string"
+    }
+  ]
+}

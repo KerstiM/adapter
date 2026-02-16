@@ -1,67 +1,44 @@
-# Spetsifikatsioonifailide ülevaade
+# Spetsifikatsioonifailid
 
-Adapteri käitumine on täielikult määratud versioonitud spetsifikatsioonifailidega (`spec/` kataloogis). Allpool on iga faili lühikirjeldus.
+Adapteri käitumine on määratud versioonitud spetsifikatsioonifailidega. Pärast allolevate failide lukustamist ei tohiks prototüübi semantikat enam muuta, vaid ainult täiendada uute versioonidega.
 
----
+## Schemas/ — andmete kuju
 
-## Skeemid (schemas/) — *mis kujuga andmed peavad olema*
+- **S-00A** `S-00A_berlin_accounts.schema.json`  
+  Sisendi `accounts.json` struktuur (min `resourceId`, `iban`, `currency`). Tagab, et testandmestikud on valideeritavad.
 
-| Fail | Mis see on | Milleks kasutatakse |
-|------|-----------|---------------------|
-| **S-01** `sv_schema.json` | SV (standardiseeritud vaheesituse) JSON Schema | Valideerib, et adapteri väljund (SVBundle) vastab struktuurile: jooksu metaandmed, kontod, tehingud. Kõik tüübid, kohustuslikud väljad ja formaadid (nt UTC ajatempel, ISO 4217 valuuta) on siin fikseeritud. |
-| **S-02** `ml_projection_schema.json` | ML-projektsiooni rea skeem | Valideerib, et iga ML-sisendtabeli rida sisaldab nõutud veerge (`row_id`, `amount`, `direction` jne). Väljund on CSV. |
-| **S-03** `llm_context_schema.json` | LLM kontekstobjekti skeem | Valideerib LLM-ile ette antava JSON-objekti struktuuri: meta, konto kontekst, tehingute loend. |
-| **S-04** `llm_output_schema.json` | LLM väljundi skeem | Valideerib LLM-i tagastatavat masinloetavat tulemust (nt kategooria, kindlus, põhjendus). Võimaldab automaatset hindamist. |
-| **S-05** `collected_report_schema.json` | Koondraport | Valideerib jooksu lõpus tekkivat raportit: staatus, loendused, probleemikirjed, mõõdikud. Auditeeritavuse alus. |
+- **S-00B** `S-00B_berlin_transactions.schema.json`  
+  Sisendi `transactions.json` struktuur. `ReportResponse.account.iban` on kohustuslik, et C-01 saaks tehingud kontoga siduda.
 
----
+- **S-01** `S-01_sv_schema.json`  
+  Standardiseeritud vaheesituse (SVBundle) skeem: meta + accounts + transactions. Prototüübi keskne kanooniline kuju.
 
-## Lepingud (contracts/) — *kuidas andmeid teisendatakse*
+- **S-02** `S-02_ml_projection_schema.json`  
+  ML CSV rea miinimumveerud ja tüübid. Võimaldab väljundi automaatset valideerimist.
 
-| Fail | Sisend → Väljund | Mida kirjeldab |
-|------|-------------------|----------------|
-| **C-01** `ob_to_sv.yaml` | Open Banking JSON → SV | Väljade kaardistus (nt `$.transactionAmount.amount` → `amount`), normaliseerimisreeglid (tekst lowercase, ajad UTC, valuuta uppercase), ID-arvutuse loogika ja vigade käitlemise poliitika (`DROP_RECORD`, `WARN` jne). |
-| **C-02** `sv_to_ml.yaml` | SV → ML tabel (CSV) | Millised SV väljad lähevad ML-tabelisse, millised tuletised lisatakse (`amount_abs`, `month`, `weekday`), sortimisvõti ja filtrid (`BOOKED` only). |
-| **C-03** `sv_to_llm.yaml` | SV → LLM kontekst (JSON) | Tehingute aknastamine (`LAST_N: 200`), kirjelduse kärpimine (160 märki), väljanimede lühendamine (`booking_time_utc` → `t`) ja sorteerimine. |
+- **S-03** `S-03_llm_context_schema.json`  
+  LLM kontekstobjekti struktuur (JSON). Tagab, et LLM sisend on stabiilne ja masinloetav.
 
----
+- **S-05** `S-05_collected_report_schema.json`  
+  Jooksu koondraport (status, issues, dropped_details, loendused). Toetab auditeeritavust ja hindamist.
 
-## Reeglistik (rulesets/) — *mida kontrollitakse*
+## Contracts/ — teisendused
 
-| Fail | Mida kirjeldab |
-|------|----------------|
-| **R-01** `sv_invariants.yaml` | 7 invarianti (v1.1.0), mida iga SV tehing peab täitma. Iga reegli juures on tõsidus (`ERROR`/`WARN`) ja toime (`DROP_RECORD`, `FLAG_ONLY`). Nt: `currency` peab vastama `^[A-Z]{3}$` (INV-01 ERROR → DROP); `value_date` peab olema olemas (INV-02 ERROR → DROP); duplikaadid (INV-09 WARN → DROP) eemaldatakse deterministlikult `record_id` alusel. Fail gate: kui ERROR-taseme droppide suhtarv ületab `default.yaml` `ratio_over_records` (5%), on tulemus FAILED. |
-| `error_catalog.yaml` | Veakoodide kataloog (praegu tühi kohatäide). |
+- **C-01** `C-01_berlin_to_sv.yaml`  
+  Berlin/PSD2 sisend → SV: kaardistus, normaliseerimine, ID derivatsioon, error-handling.
 
----
+- **C-02** `C-02_sv_to_ml.yaml`  
+  SV → ML CSV: veerud, filtrid, sortimine, tuletised.
 
-## Profiil (profiles/) — *mis komplekt kokku läheb*
+- **C-03** `C-03_sv_to_llm.yaml`  
+  SV → LLM kontekst: aknastamine (nt last-N), truncation, sortimine.
 
-| Fail | Mida kirjeldab |
-|------|----------------|
-| **default.yaml** | Seob kõik eelnevad failid üheks konfiguratsiooniks: millist skeemi, reeglistikku ja lepinguid üks jooks kasutab. Sisaldab ka globaalseid poliitikaid (`drop_on_required_null`, `status_allowlist`). |
+## Rulesets/ — invariandid
 
----
+- **R-01** `R-01_sv_invariants.yaml`  
+  SV invariandid (ERROR/WARN + tegevus). Määrab, millal rekord dropitakse, millal flagitakse ja kuidas kujuneb run status.
 
-## Kokkuvõte
+## Profiles/ — komplekt jooksuks
 
-```
-spec/
-├── schemas/          ← Andmete kuju (JSON Schema valideerib)
-│   ├── S-01  SV skeem
-│   ├── S-02  ML projektsiooni skeem
-│   ├── S-03  LLM konteksti skeem
-│   ├── S-04  LLM väljundi skeem
-│   └── S-05  Raporti skeem
-├── contracts/        ← Teisendusreeglid (kuidas X → Y)
-│   ├── C-01  Open Banking → SV
-│   ├── C-02  SV → ML
-│   └── C-03  SV → LLM
-├── rulesets/         ← Valideerimisreeglid (mida kontrollitakse)
-│   ├── R-01  SV invariandid
-│   └── error_catalog (kohatäide)
-└── profiles/         ← Konfiguratsioon (mis komplekt kokku läheb)
-    └── default.yaml
-```
-
-Kõik failid on versioonitud (`*_version: "1.0.0"`) ja viitavad üksteisele ID kaudu. Adapteri kood loeb profiili, laeb sealt viidatud failid ja täidab neis kirjeldatud reegleid. Kui reegleid muudetakse, muutub versiooninumber ja SVBundle metaandmed kajastavad, milliste versioonidega jooks tehti.
+- **default.yaml**  
+  Seob kokku skeemid, lepingud ja reeglistiku ning määrab `partial_success_policy` (sh FAILED tingimused, nt ERROR ratio > 5%).

@@ -140,3 +140,27 @@ Adapter/                          # projekti juurkaust (repo)
 
 ### Järgmised sammud
 - ...
+```
+
+# Adapter / standardiseerimiskiht
+
+Prototüüp loeb Berlin Group / PSD2 AIS stiilis sisendfailid ja teisendab need standardiseeritud vaheesituseks (SV).
+SV põhjal tuletatakse deterministlikud projektsioonid (ML CSV ja LLM context JSON) ning koostatakse koondraport.
+
+Normatiivne käitumine on kirjeldatud `spec/` kataloogi versioonitud skeemide, lepingute ja reeglitega.
+
+## Kiirstart (D1 happy path)
+
+Sisend:
+- `data/D1/accounts.json`
+- `data/D1/transactions.json`
+
+Kasutatav profiil:
+- `spec/profiles/default.yaml`
+
+Käivitamine:
+```bash
+python -m backend.cli run \
+  --profile spec/profiles/default.yaml \
+  --data data/D1 \
+  --out out

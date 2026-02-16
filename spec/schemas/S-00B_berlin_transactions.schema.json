@@ -95,11 +95,13 @@
     "ReportResponse": {
       "type": "object",
       "required": [
+        "account",
         "transactions"
       ],
       "properties": {
         "account": {
           "type": "object",
+          "required": ["iban"],
           "properties": {
             "iban": {
               "$ref": "#/$defs/Iban"
