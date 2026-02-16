@@ -752,11 +752,24 @@ def _build_report(
     dropped_details: list[dict] | None = None,
 ) -> dict:
     """Build report.json structure (S-05 compliant)."""
+
+    # dataset_id: dataset kausta nimi (nt D1_public_valid_small)
+    dataset_id = Path(data_dir).name
+
+    # input_dir: tee repo-relatiivseks kui võimalik (parem auditiks)
+    try:
+        input_dir = str(Path(data_dir).resolve().relative_to(REPO_ROOT).as_posix())
+    except Exception:
+        input_dir = str(Path(data_dir).resolve().as_posix())
+
     return {
-        "report_schema_version": "1.0.0",
+        "report_schema_version": "1.1.0",
         "run": {
             "run_id": run_id,
             "created_at_utc": created_at_utc,
+            "profile_id": profile["id"],
+            "dataset_id": dataset_id,
+            "input_dir": input_dir,
             "adapter_version": ADAPTER_VERSION,
             "sv_schema_version": "1.0.0",
             "mapping_version": "1.0.0",
