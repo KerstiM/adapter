@@ -99,7 +99,10 @@ def main() -> None:
     if summary["issues"]:
         print(f"  issues:       {len(summary['issues'])}")
         for issue in summary["issues"]:
-            print(f"    {issue}")
+            if isinstance(issue, dict):
+                print(f"    [{issue.get('severity', '?')}] {issue.get('code', '?')}: {issue.get('message', '')}")
+            else:
+                print(f"    {issue}")
     else:
         print("  issues:       0")
 

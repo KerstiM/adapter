@@ -2,8 +2,8 @@ id: default
 version: "1.0.0"
 
 schemas:
-  S-00A: "spec/schemas/S-00_berlin_accounts.schema.json"
-  S-00B: "spec/schemas/S-00_berlin_transactions.schema.json"
+  S-00A: "spec/schemas/S-00A_berlin_accounts.schema.json"
+  S-00B: "spec/schemas/S-00B_berlin_transactions.schema.json"
   S-01:  "spec/schemas/S-01_sv_schema.json"
   S-02:  "spec/schemas/S-02_ml_projection_schema.json"
   S-03:  "spec/schemas/S-03_llm_context_schema.json"

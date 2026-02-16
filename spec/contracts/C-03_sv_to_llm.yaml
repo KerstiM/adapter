@@ -18,14 +18,18 @@ truncate:
 output:
   format: JSON
   file: "out/llm_context.json"
+  cardinality: >
+    One context object per account.  When the SV bundle contains a single
+    account the output is a plain JSON object; when it contains multiple
+    accounts the output is a JSON array of context objects (one per account).
 
 shape:
   meta:
     run_id: "$.meta.run_id"
     created_at_utc: "$.meta.created_at_utc"
-    account_id: "$.accounts[0].account_id"
-    iban: "$.accounts[0].iban"
-    currency: "$.accounts[0].currency"
+    account_id: "@current_account.account_id"
+    iban: "@current_account.iban"
+    currency: "@current_account.currency"
   tx:
     - id: "$.record_id"
       d: "$.value_date"
