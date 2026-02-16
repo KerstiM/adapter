@@ -110,18 +110,17 @@ class TestAcceptanceChecks:
             assert ci_stage["warnings"] >= 1
 
     def test_D_d1_counts(self, d1_output: tuple) -> None:
-        """D) D1: accounts_total=1, transactions_total=8, dropped=0.
-        Note: D1 has 5 booked + 2 pending (transactions.json) +
-        1 information standing order with nextExecutionDate (standing_orders.json) = 8 raw.
-        The information tx uses nextExecutionDate as value_date fallback -> emitted=8, dropped=0.
+        """D) D1: accounts_total=1, transactions_total=7, dropped=0.
+        Note: D1 has 5 booked + 2 pending = 7 raw (no standing_orders.json).
+        All transactions have valueDate -> emitted=7, dropped=0.
         Invariant: total == emitted + dropped.
         """
         summary, _ = d1_output
         counts = summary["counts"]
         assert counts["accounts_total"] == 1
-        assert counts["transactions_total"] == 8
+        assert counts["transactions_total"] == 7
         assert counts["transactions_dropped"] == 0
-        assert counts["transactions_emitted_sv"] == 8
+        assert counts["transactions_emitted_sv"] == 7
         assert counts["transactions_total"] == counts["transactions_emitted_sv"] + counts["transactions_dropped"]
 
 
@@ -139,15 +138,15 @@ class TestHappyPathPipeline:
     def test_transaction_counts(self, d1_output: tuple) -> None:
         summary, _ = d1_output
         counts = summary["counts"]
-        assert counts["transactions_total"] == 8
+        assert counts["transactions_total"] == 7
         assert counts["accounts_total"] == 1
-        assert counts["transactions_emitted_sv"] == 8
+        assert counts["transactions_emitted_sv"] == 7
 
-    def test_download_only_flagged(self, d1_output: tuple) -> None:
-        """transactions_download.json should be detected and flagged, not processed."""
+    def test_download_only_not_present(self, d1_output: tuple) -> None:
+        """D1 has no transactions_download.json -> no RUN_DOWNLOAD_ONLY flag."""
         summary, _ = d1_output
         download_flags = [f for f in summary["run_flags"] if f["id"] == "RUN_DOWNLOAD_ONLY"]
-        assert len(download_flags) == 1
+        assert len(download_flags) == 0
 
     # --- Run folder structure ---
 
@@ -201,7 +200,7 @@ class TestHappyPathPipeline:
             sv = json.load(f)
 
         assert isinstance(sv["transactions"], list)
-        assert len(sv["transactions"]) == 8
+        assert len(sv["transactions"]) == 7
 
     def test_sv_transaction_required_fields(self, d1_output: tuple) -> None:
         _, run_folder = d1_output
@@ -277,21 +276,18 @@ class TestHappyPathPipeline:
             elif tx["direction"] == "IN":
                 assert signed >= 0, f"IN amount should be positive: {tx['amount']}"
 
-    def test_sv_inv05_on_standing_order(self, d1_output: tuple) -> None:
-        """Standing order: raw=256.67 (positive) but direction=OUT -> INV-05 WARN flag."""
+    def test_sv_no_inv05_in_d1(self, d1_output: tuple) -> None:
+        """D1 has no sign-direction mismatches -> no INV-05 flags."""
         _, run_folder = d1_output
         with open(run_folder / "sv.json", encoding="utf-8") as f:
             sv = json.load(f)
 
-        by_remittance = {}
-        for tx in sv["transactions"]:
-            if tx.get("remittance"):
-                by_remittance[tx["remittance"]] = tx
-
-        so_flags = by_remittance["Standing order example"]["flags"]
-        inv05 = [f for f in so_flags if f["id"].startswith("INV-05")]
-        assert len(inv05) == 1
-        assert inv05[0]["severity"] == "WARN"
+        inv05_count = sum(
+            1 for tx in sv["transactions"]
+            for f in tx.get("flags", [])
+            if f["id"].startswith("INV-05")
+        )
+        assert inv05_count == 0
 
     def test_sv_source_lineage(self, d1_output: tuple) -> None:
         _, run_folder = d1_output
@@ -302,15 +298,14 @@ class TestHappyPathPipeline:
             assert tx["source"]["input_file"]
             assert tx["source"]["input_path"].startswith("$.transactions.")
 
-    def test_sv_standing_order_mapped(self, d1_output: tuple) -> None:
-        """standing_orders.json information tx uses nextExecutionDate as value_date fallback -> mapped into SV."""
+    def test_sv_no_information_in_d1(self, d1_output: tuple) -> None:
+        """D1 has no standing_orders.json -> no INFORMATION transactions in SV."""
         _, run_folder = d1_output
         with open(run_folder / "sv.json", encoding="utf-8") as f:
             sv = json.load(f)
 
         info_txs = [t for t in sv["transactions"] if t["status"] == "INFORMATION"]
-        assert len(info_txs) == 1
-        assert info_txs[0]["value_date"] == "2025-03-24"
+        assert len(info_txs) == 0
 
     # --- Report tests ---
 
@@ -432,13 +427,13 @@ class TestHappyPathPipeline:
         assert len(ctx["tx"]) == 7
 
     def test_schema_validation_no_issues(self, d1_output: tuple) -> None:
-        """standing_orders.json has nextExecutionDate -> S-00C schema passes."""
+        """D1 has no standing_orders.json -> no schema validation issues."""
         summary, _ = d1_output
         schema_issues = [i for i in summary["issues"] if "validation" in i.lower()]
         assert len(schema_issues) == 0
 
     def test_dropped_details_in_report(self, d1_output: tuple) -> None:
-        """No transactions dropped — standing order uses nextExecutionDate fallback."""
+        """D1 has no dropped transactions."""
         _, run_folder = d1_output
         with open(run_folder / "report.json", encoding="utf-8") as f:
             report = json.load(f)
@@ -447,7 +442,7 @@ class TestHappyPathPipeline:
         assert len(dropped) == 0
 
     def test_dropped_details_in_summary(self, d1_output: tuple) -> None:
-        """Summary dropped_details must match report — none dropped."""
+        """D1 has no dropped transactions in summary."""
         summary, _ = d1_output
         dropped = summary.get("dropped_details", [])
         assert len(dropped) == 0
