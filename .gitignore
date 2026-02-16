@@ -50,3 +50,9 @@ __screenshots__/
 # Pipeline outputs (tracked for thesis reference)
 # backend/out/
 # out/
+
+# AI ja IDE seaded
+.kilocode/
+.claude/
+.openspec/
+.anthropic/
