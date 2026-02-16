@@ -260,7 +260,13 @@ def _map_single_transaction(
     value_date = raw_tx.get("valueDate")
     value_date_fell_back = False
     if not value_date:
-        if booking_date and _is_iso_date(booking_date):
+        # For INFORMATION / standing-order items, nextExecutionDate is a
+        # valid surrogate for valueDate (coalesce rule from C-01).
+        next_exec = raw_tx.get("nextExecutionDate")
+        if status == "INFORMATION" and next_exec and _is_iso_date(next_exec):
+            value_date = next_exec
+            value_date_fell_back = True
+        elif booking_date and _is_iso_date(booking_date):
             value_date = booking_date
             value_date_fell_back = True
         else:
@@ -277,10 +283,11 @@ def _map_single_transaction(
     # MAP-01: valueDate fallback flag
     flags: list[dict] = []
     if value_date_fell_back:
+        fallback_src = "nextExecutionDate" if raw_tx.get("nextExecutionDate") and status == "INFORMATION" else "bookingDate"
         flags.append({
             "id": "MAP-01_VALUE_DATE_FALLBACK",
             "severity": "WARN",
-            "message": "valueDate missing; fell back to bookingDate.",
+            "message": f"valueDate missing; fell back to {fallback_src}.",
         })
 
     # INV-05: check if raw sign mismatches derived direction -> flag
