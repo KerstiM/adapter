@@ -96,12 +96,13 @@ Adapter/                          # projekti juurkaust (repo)
     profiles/                     # profiilid
       default.yaml                # vaikimisi profiil (viitab kõigile spec-failidele)
 
-  data/                           # testiandmestikud (Berlin AIS JSON)
-    D1/                           # esimene andmestik (happy-path)
+  datasets/                       # testiandmestikud (Berlin AIS JSON)
+    D1_public_valid_small/        # happy-path andmestik
       accounts.json               # 1 konto (DE IBAN, EUR)
-      transactions.json           # 2 booked + 1 pending tehing
-      standing_orders.json        # 1 information püsikorraldus (ilma valueDate)
-      transactions_download.json  # download-only vastus (lipuga tuvastatud)
+      transactions.json           # 7 tehingut (booked + pending)
+    D4_synth_errors_seed42/       # vigaste andmetega andmestik
+      accounts.json
+      transactions.json
 
   backend/                        # Pythoni adapter (andmete töötlemine)
     run_adapter.py                # peamine käivitusfail; käivitab pipeline'i
@@ -152,15 +153,14 @@ Normatiivne käitumine on kirjeldatud `spec/` kataloogi versioonitud skeemide, l
 ## Kiirstart (D1 happy path)
 
 Sisend:
-- `data/D1/accounts.json`
-- `data/D1/transactions.json`
+- `datasets/D1_public_valid_small/accounts.json`
+- `datasets/D1_public_valid_small/transactions.json`
 
 Kasutatav profiil:
 - `spec/profiles/default.yaml`
 
 Käivitamine:
 ```bash
-python -m backend.cli run \
-  --profile spec/profiles/default.yaml \
-  --data data/D1 \
+python backend/run_adapter.py \
+  --data D1 \
   --out out

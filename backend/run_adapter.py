@@ -5,7 +5,7 @@ Usage:
     python run_adapter.py --data D4
     python run_adapter.py --data D1_public_valid_small
     python run_adapter.py --data ../datasets/D4_synth_errors_seed42
-    python run_adapter.py                          # defaults to data/D1
+    python run_adapter.py                          # defaults to datasets/D1*
 """
 import argparse
 from pathlib import Path
@@ -13,7 +13,7 @@ from pathlib import Path
 from adapter.pipeline import run_pipeline
 
 ROOT = Path(__file__).resolve().parent.parent
-SEARCH_DIRS = [ROOT / "datasets", ROOT / "data"]
+SEARCH_DIRS = [ROOT / "datasets"]
 
 
 def _resolve_data_dir(name: str) -> Path:
@@ -21,7 +21,7 @@ def _resolve_data_dir(name: str) -> Path:
 
     Tries in order:
       1. Exact path (absolute or relative)
-      2. Exact name under datasets/ or data/
+      2. Exact name under datasets/
       3. Prefix match (e.g. 'D4' matches 'D4_synth_errors_seed42')
     """
     # 1. Direct path
@@ -54,7 +54,7 @@ def _resolve_data_dir(name: str) -> Path:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run the adapter pipeline.")
     parser.add_argument("--data", "-d", default=None,
-                        help="Dataset name (e.g. D1, D4) or path. Default: data/D1")
+                        help="Dataset name (e.g. D1, D4) or path. Default: datasets/D1*")
     parser.add_argument("--out", "-o", default=None,
                         help="Output directory. Default: backend/out/")
     args = parser.parse_args()
@@ -62,7 +62,7 @@ def main() -> None:
     if args.data:
         data_dir = _resolve_data_dir(args.data)
     else:
-        data_dir = ROOT / "data" / "D1"
+        data_dir = _resolve_data_dir("D1")
 
     output_dir = Path(args.out) if args.out else Path(__file__).resolve().parent / "out"
 
