@@ -106,20 +106,22 @@ class TestAcceptanceChecks:
         )
         if has_inv05:
             assert report["summary"]["by_severity"]["WARN"] >= 1
-            assert report["summary"]["by_stage"]["CHECK_INVARIANTS"]["warnings"] >= 1
+            ci_stage = next(s for s in report["summary"]["by_stage"] if s["stage"] == "CHECK_INVARIANTS")
+            assert ci_stage["warnings"] >= 1
 
     def test_D_d1_counts(self, d1_output: tuple) -> None:
-        """D) D1: accounts_total=1, transactions_total=4, dropped=1.
-        Note: D1 has 2 booked + 1 pending + 1 information = 4 raw.
-        The information tx lacks valueDate (and bookingDate) -> emitted=3, dropped=1.
+        """D) D1: accounts_total=1, transactions_total=8, dropped=0.
+        Note: D1 has 5 booked + 2 pending (transactions.json) +
+        1 information standing order with nextExecutionDate (standing_orders.json) = 8 raw.
+        The information tx uses nextExecutionDate as value_date fallback -> emitted=8, dropped=0.
         Invariant: total == emitted + dropped.
         """
         summary, _ = d1_output
         counts = summary["counts"]
         assert counts["accounts_total"] == 1
-        assert counts["transactions_total"] == 4
-        assert counts["transactions_dropped"] == 1
-        assert counts["transactions_emitted_sv"] == 3
+        assert counts["transactions_total"] == 8
+        assert counts["transactions_dropped"] == 0
+        assert counts["transactions_emitted_sv"] == 8
         assert counts["transactions_total"] == counts["transactions_emitted_sv"] + counts["transactions_dropped"]
 
 
@@ -137,9 +139,9 @@ class TestHappyPathPipeline:
     def test_transaction_counts(self, d1_output: tuple) -> None:
         summary, _ = d1_output
         counts = summary["counts"]
-        assert counts["transactions_total"] == 4
+        assert counts["transactions_total"] == 8
         assert counts["accounts_total"] == 1
-        assert counts["transactions_emitted_sv"] == 3
+        assert counts["transactions_emitted_sv"] == 8
 
     def test_download_only_flagged(self, d1_output: tuple) -> None:
         """transactions_download.json should be detected and flagged, not processed."""
@@ -189,9 +191,9 @@ class TestHappyPathPipeline:
 
         assert len(sv["accounts"]) == 1
         acct = sv["accounts"][0]
-        assert acct["iban"] == "DE2310010010123456788"
+        assert acct["iban"] == "DE14177763170669074391"
         assert acct["currency"] == "EUR"
-        assert acct["name"] == "Main Account"
+        assert acct["name"] == "D1 Smoke Test Account"
 
     def test_sv_transactions_flat_array(self, d1_output: tuple) -> None:
         _, run_folder = d1_output
@@ -199,7 +201,7 @@ class TestHappyPathPipeline:
             sv = json.load(f)
 
         assert isinstance(sv["transactions"], list)
-        assert len(sv["transactions"]) == 3
+        assert len(sv["transactions"]) == 8
 
     def test_sv_transaction_required_fields(self, d1_output: tuple) -> None:
         _, run_folder = d1_output
@@ -232,13 +234,13 @@ class TestHappyPathPipeline:
             if tx.get("remittance"):
                 by_remittance[tx["remittance"]] = tx
 
-        # "Example 1" has creditorName (John Miles) -> OUT
-        assert by_remittance["Example 1"]["direction"] == "OUT"
-        assert by_remittance["Example 1"]["counterparty"]["role"] == "CREDITOR"
+        # "Invoice L4WUXGIA" has creditorName (Henrik Berg) -> OUT
+        assert by_remittance["Invoice L4WUXGIA"]["direction"] == "OUT"
+        assert by_remittance["Invoice L4WUXGIA"]["counterparty"]["role"] == "CREDITOR"
 
-        # "Example 2" has debtorName (Paul Simpson) -> IN
-        assert by_remittance["Example 2"]["direction"] == "IN"
-        assert by_remittance["Example 2"]["counterparty"]["role"] == "DEBTOR"
+        # "Donation to charity" has debtorName (Luca Tamm) -> IN
+        assert by_remittance["Donation to charity"]["direction"] == "IN"
+        assert by_remittance["Donation to charity"]["counterparty"]["role"] == "DEBTOR"
 
     def test_sv_amount_object_structure(self, d1_output: tuple) -> None:
         _, run_folder = d1_output
@@ -250,18 +252,18 @@ class TestHappyPathPipeline:
             if tx.get("remittance"):
                 by_remittance[tx["remittance"]] = tx
 
-        # Example 1: OUT, raw=256.67, signed should be negative
-        ex1 = by_remittance["Example 1"]["amount"]
-        assert ex1["raw"] == "256.67"
-        assert ex1["signed"] == "-256.67"
-        assert ex1["abs"] == "256.67"
+        # Invoice L4WUXGIA: OUT, raw=-2842.31, signed should be negative
+        ex1 = by_remittance["Invoice L4WUXGIA"]["amount"]
+        assert ex1["raw"] == "-2842.31"
+        assert ex1["signed"] == "-2842.31"
+        assert ex1["abs"] == "2842.31"
         assert ex1["currency"] == "EUR"
 
-        # Example 2: IN, raw=343.01, signed should be positive
-        ex2 = by_remittance["Example 2"]["amount"]
-        assert ex2["raw"] == "343.01"
-        assert ex2["signed"] == "343.01"
-        assert ex2["abs"] == "343.01"
+        # Rent payment June: IN (debtorName Markus Tamm), raw=255.43, signed should be positive
+        ex2 = by_remittance["Rent payment June"]["amount"]
+        assert ex2["raw"] == "255.43"
+        assert ex2["signed"] == "255.43"
+        assert ex2["abs"] == "255.43"
 
     def test_sv_amount_sign_matches_direction(self, d1_output: tuple) -> None:
         _, run_folder = d1_output
@@ -275,8 +277,8 @@ class TestHappyPathPipeline:
             elif tx["direction"] == "IN":
                 assert signed >= 0, f"IN amount should be positive: {tx['amount']}"
 
-    def test_sv_inv05_on_example1(self, d1_output: tuple) -> None:
-        """Example 1: raw=256.67 (positive) but direction=OUT -> INV-05 WARN flag."""
+    def test_sv_inv05_on_standing_order(self, d1_output: tuple) -> None:
+        """Standing order: raw=256.67 (positive) but direction=OUT -> INV-05 WARN flag."""
         _, run_folder = d1_output
         with open(run_folder / "sv.json", encoding="utf-8") as f:
             sv = json.load(f)
@@ -286,8 +288,8 @@ class TestHappyPathPipeline:
             if tx.get("remittance"):
                 by_remittance[tx["remittance"]] = tx
 
-        ex1_flags = by_remittance["Example 1"]["flags"]
-        inv05 = [f for f in ex1_flags if f["id"].startswith("INV-05")]
+        so_flags = by_remittance["Standing order example"]["flags"]
+        inv05 = [f for f in so_flags if f["id"].startswith("INV-05")]
         assert len(inv05) == 1
         assert inv05[0]["severity"] == "WARN"
 
@@ -300,14 +302,15 @@ class TestHappyPathPipeline:
             assert tx["source"]["input_file"]
             assert tx["source"]["input_path"].startswith("$.transactions.")
 
-    def test_sv_standing_order_skipped(self, d1_output: tuple) -> None:
-        """standing_orders.json information tx lacks valueDate (and bookingDate) -> dropped, not in SV."""
+    def test_sv_standing_order_mapped(self, d1_output: tuple) -> None:
+        """standing_orders.json information tx uses nextExecutionDate as value_date fallback -> mapped into SV."""
         _, run_folder = d1_output
         with open(run_folder / "sv.json", encoding="utf-8") as f:
             sv = json.load(f)
 
         info_txs = [t for t in sv["transactions"] if t["status"] == "INFORMATION"]
-        assert len(info_txs) == 0
+        assert len(info_txs) == 1
+        assert info_txs[0]["value_date"] == "2025-03-24"
 
     # --- Report tests ---
 
@@ -333,7 +336,7 @@ class TestHappyPathPipeline:
             "READ_INPUT", "STANDARDIZE_TO_SV", "VALIDATE_SCHEMA",
             "CHECK_INVARIANTS", "PROJECT_ML", "PROJECT_LLM",
         }
-        actual_stages = set(report["summary"]["by_stage"].keys())
+        actual_stages = {s["stage"] for s in report["summary"]["by_stage"]}
         assert expected_stages.issubset(actual_stages)
 
     def test_report_by_severity_critical_zero(self, d1_output: tuple) -> None:
@@ -367,7 +370,7 @@ class TestHappyPathPipeline:
         statuses = {r["status"] for r in rows}
         assert "BOOKED" in statuses
         assert "PENDING" in statuses
-        assert len(rows) == 3
+        assert len(rows) == 7
 
     def test_ml_csv_row_id_is_sequential(self, d1_output: tuple) -> None:
         _, run_folder = d1_output
@@ -403,7 +406,7 @@ class TestHappyPathPipeline:
 
         assert ctx["meta"]["run_id"] == FIXED_RUN_ID
         assert ctx["meta"]["created_at_utc"] == FIXED_TS
-        assert ctx["meta"]["iban"] == "DE2310010010123456788"
+        assert ctx["meta"]["iban"] == "DE14177763170669074391"
         assert ctx["meta"]["currency"] == "EUR"
 
     def test_llm_context_tx_fields(self, d1_output: tuple) -> None:
@@ -426,34 +429,28 @@ class TestHappyPathPipeline:
         statuses = {tx["s"] for tx in ctx["tx"]}
         assert "BOOKED" in statuses
         assert "PENDING" in statuses
-        assert len(ctx["tx"]) == 3
+        assert len(ctx["tx"]) == 7
 
-    def test_schema_validation_issues_expected(self, d1_output: tuple) -> None:
-        """standing_orders.json triggers S-00B issue (information tx lacks valueDate)."""
+    def test_schema_validation_no_issues(self, d1_output: tuple) -> None:
+        """standing_orders.json has nextExecutionDate -> S-00C schema passes."""
         summary, _ = d1_output
         schema_issues = [i for i in summary["issues"] if "validation" in i.lower()]
-        assert len(schema_issues) == 1
-        assert "valueDate" in schema_issues[0]
+        assert len(schema_issues) == 0
 
     def test_dropped_details_in_report(self, d1_output: tuple) -> None:
-        """Dropped transactions must have source lineage and drop_reason in report."""
+        """No transactions dropped — standing order uses nextExecutionDate fallback."""
         _, run_folder = d1_output
         with open(run_folder / "report.json", encoding="utf-8") as f:
             report = json.load(f)
 
         dropped = report.get("dropped_details", [])
-        assert len(dropped) == 1
-        entry = dropped[0]
-        assert entry["source_file"] == "standing_orders.json"
-        assert entry["input_path"] == "$.transactions.information[0]"
-        assert "valueDate" in entry["drop_reason"]
+        assert len(dropped) == 0
 
     def test_dropped_details_in_summary(self, d1_output: tuple) -> None:
-        """Summary dropped_details must match report."""
+        """Summary dropped_details must match report — none dropped."""
         summary, _ = d1_output
         dropped = summary.get("dropped_details", [])
-        assert len(dropped) == 1
-        assert dropped[0]["source_file"] == "standing_orders.json"
+        assert len(dropped) == 0
 
     # --- JSON determinism ---
 
@@ -588,7 +585,7 @@ class TestD4FailGate:
     def test_d4_outcome_failed(self, d4_output: tuple) -> None:
         """D4 ERROR drop ratio > 5% → FAILED."""
         summary, _ = d4_output
-        assert summary["outcome"] == "FAILED"
+        assert summary["outcome"] == "FAIL"
 
     def test_d4_has_drops(self, d4_output: tuple) -> None:
         """D4 should have exactly 4 dropped transactions."""

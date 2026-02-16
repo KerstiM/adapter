@@ -23,7 +23,7 @@ flatten:
 map:
   transaction_id: "$.transactionId"
   booking_date: "$.bookingDate"
-  value_date: "$.valueDate"
+  value_date: "coalesce($.valueDate, $.nextExecutionDate)"  # nextExecutionDate used for INFORMATION/standing-order items only
   currency: "$.transactionAmount.currency"
   amount_raw: "$.transactionAmount.amount"
   remittance: "$.remittanceInformationUnstructured"
