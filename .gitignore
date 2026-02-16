@@ -50,3 +50,12 @@ __screenshots__/
 # Pipeline outputs (generated artifacts, re-creatable via scripts/validate_artifacts.py)
 backend/out/
 out/
+# Pipeline outputs (tracked for thesis reference)
+# backend/out/
+# out/
+
+# AI ja IDE seaded
+.kilocode/
+.claude/
+.openspec/
+.anthropic/
