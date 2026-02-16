@@ -1,0 +1,110 @@
+{
+  "accounts": [
+    {
+      "account_id": "3dc3d5b3-7023-4848-9853-f5400a64e80f",
+      "currency": "EUR",
+      "iban": "DE2310010010123456788",
+      "name": "Main Account"
+    }
+  ],
+  "meta": {
+    "created_at_utc": "2026-02-12T10:17:28Z",
+    "profile_id": "default",
+    "run_id": "870ddf0c15fa",
+    "spec_versions": {
+      "C-01": "1.0.0",
+      "C-02": "1.0.0",
+      "C-03": "1.0.0",
+      "R-01": "1.0.0",
+      "S-00A": "1.0.0",
+      "S-00B": "1.0.0",
+      "S-01": "1.0.0"
+    }
+  },
+  "transactions": [
+    {
+      "account_id": "3dc3d5b3-7023-4848-9853-f5400a64e80f",
+      "amount": {
+        "abs": "256.67",
+        "currency": "EUR",
+        "raw": "256.67",
+        "signed": "-256.67"
+      },
+      "booking_date": "2017-10-25",
+      "counterparty": {
+        "iban": "DE67100100101306118605",
+        "name": "John Miles",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "86bbf5e22c5d2fb3",
+      "remittance": "Example 1",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[0]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "1234567",
+      "value_date": "2017-10-26"
+    },
+    {
+      "account_id": "3dc3d5b3-7023-4848-9853-f5400a64e80f",
+      "amount": {
+        "abs": "343.01",
+        "currency": "EUR",
+        "raw": "343.01",
+        "signed": "343.01"
+      },
+      "booking_date": "2017-10-25",
+      "counterparty": {
+        "iban": "NL76RABO0359400371",
+        "name": "Paul Simpson",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "122d849af440a280",
+      "remittance": "Example 2",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[1]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "1234568",
+      "value_date": "2017-10-26"
+    },
+    {
+      "account_id": "3dc3d5b3-7023-4848-9853-f5400a64e80f",
+      "amount": {
+        "abs": "100.03",
+        "currency": "EUR",
+        "raw": "-100.03",
+        "signed": "-100.03"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "FR7612345987650123456789014",
+        "name": "Claude Renault",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [],
+      "record_id": "34079ee863406007",
+      "remittance": "Example 3",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[0]"
+      },
+      "status": "PENDING",
+      "transaction_id": "1234569",
+      "value_date": "2017-10-26"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "issues": [
+    "S-00B validation: 'valueDate' is a required property"
+  ],
+  "run": {
+    "adapter_version": "0.1.0",
+    "created_at_utc": "2026-02-11T17:14:07Z",
+    "data_dir": "C:\\Users\\hardi\\IdeaProjects\\adapter\\data\\D1",
+    "profile_id": "default",
+    "run_id": "d49eed3b5ee9"
+  },
+  "run_flags": [
+    {
+      "id": "RUN_DOWNLOAD_ONLY",
+      "message": "transaction report delivered as download link; not expanded in prototype.",
+      "severity": "WARN"
+    }
+  ],
+  "summary": {
+    "by_severity": {
+      "CRITICAL": 0,
+      "ERROR": 0,
+      "INFO": 0,
+      "WARN": 1
+    },
+    "by_stage": {
+      "CHECK_INVARIANTS": {
+        "errors": 0,
+        "status": "WARN",
+        "warnings": 1
+      },
+      "PROJECT_LLM": {
+        "errors": 0,
+        "status": "OK",
+        "warnings": 0
+      },
+      "PROJECT_ML": {
+        "errors": 0,
+        "status": "OK",
+        "warnings": 0
+      },
+      "READ_INPUT": {
+        "errors": 1,
+        "status": "WARN",
+        "warnings": 1
+      },
+      "STANDARDIZE_TO_SV": {
+        "errors": 0,
+        "status": "OK",
+        "warnings": 0
+      },
+      "VALIDATE_SCHEMA": {
+        "errors": 0,
+        "status": "OK",
+        "warnings": 0
+      }
+    },
+    "counts": {
+      "accounts_total": 1,
+      "llm_contexts": 1,
+      "ml_rows": 3,
+      "transactions_dropped": 0,
+      "transactions_emitted_sv": 3,
+      "transactions_total": 4
+    },
+    "outcome": "PARTIAL_SUCCESS"
+  }
+}
