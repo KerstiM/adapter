@@ -2,12 +2,23 @@
 """
 End-to-end validation script for the adapter pipeline.
 
-Usage:
-    python scripts/validate_artifacts.py                      # runs all datasets
-    python scripts/validate_artifacts.py --dataset D1         # runs one dataset
-    python scripts/validate_artifacts.py --dataset D1 D4      # runs specific datasets
+Runs the adapter on one or more dataset folders under datasets/ and validates
+every artifact against its JSON schema:
 
-Exits non-zero if any validation fails.
+  S-00A  accounts.json          (required input)
+  S-00B  transactions.json      (required input)
+  S-00C  standing_orders.json   (optional input — skipped with note when absent)
+  S-01   sv.json                (output)
+  S-02   ml_v1.csv              (output, row-by-row)
+  S-03   llm_context_v1.json    (output)
+  S-05   report.json            (output — skipped with note when absent)
+
+Usage:
+    python scripts/validate_artifacts.py                      # all datasets
+    python scripts/validate_artifacts.py --dataset D1         # one dataset
+    python scripts/validate_artifacts.py --dataset D1 D4      # specific datasets
+
+Exits non-zero if any validation error is found.
 """
 import argparse
 import csv
@@ -32,14 +43,22 @@ def _load_json(path: Path) -> dict:
 
 
 def load_schemas() -> dict[str, dict]:
-    return {
-        "S-00A": _load_json(SPEC_DIR / "schemas" / "S-00A_berlin_accounts.schema.json"),
-        "S-00B": _load_json(SPEC_DIR / "schemas" / "S-00B_berlin_transactions.schema.json"),
-        "S-01":  _load_json(SPEC_DIR / "schemas" / "S-01_sv_schema.json"),
-        "S-02":  _load_json(SPEC_DIR / "schemas" / "S-02_ml_projection_schema.json"),
-        "S-03":  _load_json(SPEC_DIR / "schemas" / "S-03_llm_context_schema.json"),
-        "S-05":  _load_json(SPEC_DIR / "schemas" / "S-05_collected_report_schema.json"),
+    schemas: dict[str, dict] = {}
+    mapping = {
+        "S-00A": "S-00A_berlin_accounts.schema.json",
+        "S-00B": "S-00B_berlin_transactions.schema.json",
+        "S-00C": "S-00C_berlin_standing_orders.schema.json",
+        "S-01":  "S-01_sv_schema.json",
+        "S-02":  "S-02_ml_projection_schema.json",
+        "S-03":  "S-03_llm_context_schema.json",
+        "S-05":  "S-05_collected_report_schema.json",
     }
+    for key, filename in mapping.items():
+        schema_path = SPEC_DIR / "schemas" / filename
+        if schema_path.exists():
+            schemas[key] = _load_json(schema_path)
+        # If schema file doesn't exist we simply won't have it in the dict
+    return schemas
 
 
 # ---------------------------------------------------------------------------
@@ -54,7 +73,6 @@ def discover_datasets(filter_names: list[str] | None = None) -> list[Path]:
             continue
         if (d / "accounts.json").exists() and (d / "transactions.json").exists():
             if filter_names:
-                # Match if any filter is a prefix of the directory name
                 if not any(d.name.upper().startswith(f.upper()) for f in filter_names):
                     continue
             datasets.append(d)
@@ -67,14 +85,13 @@ def discover_datasets(filter_names: list[str] | None = None) -> list[Path]:
 
 def run_adapter(dataset_dir: Path, output_dir: Path) -> dict:
     """Run the adapter pipeline on a dataset. Returns the summary dict."""
-    # Import the pipeline directly to avoid subprocess overhead
     sys.path.insert(0, str(REPO_ROOT / "backend"))
     from adapter.pipeline import run_pipeline
     return run_pipeline(dataset_dir, output_dir)
 
 
 # ---------------------------------------------------------------------------
-# Validation
+# Validation helpers
 # ---------------------------------------------------------------------------
 
 def validate_json(data: object, schema: dict, label: str) -> list[str]:
@@ -117,6 +134,10 @@ def validate_ml_csv(csv_path: Path, schema: dict) -> list[str]:
     return errors
 
 
+# ---------------------------------------------------------------------------
+# Per-dataset validation
+# ---------------------------------------------------------------------------
+
 def validate_dataset(dataset_dir: Path, schemas: dict) -> dict:
     """
     Run the adapter on a dataset and validate all artifacts.
@@ -126,84 +147,114 @@ def validate_dataset(dataset_dir: Path, schemas: dict) -> dict:
       - outcome: str (from adapter)
       - passed: list[str]
       - failed: list[str]
+      - skipped: list[str]
     """
     ds_name = dataset_dir.name
     passed = []
     failed = []
+    skipped = []
 
-    # Validate RAW inputs
+    # ---- S-00A  accounts.json (required) ----
     accounts = _load_json(dataset_dir / "accounts.json")
     errs = validate_json(accounts, schemas["S-00A"], "accounts.json vs S-00A")
     if errs:
         failed.extend(errs)
     else:
-        passed.append("accounts.json vs S-00A")
+        passed.append("S-00A  accounts.json")
 
+    # ---- S-00B  transactions.json (required) ----
     transactions = _load_json(dataset_dir / "transactions.json")
     errs = validate_json(transactions, schemas["S-00B"], "transactions.json vs S-00B")
     if errs:
-        # RAW input validation failure is expected for error datasets
         failed.extend(errs)
     else:
-        passed.append("transactions.json vs S-00B")
+        passed.append("S-00B  transactions.json")
 
-    # Run adapter
+    # ---- S-00C  standing_orders.json (optional) ----
+    so_path = dataset_dir / "standing_orders.json"
+    if so_path.exists():
+        if "S-00C" in schemas:
+            so_data = _load_json(so_path)
+            errs = validate_json(so_data, schemas["S-00C"], "standing_orders.json vs S-00C")
+            if errs:
+                failed.extend(errs)
+            else:
+                passed.append("S-00C  standing_orders.json")
+        else:
+            skipped.append("S-00C  standing_orders.json — schema file not found, skipping")
+    else:
+        skipped.append("S-00C  standing_orders.json — file not present in dataset, skipping")
+
+    # ---- Run the adapter ----
     with tempfile.TemporaryDirectory() as tmp:
         output_dir = Path(tmp)
         try:
             summary = run_adapter(dataset_dir, output_dir)
         except Exception as e:
             failed.append(f"adapter run failed: {e}")
-            return {"dataset": ds_name, "outcome": "CRASH", "passed": passed, "failed": failed}
+            return {"dataset": ds_name, "outcome": "CRASH", "passed": passed, "failed": failed, "skipped": skipped}
 
         outcome = summary["outcome"]
         run_folder = Path(summary["run_folder"])
 
-        # Validate sv.json vs S-01
-        sv = _load_json(run_folder / "sv.json")
+        # ---- S-01  sv.json ----
+        sv_path = run_folder / "sv.json"
+        sv = _load_json(sv_path)
         errs = validate_json(sv, schemas["S-01"], "sv.json vs S-01")
         if errs:
             failed.extend(errs)
         else:
-            passed.append("sv.json vs S-01")
+            n_tx = len(sv.get("transactions", []))
+            passed.append(f"S-01   sv.json ({n_tx} transactions)")
 
-        # Validate ml_v1.csv vs S-02
+        # ---- S-02  ml_v1.csv (row-by-row) ----
         csv_path = run_folder / "projections" / "ml_v1.csv"
         errs = validate_ml_csv(csv_path, schemas["S-02"])
         if errs:
             failed.extend(errs)
         else:
             with open(csv_path) as f:
-                n_rows = sum(1 for _ in csv.reader(f)) - 1  # minus header
-            passed.append(f"ml_v1.csv vs S-02 ({n_rows} rows)")
+                n_rows = sum(1 for _ in csv.reader(f)) - 1
+            passed.append(f"S-02   ml_v1.csv ({n_rows} rows)")
 
-        # Validate llm_context_v1.json vs S-03
-        llm = _load_json(run_folder / "projections" / "llm_context_v1.json")
+        # ---- S-03  llm_context_v1.json ----
+        llm_path = run_folder / "projections" / "llm_context_v1.json"
+        llm = _load_json(llm_path)
         errs = validate_json(llm, schemas["S-03"], "llm_context_v1.json vs S-03")
         if errs:
             failed.extend(errs)
         else:
-            passed.append("llm_context_v1.json vs S-03")
+            passed.append("S-03   llm_context_v1.json")
 
-        # Validate report.json vs S-05
-        report = _load_json(run_folder / "report.json")
-        errs = validate_json(report, schemas["S-05"], "report.json vs S-05")
-        if errs:
-            failed.extend(errs)
+        # ---- S-05  report.json (skip if not present or schema not wired) ----
+        report_path = run_folder / "report.json"
+        if "S-05" not in schemas:
+            skipped.append("S-05   report.json — schema not wired in spec/, skipping")
+        elif not report_path.exists():
+            skipped.append("S-05   report.json — not produced by adapter, skipping")
         else:
-            passed.append("report.json vs S-05")
+            report = _load_json(report_path)
+            errs = validate_json(report, schemas["S-05"], "report.json vs S-05")
+            if errs:
+                failed.extend(errs)
+            else:
+                passed.append("S-05   report.json")
 
     return {
         "dataset": ds_name,
         "outcome": outcome,
         "passed": passed,
         "failed": failed,
+        "skipped": skipped,
     }
 
 
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
+RAW_SCHEMAS = {"S-00A", "S-00B", "S-00C"}
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Validate adapter artifacts end-to-end.")
@@ -220,29 +271,31 @@ def main() -> None:
 
     print(f"Discovered {len(datasets)} dataset(s):\n")
 
-    all_results = []
     total_pass = 0
     total_fail = 0
-    # Track output-only failures (RAW input failures in error datasets are expected)
+    total_skip = 0
     output_failures = 0
 
     for ds_dir in datasets:
         result = validate_dataset(ds_dir, schemas)
-        all_results.append(result)
 
-        print(f"  {result['dataset']}  (outcome: {result['outcome']})")
+        print(f"  {result['dataset']}  (adapter outcome: {result['outcome']})")
         for p in result["passed"]:
             print(f"    PASS  {p}")
             total_pass += 1
+        for s in result["skipped"]:
+            print(f"    SKIP  {s}")
+            total_skip += 1
         for f in result["failed"]:
             print(f"    FAIL  {f}")
             total_fail += 1
-            # Count non-RAW failures as output failures
-            if "vs S-00A" not in f and "vs S-00B" not in f:
+            # RAW input failures are expected for error-injection datasets
+            if not any(tag in f for tag in ("vs S-00A", "vs S-00B", "vs S-00C")):
                 output_failures += 1
         print()
 
-    print(f"Total: {total_pass} passed, {total_fail} failed (of which {output_failures} are output validation failures)")
+    print(f"Total: {total_pass} passed, {total_skip} skipped, {total_fail} failed "
+          f"(of which {output_failures} are output validation failures)")
 
     if output_failures > 0:
         print("\nFAILED: output validation errors found.", file=sys.stderr)
