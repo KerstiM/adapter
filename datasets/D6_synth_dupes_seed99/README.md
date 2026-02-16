@@ -1,6 +1,6 @@
 # D6_synth_dupes_seed99
 
-Duplicate detection dataset with exact duplicates (DUP01), near-duplicates differing by amount (DUP02), transactionId (DUP03), or remittance (DUP04). Tests record_id hash uniqueness.
+Tests INV-09 duplicate record_id detection. Contains 3 exact duplicates (same hash inputs → same record_id → dropped with INV-09 WARN, keeping first deterministically) and 2 near-duplicates (different amount or remittance → different record_id → kept). Adapter should produce PARTIAL_SUCCESS with 3 INV-09 WARNs.
 
 ## Properties
 
@@ -8,21 +8,22 @@ Duplicate detection dataset with exact duplicates (DUP01), near-duplicates diffe
 |---|---|
 | Seed | 99 |
 | Date range | 2024-01-01 – 2024-12-31 |
-| Booked | 20 |
+| Booked | 21 |
 | Pending | 3 |
-| Expected dropped | 0 |
-| Expected outcome | SUCCESS |
+| Expected dropped | 3 |
+| Expected outcome | PARTIAL_SUCCESS |
 
 ## What this dataset tests
 
-Duplicate detection dataset with exact duplicates (DUP01), near-duplicates differing by amount (DUP02), transactionId (DUP03), or remittance (DUP04). Tests record_id hash uniqueness.
+Tests INV-09 duplicate record_id detection. Contains 3 exact duplicates (same hash inputs → same record_id → dropped with INV-09 WARN, keeping first deterministically) and 2 near-duplicates (different amount or remittance → different record_id → kept). Adapter should produce PARTIAL_SUCCESS with 3 INV-09 WARNs.
 
 ## Variations / injected codes
 
-  - `DUP01_EXACT: exact copy of booked[0] (transactionId=TX00000013)`
-  - `DUP02_NEAR_AMOUNT: same txId=TX00000002, amount differs by 0.01`
-  - `DUP03_NEAR_TXID: same content, different transactionId=TX00000019`
-  - `DUP04_NEAR_REMITTANCE: same txId=TX00000020, remittance differs`
+  - `DUP01_EXACT: exact copy of booked[0] (transactionId=TX00000013) → INV-09 DROP`
+  - `DUP02_EXACT: second copy of booked[0] (transactionId=TX00000013) → INV-09 DROP`
+  - `DUP03_EXACT: exact copy of booked[1] (transactionId=TX00000002) → INV-09 DROP`
+  - `NEAR01_DIFF_AMOUNT: same txId=TX00000007, amount differs → different record_id, kept`
+  - `NEAR02_DIFF_REMITTANCE: same txId=TX00000019, remittance differs → different record_id, both kept`
 
 ## Quality gate warnings
 

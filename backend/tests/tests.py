@@ -26,6 +26,7 @@ from adapter.pipeline import run_pipeline
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SPEC_DIR = PROJECT_ROOT / "spec"
 DATA_D1 = PROJECT_ROOT / "data" / "D1"
+DATASETS_DIR = PROJECT_ROOT / "datasets"
 
 FIXED_RUN_ID = "test-run-001"
 FIXED_TS = "2026-01-01T00:00:00Z"
@@ -487,3 +488,122 @@ class TestDeterminism:
             content1 = (folder1 / relpath).read_text(encoding="utf-8")
             content2 = (folder2 / relpath).read_text(encoding="utf-8")
             assert content1 == content2, f"{relpath} differs between runs"
+
+
+# ---------------------------------------------------------------------------
+# D6 — INV-09 duplicate record_id detection
+# ---------------------------------------------------------------------------
+
+class TestD6Deduplication:
+    """Tests for INV-09 duplicate record_id detection using D6 dataset."""
+
+    @pytest.fixture()
+    def d6_output(self, tmp_path: Path) -> tuple[dict, Path]:
+        data_dir = DATASETS_DIR / "D6_synth_dupes_seed99"
+        summary = run_pipeline(
+            data_dir=data_dir,
+            output_dir=tmp_path,
+            run_id="d6-dedupe-test",
+            created_at_utc=FIXED_TS,
+        )
+        return summary, Path(summary["run_folder"])
+
+    def test_d6_outcome_partial_success(self, d6_output: tuple) -> None:
+        """D6 has WARN-level dedupe drops → PARTIAL_SUCCESS, not FAILED."""
+        summary, _ = d6_output
+        assert summary["outcome"] == "PARTIAL_SUCCESS"
+
+    def test_d6_inv09_warn_count(self, d6_output: tuple) -> None:
+        """D6 should have INV-09 WARNs in the report."""
+        _, run_folder = d6_output
+        with open(run_folder / "report.json", encoding="utf-8") as f:
+            report = json.load(f)
+        assert report["summary"]["by_severity"]["WARN"] >= 3
+
+    def test_d6_dropped_details_contain_duplicate(self, d6_output: tuple) -> None:
+        """dropped_details should contain entries with 'duplicate record_id'."""
+        summary, _ = d6_output
+        dup_drops = [d for d in summary["dropped_details"] if "duplicate record_id" in d.get("drop_reason", "")]
+        assert len(dup_drops) == 3
+
+    def test_d6_dropped_details_have_record_id(self, d6_output: tuple) -> None:
+        """Each dedupe drop should include the record_id that was duplicated."""
+        summary, _ = d6_output
+        dup_drops = [d for d in summary["dropped_details"] if "duplicate record_id" in d.get("drop_reason", "")]
+        for drop in dup_drops:
+            assert drop.get("record_id"), f"dedupe drop missing record_id: {drop}"
+
+    def test_d6_no_duplicate_record_ids_in_sv(self, d6_output: tuple) -> None:
+        """SV output should have no duplicate record_ids."""
+        _, run_folder = d6_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        record_ids = [tx["record_id"] for tx in sv["transactions"]]
+        assert len(record_ids) == len(set(record_ids)), "sv.json contains duplicate record_ids"
+
+    def test_d6_no_duplicate_record_ids_in_ml_csv(self, d6_output: tuple) -> None:
+        """ML CSV should have no duplicate record_ids."""
+        _, run_folder = d6_output
+        with open(run_folder / "projections" / "ml_v1.csv", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        record_ids = [r["record_id"] for r in rows]
+        assert len(record_ids) == len(set(record_ids)), "ml_v1.csv contains duplicate record_ids"
+
+    def test_d6_no_duplicate_ids_in_llm_context(self, d6_output: tuple) -> None:
+        """LLM context should have no duplicate ids."""
+        _, run_folder = d6_output
+        with open(run_folder / "projections" / "llm_context_v1.json", encoding="utf-8") as f:
+            ctx = json.load(f)
+        # Single account → direct object; multi-account → array
+        contexts = [ctx] if isinstance(ctx, dict) and "tx" in ctx else ctx
+        for c in contexts:
+            ids = [tx["id"] for tx in c["tx"]]
+            assert len(ids) == len(set(ids)), "llm_context contains duplicate ids"
+
+    def test_d6_total_invariant(self, d6_output: tuple) -> None:
+        """total == emitted + dropped."""
+        summary, _ = d6_output
+        counts = summary["counts"]
+        assert counts["transactions_total"] == counts["transactions_emitted_sv"] + counts["transactions_dropped"]
+
+
+# ---------------------------------------------------------------------------
+# D4 — FAILED outcome (fail-gate from default.yaml)
+# ---------------------------------------------------------------------------
+
+class TestD4FailGate:
+    """Tests for D4 dataset which should trigger the fail-gate → FAILED."""
+
+    @pytest.fixture()
+    def d4_output(self, tmp_path: Path) -> tuple[dict, Path]:
+        data_dir = DATASETS_DIR / "D4_synth_errors_seed42"
+        summary = run_pipeline(
+            data_dir=data_dir,
+            output_dir=tmp_path,
+            run_id="d4-fail-test",
+            created_at_utc=FIXED_TS,
+        )
+        return summary, Path(summary["run_folder"])
+
+    def test_d4_outcome_failed(self, d4_output: tuple) -> None:
+        """D4 ERROR drop ratio > 5% → FAILED."""
+        summary, _ = d4_output
+        assert summary["outcome"] == "FAILED"
+
+    def test_d4_has_drops(self, d4_output: tuple) -> None:
+        """D4 should have exactly 4 dropped transactions."""
+        summary, _ = d4_output
+        assert summary["counts"]["transactions_dropped"] == 4
+
+    def test_d4_drop_ratio_exceeds_threshold(self, d4_output: tuple) -> None:
+        """The ERROR drop ratio must exceed 5% of total records."""
+        summary, _ = d4_output
+        counts = summary["counts"]
+        ratio = counts["transactions_dropped"] / counts["transactions_total"]
+        assert ratio > 0.05, f"Drop ratio {ratio:.2%} does not exceed 5%"
+
+    def test_d4_total_invariant(self, d4_output: tuple) -> None:
+        """total == emitted + dropped."""
+        summary, _ = d4_output
+        counts = summary["counts"]
+        assert counts["transactions_total"] == counts["transactions_emitted_sv"] + counts["transactions_dropped"]

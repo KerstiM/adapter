@@ -1,5 +1,5 @@
 id: R-01_SV_INVARIANTS
-version: "1.0.0"
+version: "1.1.0"
 
 rules:
   - id: INV-01_CURRENCY_FORMAT
@@ -36,6 +36,13 @@ rules:
     when: "not sign_matches(direction, amount.raw)"
     action: FLAG_ONLY
     message: "raw amount sign mismatched derived direction; normalized signed amount."
+
+  - id: INV-09_DUPLICATE_RECORD_ID
+    severity: WARN
+    scope: ACCOUNT
+    when: "count(record_id) > 1 within same account_id"
+    action: DROP_RECORD
+    message: "Duplicate record_id within account; keeping first deterministically."
 
   - id: INV-10_COUNTERPARTY_ALL_NULL
     severity: WARN
