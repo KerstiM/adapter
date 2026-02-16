@@ -188,6 +188,26 @@ def _validate_raw_transactions(tx_data: dict, schema: dict) -> list[dict]:
     return errors
 
 
+def _validate_raw_standing_orders(so_data: dict, schema: dict) -> list[dict]:
+    errors: list[dict] = []
+    try:
+        jsonschema.validate(so_data, schema)
+    except jsonschema.ValidationError as e:
+        errors.append({
+            "code": "S-00C_VALIDATION",
+            "severity": "ERROR",
+            "stage": "READ_INPUT",
+            "message": f"S-00C validation: {e.message}",
+            "refs": {
+                "account_id": None,
+                "record_id": None,
+                "field_path": ".".join(str(p) for p in e.absolute_path) or None,
+                "source_lineage": "standing_orders.json",
+            },
+        })
+    return errors
+
+
 # ---------------------------------------------------------------------------
 # Stage 2: Map RAW -> SV (C-01)
 # ---------------------------------------------------------------------------
@@ -818,7 +838,7 @@ def run_pipeline(
 
     # Load report files (C-01 inputs.reports)
     report_files: list[tuple[str, dict]] = []
-    for fname in ("transactions.json", "standing_orders.json"):
+    for fname in ("transactions.json",):
         fpath = data_dir / fname
         if fpath.exists():
             with open(fpath, encoding="utf-8") as f:
@@ -827,6 +847,16 @@ def run_pipeline(
             issues.extend(tx_errors)
             stage_errors_1 += len(tx_errors)
             report_files.append((fname, tx_data))
+
+    # Load optional standing orders (validated against S-00C)
+    so_path = data_dir / "standing_orders.json"
+    if so_path.exists():
+        with open(so_path, encoding="utf-8") as f:
+            so_data = json.load(f)
+        so_errors = _validate_raw_standing_orders(so_data, profile["schemas"]["S-00C"])
+        issues.extend(so_errors)
+        stage_errors_1 += len(so_errors)
+        report_files.append(("standing_orders.json", so_data))
 
     # Load optional download-only files (C-01 download_only_handling)
     for fname in ("transactions_download.json",):
