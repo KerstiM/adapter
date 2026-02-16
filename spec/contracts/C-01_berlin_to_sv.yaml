@@ -2,12 +2,11 @@ id: C-01_BERLIN_TO_SV
 version: "1.0.0"
 
 inputs:
-  accounts_file: "data/D1/accounts.json"
+  accounts_file: "accounts.json"
   reports:
-    - "data/D1/transactions.json"
-    - "data/D1/standing_orders.json"
-  optional_download_only:
-    - "data/D1/transactions_download.json"
+    - "transactions.json"
+  optional_reports:
+    - "standing_orders.json"
 
 account_resolution:
   match_by_iban:
@@ -85,6 +84,7 @@ output:
       input_path: "@json_path"
 
 download_only_handling:
+  note: "Not used in current datasets. Retained for future Berlin AIS download-only responses."
   when: "exists($._links.download.href)"
   action: "SKIP_FILE_AND_FLAG_RUN"
   run_flag:

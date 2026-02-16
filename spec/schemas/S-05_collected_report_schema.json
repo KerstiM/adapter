@@ -3,7 +3,7 @@
   "$id": "S-05_collected_report_schema.json",
   "title": "CollectedReport v1",
   "type": "object",
-  "required": ["report_schema_version", "run", "outcome", "summary", "issues", "metrics"],
+  "required": ["report_schema_version", "run", "outcome", "summary", "run_flags", "issues", "dropped_details"],
   "properties": {
     "report_schema_version": { "type": "string", "minLength": 1 },
 
@@ -37,12 +37,14 @@
       "properties": {
         "counts": {
           "type": "object",
-          "required": ["accounts_total", "transactions_total", "transactions_emitted_sv", "transactions_dropped"],
+          "required": ["accounts_total", "transactions_total", "transactions_emitted_sv", "transactions_dropped", "ml_rows", "llm_contexts"],
           "properties": {
             "accounts_total": { "type": "integer", "minimum": 0 },
             "transactions_total": { "type": "integer", "minimum": 0 },
             "transactions_emitted_sv": { "type": "integer", "minimum": 0 },
-            "transactions_dropped": { "type": "integer", "minimum": 0 }
+            "transactions_dropped": { "type": "integer", "minimum": 0 },
+            "ml_rows": { "type": "integer", "minimum": 0 },
+            "llm_contexts": { "type": "integer", "minimum": 0 }
           },
           "additionalProperties": false
         },
@@ -80,6 +82,20 @@
       "additionalProperties": false
     },
 
+    "run_flags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "severity", "message"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "severity": { "type": "string", "enum": ["CRITICAL", "ERROR", "WARN", "INFO"] },
+          "message": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+
     "issues": {
       "type": "array",
       "items": {
@@ -100,8 +116,7 @@
               "account_id": { "type": ["string", "null"] },
               "record_id": { "type": ["string", "null"] },
               "field_path": { "type": ["string", "null"] },
-              "source_lineage": { "type": ["string", "null"] },
-              "source_record_id": { "type": ["string", "null"] }
+              "source_lineage": { "type": ["string", "null"] }
             },
             "additionalProperties": false
           }
@@ -110,25 +125,18 @@
       }
     },
 
-    "metrics": {
+    "dropped_details": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "value", "method"],
+        "required": ["source_file", "input_path", "drop_reason"],
         "properties": {
-          "id": { "type": "string", "minLength": 1 },
-          "value": { "type": ["number", "null"] },
-          "method": {
-            "type": "object",
-            "required": ["basis"],
-            "properties": {
-              "basis": { "type": "string" },
-              "numerator": { "type": ["number", "null"] },
-              "denominator": { "type": ["number", "null"] }
-            },
-            "additionalProperties": false
-          },
-          "notes": { "type": ["string", "null"] }
+          "source_file": { "type": ["string", "null"] },
+          "input_path": { "type": ["string", "null"] },
+          "transaction_id": { "type": ["string", "null"] },
+          "record_id": { "type": ["string", "null"] },
+          "status": { "type": "string" },
+          "drop_reason": { "type": "string", "minLength": 1 }
         },
         "additionalProperties": false
       }

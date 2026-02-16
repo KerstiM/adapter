@@ -148,21 +148,43 @@ def _stable_json(obj: Any) -> str:
 # Stage 1: Read & validate RAW input
 # ---------------------------------------------------------------------------
 
-def _validate_raw_accounts(accounts_data: dict, schema: dict) -> list[str]:
-    errors = []
+def _validate_raw_accounts(accounts_data: dict, schema: dict) -> list[dict]:
+    errors: list[dict] = []
     try:
         jsonschema.validate(accounts_data, schema)
     except jsonschema.ValidationError as e:
-        errors.append(f"S-00A validation: {e.message}")
+        errors.append({
+            "code": "S-00A_VALIDATION",
+            "severity": "ERROR",
+            "stage": "READ_INPUT",
+            "message": f"S-00A validation: {e.message}",
+            "refs": {
+                "account_id": None,
+                "record_id": None,
+                "field_path": ".".join(str(p) for p in e.absolute_path) or None,
+                "source_lineage": "accounts.json",
+            },
+        })
     return errors
 
 
-def _validate_raw_transactions(tx_data: dict, schema: dict) -> list[str]:
-    errors = []
+def _validate_raw_transactions(tx_data: dict, schema: dict) -> list[dict]:
+    errors: list[dict] = []
     try:
         jsonschema.validate(tx_data, schema)
     except jsonschema.ValidationError as e:
-        errors.append(f"S-00B validation: {e.message}")
+        errors.append({
+            "code": "S-00B_VALIDATION",
+            "severity": "ERROR",
+            "stage": "READ_INPUT",
+            "message": f"S-00B validation: {e.message}",
+            "refs": {
+                "account_id": None,
+                "record_id": None,
+                "field_path": ".".join(str(p) for p in e.absolute_path) or None,
+                "source_lineage": "transactions.json",
+            },
+        })
     return errors
 
 
@@ -417,12 +439,23 @@ def _build_sv_bundle(
 # Stage 3: Validate SV schema
 # ---------------------------------------------------------------------------
 
-def _validate_sv_schema(sv_bundle: dict, schema: dict) -> list[str]:
-    errors = []
+def _validate_sv_schema(sv_bundle: dict, schema: dict) -> list[dict]:
+    errors: list[dict] = []
     try:
         jsonschema.validate(sv_bundle, schema)
     except jsonschema.ValidationError as e:
-        errors.append(f"S-01 validation: {e.message}")
+        errors.append({
+            "code": "S-01_VALIDATION",
+            "severity": "ERROR",
+            "stage": "VALIDATE_SCHEMA",
+            "message": f"S-01 validation: {e.message}",
+            "refs": {
+                "account_id": None,
+                "record_id": None,
+                "field_path": ".".join(str(p) for p in e.absolute_path) or None,
+                "source_lineage": "sv.json",
+            },
+        })
     return errors
 
 
@@ -678,6 +711,7 @@ def _build_report(
     profile: dict,
     data_dir: Path,
     outcome: str,
+    stop_reason: str,
     accounts_total: int,
     transactions_total: int,
     transactions_emitted_sv: int,
@@ -685,22 +719,27 @@ def _build_report(
     ml_rows_count: int,
     llm_contexts_count: int,
     by_severity: dict[str, int],
-    stage_log: dict[str, dict],
+    stage_log: list[dict],
     run_flags: list[dict],
-    issues: list[str],
+    issues: list[dict],
     dropped_details: list[dict] | None = None,
 ) -> dict:
-    """Build report.json structure."""
+    """Build report.json structure (S-05 compliant)."""
     return {
+        "report_schema_version": "1.0.0",
         "run": {
             "run_id": run_id,
             "created_at_utc": created_at_utc,
             "adapter_version": ADAPTER_VERSION,
-            "profile_id": profile["id"],
-            "data_dir": str(data_dir),
+            "sv_schema_version": "1.0.0",
+            "mapping_version": "1.0.0",
+            "ruleset_version": "1.1.0",
+        },
+        "outcome": {
+            "status": outcome,
+            "stop_reason": stop_reason,
         },
         "summary": {
-            "outcome": outcome,
             "counts": {
                 "accounts_total": accounts_total,
                 "transactions_total": transactions_total,
@@ -709,8 +748,8 @@ def _build_report(
                 "ml_rows": ml_rows_count,
                 "llm_contexts": llm_contexts_count,
             },
-            "by_severity": by_severity,
             "by_stage": stage_log,
+            "by_severity": by_severity,
         },
         "run_flags": run_flags,
         "issues": issues,
@@ -760,7 +799,7 @@ def run_pipeline(
     # Load profile (reads all spec files)
     profile = load_profile()
 
-    issues: list[str] = []
+    issues: list[dict] = []
     run_flags: list[dict] = []
     stage_log: dict[str, dict] = {}
 
@@ -978,13 +1017,38 @@ def run_pipeline(
 
     drop_ratio = error_drops / total_raw if total_raw > 0 else 0.0
     if drop_ratio > fail_ratio:
-        outcome = "FAILED"
-    elif by_severity["ERROR"] > 0 or any("S-01 validation" in str(i) for i in issues):
+        outcome = "FAIL"
+        stop_reason = f"error drop ratio {drop_ratio:.4f} exceeds threshold {fail_ratio}"
+    elif by_severity["ERROR"] > 0 or any(i.get("code", "").startswith("S-01") for i in issues):
         outcome = "PARTIAL_SUCCESS"
+        stop_reason = "errors present but below fail threshold"
     elif run_flags or by_severity["WARN"] > 0:
         outcome = "PARTIAL_SUCCESS"
+        stop_reason = "warnings present"
     else:
         outcome = "SUCCESS"
+        stop_reason = "all validations passed"
+
+    stage_log["WRITE_OUTPUTS"] = {
+        "status": "OK",
+        "errors": 0,
+        "warnings": 0,
+    }
+
+    # Convert stage_log dict to S-05 compliant array
+    stage_order = [
+        "READ_INPUT", "STANDARDIZE_TO_SV", "VALIDATE_SCHEMA",
+        "CHECK_INVARIANTS", "PROJECT_ML", "PROJECT_LLM", "WRITE_OUTPUTS",
+    ]
+    stage_log_array: list[dict] = []
+    for stage_name in stage_order:
+        entry = stage_log.get(stage_name, {})
+        stage_log_array.append({
+            "stage": stage_name,
+            "errors": entry.get("errors", 0),
+            "warnings": entry.get("warnings", 0),
+            "infos": 0,
+        })
 
     # report.json
     report = _build_report(
@@ -993,6 +1057,7 @@ def run_pipeline(
         profile=profile,
         data_dir=data_dir,
         outcome=outcome,
+        stop_reason=stop_reason,
         accounts_total=len(sv_bundle.get("accounts", [])),
         transactions_total=total_raw,
         transactions_emitted_sv=len(deduped_txs),
@@ -1000,7 +1065,7 @@ def run_pipeline(
         ml_rows_count=len(ml_rows),
         llm_contexts_count=len(llm_contexts),
         by_severity=by_severity,
-        stage_log=stage_log,
+        stage_log=stage_log_array,
         run_flags=run_flags,
         issues=issues,
         dropped_details=all_dropped_details,
@@ -1009,15 +1074,10 @@ def run_pipeline(
         f.write(_stable_json(report))
         f.write("\n")
 
-    stage_log["WRITE_OUTPUTS"] = {
-        "status": "OK",
-        "errors": 0,
-        "warnings": 0,
-    }
-
     # --- Return summary ---
     return {
         "outcome": outcome,
+        "stop_reason": stop_reason,
         "run_id": run_id,
         "run_folder": str(run_folder),
         "counts": {

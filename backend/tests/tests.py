@@ -2,7 +2,7 @@
 Happy-path tests for the adapter pipeline.
 
 Tests verify the full RAW -> SV -> ML/LLM projection flow
-using data/D1 Berlin AIS fixtures against specs:
+using datasets/D1_public_valid_small Berlin AIS fixtures against specs:
   S-01 (flat transactions, amount object, IN/OUT direction)
   C-02 (BOOKED+PENDING, row_id as int)
   C-03 (LLM context with short field names)
@@ -25,8 +25,8 @@ from adapter.pipeline import run_pipeline
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SPEC_DIR = PROJECT_ROOT / "spec"
-DATA_D1 = PROJECT_ROOT / "data" / "D1"
 DATASETS_DIR = PROJECT_ROOT / "datasets"
+DATA_D1 = DATASETS_DIR / "D1_public_valid_small"
 
 FIXED_RUN_ID = "test-run-001"
 FIXED_TS = "2026-01-01T00:00:00Z"
