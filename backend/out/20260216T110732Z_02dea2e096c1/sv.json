@@ -1,0 +1,1976 @@
+{
+  "accounts": [
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "currency": "EUR",
+      "iban": "DE01152449390926685878",
+      "name": "D2 Mixed Large Account"
+    }
+  ],
+  "meta": {
+    "created_at_utc": "2026-02-16T11:07:32Z",
+    "profile_id": "default",
+    "run_id": "02dea2e096c1",
+    "spec_versions": {
+      "C-01": "1.0.0",
+      "C-02": "1.0.0",
+      "C-03": "1.0.0",
+      "R-01": "1.0.0",
+      "S-00A": "1.0.0",
+      "S-00B": "1.0.0",
+      "S-01": "1.0.0"
+    }
+  },
+  "transactions": [
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "15.7",
+        "currency": "EUR",
+        "raw": "15.70",
+        "signed": "-15.7"
+      },
+      "booking_date": "2024-01-04",
+      "counterparty": {
+        "iban": "NL6036522444938449",
+        "name": "Peeter Kask",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "55054481848f3c78",
+      "remittance": "Utility bill January",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[0]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000035",
+      "value_date": "2024-01-04"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "3332.87",
+        "currency": "EUR",
+        "raw": "3332.87",
+        "signed": "-3332.87"
+      },
+      "booking_date": "2024-01-09",
+      "counterparty": {
+        "iban": "GB83622775679493977379",
+        "name": "Markus Berg",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "9d68d2028da92624",
+      "remittance": "Grocery store purchase",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[1]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000020",
+      "value_date": "2024-01-09"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "2486.07",
+        "currency": "EUR",
+        "raw": "2486.07",
+        "signed": "2486.07"
+      },
+      "booking_date": "2024-01-12",
+      "counterparty": {
+        "iban": "EE424360665137287674",
+        "name": "Viktor Lepp",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "42df76e29d80b2ce",
+      "remittance": "Tax payment WIQW3WHR",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[2]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000050",
+      "value_date": "2024-01-12"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "647.14",
+        "currency": "EUR",
+        "raw": "647.14",
+        "signed": "647.14"
+      },
+      "booking_date": "2024-01-25",
+      "counterparty": {
+        "iban": "NL8800380858325702",
+        "name": "Katrin Tamm",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "0089bf69eb653cfc",
+      "remittance": "Freelance payment EDHBHNW4",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[3]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000017",
+      "value_date": "2024-01-26"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "1429.8",
+        "currency": "EUR",
+        "raw": "1429.80",
+        "signed": "1429.8"
+      },
+      "booking_date": "2024-02-07",
+      "counterparty": {
+        "iban": "FR2781844088316229473057023",
+        "name": "Emma Mets",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "a4b211980c4ae6e9",
+      "remittance": "Tax payment WW2X4F7B",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[4]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000031",
+      "value_date": "2024-02-08"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "2731.72",
+        "currency": "EUR",
+        "raw": "2731.72",
+        "signed": "2731.72"
+      },
+      "booking_date": "2024-02-24",
+      "counterparty": {
+        "iban": "PL82433060055230111000542228",
+        "name": "Andres Lepp",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "2c863e0cfc242302",
+      "remittance": "Loan repayment February",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[5]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000003",
+      "value_date": "2024-02-24"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "2815.81",
+        "currency": "EUR",
+        "raw": "2815.81",
+        "signed": "2815.81"
+      },
+      "booking_date": "2024-04-10",
+      "counterparty": {
+        "iban": "SE3293157233640139454840",
+        "name": "Clara Mets",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "1821e3da0dfe4667",
+      "remittance": "Service fee",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[6]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000040",
+      "value_date": "2024-04-12"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "981.98",
+        "currency": "EUR",
+        "raw": "981.98",
+        "signed": "-981.98"
+      },
+      "booking_date": "2024-04-14",
+      "counterparty": {
+        "iban": "FR0584571670499232296197417",
+        "name": "Anna Jansen",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "19de7f418d61c11a",
+      "remittance": "Insurance premium Q2",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[7]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000021",
+      "value_date": "2024-04-16"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "5798.24",
+        "currency": "EUR",
+        "raw": "5798.24",
+        "signed": "-5798.24"
+      },
+      "booking_date": "2024-04-18",
+      "counterparty": {
+        "iban": "SE0478032950312821743254",
+        "name": "Ingrid Saar",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "f5751b3912f36b9f",
+      "remittance": "Tax payment 6UOOZQXE",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[8]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000019",
+      "value_date": "2024-04-18"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "1158.57",
+        "currency": "EUR",
+        "raw": "-1158.57",
+        "signed": "1158.57"
+      },
+      "booking_date": "2024-04-21",
+      "counterparty": {
+        "iban": "SE7256141119563109707457",
+        "name": "Carlos Berg",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "4cf2e4b20ada63ac",
+      "remittance": "Rent payment April",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[9]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000007",
+      "value_date": "2024-04-22"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "736.4",
+        "currency": "EUR",
+        "raw": "736.40",
+        "signed": "-736.4"
+      },
+      "booking_date": "2024-05-06",
+      "counterparty": {
+        "iban": "GB95464802066218131102",
+        "name": "Marie Dubois",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "453a08c54b89acb3",
+      "remittance": "Service fee",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[10]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000005",
+      "value_date": "2024-05-06"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "3604.76",
+        "currency": "EUR",
+        "raw": "3604.76",
+        "signed": "-3604.76"
+      },
+      "booking_date": "2024-05-08",
+      "counterparty": {
+        "iban": "NL3390559022167425",
+        "name": "Marie Nilsson",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "be1ac779037d22e1",
+      "remittance": "Freelance payment UEXZ8IB1",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[11]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000015",
+      "value_date": "2024-05-08"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "3640.78",
+        "currency": "EUR",
+        "raw": "-3640.78",
+        "signed": "3640.78"
+      },
+      "booking_date": "2024-05-17",
+      "counterparty": {
+        "iban": "EE828233025228858827",
+        "name": "Elena Berg",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "3a78b7304acf1edf",
+      "remittance": "Service fee",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[12]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000001",
+      "value_date": "2024-05-17"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "7750.47",
+        "currency": "EUR",
+        "raw": "7750.47",
+        "signed": "-7750.47"
+      },
+      "booking_date": "2024-05-19",
+      "counterparty": {
+        "iban": "FR2634800521802765744121012",
+        "name": "Olivia Saar",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "09f64368ac656763",
+      "remittance": "Grocery store purchase",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[13]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000032",
+      "value_date": "2024-05-19"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "309.08",
+        "currency": "EUR",
+        "raw": "309.08",
+        "signed": "-309.08"
+      },
+      "booking_date": "2024-05-25",
+      "counterparty": {
+        "iban": "FR6927315107289678525449608",
+        "name": "Emma Kask",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "3210b0bd6f84ad0d",
+      "remittance": "Rent payment May",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[14]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000004",
+      "value_date": "2024-05-26"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "9365.29",
+        "currency": "EUR",
+        "raw": "9365.29",
+        "signed": "-9365.29"
+      },
+      "booking_date": "2024-05-30",
+      "counterparty": {
+        "iban": "NL1001616996800213",
+        "name": "Andres Jansen",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "b574fc45c04bb165",
+      "remittance": "Tax payment I6K76E9G",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[15]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000042",
+      "value_date": "2024-05-30"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "6703.37",
+        "currency": "EUR",
+        "raw": "6703.37",
+        "signed": "-6703.37"
+      },
+      "booking_date": "2024-05-31",
+      "counterparty": {
+        "iban": "EE903711055956251897",
+        "name": "Viktor Tamm",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "0aec4c1448914922",
+      "remittance": "Utility bill June",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[16]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000028",
+      "value_date": "2024-06-02"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "1766.29",
+        "currency": "EUR",
+        "raw": "1766.29",
+        "signed": "1766.29"
+      },
+      "booking_date": "2024-06-03",
+      "counterparty": {
+        "iban": "SE1770903513412316471499",
+        "name": "Anna Tamm",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "152408ad5a5fbc21",
+      "remittance": "Rent payment June",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[17]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000043",
+      "value_date": "2024-06-03"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "6514.04",
+        "currency": "EUR",
+        "raw": "6514.04",
+        "signed": "-6514.04"
+      },
+      "booking_date": "2024-06-16",
+      "counterparty": {
+        "iban": "EE933952546997741839",
+        "name": "Stefan Tamm",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "fe7cae52b501388c",
+      "remittance": "Grocery store purchase",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[18]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000029",
+      "value_date": "2024-06-17"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "1665.8",
+        "currency": "EUR",
+        "raw": "1665.80",
+        "signed": "-1665.8"
+      },
+      "booking_date": "2024-06-19",
+      "counterparty": {
+        "iban": "EE273452137352522348",
+        "name": "Emma Rossi",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "a8d8911a05340507",
+      "remittance": "Donation to charity",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[19]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000013",
+      "value_date": "2024-06-20"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "6112",
+        "currency": "EUR",
+        "raw": "6112.00",
+        "signed": "6112"
+      },
+      "booking_date": "2024-06-18",
+      "counterparty": {
+        "iban": "SE6599921932955039035007",
+        "name": "Stefan Smith",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "57b48b4286478b18",
+      "remittance": "Utility bill June",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[20]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000046",
+      "value_date": "2024-06-20"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "4654.58",
+        "currency": "EUR",
+        "raw": "4654.58",
+        "signed": "-4654.58"
+      },
+      "booking_date": "2024-06-23",
+      "counterparty": {
+        "iban": "GB09099166697946040029",
+        "name": "Liisa Nilsson",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "4e845fd9660235a4",
+      "remittance": "Donation to charity",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[21]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000047",
+      "value_date": "2024-06-24"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "3634.76",
+        "currency": "EUR",
+        "raw": "3634.76",
+        "signed": "-3634.76"
+      },
+      "booking_date": "2024-07-03",
+      "counterparty": {
+        "iban": "PL74892005605801889666322900",
+        "name": "Ingrid Smith",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "938fd703583549ba",
+      "remittance": "Refund order 1ZMGA58U",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[22]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000024",
+      "value_date": "2024-07-03"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "8875.51",
+        "currency": "EUR",
+        "raw": "8875.51",
+        "signed": "-8875.51"
+      },
+      "booking_date": "2024-07-01",
+      "counterparty": {
+        "iban": "DE24040646368496640424",
+        "name": "Liisa Mets",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "a2dd6ff5803b4ea3",
+      "remittance": "Invoice HHLJGYMO",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[23]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000049",
+      "value_date": "2024-07-03"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "4888.4",
+        "currency": "EUR",
+        "raw": "-4888.40",
+        "signed": "4888.4"
+      },
+      "booking_date": "2024-07-21",
+      "counterparty": {
+        "iban": "SE1991152826110246357284",
+        "name": "Laura Oja",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "6e67aa7f86383bfd",
+      "remittance": "Salary July",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[24]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000008",
+      "value_date": "2024-07-21"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "5319.86",
+        "currency": "EUR",
+        "raw": "5319.86",
+        "signed": "-5319.86"
+      },
+      "booking_date": "2024-07-21",
+      "counterparty": {
+        "iban": "FR4672457712562015251608539",
+        "name": "Ingrid Mets",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "194f054f1f4361a4",
+      "remittance": "Utility bill July",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[25]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000014",
+      "value_date": "2024-07-23"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "1109.49",
+        "currency": "EUR",
+        "raw": "1109.49",
+        "signed": "-1109.49"
+      },
+      "booking_date": "2024-07-25",
+      "counterparty": {
+        "iban": "NL3831061849308886",
+        "name": "Stefan Mets",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "90475781dc63c52f",
+      "remittance": "Utility bill July",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[26]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000025",
+      "value_date": "2024-07-25"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "9517.81",
+        "currency": "EUR",
+        "raw": "9517.81",
+        "signed": "9517.81"
+      },
+      "booking_date": "2024-08-03",
+      "counterparty": {
+        "iban": "GB21719270263758263155",
+        "name": "Mart Dubois",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "cf4b9292a2631fa6",
+      "remittance": "Transfer to savings",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[27]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000041",
+      "value_date": "2024-08-05"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "5811.18",
+        "currency": "EUR",
+        "raw": "-5811.18",
+        "signed": "5811.18"
+      },
+      "booking_date": "2024-08-09",
+      "counterparty": {
+        "iban": "GB92175081954540611430",
+        "name": "Jan Oja",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "3e6c569a0a389047",
+      "remittance": "Service fee",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[28]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000006",
+      "value_date": "2024-08-10"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "1624.76",
+        "currency": "EUR",
+        "raw": "1624.76",
+        "signed": "-1624.76"
+      },
+      "booking_date": "2024-08-09",
+      "counterparty": {
+        "iban": "PL52042269477736643506906408",
+        "name": "Stefan Saar",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "91213d483591b227",
+      "remittance": "Insurance premium Q3",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[29]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000026",
+      "value_date": "2024-08-11"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "4900.64",
+        "currency": "EUR",
+        "raw": "-4900.64",
+        "signed": "4900.64"
+      },
+      "booking_date": "2024-08-22",
+      "counterparty": {
+        "iban": "SE7759877352947448888996",
+        "name": "Henrik Kowalski",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "b9ed56848ba38689",
+      "remittance": "Transfer to savings",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[30]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000002",
+      "value_date": "2024-08-24"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "4042.23",
+        "currency": "EUR",
+        "raw": "4042.23",
+        "signed": "4042.23"
+      },
+      "booking_date": "2024-08-22",
+      "counterparty": {
+        "iban": "EE709626807464675851",
+        "name": "Carlos Saar",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "a8fede08bf8a6c77",
+      "remittance": "Service fee",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[31]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000009",
+      "value_date": "2024-08-24"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "6501.19",
+        "currency": "EUR",
+        "raw": "6501.19",
+        "signed": "-6501.19"
+      },
+      "booking_date": "2024-08-23",
+      "counterparty": {
+        "iban": "EE399631683499379209",
+        "name": "Peeter Tamm",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "e974bbe5c3f9c4f5",
+      "remittance": "Donation to charity",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[32]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000010",
+      "value_date": "2024-08-25"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "8628.42",
+        "currency": "EUR",
+        "raw": "8628.42",
+        "signed": "-8628.42"
+      },
+      "booking_date": "2024-08-27",
+      "counterparty": {
+        "iban": "GB20675239279023309173",
+        "name": "Julia Jansen",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "aa1f0c3701c1374b",
+      "remittance": "Loan repayment August",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[33]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000030",
+      "value_date": "2024-08-27"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "6778.66",
+        "currency": "EUR",
+        "raw": "6778.66",
+        "signed": "6778.66"
+      },
+      "booking_date": "2024-09-14",
+      "counterparty": {
+        "iban": "EE153051609145835630",
+        "name": "Viktor Berg",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "0bbe3bf82939f3b7",
+      "remittance": "Rent payment September",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[34]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000034",
+      "value_date": "2024-09-14"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "5110.2",
+        "currency": "EUR",
+        "raw": "5110.20",
+        "signed": "5110.2"
+      },
+      "booking_date": "2024-09-14",
+      "counterparty": {
+        "iban": "NL6345626265418174",
+        "name": "Katrin Jansen",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "67c3538ec14ed97a",
+      "remittance": "Transfer to savings",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[35]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000018",
+      "value_date": "2024-09-16"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "5809.23",
+        "currency": "EUR",
+        "raw": "5809.23",
+        "signed": "-5809.23"
+      },
+      "booking_date": "2024-09-17",
+      "counterparty": {
+        "iban": "SE3400702235380924188126",
+        "name": "Clara Kuusk",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "6105c00ecbb10f71",
+      "remittance": "Loan repayment September",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[36]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000023",
+      "value_date": "2024-09-18"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "5392.74",
+        "currency": "EUR",
+        "raw": "5392.74",
+        "signed": "-5392.74"
+      },
+      "booking_date": "2024-09-25",
+      "counterparty": {
+        "iban": "FR6971887842351336283862147",
+        "name": "Julia Tamm",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "017700f53294dd52",
+      "remittance": "Rent payment September",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[37]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000036",
+      "value_date": "2024-09-26"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "286.86",
+        "currency": "EUR",
+        "raw": "286.86",
+        "signed": "286.86"
+      },
+      "booking_date": "2024-09-26",
+      "counterparty": {
+        "iban": "DE90541626033296809413",
+        "name": "Laura Lepp",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "fc1351f0aa139809",
+      "remittance": "Refund order IHYYG6A8",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[38]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000039",
+      "value_date": "2024-09-26"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "7546.93",
+        "currency": "EUR",
+        "raw": "7546.93",
+        "signed": "7546.93"
+      },
+      "booking_date": "2024-09-27",
+      "counterparty": {
+        "iban": "EE487019526420276742",
+        "name": "Henrik Nilsson",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "bf5ddc3a2b107576",
+      "remittance": "Invoice KQAB4UHY",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[39]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000011",
+      "value_date": "2024-09-29"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "2881.69",
+        "currency": "EUR",
+        "raw": "2881.69",
+        "signed": "-2881.69"
+      },
+      "booking_date": "2024-09-30",
+      "counterparty": {
+        "iban": "DE83616979871679585223",
+        "name": "Carlos Oja",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "91f9577d42a58783",
+      "remittance": "Donation to charity",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[40]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000027",
+      "value_date": "2024-09-30"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "9972.39",
+        "currency": "EUR",
+        "raw": "9972.39",
+        "signed": "9972.39"
+      },
+      "booking_date": "2024-10-05",
+      "counterparty": {
+        "iban": "PL33938484942096800738540752",
+        "name": "Felix Berg",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "89d4be5cc644b874",
+      "remittance": "Insurance premium Q4",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[41]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000037",
+      "value_date": "2024-10-06"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "8050.65",
+        "currency": "EUR",
+        "raw": "8050.65",
+        "signed": "8050.65"
+      },
+      "booking_date": "2024-10-17",
+      "counterparty": {
+        "iban": "SE6360567852810262634981",
+        "name": "Marie Mueller",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "d22467fb96877937",
+      "remittance": "Salary October",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[42]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000033",
+      "value_date": "2024-10-19"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "5240.31",
+        "currency": "EUR",
+        "raw": "5240.31",
+        "signed": "-5240.31"
+      },
+      "booking_date": "2024-10-27",
+      "counterparty": {
+        "iban": "GB04329661766764333088",
+        "name": "Andres Jansen",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "14a511195cd9f246",
+      "remittance": "Tax payment 5VTANPIJ",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[43]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000022",
+      "value_date": "2024-10-29"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "5880.41",
+        "currency": "EUR",
+        "raw": "5880.41",
+        "signed": "5880.41"
+      },
+      "booking_date": "2024-11-12",
+      "counterparty": {
+        "iban": "EE726687017921821647",
+        "name": "Markus Paju",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "285afef0e0f95120",
+      "remittance": "Service fee",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[44]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000016",
+      "value_date": "2024-11-13"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "6896.58",
+        "currency": "EUR",
+        "raw": "6896.58",
+        "signed": "-6896.58"
+      },
+      "booking_date": "2024-11-28",
+      "counterparty": {
+        "iban": "DE45454681836982814037",
+        "name": "Clara Rossi",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "da09ab39956baea7",
+      "remittance": "Freelance payment IJ8E3NNL",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[45]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000012",
+      "value_date": "2024-11-28"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "3830.45",
+        "currency": "EUR",
+        "raw": "3830.45",
+        "signed": "3830.45"
+      },
+      "booking_date": "2024-11-30",
+      "counterparty": {
+        "iban": "NL6412061892005398",
+        "name": "Viktor Paju",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "b9a26443deabdb2f",
+      "remittance": "Insurance premium Q4",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[46]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000038",
+      "value_date": "2024-11-30"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "1807.13",
+        "currency": "EUR",
+        "raw": "1807.13",
+        "signed": "-1807.13"
+      },
+      "booking_date": "2024-12-09",
+      "counterparty": {
+        "iban": "FR4788844958987661618215679",
+        "name": "Viktor Saar",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "817fdb0457b2c229",
+      "remittance": "Salary December",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[47]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000048",
+      "value_date": "2024-12-11"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "1028.96",
+        "currency": "EUR",
+        "raw": "1028.96",
+        "signed": "1028.96"
+      },
+      "booking_date": "2024-12-26",
+      "counterparty": {
+        "iban": "DE34033787700468983617",
+        "name": "Tomas Dubois",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "24279a16711b8b28",
+      "remittance": "Insurance premium Q4",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[48]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000045",
+      "value_date": "2024-12-27"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "420.19",
+        "currency": "EUR",
+        "raw": "420.19",
+        "signed": "-420.19"
+      },
+      "booking_date": "2024-12-31",
+      "counterparty": {
+        "iban": "PL86808641744632310482669020",
+        "name": "Emma Dubois",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "e6ae7cbd0eb6f416",
+      "remittance": "Invoice 7B6ZT4F9",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[49]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX00000044",
+      "value_date": "2024-12-31"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "5296.36",
+        "currency": "EUR",
+        "raw": "5296.36",
+        "signed": "-5296.36"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "NL9601122548331184",
+        "name": "Tomas Nilsson",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "025f5e5631a16b1c",
+      "remittance": "Freelance payment QSFGES1Q",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[0]"
+      },
+      "status": "PENDING",
+      "transaction_id": "TX00000051",
+      "value_date": "2024-01-15"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "1159.68",
+        "currency": "EUR",
+        "raw": "1159.68",
+        "signed": "1159.68"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "FR0882508432833708864780293",
+        "name": "Jan Dubois",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "bcc57339fd21a7ca",
+      "remittance": "Salary April",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[1]"
+      },
+      "status": "PENDING",
+      "transaction_id": "TX00000057",
+      "value_date": "2024-04-19"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "7081.67",
+        "currency": "EUR",
+        "raw": "7081.67",
+        "signed": "-7081.67"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "SE4068724589128695067611",
+        "name": "Tomas Saar",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "696d56cea1b46aa2",
+      "remittance": "Insurance premium Q2",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[2]"
+      },
+      "status": "PENDING",
+      "transaction_id": "TX00000055",
+      "value_date": "2024-05-04"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "958.49",
+        "currency": "EUR",
+        "raw": "958.49",
+        "signed": "958.49"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "SE1363693731281533575427",
+        "name": "Luca Lepp",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "ff3e293b1b76673f",
+      "remittance": "Service fee",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[3]"
+      },
+      "status": "PENDING",
+      "transaction_id": "TX00000054",
+      "value_date": "2024-06-05"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "5936.4",
+        "currency": "EUR",
+        "raw": "5936.40",
+        "signed": "-5936.4"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "GB66289233310061687256",
+        "name": "Felix Kuusk",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "f9d82de85be37611",
+      "remittance": "Rent payment June",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[4]"
+      },
+      "status": "PENDING",
+      "transaction_id": "TX00000056",
+      "value_date": "2024-06-13"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "3877.33",
+        "currency": "EUR",
+        "raw": "3877.33",
+        "signed": "3877.33"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "DE41384400505466329087",
+        "name": "Ingrid Rossi",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "6ae8070c70987eba",
+      "remittance": "Refund order Q42G4TC2",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[5]"
+      },
+      "status": "PENDING",
+      "transaction_id": "TX00000065",
+      "value_date": "2024-06-14"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "1538.65",
+        "currency": "EUR",
+        "raw": "1538.65",
+        "signed": "-1538.65"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "FR0458868421249658719474189",
+        "name": "Markus Berg",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "c2f982636c9aacbd",
+      "remittance": "Service fee",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[6]"
+      },
+      "status": "PENDING",
+      "transaction_id": "TX00000063",
+      "value_date": "2024-06-15"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "9405.72",
+        "currency": "EUR",
+        "raw": "9405.72",
+        "signed": "-9405.72"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "DE68623958647245602589",
+        "name": "Emma Kuusk",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "13006a3635cef10e",
+      "remittance": "Subscription renewal",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[7]"
+      },
+      "status": "PENDING",
+      "transaction_id": "TX00000052",
+      "value_date": "2024-06-22"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "9765.15",
+        "currency": "EUR",
+        "raw": "9765.15",
+        "signed": "-9765.15"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "FR9112930492065147729036452",
+        "name": "Katrin Mets",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "abf5831758277df8",
+      "remittance": "Refund order 8QC7L6HC",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[8]"
+      },
+      "status": "PENDING",
+      "transaction_id": "TX00000059",
+      "value_date": "2024-07-01"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "7510.5",
+        "currency": "EUR",
+        "raw": "7510.50",
+        "signed": "7510.5"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "SE3537847556508873738799",
+        "name": "Julia Oja",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "47bdc0821cbf82d9",
+      "remittance": "Loan repayment July",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[9]"
+      },
+      "status": "PENDING",
+      "transaction_id": "TX00000064",
+      "value_date": "2024-07-29"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "4295.12",
+        "currency": "EUR",
+        "raw": "4295.12",
+        "signed": "-4295.12"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "SE8611307169299156879964",
+        "name": "Laura Jansen",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "a5de430453a6a2bc",
+      "remittance": "Invoice 9HA5TESR",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[10]"
+      },
+      "status": "PENDING",
+      "transaction_id": "TX00000066",
+      "value_date": "2024-08-10"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "9634.26",
+        "currency": "EUR",
+        "raw": "9634.26",
+        "signed": "9634.26"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "NL0775977742994974",
+        "name": "Ingrid Dubois",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "5fe1d4066a58304d",
+      "remittance": "Online purchase CA3PEB2H",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[11]"
+      },
+      "status": "PENDING",
+      "transaction_id": "TX00000058",
+      "value_date": "2024-08-25"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "6739.31",
+        "currency": "EUR",
+        "raw": "6739.31",
+        "signed": "6739.31"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "FR4780295892444206266185654",
+        "name": "Ingrid Kowalski",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "0c6a34c87642fb7c",
+      "remittance": "Grocery store purchase",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[12]"
+      },
+      "status": "PENDING",
+      "transaction_id": "TX00000060",
+      "value_date": "2024-09-01"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "8924.19",
+        "currency": "EUR",
+        "raw": "8924.19",
+        "signed": "8924.19"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "GB46780595340056098371",
+        "name": "Julia Nilsson",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "b8c6aa3d0f4ba467",
+      "remittance": "Service fee",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[13]"
+      },
+      "status": "PENDING",
+      "transaction_id": "TX00000062",
+      "value_date": "2024-10-31"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "150.38",
+        "currency": "EUR",
+        "raw": "150.38",
+        "signed": "150.38"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "DE83018526299465290897",
+        "name": "Markus Paju",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "d7542f699d4f1cba",
+      "remittance": "Online purchase 3A2GGYQM",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[14]"
+      },
+      "status": "PENDING",
+      "transaction_id": "TX00000053",
+      "value_date": "2024-11-22"
+    },
+    {
+      "account_id": "d95bafc8-f2a4-427b-9cf4-bb99f4bea973",
+      "amount": {
+        "abs": "9343.47",
+        "currency": "EUR",
+        "raw": "9343.47",
+        "signed": "9343.47"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "GB60702302770383814923",
+        "name": "Markus Smith",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "13ec06ccb4c2b5de",
+      "remittance": "Freelance payment 4Q4K8CRI",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.pending[15]"
+      },
+      "status": "PENDING",
+      "transaction_id": "TX00000061",
+      "value_date": "2024-12-04"
+    }
+  ]
+}
