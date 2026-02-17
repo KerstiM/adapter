@@ -59,6 +59,7 @@
     {
       "dataset_id": "D4_synth_errors_seed42",
       "expected_outcome": "FAILED",
+      "expected_raw_validation": "FAIL",
       "golden": {
         "sv.json": {
           "sha256": "52b8cad4c5510a2a26020eb36c8cd4b8247e11a957f704b10976547c976b2692"

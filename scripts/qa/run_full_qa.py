@@ -675,19 +675,43 @@ def main() -> None:
     schemas = _load_schemas()
     ds_all_ok = True
 
+    # Load expected_raw_validation from manifest
+    expected_raw: dict[str, str] = {}
+    manifest_path = FROZEN_DIR / "manifest.json"
+    if manifest_path.exists():
+        manifest_data = load_json(manifest_path)
+        for entry in manifest_data.get("datasets", []):
+            erv = entry.get("expected_raw_validation")
+            if erv:
+                expected_raw[entry["dataset_id"]] = erv.upper()
+
+    expected_fail_count = 0
+
     for ds_dir in datasets:
         result = validate_dataset_inputs(ds_dir, schemas)
         has_fail = len(result["failed"]) > 0
-        status = "FAIL" if has_fail else "PASS"
-        print(f"  {result['dataset']}: {status}")
+        ds_name = result["dataset"]
+        ds_expected = expected_raw.get(ds_name)
+
+        if ds_expected == "FAIL":
+            if has_fail:
+                status = "PASS (expected fail)"
+                expected_fail_count += 1
+            else:
+                status = "FAIL (expected fail did not happen)"
+                ds_all_ok = False
+        else:
+            status = "FAIL" if has_fail else "PASS"
+            if has_fail:
+                ds_all_ok = False
+
+        print(f"  {ds_name}: {status}")
         for p in result["passed"]:
             print(f"    PASS  {p}")
         for s in result["skipped"]:
             print(f"    SKIP  {s}")
         for f in result["failed"]:
             print(f"    FAIL  {f}")
-        if has_fail:
-            ds_all_ok = False
 
     section_results["DATASETS"] = "PASS" if ds_all_ok else "FAIL"
     if not ds_all_ok:
@@ -766,6 +790,8 @@ def main() -> None:
     for section, result in section_results.items():
         tag = "PASS" if result == "PASS" else ("SKIP" if result == "SKIP" else "FAIL")
         print(f"  {section}: {tag}")
+    if expected_fail_count:
+        print(f"  expected-fail datasets: {expected_fail_count}")
 
     print()
     if overall_pass:
