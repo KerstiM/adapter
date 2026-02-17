@@ -1,0 +1,158 @@
+{
+  "accounts": [
+    {
+      "account_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "currency": "EUR",
+      "iban": "DE89370400440532013000",
+      "name": "D7 Standing Orders Test Account"
+    }
+  ],
+  "meta": {
+    "created_at_utc": "2000-01-01T00:00:00Z",
+    "profile_id": "default",
+    "run_id": "golden_D7_standing_orders_seed77",
+    "spec_versions": {
+      "C-01": "1.0.0",
+      "C-02": "1.0.0",
+      "C-03": "1.0.0",
+      "R-01": "1.1.0",
+      "S-00A": "1.0.0",
+      "S-00B": "1.0.0",
+      "S-01": "1.0.0"
+    }
+  },
+  "transactions": [
+    {
+      "account_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "amount": {
+        "abs": "1200",
+        "currency": "EUR",
+        "raw": "1200.00",
+        "signed": "1200"
+      },
+      "booking_date": "2025-01-15",
+      "counterparty": {
+        "iban": "DE27100777770209299700",
+        "name": "Anna Schmidt",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "64542527bf78471a",
+      "remittance": "Salary January",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[0]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "TX-D7-B001",
+      "value_date": "2025-01-15"
+    },
+    {
+      "account_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "amount": {
+        "abs": "85",
+        "currency": "EUR",
+        "raw": "85.00",
+        "signed": "-85"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "DE44500105175407324931",
+        "name": "Stadtwerke Berlin",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "MAP-01_VALUE_DATE_FALLBACK",
+          "message": "valueDate missing; fell back to nextExecutionDate.",
+          "severity": "WARN"
+        },
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "f0e0cd60ae69217e",
+      "remittance": "Electricity monthly",
+      "source": {
+        "input_file": "standing_orders.json",
+        "input_path": "$.transactions.information[0]"
+      },
+      "status": "INFORMATION",
+      "transaction_id": null,
+      "value_date": "2025-02-01"
+    },
+    {
+      "account_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "amount": {
+        "abs": "750",
+        "currency": "EUR",
+        "raw": "750.00",
+        "signed": "-750"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "DE02120300000000202051",
+        "name": "Vonovia SE",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "b2c1ccbcc917c5ed",
+      "remittance": "Rent February 2025",
+      "source": {
+        "input_file": "standing_orders.json",
+        "input_path": "$.transactions.information[1]"
+      },
+      "status": "INFORMATION",
+      "transaction_id": null,
+      "value_date": "2025-02-01"
+    },
+    {
+      "account_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "amount": {
+        "abs": "120.5",
+        "currency": "EUR",
+        "raw": "120.50",
+        "signed": "-120.5"
+      },
+      "booking_date": null,
+      "counterparty": {
+        "iban": "DE13200800000040164155",
+        "name": "Allianz Versicherung",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "MAP-01_VALUE_DATE_FALLBACK",
+          "message": "valueDate missing; fell back to nextExecutionDate.",
+          "severity": "WARN"
+        },
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "8765bec1179f7993",
+      "remittance": "Insurance premium Q1",
+      "source": {
+        "input_file": "standing_orders.json",
+        "input_path": "$.transactions.information[2]"
+      },
+      "status": "INFORMATION",
+      "transaction_id": null,
+      "value_date": "2025-04-01"
+    }
+  ]
+}

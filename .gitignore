@@ -54,6 +54,9 @@ out/
 # backend/out/
 # out/
 
+# Golden outputs for regression testing — committed, NOT ignored
+# golden/
+
 # AI ja IDE seaded
 .kilocode/
 .claude/
