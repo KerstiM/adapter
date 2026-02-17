@@ -1,0 +1,2 @@
+row_id,account_id,record_id,status,booking_date,value_date,direction,currency,signed_amount,abs_amount,counterparty_name,remittance
+1,a1b2c3d4-e5f6-7890-abcd-ef1234567890,64542527bf78471a,BOOKED,2025-01-15,2025-01-15,IN,EUR,1200,1200,Anna Schmidt,Salary January
