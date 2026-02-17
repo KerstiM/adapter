@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.local/schemas/S-00C_berlin_standing_orders.schema.json",
+  "version": "1.0.0",
   "title": "Berlin Group AIS - Read Standing Orders (minimal subset)",
   "$ref": "#/$defs/ReportResponse",
   "$defs": {
