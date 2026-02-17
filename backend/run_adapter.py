@@ -5,7 +5,7 @@ Usage:
     python run_adapter.py --data D4
     python run_adapter.py --data D1_public_valid_small
     python run_adapter.py --data ../datasets/D4_synth_errors_seed42
-    python run_adapter.py                          # defaults to datasets/D1*
+    python run_adapter.py                          # defaults to D1_public_valid_small
 """
 import argparse
 from pathlib import Path
@@ -21,8 +21,10 @@ def _resolve_data_dir(name: str) -> Path:
 
     Tries in order:
       1. Exact path (absolute or relative)
-      2. Exact name under datasets/
-      3. Prefix match (e.g. 'D4' matches 'D4_synth_errors_seed42')
+      2. Exact folder name under datasets/
+      3. Prefix match: folder equals *name* (case-insensitive) or starts
+         with *name* + ``"_"`` (case-insensitive).  The ``"_"`` fence
+         prevents ``D1`` from matching ``D10_*``.
     """
     # 1. Direct path
     p = Path(name)
@@ -30,17 +32,21 @@ def _resolve_data_dir(name: str) -> Path:
         return p
 
     # 2 & 3. Search known dirs
+    name_upper = name.upper()
     for search_dir in SEARCH_DIRS:
         if not search_dir.is_dir():
             continue
-        # Exact match
+        # Exact folder-name match
         candidate = search_dir / name
         if candidate.is_dir() and (candidate / "accounts.json").exists():
             return candidate
-        # Prefix match
+        # Prefix match – require name + "_" so "D1" won't match "D10_*"
         matches = sorted(
             d for d in search_dir.iterdir()
-            if d.is_dir() and d.name.upper().startswith(name.upper()) and (d / "accounts.json").exists()
+            if d.is_dir()
+            and (d.name.upper() == name_upper
+                 or d.name.upper().startswith(name_upper + "_"))
+            and (d / "accounts.json").exists()
         )
         if len(matches) == 1:
             return matches[0]
@@ -54,17 +60,18 @@ def _resolve_data_dir(name: str) -> Path:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run the adapter pipeline.")
     parser.add_argument("--data", "-d", default=None,
-                        help="Dataset name (e.g. D1, D4) or path. Default: datasets/D1*")
+                        help="Dataset name (e.g. D1, D4) or path. "
+                             "Default: D1_public_valid_small")
     parser.add_argument("--out", "-o", default=None,
-                        help="Output directory. Default: backend/out/")
+                        help="Output directory. Default: <repo>/.backend/out/")
     args = parser.parse_args()
 
     if args.data:
         data_dir = _resolve_data_dir(args.data)
     else:
-        data_dir = _resolve_data_dir("D1")
+        data_dir = _resolve_data_dir("D1_public_valid_small")
 
-    output_dir = Path(args.out) if args.out else Path(__file__).resolve().parent / "out"
+    output_dir = Path(args.out) if args.out else ROOT / ".backend" / "out"
 
     print(f"Dataset:    {data_dir}")
     print(f"Output to:  {output_dir}")
@@ -73,6 +80,7 @@ def main() -> None:
     summary = run_pipeline(data_dir, output_dir)
 
     print(f"Outcome:    {summary['outcome']}")
+    print(f"stop_reason: {summary.get('stop_reason', '?')}")
     print(f"Run folder: {summary['run_folder']}")
     counts = summary["counts"]
     print(f"  accounts:     {counts['accounts_total']}")
@@ -89,7 +97,7 @@ def main() -> None:
     if summary.get("dropped_details"):
         print(f"  dropped_details:")
         for d in summary["dropped_details"]:
-            print(f"    {d['input_path']} ({d.get('source_file', '?')}): {d['drop_reason']}")
+            print(f"    {d.get('input_path', '?')} ({d.get('source_file', '?')}): {d.get('drop_reason', '?')}")
 
     if summary["run_flags"]:
         print(f"  run_flags:    {len(summary['run_flags'])}")
