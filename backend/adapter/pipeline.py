@@ -857,16 +857,21 @@ def run_pipeline(
     stage_errors_1 += len(acct_errors)
 
     # Load report files (C-01 inputs.reports)
+    # Multi-account support: load ALL transactions*.json files except
+    # transactions_download.json (handled separately below).
     report_files: list[tuple[str, dict]] = []
-    for fname in ("transactions.json",):
+    tx_candidates = sorted(
+        p.name for p in data_dir.glob("transactions*.json")
+        if p.name != "transactions_download.json"
+    )
+    for fname in tx_candidates:
         fpath = data_dir / fname
-        if fpath.exists():
-            with open(fpath, encoding="utf-8") as f:
-                tx_data = json.load(f)
-            tx_errors = _validate_raw_transactions(tx_data, profile["schemas"]["S-00B"])
-            issues.extend(tx_errors)
-            stage_errors_1 += len(tx_errors)
-            report_files.append((fname, tx_data))
+        with open(fpath, encoding="utf-8") as f:
+            tx_data = json.load(f)
+        tx_errors = _validate_raw_transactions(tx_data, profile["schemas"]["S-00B"])
+        issues.extend(tx_errors)
+        stage_errors_1 += len(tx_errors)
+        report_files.append((fname, tx_data))
 
     # Load optional standing orders (validated against S-00C)
     so_path = data_dir / "standing_orders.json"

@@ -6,7 +6,7 @@ Runs the adapter on one or more dataset folders under datasets/ and validates
 every artifact against its JSON schema:
 
   S-00A  accounts.json          (required input)
-  S-00B  transactions.json      (required input)
+  S-00B  transactions*.json     (required input — one or more report files)
   S-00C  standing_orders.json   (optional input — skipped with note when absent)
   S-01   sv.json                (output)
   S-02   ml_v1.csv              (output, row-by-row)
@@ -65,13 +65,24 @@ def load_schemas() -> dict[str, dict]:
 # Dataset discovery
 # ---------------------------------------------------------------------------
 
+def _find_transaction_report_files(dataset_dir: Path) -> list[Path]:
+    """Find all transactions*.json files in a dataset, excluding transactions_download.json.
+
+    Sorted for determinism.
+    """
+    return sorted(
+        p for p in dataset_dir.glob("transactions*.json")
+        if p.name != "transactions_download.json"
+    )
+
+
 def discover_datasets(filter_names: list[str] | None = None) -> list[Path]:
-    """Find dataset directories under datasets/ that contain accounts.json + transactions.json."""
+    """Find dataset directories under datasets/ that contain accounts.json + at least one report file."""
     datasets = []
     for d in sorted(DATASETS_DIR.iterdir()):
         if not d.is_dir():
             continue
-        if (d / "accounts.json").exists() and (d / "transactions.json").exists():
+        if (d / "accounts.json").exists() and _find_transaction_report_files(d):
             if filter_names:
                 if not any(d.name.upper().startswith(f.upper()) for f in filter_names):
                     continue
@@ -162,13 +173,17 @@ def validate_dataset(dataset_dir: Path, schemas: dict) -> dict:
     else:
         passed.append("S-00A  accounts.json")
 
-    # ---- S-00B  transactions.json (required) ----
-    transactions = _load_json(dataset_dir / "transactions.json")
-    errs = validate_json(transactions, schemas["S-00B"], "transactions.json vs S-00B")
-    if errs:
-        failed.extend(errs)
-    else:
-        passed.append("S-00B  transactions.json")
+    # ---- S-00B  transaction report files (required, one or more) ----
+    tx_report_files = _find_transaction_report_files(dataset_dir)
+    if not tx_report_files:
+        failed.append("S-00B  no transactions*.json report file found")
+    for tx_path in tx_report_files:
+        tx_data = _load_json(tx_path)
+        errs = validate_json(tx_data, schemas["S-00B"], f"{tx_path.name} vs S-00B")
+        if errs:
+            failed.extend(errs)
+        else:
+            passed.append(f"S-00B  {tx_path.name}")
 
     # ---- S-00C  standing_orders.json (optional) ----
     so_path = dataset_dir / "standing_orders.json"
