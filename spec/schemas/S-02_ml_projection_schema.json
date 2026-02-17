@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.local/schemas/S-02_ml_projection_schema.json",
+  "title": "ML projection row",
   "version": "1.0.0",
-  "title": "ML projection row (v1.0.0)",
   "type": "object",
   "additionalProperties": false,
   "required": [

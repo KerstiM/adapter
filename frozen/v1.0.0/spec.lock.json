@@ -25,56 +25,56 @@
       "id": "R-01",
       "kind": "ruleset",
       "path": "spec/rulesets/R-01_sv_invariants.yaml",
-      "sha256": "69cf689dca516c868582efd17b4a32627b954e2ecb0bb335c279b68321a34282",
-      "version": "1.1.0"
+      "sha256": "1bb8a2b503fea7333cb2a7461232ec9937825a1bff66b269794af6647f1e99fb",
+      "version": "1.0.0"
     },
     {
       "id": "S-00A",
       "kind": "schema",
       "path": "spec/schemas/S-00A_berlin_accounts.schema.json",
-      "sha256": "91e28bd4b427f8cf3e3bc28aec1d735ec5bdf4149a6d2bb49191bd457eb7917d",
+      "sha256": "58cd44c35d4eeecc6b936df0ca90e1d99fc02607f5544be2e25a4cbf2bd15129",
       "version": "1.0.0"
     },
     {
       "id": "S-00B",
       "kind": "schema",
       "path": "spec/schemas/S-00B_berlin_transactions.schema.json",
-      "sha256": "6dd9c1b3dfed1dca1e278355c75748afc3bbcc3831b8c16e34824127cc71ebd9",
+      "sha256": "e9cc798eec2831f4b95802b0304ff58672c8ba44017215913eac7fc2ceffce41",
       "version": "1.0.0"
     },
     {
       "id": "S-00C",
       "kind": "schema",
       "path": "spec/schemas/S-00C_berlin_standing_orders.schema.json",
-      "sha256": "b7b53dafe74c8a5371160613351025b40473459d3052a1c21569362d8052f9c4",
+      "sha256": "0c55a518226269a102d4c3afe6019563e2de3702efda469e681ca62d1dd97b99",
       "version": "1.0.0"
     },
     {
       "id": "S-01",
       "kind": "schema",
       "path": "spec/schemas/S-01_sv_schema.json",
-      "sha256": "e3fc0e57e0768ba851a0393dbf3f063cb6c4844987df283f643132fa4f283b24",
+      "sha256": "cadfe0b77232022233a3e3b622d6d98d26f013b058947f54580f82cfcc08953e",
       "version": "1.0.0"
     },
     {
       "id": "S-02",
       "kind": "schema",
       "path": "spec/schemas/S-02_ml_projection_schema.json",
-      "sha256": "55c4db5fd11223b9d50d96746db7f5ac34c8d389d8d1bb111b378bf53d364b60",
+      "sha256": "ee60fe21916d1c9069da5b7524698bc1e200d9dcee724127c008cb3aebe2bba5",
       "version": "1.0.0"
     },
     {
       "id": "S-03",
       "kind": "schema",
       "path": "spec/schemas/S-03_llm_context_schema.json",
-      "sha256": "cc0d2a6f52b95e32b7f1ab54c88a330020ec65a9798a00f7a010e6381a7b2628",
+      "sha256": "54dd8d4a3bfd11e0deb45068bab17fae896b1d73aa4a2ddad9260de1a55b3147",
       "version": "1.0.0"
     },
     {
       "id": "S-05",
       "kind": "schema",
       "path": "spec/schemas/S-05_collected_report_schema.json",
-      "sha256": "148de4f023732d1b8ae5b7475a88b7c9bb4ef7b653471a1c702c5d1a0bcc4f27",
+      "sha256": "cc02e46b446ad556c4d50b92c683fb84e7977606ab0ac974772062d90b91b3d4",
       "version": "1.0.0"
     }
   ],
