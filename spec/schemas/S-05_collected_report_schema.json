@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "S-05_collected_report_schema.json",
   "title": "CollectedReport",
+  "version": "1.0.0",
   "type": "object",
   "additionalProperties": false,
 
@@ -9,13 +10,14 @@
     "report_schema_version",
     "run",
     "outcome",
-    "counts",
+    "summary",
+    "run_flags",
     "issues",
     "dropped_details"
   ],
 
   "properties": {
-    "report_schema_version": { "type": "string", "const": "1.1.0" },
+    "report_schema_version": { "type": "string", "const": "1.0.0" },
 
     "run": {
       "type": "object",
@@ -58,24 +60,83 @@
       }
     },
 
-    "counts": {
+    "summary": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "accounts_total",
-        "transactions_total",
-        "transactions_emitted_sv",
-        "transactions_dropped",
-        "ml_rows",
-        "llm_contexts"
-      ],
+      "required": ["counts", "by_stage", "by_severity"],
       "properties": {
-        "accounts_total": { "type": "integer", "minimum": 0 },
-        "transactions_total": { "type": "integer", "minimum": 0 },
-        "transactions_emitted_sv": { "type": "integer", "minimum": 0 },
-        "transactions_dropped": { "type": "integer", "minimum": 0 },
-        "ml_rows": { "type": "integer", "minimum": 0 },
-        "llm_contexts": { "type": "integer", "minimum": 0 }
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "accounts_total",
+            "transactions_total",
+            "transactions_emitted_sv",
+            "transactions_dropped",
+            "ml_rows",
+            "llm_contexts"
+          ],
+          "properties": {
+            "accounts_total": { "type": "integer", "minimum": 0 },
+            "transactions_total": { "type": "integer", "minimum": 0 },
+            "transactions_emitted_sv": { "type": "integer", "minimum": 0 },
+            "transactions_dropped": { "type": "integer", "minimum": 0 },
+            "ml_rows": { "type": "integer", "minimum": 0 },
+            "llm_contexts": { "type": "integer", "minimum": 0 }
+          }
+        },
+
+        "by_stage": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["stage", "errors", "warnings", "infos"],
+            "properties": {
+              "stage": {
+                "type": "string",
+                "enum": [
+                  "READ_INPUT",
+                  "STANDARDIZE_TO_SV",
+                  "VALIDATE_SCHEMA",
+                  "CHECK_INVARIANTS",
+                  "PROJECT_ML",
+                  "PROJECT_LLM",
+                  "WRITE_OUTPUTS"
+                ]
+              },
+              "errors": { "type": "integer", "minimum": 0 },
+              "warnings": { "type": "integer", "minimum": 0 },
+              "infos": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+
+        "by_severity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["CRITICAL", "ERROR", "WARN", "INFO"],
+          "properties": {
+            "CRITICAL": { "type": "integer", "minimum": 0 },
+            "ERROR": { "type": "integer", "minimum": 0 },
+            "WARN": { "type": "integer", "minimum": 0 },
+            "INFO": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+
+    "run_flags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "severity", "message"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "severity": { "type": "string", "enum": ["CRITICAL", "ERROR", "WARN", "INFO"] },
+          "message": { "type": "string", "minLength": 1 }
+        }
       }
     },
 

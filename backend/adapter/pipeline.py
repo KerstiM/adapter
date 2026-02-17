@@ -48,19 +48,14 @@ def _load_yaml_file(path: Path) -> dict:
 
 
 def _resolve_spec_path(relpath: str) -> Path:
-    """Resolve a spec path from the profile; handles S-00 vs S-00A naming."""
-    path = REPO_ROOT / relpath
-    if path.exists():
-        return path
-    # Fallback: match by the descriptive suffix after the first underscore
-    # e.g. "S-00_berlin_accounts.schema.json" -> find "*_berlin_accounts.schema.json"
-    parent = path.parent
-    if parent.is_dir() and "_" in path.name:
-        suffix_part = path.name.split("_", 1)[1]  # "berlin_accounts.schema.json"
-        for candidate in sorted(parent.iterdir()):
-            if candidate.is_file() and candidate.name.endswith(suffix_part):
-                return candidate
-    raise FileNotFoundError(f"Cannot resolve spec path: {relpath}")
+    """
+    Resolve a spec path EXACTLY as written in the profile.
+    No fallbacks, no guessing. If missing -> fail fast.
+    """
+    path = (REPO_ROOT / relpath).resolve()
+    if not path.exists():
+        raise FileNotFoundError(f"Spec file missing (profile points to it): {relpath} -> {path}")
+    return path
 
 
 def load_profile() -> dict:
@@ -82,12 +77,14 @@ def load_profile() -> dict:
     # Load contracts
     resolved["contracts"] = {}
     for key, relpath in profile.get("contracts", {}).items():
-        resolved["contracts"][key] = _load_yaml_file(REPO_ROOT / relpath)
+        path = _resolve_spec_path(relpath)
+        resolved["contracts"][key] = _load_yaml_file(path)
 
     # Load rulesets
     resolved["rulesets"] = {}
     for key, relpath in profile.get("rulesets", {}).items():
-        resolved["rulesets"][key] = _load_yaml_file(REPO_ROOT / relpath)
+        path = _resolve_spec_path(relpath)
+        resolved["rulesets"][key] = _load_yaml_file(path)
 
     return resolved
 
@@ -763,7 +760,7 @@ def _build_report(
         input_dir = str(Path(data_dir).resolve().as_posix())
 
     return {
-        "report_schema_version": "1.1.0",
+        "report_schema_version": "1.0.0",
         "run": {
             "run_id": run_id,
             "created_at_utc": created_at_utc,
@@ -773,7 +770,7 @@ def _build_report(
             "adapter_version": ADAPTER_VERSION,
             "sv_schema_version": "1.0.0",
             "mapping_version": "1.0.0",
-            "ruleset_version": "1.1.0",
+            "ruleset_version": "1.0.0",
         },
         "outcome": {
             "status": outcome,

@@ -1,7 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.local/schemas/S-01_sv_schema.json",
-  "title": "SVBundle (v1.0.0)",
+  "title": "SVBundle",
+  "version": "1.0.0",
   "type": "object",
   "additionalProperties": false,
   "required": [

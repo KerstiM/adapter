@@ -1,7 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.local/schemas/S-03_llm_context_schema.json",
-  "title": "LLM context (v1.0.0)",
+  "title": "LLM context",
+  "version": "1.0.0",
   "description": "Single context object for one account, or array of context objects for multi-account datasets.",
   "oneOf": [
     { "$ref": "#/$defs/LLMContext" },

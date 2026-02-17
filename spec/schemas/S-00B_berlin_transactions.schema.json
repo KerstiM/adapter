@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.local/schemas/S-00_berlin_transactions.schema.json",
   "title": "Berlin Group AIS - Read Transaction List (minimal subset + download-only)",
+  "version": "1.0.0",
   "oneOf": [
     {
       "$ref": "#/$defs/ReportResponse"
