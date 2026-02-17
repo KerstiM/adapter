@@ -1,0 +1,103 @@
+{
+  "dropped_details": [
+    {
+      "drop_reason": "duplicate record_id",
+      "input_path": "$.transactions.booked[15]",
+      "record_id": "50a47de508a80a39",
+      "source_file": "transactions.json",
+      "transaction_id": "TX00000013"
+    },
+    {
+      "drop_reason": "duplicate record_id",
+      "input_path": "$.transactions.booked[16]",
+      "record_id": "50a47de508a80a39",
+      "source_file": "transactions.json",
+      "transaction_id": "TX00000013"
+    },
+    {
+      "drop_reason": "duplicate record_id",
+      "input_path": "$.transactions.booked[1]",
+      "record_id": "9995cfed9f22bcb3",
+      "source_file": "transactions.json",
+      "transaction_id": "TX00000002"
+    }
+  ],
+  "issues": [],
+  "outcome": {
+    "status": "PARTIAL_SUCCESS",
+    "stop_reason": "warnings present"
+  },
+  "report_schema_version": "1.1.0",
+  "run": {
+    "adapter_version": "0.1.0",
+    "created_at_utc": "2000-01-01T00:00:00Z",
+    "dataset_id": "D6_synth_dupes_seed99",
+    "input_dir": "datasets/D6_synth_dupes_seed99",
+    "mapping_version": "1.0.0",
+    "profile_id": "default",
+    "ruleset_version": "1.1.0",
+    "run_id": "golden_D6_synth_dupes_seed99",
+    "sv_schema_version": "1.0.0"
+  },
+  "run_flags": [],
+  "summary": {
+    "by_severity": {
+      "CRITICAL": 0,
+      "ERROR": 0,
+      "INFO": 0,
+      "WARN": 3
+    },
+    "by_stage": [
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "READ_INPUT",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "STANDARDIZE_TO_SV",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "VALIDATE_SCHEMA",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "CHECK_INVARIANTS",
+        "warnings": 3
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "PROJECT_ML",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "PROJECT_LLM",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "WRITE_OUTPUTS",
+        "warnings": 0
+      }
+    ],
+    "counts": {
+      "accounts_total": 1,
+      "llm_contexts": 1,
+      "ml_rows": 21,
+      "transactions_dropped": 3,
+      "transactions_emitted_sv": 21,
+      "transactions_total": 24
+    }
+  }
+}

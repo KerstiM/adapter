@@ -4,7 +4,9 @@ Generate deterministic PSD2/Berlin Group AIS test datasets D1–D6.
 
 Each dataset produces:
   datasets/<name>/accounts.json
-  datasets/<name>/transactions.json
+  datasets/<name>/transactions.json   (single-account datasets)
+    — or —
+  datasets/<name>/transactions_N.json (multi-account datasets, e.g. D3)
   datasets/<name>/README.md
 
 Usage:
@@ -376,7 +378,7 @@ def generate_d2(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
 
 
 def generate_d3(gen: DatasetGenerator, start_date: date, end_date: date, n: int | None) -> dict:
-    """D3_synth_valid_seed42: synthetic baseline, sign-matched, 0 error injections."""
+    """D3_synth_valid_seed42: multi-account baseline, separate report file per account."""
     n_booked = n or 100
     n_pending = max(20, n_booked // 5)
 
@@ -392,24 +394,25 @@ def generate_d3(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
         match_sign=True,
     )
 
-    # Adapter loads one transactions.json per folder with one account.iban.
-    # All transactions are resolved to the account matched by $.account.iban.
-    all_booked = booked1 + booked2
-    all_pending = pending1 + pending2
-    all_booked.sort(key=lambda t: t.get("valueDate", ""))
-    all_pending.sort(key=lambda t: t.get("valueDate", ""))
-
+    # Multi-account: each account gets its own report file (Berlin AIS convention).
     return {
         "name": "D3_synth_valid_seed42",
-        "description": "Synthetic baseline with two accounts and sign-matched amounts. "
-                        "No error injections. Tests volume handling and multi-account "
-                        "accounts.json with single transactions.json.",
+        "description": "Multi-account synthetic baseline with separate report files per account. "
+                        "Two accounts (DE primary, EE secondary), each with its own "
+                        "transactions file. Sign-matched amounts, no error injections.",
         "expected_outcome": "SUCCESS",
         "accounts": _build_accounts_json([acct1, acct2]),
-        "transactions": _build_transactions_json(acct1["iban"], all_booked, all_pending),
+        "transactions_files": {
+            "transactions_1.json": _build_transactions_json(acct1["iban"], booked1, pending1),
+            "transactions_2.json": _build_transactions_json(acct2["iban"], booked2, pending2),
+        },
         "meta": {
-            "n_booked": len(all_booked),
-            "n_pending": len(all_pending),
+            "n_booked": len(booked1) + len(booked2),
+            "n_pending": len(pending1) + len(pending2),
+            "n_booked_acct1": len(booked1),
+            "n_pending_acct1": len(pending1),
+            "n_booked_acct2": len(booked2),
+            "n_pending_acct2": len(pending2),
             "expected_dropped": 0,
             "variations": [],
         },
@@ -706,36 +709,23 @@ def generate_d6(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
 # Quality gates
 # ---------------------------------------------------------------------------
 
-def validate_dataset(name: str, accounts_data: dict, tx_data: dict, meta: dict) -> list[str]:
-    """Validate generated data against S-00A / S-00B requirements."""
+def _validate_single_report(name: str, filename: str, accounts_data: dict, tx_data: dict) -> list[str]:
+    """Validate a single transaction report file against S-00B requirements."""
     warnings = []
+    acct_ibans = {a["iban"] for a in accounts_data.get("accounts", [])}
 
-    # --- S-00A: accounts.json ---
-    for i, acct in enumerate(accounts_data.get("accounts", [])):
-        for field in ("resourceId", "iban", "currency"):
-            if not acct.get(field):
-                warnings.append(f"{name}: accounts[{i}] missing required '{field}'")
-        iban = acct.get("iban", "")
-        if not _iban_valid(iban):
-            warnings.append(f"{name}: accounts[{i}].iban '{iban}' does not match S-00A pattern")
-        cur = acct.get("currency", "")
-        if not _currency_valid(cur):
-            warnings.append(f"{name}: accounts[{i}].currency '{cur}' invalid")
-
-    # --- C-01: account.iban must be present for account_resolution ---
+    # C-01: account.iban must be present for account_resolution
     tx_account_iban = (tx_data.get("account") or {}).get("iban")
     if not tx_account_iban:
-        warnings.append(f"{name}: transactions.json missing account.iban (needed by C-01)")
-    else:
-        acct_ibans = {a["iban"] for a in accounts_data.get("accounts", [])}
-        if tx_account_iban not in acct_ibans:
-            warnings.append(f"{name}: transactions.json account.iban '{tx_account_iban}' not in accounts.json")
+        warnings.append(f"{name}: {filename} missing account.iban (needed by C-01)")
+    elif tx_account_iban not in acct_ibans:
+        warnings.append(f"{name}: {filename} account.iban '{tx_account_iban}' not in accounts.json")
 
-    # --- S-00B: each Tx ---
+    # S-00B: each Tx
     tx_obj = tx_data.get("transactions", {})
     for status_key in ("booked", "pending"):
         for j, tx in enumerate(tx_obj.get(status_key, [])):
-            path = f"$.transactions.{status_key}[{j}]"
+            path = f"{filename} $.transactions.{status_key}[{j}]"
 
             # Required: transactionAmount
             ta = tx.get("transactionAmount")
@@ -760,6 +750,38 @@ def validate_dataset(name: str, accounts_data: dict, tx_data: dict, meta: dict) 
     return warnings
 
 
+def validate_dataset(name: str, accounts_data: dict, tx_data_or_none: dict | None,
+                     meta: dict, *, tx_files: dict | None = None) -> list[str]:
+    """Validate generated data against S-00A / S-00B requirements.
+
+    Supports both single-file (tx_data_or_none) and multi-file (tx_files) modes.
+    """
+    warnings = []
+
+    # --- S-00A: accounts.json ---
+    for i, acct in enumerate(accounts_data.get("accounts", [])):
+        for field in ("resourceId", "iban", "currency"):
+            if not acct.get(field):
+                warnings.append(f"{name}: accounts[{i}] missing required '{field}'")
+        iban = acct.get("iban", "")
+        if not _iban_valid(iban):
+            warnings.append(f"{name}: accounts[{i}].iban '{iban}' does not match S-00A pattern")
+        cur = acct.get("currency", "")
+        if not _currency_valid(cur):
+            warnings.append(f"{name}: accounts[{i}].currency '{cur}' invalid")
+
+    # --- S-00B: validate report file(s) ---
+    if tx_files:
+        # Multi-file mode (e.g. D3 with transactions_1.json, transactions_2.json)
+        for filename in sorted(tx_files.keys()):
+            warnings.extend(_validate_single_report(name, filename, accounts_data, tx_files[filename]))
+    elif tx_data_or_none is not None:
+        # Single-file mode (backward compatible)
+        warnings.extend(_validate_single_report(name, "transactions.json", accounts_data, tx_data_or_none))
+
+    return warnings
+
+
 def _iban_valid(s: str) -> bool:
     return bool(re.match(r"^[A-Z]{2}[0-9A-Z]{13,32}$", s))
 
@@ -778,40 +800,71 @@ def write_dataset(out_dir: Path, dataset: dict, seed: int, start_date: date, end
     folder.mkdir(parents=True, exist_ok=True)
 
     accounts = dataset["accounts"]
-    transactions = dataset["transactions"]
     meta = dataset["meta"]
+
+    # Determine single-file vs multi-file mode
+    tx_files = dataset.get("transactions_files")  # multi-account support
+    transactions = dataset.get("transactions")     # single-file (backward compatible)
 
     # Write JSON files (no meta embedded — meta goes only in README)
     with open(folder / "accounts.json", "w", encoding="utf-8") as f:
         json.dump(accounts, f, indent=2, sort_keys=True, ensure_ascii=False)
         f.write("\n")
 
-    with open(folder / "transactions.json", "w", encoding="utf-8") as f:
-        json.dump(transactions, f, indent=2, sort_keys=True, ensure_ascii=False)
-        f.write("\n")
+    if tx_files:
+        # Multi-file: write each report file separately
+        for filename in sorted(tx_files.keys()):
+            with open(folder / filename, "w", encoding="utf-8") as f:
+                json.dump(tx_files[filename], f, indent=2, sort_keys=True, ensure_ascii=False)
+                f.write("\n")
+    else:
+        # Single-file (backward compatible)
+        with open(folder / "transactions.json", "w", encoding="utf-8") as f:
+            json.dump(transactions, f, indent=2, sort_keys=True, ensure_ascii=False)
+            f.write("\n")
 
     # Quality gate
-    warnings = validate_dataset(name, accounts, transactions, meta)
+    warnings = validate_dataset(name, accounts, transactions, meta, tx_files=tx_files)
 
     # Build README
     description = dataset.get("description", "")
     expected_outcome = dataset.get("expected_outcome", "PARTIAL_SUCCESS")
     variations_list = "\n".join(f"  - `{v}`" for v in meta["variations"]) if meta["variations"] else "  (none)"
 
+    # Properties table — show per-account breakdown for multi-file datasets
+    props_rows = [
+        f"| Seed | {seed} |",
+        f"| Date range | {start_date.isoformat()} – {end_date.isoformat()} |",
+        f"| Booked (total) | {meta['n_booked']} |",
+        f"| Pending (total) | {meta['n_pending']} |",
+    ]
+    if tx_files:
+        # Add per-account breakdowns if available
+        for i, filename in enumerate(sorted(tx_files.keys()), 1):
+            bk = meta.get(f"n_booked_acct{i}")
+            pk = meta.get(f"n_pending_acct{i}")
+            if bk is not None and pk is not None:
+                acct_iban = tx_files[filename].get("account", {}).get("iban", "?")
+                props_rows.append(f"| {filename} | {bk} booked + {pk} pending (iban: {acct_iban}) |")
+    props_rows.extend([
+        f"| Expected dropped | {meta['expected_dropped']} |",
+        f"| Expected outcome | {expected_outcome} |",
+    ])
+
+    report_files_note = ""
+    if tx_files:
+        fnames = ", ".join(sorted(tx_files.keys()))
+        report_files_note = f"\n**Report files:** {fnames}\n"
+
     readme = f"""# {name}
 
 {description}
-
+{report_files_note}
 ## Properties
 
 | Property | Value |
 |---|---|
-| Seed | {seed} |
-| Date range | {start_date.isoformat()} – {end_date.isoformat()} |
-| Booked | {meta['n_booked']} |
-| Pending | {meta['n_pending']} |
-| Expected dropped | {meta['expected_dropped']} |
-| Expected outcome | {expected_outcome} |
+{chr(10).join(props_rows)}
 
 ## What this dataset tests
 

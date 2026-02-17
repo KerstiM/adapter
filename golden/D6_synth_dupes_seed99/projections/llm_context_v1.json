@@ -1,0 +1,221 @@
+{
+  "meta": {
+    "account_id": "9974d75b-3338-44fe-a179-0134676b1b69",
+    "created_at_utc": "2000-01-01T00:00:00Z",
+    "currency": "EUR",
+    "iban": "DE23321468819736993563",
+    "run_id": "golden_D6_synth_dupes_seed99"
+  },
+  "tx": [
+    {
+      "a": "-8898.59",
+      "c": "EUR",
+      "cp": "Andres Saar",
+      "d": "2024-01-10",
+      "dir": "OUT",
+      "id": "50a47de508a80a39",
+      "r": "Freelance payment I7HLD5WI",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-6838.96",
+      "c": "EUR",
+      "cp": "Luca Mets",
+      "d": "2024-01-12",
+      "dir": "OUT",
+      "id": "9995cfed9f22bcb3",
+      "r": "Grocery store purchase",
+      "s": "BOOKED"
+    },
+    {
+      "a": "4748.98",
+      "c": "EUR",
+      "cp": "Luca Berg",
+      "d": "2024-01-21",
+      "dir": "IN",
+      "id": "00583c0c5d5a3c85",
+      "r": "NEAR02 original remittance",
+      "s": "BOOKED"
+    },
+    {
+      "a": "4748.98",
+      "c": "EUR",
+      "cp": "Luca Berg",
+      "d": "2024-01-21",
+      "dir": "IN",
+      "id": "a007493df2b35a92",
+      "r": "NEAR02 modified remittance",
+      "s": "BOOKED"
+    },
+    {
+      "a": "9971.85",
+      "c": "EUR",
+      "cp": "Olivia Tamm",
+      "d": "2024-02-08",
+      "dir": "IN",
+      "id": "245ac04173109bb2",
+      "r": "Grocery store purchase",
+      "s": "BOOKED"
+    },
+    {
+      "a": "9971.84",
+      "c": "EUR",
+      "cp": "Olivia Tamm",
+      "d": "2024-02-08",
+      "dir": "IN",
+      "id": "c8131147774db4df",
+      "r": "Grocery store purchase",
+      "s": "BOOKED"
+    },
+    {
+      "a": "2960.44",
+      "c": "EUR",
+      "cp": "Mart Oja",
+      "d": "2024-02-19",
+      "dir": "IN",
+      "id": "28896332334aa467",
+      "r": "Subscription renewal",
+      "s": "BOOKED"
+    },
+    {
+      "a": "5805.52",
+      "c": "EUR",
+      "cp": "Jan Oja",
+      "d": "2024-02-23",
+      "dir": "IN",
+      "id": "3e982a572d0a9712",
+      "r": "Refund order 4ZG69UW6",
+      "s": "BOOKED"
+    },
+    {
+      "a": "8499.81",
+      "c": "EUR",
+      "cp": "Elena Mets",
+      "d": "2024-03-18",
+      "dir": "IN",
+      "id": "23a14e3de881e631",
+      "r": "Subscription renewal",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-6568.72",
+      "c": "EUR",
+      "cp": "Marie Jansen",
+      "d": "2024-03-28",
+      "dir": "OUT",
+      "id": "88c6f9d2c9b9f061",
+      "r": "Transfer to savings",
+      "s": "BOOKED"
+    },
+    {
+      "a": "128.19",
+      "c": "EUR",
+      "cp": "Luca Rossi",
+      "d": "2024-04-21",
+      "dir": "IN",
+      "id": "25187c5f122887cd",
+      "r": "Service fee",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-7330.29",
+      "c": "EUR",
+      "cp": "Stefan Mets",
+      "d": "2024-04-30",
+      "dir": "OUT",
+      "id": "4a9f3bb89e26fc7f",
+      "r": "Refund order Y4X28NJI",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-1917.48",
+      "c": "EUR",
+      "cp": "Katrin Smith",
+      "d": "2024-05-03",
+      "dir": "OUT",
+      "id": "bf4777db266baba7",
+      "r": "Grocery store purchase",
+      "s": "PENDING"
+    },
+    {
+      "a": "-4957.46",
+      "c": "EUR",
+      "cp": "Peeter Tamm",
+      "d": "2024-06-14",
+      "dir": "OUT",
+      "id": "10f2c181840fa1fc",
+      "r": "Loan repayment June",
+      "s": "BOOKED"
+    },
+    {
+      "a": "3454.48",
+      "c": "EUR",
+      "cp": "Viktor Kowalski",
+      "d": "2024-07-13",
+      "dir": "IN",
+      "id": "98613bfcb29b74cd",
+      "r": "Loan repayment July",
+      "s": "BOOKED"
+    },
+    {
+      "a": "3114.87",
+      "c": "EUR",
+      "cp": "Ingrid Dubois",
+      "d": "2024-07-23",
+      "dir": "IN",
+      "id": "f921d44ee4dfcf16",
+      "r": "Utility bill July",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-8284.78",
+      "c": "EUR",
+      "cp": "Laura Smith",
+      "d": "2024-09-13",
+      "dir": "OUT",
+      "id": "bc82fb28fdca0559",
+      "r": "Loan repayment September",
+      "s": "PENDING"
+    },
+    {
+      "a": "-741.15",
+      "c": "EUR",
+      "cp": "Julia Dubois",
+      "d": "2024-09-14",
+      "dir": "OUT",
+      "id": "9384fe37d4587265",
+      "r": "Online purchase 5TISYPSC",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-7183.85",
+      "c": "EUR",
+      "cp": "Mart Kowalski",
+      "d": "2024-11-05",
+      "dir": "OUT",
+      "id": "b38a62960cbc794c",
+      "r": "Freelance payment L8Y0KYMH",
+      "s": "PENDING"
+    },
+    {
+      "a": "6019.63",
+      "c": "EUR",
+      "cp": "Laura Mets",
+      "d": "2024-12-06",
+      "dir": "IN",
+      "id": "01f003253bbe77d7",
+      "r": "Refund order DEOPXVAE",
+      "s": "BOOKED"
+    },
+    {
+      "a": "7637.24",
+      "c": "EUR",
+      "cp": "Tomas Berg",
+      "d": "2024-12-21",
+      "dir": "IN",
+      "id": "b1f5e7ab3ef8a1df",
+      "r": "Online purchase 8WC5G1F7",
+      "s": "BOOKED"
+    }
+  ]
+}
