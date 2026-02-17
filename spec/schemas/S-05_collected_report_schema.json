@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "S-05_collected_report_schema.json",
+  "version": "1.0.0",
   "title": "CollectedReport",
   "version": "1.0.0",
   "type": "object",
