@@ -163,4 +163,26 @@ Käivitamine:
 ```bash
 python backend/run_adapter.py \
   --data D1 \
-  --out out
+  --out backend/out
+```
+
+Väljundid tekivad jooksu-kausta alla (vt Variant A kirjeldust):
+- `backend/out/<timestamp>_<run_id>/sv.json`
+- `backend/out/<timestamp>_<run_id>/projections/ml_v1.csv`
+- `backend/out/<timestamp>_<run_id>/projections/llm_context_v1.json`
+
+---
+
+## Arhitektuur (Variant A)
+
+Valik: **lokaalselt käivitatav modulaarne monoliit**, kus tuumloogika on I/O-st eraldatav (Ports & Adapters), pipeline on sammupõhine ning veamudeliks on kogutud raport.
+
+Lühike arhitektuuri kokkuvõte: [`plans/variant-a-project-structure.md`](plans/variant-a-project-structure.md:1).
+
+Operatiivsed käsud (1 dataset / kõik datasetid / validaator): [`docs/runbook.md`](docs/runbook.md:1).
+
+---
+
+## Runbook
+
+Kõik käivitus- ja valideerimiskäsud on koondatud: [`docs/runbook.md`](docs/runbook.md:1).
