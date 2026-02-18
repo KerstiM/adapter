@@ -1,27 +1,25 @@
 """
-Adapter pipeline: RAW (Berlin AIS) -> SV -> ML/LLM projections.
+Adapter pipeline — application layer: RAW (Berlin AIS) -> SV -> ML/LLM projections.
 
-Implements the full pipeline:
-  1. Read & validate RAW input (S-00A, S-00B) — multiple report files + download-only
-  2. Map to SV (C-01) — flatten booked/pending/information, derive direction/counterparty/amounts
-  3. Validate SV schema (S-01)
-  4. Check invariants (R-01) — field-level rules + INV-09 dedupe by (account_id, record_id)
-  5. Project to ML CSV (C-02) and LLM context JSON (C-03)
-  6. Write outputs + fail-gate check (default.yaml run_policy)
+Orchestrates the full 7-stage pipeline through ports only.  No filesystem I/O,
+no pathlib, no os — all I/O is delegated to the injected port implementations.
+
+Stages:
+  1. READ_INPUT        — read & validate raw Berlin AIS input via DatasetPort + SpecPort
+  2. STANDARDIZE_TO_SV — map to canonical SV (C-01) using pure functions
+  3. VALIDATE_SCHEMA   — validate SV bundle against S-01 schema
+  4. CHECK_INVARIANTS  — R-01 field-level rules + INV-09 dedupe
+  5. PROJECT_ML        — ML CSV projection (C-02)
+  6. PROJECT_LLM       — LLM context projection (C-03)
+  7. WRITE_OUTPUTS     — persist artifacts via OutputPort + build report
 """
 
-import csv
 import hashlib
-import json
 import re
-import uuid
-from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
-from pathlib import Path
 from typing import Any
 
 import jsonschema
-import yaml
 
 
 # ---------------------------------------------------------------------------
@@ -29,78 +27,11 @@ import yaml
 # ---------------------------------------------------------------------------
 
 ADAPTER_VERSION = "0.1.0"
-REPO_ROOT = Path(__file__).resolve().parents[2]
-SPEC_DIR = REPO_ROOT / "spec"
 
 
 # ---------------------------------------------------------------------------
-# Helpers — file loading
+# Helpers — pure data utilities (no I/O)
 # ---------------------------------------------------------------------------
-
-def _load_json(path: Path) -> dict:
-    with open(path, encoding="utf-8") as f:
-        return json.load(f)
-
-
-def _load_yaml_file(path: Path) -> dict:
-    with open(path, encoding="utf-8") as f:
-        return yaml.safe_load(f)
-
-
-def _resolve_spec_path(relpath: str) -> Path:
-    """
-    Resolve a spec path EXACTLY as written in the profile.
-    No fallbacks, no guessing. If missing -> fail fast.
-    """
-    path = (REPO_ROOT / relpath).resolve()
-    if not path.exists():
-        raise FileNotFoundError(f"Spec file missing (profile points to it): {relpath} -> {path}")
-    return path
-
-
-def load_profile() -> dict:
-    """Load default profile and resolve all referenced spec files."""
-    profile_path = SPEC_DIR / "profiles" / "default.yaml"
-    profile = _load_yaml_file(profile_path)
-
-    resolved: dict[str, Any] = {
-        "id": profile["id"],
-        "version": profile["version"],
-    }
-
-    # Load schemas
-    resolved["schemas"] = {}
-    for key, relpath in profile.get("schemas", {}).items():
-        path = _resolve_spec_path(relpath)
-        resolved["schemas"][key] = _load_json(path)
-
-    # Load contracts
-    resolved["contracts"] = {}
-    for key, relpath in profile.get("contracts", {}).items():
-        path = _resolve_spec_path(relpath)
-        resolved["contracts"][key] = _load_yaml_file(path)
-
-    # Load rulesets
-    resolved["rulesets"] = {}
-    for key, relpath in profile.get("rulesets", {}).items():
-        path = _resolve_spec_path(relpath)
-        resolved["rulesets"][key] = _load_yaml_file(path)
-
-    return resolved
-
-
-# ---------------------------------------------------------------------------
-# Helpers — data utilities
-# ---------------------------------------------------------------------------
-
-def _now_utc() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
-
-def _ts_prefix(created_at_utc: str) -> str:
-    """Derive a filesystem-safe timestamp prefix from an ISO timestamp."""
-    return created_at_utc.replace("-", "").replace(":", "").replace("T", "T").split(".")[0]
-
 
 def _parse_decimal(s: str | None) -> Decimal | None:
     if s is None:
@@ -120,6 +51,7 @@ def _is_iso_date(s: str | None) -> bool:
     if not s:
         return False
     try:
+        from datetime import datetime
         datetime.strptime(s, "%Y-%m-%d")
         return True
     except ValueError:
@@ -134,11 +66,6 @@ def _hash_record_id(parts: list[str]) -> str:
 def _is_download_only(data: dict) -> bool:
     """Check if a transaction response is download-only (C-01 rule)."""
     return bool((data.get("_links") or {}).get("download", {}).get("href"))
-
-
-def _stable_json(obj: Any) -> str:
-    """Deterministic JSON serialization."""
-    return json.dumps(obj, indent=2, sort_keys=True, ensure_ascii=False)
 
 
 # ---------------------------------------------------------------------------
@@ -733,7 +660,8 @@ def _build_report(
     run_id: str,
     created_at_utc: str,
     profile: dict,
-    data_dir: Path,
+    dataset_id: str,
+    input_dir: str,
     outcome: str,
     stop_reason: str,
     accounts_total: int,
@@ -749,16 +677,6 @@ def _build_report(
     dropped_details: list[dict] | None = None,
 ) -> dict:
     """Build report.json structure (S-05 compliant)."""
-
-    # dataset_id: dataset kausta nimi (nt D1_public_valid_small)
-    dataset_id = Path(data_dir).name
-
-    # input_dir: tee repo-relatiivseks kui võimalik (parem auditiks)
-    try:
-        input_dir = str(Path(data_dir).resolve().relative_to(REPO_ROOT).as_posix())
-    except Exception:
-        input_dir = str(Path(data_dir).resolve().as_posix())
-
     return {
         "report_schema_version": "1.0.0",
         "run": {
@@ -795,46 +713,46 @@ def _build_report(
 
 
 # ---------------------------------------------------------------------------
-# Main pipeline entry point
+# Main pipeline entry point (port-based)
 # ---------------------------------------------------------------------------
 
 def run_pipeline(
-    data_dir: str | Path,
-    output_dir: str | Path,
-    run_id: str | None = None,
-    created_at_utc: str | None = None,
+    dataset: Any,
+    out: Any,
+    spec: Any,
+    clock: Any,
+    profile_id: str = "default",
+    *,
+    dataset_id: str = "",
+    input_dir: str = "",
 ) -> dict:
     """
-    Run the full adapter pipeline: RAW -> SV -> ML/LLM projections.
+    Run the full adapter pipeline via ports: RAW -> SV -> ML/LLM projections.
 
-    All outputs are written to a single run folder:
-        out/<timestamp>_<run_id>/
-            sv.json
-            report.json
-            projections/ml_v1.csv
-            projections/llm_context_v1.json
+    Parameters
+    ----------
+    dataset:    DatasetPort  — provides read_accounts(), list_transaction_reports(),
+                               read_transactions_report(), read_standing_orders_optional()
+    out:        OutputPort   — provides init_run_folder(), write_sv(), write_ml(),
+                               write_llm(), write_report()
+    spec:       SpecPort     — provides load_profile()
+    clock:      ClockPort    — provides now_utc(), new_run_id()
+    profile_id: str          — profile to load (default: "default")
+    dataset_id: str          — dataset name for the run report (keyword-only)
+    input_dir:  str          — input path string for the run report (keyword-only)
 
-    Returns:
-        Summary dict with outcome, run_id, run_folder, counts, flags, issues.
+    Returns
+    -------
+    Summary dict with outcome, run_id, counts, flags, issues, dropped_details.
+    Note: run_folder is NOT included here — FS callers read it from FsOutputAdapter.run_folder.
     """
-    data_dir = Path(data_dir)
-    output_dir = Path(output_dir)
+    # ── RunContext ────────────────────────────────────────────────────────
+    run_id = clock.new_run_id()
+    created_at_utc = clock.now_utc()
 
-    # --- RunContext: single source of run_id and created_at_utc ---
-    if run_id is None:
-        run_id = uuid.uuid4().hex[:12]
-    if created_at_utc is None:
-        created_at_utc = _now_utc()
+    out.init_run_folder(run_id, created_at_utc)
 
-    # Create run folder: <timestamp>_<run_id>
-    ts = _ts_prefix(created_at_utc)
-    run_folder = output_dir / f"{ts}_{run_id}"
-    run_folder.mkdir(parents=True, exist_ok=True)
-    proj_folder = run_folder / "projections"
-    proj_folder.mkdir(exist_ok=True)
-
-    # Load profile (reads all spec files)
-    profile = load_profile()
+    profile = spec.load_profile(profile_id)
 
     issues: list[dict] = []
     run_flags: list[dict] = []
@@ -846,47 +764,17 @@ def run_pipeline(
     stage_errors_1 = 0
     stage_warnings_1 = 0
 
-    with open(data_dir / "accounts.json", encoding="utf-8") as f:
-        accounts_data = json.load(f)
-
+    accounts_data = dataset.read_accounts()
     acct_errors = _validate_raw_accounts(accounts_data, profile["schemas"]["S-00A"])
     issues.extend(acct_errors)
     stage_errors_1 += len(acct_errors)
 
-    # Load report files (C-01 inputs.reports)
-    # Multi-account support: load ALL transactions*.json files except
-    # transactions_download.json (handled separately below).
+    # Load report files via DatasetPort
     report_files: list[tuple[str, dict]] = []
-    tx_candidates = sorted(
-        p.name for p in data_dir.glob("transactions*.json")
-        if p.name != "transactions_download.json"
-    )
-    for fname in tx_candidates:
-        fpath = data_dir / fname
-        with open(fpath, encoding="utf-8") as f:
-            tx_data = json.load(f)
-        tx_errors = _validate_raw_transactions(tx_data, profile["schemas"]["S-00B"])
-        issues.extend(tx_errors)
-        stage_errors_1 += len(tx_errors)
-        report_files.append((fname, tx_data))
-
-    # Load optional standing orders (validated against S-00C)
-    so_path = data_dir / "standing_orders.json"
-    if so_path.exists():
-        with open(so_path, encoding="utf-8") as f:
-            so_data = json.load(f)
-        so_errors = _validate_raw_standing_orders(so_data, profile["schemas"]["S-00C"])
-        issues.extend(so_errors)
-        stage_errors_1 += len(so_errors)
-        report_files.append(("standing_orders.json", so_data))
-
-    # Load optional download-only files (C-01 download_only_handling)
-    for fname in ("transactions_download.json",):
-        fpath = data_dir / fname
-        if fpath.exists():
-            with open(fpath, encoding="utf-8") as f:
-                dl_data = json.load(f)
-            if _is_download_only(dl_data):
+    for name in dataset.list_transaction_reports():
+        tx_data = dataset.read_transactions_report(name)
+        if name == "transactions_download.json":
+            if _is_download_only(tx_data):
                 run_flags.append({
                     "id": "RUN_DOWNLOAD_ONLY",
                     "severity": "WARN",
@@ -894,10 +782,23 @@ def run_pipeline(
                 })
                 stage_warnings_1 += 1
             else:
-                tx_errors = _validate_raw_transactions(dl_data, profile["schemas"]["S-00B"])
+                tx_errors = _validate_raw_transactions(tx_data, profile["schemas"]["S-00B"])
                 issues.extend(tx_errors)
                 stage_errors_1 += len(tx_errors)
-                report_files.append((fname, dl_data))
+                report_files.append((name, tx_data))
+        else:
+            tx_errors = _validate_raw_transactions(tx_data, profile["schemas"]["S-00B"])
+            issues.extend(tx_errors)
+            stage_errors_1 += len(tx_errors)
+            report_files.append((name, tx_data))
+
+    # Load optional standing orders via DatasetPort
+    so_data = dataset.read_standing_orders_optional()
+    if so_data is not None:
+        so_errors = _validate_raw_standing_orders(so_data, profile["schemas"]["S-00C"])
+        issues.extend(so_errors)
+        stage_errors_1 += len(so_errors)
+        report_files.append(("standing_orders.json", so_data))
 
     # Count total raw transactions across all report files
     total_raw = 0
@@ -986,35 +887,13 @@ def run_pipeline(
     }
 
     # ================================================================
-    # Stage 6: WRITE_OUTPUTS
+    # Stage 6: WRITE_OUTPUTS — persist via OutputPort
     # ================================================================
+    out.write_sv(sv_bundle)
+    out.write_ml(ml_rows)
 
-    # sv.json (deterministic key order)
-    with open(run_folder / "sv.json", "w", encoding="utf-8") as f:
-        f.write(_stable_json(sv_bundle))
-        f.write("\n")
-
-    # projections/ml_v1.csv
-    csv_path = proj_folder / "ml_v1.csv"
-    fieldnames = [
-        "row_id", "account_id", "record_id", "status",
-        "booking_date", "value_date", "direction", "currency",
-        "signed_amount", "abs_amount", "counterparty_name", "remittance",
-    ]
-    with open(csv_path, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(ml_rows)
-
-    # projections/llm_context_v1.json — all accounts
-    llm_path = proj_folder / "llm_context_v1.json"
-    if len(llm_contexts) == 1:
-        llm_output = llm_contexts[0]
-    else:
-        llm_output = llm_contexts  # array for multi-account
-    with open(llm_path, "w", encoding="utf-8") as f:
-        f.write(_stable_json(llm_output))
-        f.write("\n")
+    llm_output = llm_contexts[0] if len(llm_contexts) == 1 else llm_contexts
+    out.write_llm(llm_output)
 
     # Count flag severities across all transactions for report
     all_dropped_for_severity = dropped_txs + dedupe_drops
@@ -1044,7 +923,6 @@ def run_pipeline(
     all_dropped_details.extend(mapping_drops)
 
     # Determine outcome using run_policy fail gate from default.yaml
-    # fail_on: any_severity=ERROR, ratio_over_records=0.05
     run_policy = profile.get("run_policy", {}).get("partial_success_policy", {})
     fail_on = run_policy.get("fail_on", {})
     fail_severity = fail_on.get("any_severity", "ERROR")
@@ -1102,12 +980,13 @@ def run_pipeline(
             "infos": 0,
         })
 
-    # report.json
+    # Build and write report.json via OutputPort
     report = _build_report(
         run_id=run_id,
         created_at_utc=created_at_utc,
         profile=profile,
-        data_dir=data_dir,
+        dataset_id=dataset_id,
+        input_dir=input_dir,
         outcome=outcome,
         stop_reason=stop_reason,
         accounts_total=len(sv_bundle.get("accounts", [])),
@@ -1122,16 +1001,13 @@ def run_pipeline(
         issues=issues,
         dropped_details=all_dropped_details,
     )
-    with open(run_folder / "report.json", "w", encoding="utf-8") as f:
-        f.write(_stable_json(report))
-        f.write("\n")
+    out.write_report(report)
 
-    # --- Return summary ---
+    # --- Return summary (no run_folder — FS callers get it from FsOutputAdapter.run_folder) ---
     return {
         "outcome": outcome,
         "stop_reason": stop_reason,
         "run_id": run_id,
-        "run_folder": str(run_folder),
         "counts": {
             "accounts_total": len(sv_bundle.get("accounts", [])),
             "transactions_total": total_raw,
