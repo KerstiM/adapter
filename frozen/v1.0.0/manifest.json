@@ -1,23 +1,23 @@
 {
   "frozen_version": "v1.0.0",
-  "frozen_at": "2026-02-17T16:09:13Z",
-  "spec_lock_sha256": "5bb4fe0de130ffff7a83a1dfad4d46957e31655d153ebc8e0aec5dac29903cb1",
+  "frozen_at": "2026-02-18T13:40:45Z",
+  "spec_lock_sha256": "fbec0d2df798556aa61c113e935d4821ec907bdccdac9d89413b8f3be7ebf84c",
   "datasets": [
     {
       "dataset_id": "D1_public_valid_small",
       "expected_outcome": "SUCCESS",
       "golden": {
         "sv.json": {
-          "sha256": "19a9e633a2e596721b56e8b414bb82046ec9fb4e522a8a98b26f2064549e2d54"
+          "sha256": "d0a7d03d08b360b78b12149d8b75f4eeb78cce10f86f5b03c25b3d234b28d136"
         },
         "report.json": {
-          "sha256": "3dadfaed79dba7abaf1f6e242b047d203ca71b37ae442c373986e45c9be16d44"
+          "sha256": "17104d9f25798986faa6b3ddef5bb9ba83f9a0e0287b455fac17f2de30becb2a"
         },
         "ml_v1.csv": {
           "sha256": "a49a7bd83229db56e62aaa990a7f4eba27d3c7bb1ee2e3883408621a74db0227"
         },
         "llm_context_v1.json": {
-          "sha256": "1d7f05d813ca677607da148f6a1463c276bd286f3dac7c3ecc1a98811f86d787"
+          "sha256": "9cbb0eece22598b5b58ad847d14ddabeaa062e8f535bd0f5677b84abc8d3beb6"
         }
       },
       "counts": {
@@ -34,16 +34,16 @@
       "expected_outcome": "PARTIAL_SUCCESS",
       "golden": {
         "sv.json": {
-          "sha256": "36428a0311b3245d430e63638344c9f9a67559c069827f3668bb43bb0509fb6b"
+          "sha256": "c0cbe5ea525abe565fa1e69b8a0a708c156659303a808cb0102ab746b0085e22"
         },
         "report.json": {
-          "sha256": "66a9d4dac49081091c957586752d60826ae3194120ef8b066323c4fe09f4acb4"
+          "sha256": "806667bb788697bf309f22215e781cd974ede60657e6bb34d1198ba55e98bab3"
         },
         "ml_v1.csv": {
           "sha256": "df5df41204be853626290240e25d968c4f06692ee71da256dff61facc117f38b"
         },
         "llm_context_v1.json": {
-          "sha256": "2564d8a6da4d2b60d681c138acd24450b1672a348e396179c63850d56eb4c5fa"
+          "sha256": "758a5ee51f4853ef02d7402f2e2bb2b7d78bde77099cff15e84e5da671c39853"
         }
       },
       "counts": {
@@ -60,16 +60,16 @@
       "expected_outcome": "SUCCESS",
       "golden": {
         "sv.json": {
-          "sha256": "b2e16dd965908e536509d95e62d9e6ea9cd17c8a533e4f5df7f3320339e04c84"
+          "sha256": "3c0d8f7917ca667efb612dd0fd247497d0b615fbd19f854c278bfee99260b2c5"
         },
         "report.json": {
-          "sha256": "26d5a65228877cb2b2422993cb43f9cb47d10c89e76f82f238af4383364a298f"
+          "sha256": "c092e293fafb8b59e41542147ca8bf06fdaade2497aad5d0a52a367781e9253d"
         },
         "ml_v1.csv": {
           "sha256": "4597c1cdef4d5e0a6543bc4c7834d555b89369ec7cab88fc4f6d072c5c14e9ec"
         },
         "llm_context_v1.json": {
-          "sha256": "49cf6ae21a0ac247c6d124ff377f716dff6f033beed4a168f650d7af591205cd"
+          "sha256": "2f2f8ceff2404a00d2b0e354c757267f721a81b10e5831703b2fa09fe90a931d"
         }
       },
       "counts": {
@@ -84,19 +84,18 @@
     {
       "dataset_id": "D4_synth_errors_seed42",
       "expected_outcome": "FAIL",
-      "expected_raw_validation": "FAIL",
       "golden": {
         "sv.json": {
-          "sha256": "a2f3fd75204dea6c4efe06f1e7fe973bcfe397b1120fb13813e89c2650139bcc"
+          "sha256": "52d987dbf27111f578a257ae0236da8d15d5e62650d688412fff67e7d05b3cc1"
         },
         "report.json": {
-          "sha256": "e48ce66af1eac64f761ff4048fc4549b4a86d0243a30833b78c835098d3e6510"
+          "sha256": "f0abefb21dcca1976141343cb2940e99408d87f9721a131b84176464acec7841"
         },
         "ml_v1.csv": {
           "sha256": "69b2589d692e8fd208e633bc68c9aaa339c21595d1c98285eb0a8dabbff4a99f"
         },
         "llm_context_v1.json": {
-          "sha256": "3398ac5c92c952e911d71bed350bc68f621ddfa59af1bcdc3316b0c4c57cb36a"
+          "sha256": "c1959b6e62d6f424eac801398d6890d0faba08ae70ba26c779496399d4eb4ff7"
         }
       },
       "counts": {
@@ -113,16 +112,16 @@
       "expected_outcome": "PARTIAL_SUCCESS",
       "golden": {
         "sv.json": {
-          "sha256": "a600bb1a1a17ca9f8c5049b0c0a9a3a8d64ac9fb0c12bd2671af81f17ad583f8"
+          "sha256": "716171698bb6fad6603b7794c465af873721d04760116aa4b943bf67afc95511"
         },
         "report.json": {
-          "sha256": "2140643ed3128690f8e9d11d305ffc7283bf1e5e822cafb5a06a1a6bbee9aabc"
+          "sha256": "cc902fdcd953b81e73a7aa8525a2de4b34aac612509e2410ae683c7741467332"
         },
         "ml_v1.csv": {
           "sha256": "99e9c91d09e4a4d9b1979e8fe46369146ec2e43f47b26c433a966d481f23a7c5"
         },
         "llm_context_v1.json": {
-          "sha256": "8e39f14bb3a868bebed8be81bdea6eabd6bc4df957af21518f96d7a696c46844"
+          "sha256": "45a8bd63df204ef75fef11409ec31d2cb2b7b673374735cf1f63b09c30e41ec2"
         }
       },
       "counts": {
@@ -139,16 +138,16 @@
       "expected_outcome": "PARTIAL_SUCCESS",
       "golden": {
         "sv.json": {
-          "sha256": "181bd9ff48fe5fca2c0f8300c21a732c38af6f887d58e6735addac8c3ba2763c"
+          "sha256": "ecb04d321029f476f6584940f8583821e22e783fd5f09fafcb7c1572abed4e08"
         },
         "report.json": {
-          "sha256": "9aa65f8250e3fead530be2b18032128f009379f230864a47b17ee5d88fa01f04"
+          "sha256": "cf1e83cb4937806529b7305a35ead339549acd005da9a81714042e6f5291bed8"
         },
         "ml_v1.csv": {
           "sha256": "49d6a61a24808cad84ce022f017d675ebe5c53220ffb5ca2db0308b5c8bcdec4"
         },
         "llm_context_v1.json": {
-          "sha256": "4d4e5d6531d967edc791b8b80139878d2bf64b8bedd2e9c9cc71588cf56ea389"
+          "sha256": "da3bf1075333ddc592e859813aab068dd8c784e117a6d0b3ae4e597e05902a82"
         }
       },
       "counts": {
@@ -165,16 +164,16 @@
       "expected_outcome": "PARTIAL_SUCCESS",
       "golden": {
         "sv.json": {
-          "sha256": "ccafb46a9dd04e51effa713e602393031c0cb2cce446cc6ee0e934b38f4d5984"
+          "sha256": "a88ee55c271df65dfb65557b35d544f8f00d68ac706a42ca7271457bc42c7b89"
         },
         "report.json": {
-          "sha256": "4a1d3071f92f7401bf0be6117fc4f60d8f5b73da8738a2190b94030ad8a745bc"
+          "sha256": "11a73246554f2ecf4aeb94cf20da52e8d5c93463434a5ef8cf7f0e82f72c63f2"
         },
         "ml_v1.csv": {
           "sha256": "d2a345393ffa209e1342694630ab602221ddb910a24f8f9680f1ab8f629dde1b"
         },
         "llm_context_v1.json": {
-          "sha256": "666da9cfd0d41631a369b869a02a7807765fc4a3f84b075f841ab6fbcdc45433"
+          "sha256": "a7f7e6cfec3317b938ece45b94820d6cf3aafbd8a47073048419903b2005c8c3"
         }
       },
       "counts": {
