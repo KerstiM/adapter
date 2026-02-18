@@ -1,23 +1,32 @@
 {
   "frozen_version": "v1.0.0",
-  "spec_lock_sha256": "fbec0d2df798556aa61c113e935d4821ec907bdccdac9d89413b8f3be7ebf84c",
+  "frozen_at": "2026-02-17T16:09:13Z",
+  "spec_lock_sha256": "5bb4fe0de130ffff7a83a1dfad4d46957e31655d153ebc8e0aec5dac29903cb1",
   "datasets": [
     {
       "dataset_id": "D1_public_valid_small",
       "expected_outcome": "SUCCESS",
       "golden": {
         "sv.json": {
-          "sha256": "6c3a44c5780a4a18d5771ebd7118f8e2a8770e8709204461a78c34dbdf865cce"
+          "sha256": "19a9e633a2e596721b56e8b414bb82046ec9fb4e522a8a98b26f2064549e2d54"
+        },
+        "report.json": {
+          "sha256": "3dadfaed79dba7abaf1f6e242b047d203ca71b37ae442c373986e45c9be16d44"
         },
         "ml_v1.csv": {
           "sha256": "a49a7bd83229db56e62aaa990a7f4eba27d3c7bb1ee2e3883408621a74db0227"
         },
         "llm_context_v1.json": {
-          "sha256": "b154dea33fda8164f738bd0cde3d3af03c03d8ec36692731354846771ab74089"
-        },
-        "report.json": {
-          "sha256": "236cf10a89d7bbe49e764e9ffa03d322d11609be55fed0a2c09cdef5dd2f82c7"
+          "sha256": "1d7f05d813ca677607da148f6a1463c276bd286f3dac7c3ecc1a98811f86d787"
         }
+      },
+      "counts": {
+        "accounts_total": 1,
+        "transactions_total": 7,
+        "transactions_emitted_sv": 7,
+        "transactions_dropped": 0,
+        "ml_rows": 7,
+        "llm_contexts": 1
       }
     },
     {
@@ -25,17 +34,25 @@
       "expected_outcome": "PARTIAL_SUCCESS",
       "golden": {
         "sv.json": {
-          "sha256": "23fa4dbbcb5e5b8d0fa1847322f8ec735e95f1c02fc483762e74ecfaf371496e"
+          "sha256": "36428a0311b3245d430e63638344c9f9a67559c069827f3668bb43bb0509fb6b"
+        },
+        "report.json": {
+          "sha256": "66a9d4dac49081091c957586752d60826ae3194120ef8b066323c4fe09f4acb4"
         },
         "ml_v1.csv": {
           "sha256": "df5df41204be853626290240e25d968c4f06692ee71da256dff61facc117f38b"
         },
         "llm_context_v1.json": {
-          "sha256": "81f53acc70ca8b4dc75429fab5f3621c4734dc0db09cc163af2f920add4178f9"
-        },
-        "report.json": {
-          "sha256": "fec8271d839340d6b556b126e41a21e63a7f09e9b506f6d8395a8a49e02053b5"
+          "sha256": "2564d8a6da4d2b60d681c138acd24450b1672a348e396179c63850d56eb4c5fa"
         }
+      },
+      "counts": {
+        "accounts_total": 1,
+        "transactions_total": 66,
+        "transactions_emitted_sv": 66,
+        "transactions_dropped": 0,
+        "ml_rows": 66,
+        "llm_contexts": 1
       }
     },
     {
@@ -43,36 +60,52 @@
       "expected_outcome": "SUCCESS",
       "golden": {
         "sv.json": {
-          "sha256": "99b63dc38e4b0ba120d8bd09ab5e7b857cba59cf68bfaf948a7aa4309a8745df"
-        },
-        "ml_v1.csv": {
-          "sha256": "215321cdad2995052fd49af6d85d22e6f8ae4f5d85cb964e7ff6d843da050833"
-        },
-        "llm_context_v1.json": {
-          "sha256": "d9898d16abb6a04682623413c410dcb6d1208d3b354df5cdcb2ed0c38a7fde76"
+          "sha256": "b2e16dd965908e536509d95e62d9e6ea9cd17c8a533e4f5df7f3320339e04c84"
         },
         "report.json": {
-          "sha256": "be2f7cd2a6240402dcfce7f52762203e0e3d09659cd1d1d6666c26da5049d8f2"
+          "sha256": "26d5a65228877cb2b2422993cb43f9cb47d10c89e76f82f238af4383364a298f"
+        },
+        "ml_v1.csv": {
+          "sha256": "4597c1cdef4d5e0a6543bc4c7834d555b89369ec7cab88fc4f6d072c5c14e9ec"
+        },
+        "llm_context_v1.json": {
+          "sha256": "49cf6ae21a0ac247c6d124ff377f716dff6f033beed4a168f650d7af591205cd"
         }
+      },
+      "counts": {
+        "accounts_total": 2,
+        "transactions_total": 150,
+        "transactions_emitted_sv": 150,
+        "transactions_dropped": 0,
+        "ml_rows": 150,
+        "llm_contexts": 2
       }
     },
     {
       "dataset_id": "D4_synth_errors_seed42",
-      "expected_outcome": "FAILED",
+      "expected_outcome": "FAIL",
       "expected_raw_validation": "FAIL",
       "golden": {
         "sv.json": {
-          "sha256": "52b8cad4c5510a2a26020eb36c8cd4b8247e11a957f704b10976547c976b2692"
+          "sha256": "a2f3fd75204dea6c4efe06f1e7fe973bcfe397b1120fb13813e89c2650139bcc"
+        },
+        "report.json": {
+          "sha256": "e48ce66af1eac64f761ff4048fc4549b4a86d0243a30833b78c835098d3e6510"
         },
         "ml_v1.csv": {
           "sha256": "69b2589d692e8fd208e633bc68c9aaa339c21595d1c98285eb0a8dabbff4a99f"
         },
         "llm_context_v1.json": {
-          "sha256": "f9ccff62b7648f0302f5396869bcc49b52c47a47c9043fd7f68a83e9fa64ae06"
-        },
-        "report.json": {
-          "sha256": "051620b757a7c910e0ca0e2b0853476863818738b023382fbed72ae64837dcfb"
+          "sha256": "3398ac5c92c952e911d71bed350bc68f621ddfa59af1bcdc3316b0c4c57cb36a"
         }
+      },
+      "counts": {
+        "accounts_total": 1,
+        "transactions_total": 39,
+        "transactions_emitted_sv": 35,
+        "transactions_dropped": 4,
+        "ml_rows": 35,
+        "llm_contexts": 1
       }
     },
     {
@@ -80,17 +113,25 @@
       "expected_outcome": "PARTIAL_SUCCESS",
       "golden": {
         "sv.json": {
-          "sha256": "a5b2b2977021b32778f3fb69ec3b179262e959b111397eded22ca106bfb1cd58"
+          "sha256": "a600bb1a1a17ca9f8c5049b0c0a9a3a8d64ac9fb0c12bd2671af81f17ad583f8"
+        },
+        "report.json": {
+          "sha256": "2140643ed3128690f8e9d11d305ffc7283bf1e5e822cafb5a06a1a6bbee9aabc"
         },
         "ml_v1.csv": {
           "sha256": "99e9c91d09e4a4d9b1979e8fe46369146ec2e43f47b26c433a966d481f23a7c5"
         },
         "llm_context_v1.json": {
-          "sha256": "d11bcc97edb61ab29a43296485e29a2653ae41da4ef96a0505d190ad92790090"
-        },
-        "report.json": {
-          "sha256": "faf1b05c4924624fe71526e9d7b696a1eea9ca9d683448ebce9b4ad9e8fa135a"
+          "sha256": "8e39f14bb3a868bebed8be81bdea6eabd6bc4df957af21518f96d7a696c46844"
         }
+      },
+      "counts": {
+        "accounts_total": 1,
+        "transactions_total": 33,
+        "transactions_emitted_sv": 33,
+        "transactions_dropped": 0,
+        "ml_rows": 33,
+        "llm_contexts": 1
       }
     },
     {
@@ -98,17 +139,25 @@
       "expected_outcome": "PARTIAL_SUCCESS",
       "golden": {
         "sv.json": {
-          "sha256": "1c362028dda5a1b4e6dfd664678abcd5eefb2d83cb075c3469bc918cf09d0768"
+          "sha256": "181bd9ff48fe5fca2c0f8300c21a732c38af6f887d58e6735addac8c3ba2763c"
+        },
+        "report.json": {
+          "sha256": "9aa65f8250e3fead530be2b18032128f009379f230864a47b17ee5d88fa01f04"
         },
         "ml_v1.csv": {
           "sha256": "49d6a61a24808cad84ce022f017d675ebe5c53220ffb5ca2db0308b5c8bcdec4"
         },
         "llm_context_v1.json": {
-          "sha256": "7aa260841ff084f4e05b576c59d0ebafcc6082c60ddae979a537fb5b782cb603"
-        },
-        "report.json": {
-          "sha256": "59a21f6a85b81d1a191fe22e7bf88d93703108ca2b0be68d9f70eb8e3c58e9d1"
+          "sha256": "4d4e5d6531d967edc791b8b80139878d2bf64b8bedd2e9c9cc71588cf56ea389"
         }
+      },
+      "counts": {
+        "accounts_total": 1,
+        "transactions_total": 24,
+        "transactions_emitted_sv": 21,
+        "transactions_dropped": 3,
+        "ml_rows": 21,
+        "llm_contexts": 1
       }
     },
     {
@@ -116,17 +165,25 @@
       "expected_outcome": "PARTIAL_SUCCESS",
       "golden": {
         "sv.json": {
-          "sha256": "ecd2322559836c291fd030a30df07e8818e88abebeefc1bc5929e7401ec7be90"
+          "sha256": "ccafb46a9dd04e51effa713e602393031c0cb2cce446cc6ee0e934b38f4d5984"
+        },
+        "report.json": {
+          "sha256": "4a1d3071f92f7401bf0be6117fc4f60d8f5b73da8738a2190b94030ad8a745bc"
         },
         "ml_v1.csv": {
           "sha256": "d2a345393ffa209e1342694630ab602221ddb910a24f8f9680f1ab8f629dde1b"
         },
         "llm_context_v1.json": {
-          "sha256": "0a328deea2c85ae61a88dbead52a5c3668950cc7b9cdb1a11aa800afbf96d2df"
-        },
-        "report.json": {
-          "sha256": "7ce95e3e189221d7fa6f7809ef952eb06936b8428139621ab103a267f94709c5"
+          "sha256": "666da9cfd0d41631a369b869a02a7807765fc4a3f84b075f841ab6fbcdc45433"
         }
+      },
+      "counts": {
+        "accounts_total": 1,
+        "transactions_total": 4,
+        "transactions_emitted_sv": 4,
+        "transactions_dropped": 0,
+        "ml_rows": 1,
+        "llm_contexts": 1
       }
     }
   ]
