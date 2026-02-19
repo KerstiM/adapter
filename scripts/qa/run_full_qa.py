@@ -51,6 +51,7 @@ from _utils import (
     sha256_bytes,
     sha256_file,
 )
+from tests.unit.test_import_boundaries import check_import_boundaries
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Section 1: SPEC INTEGRITY
@@ -667,7 +668,20 @@ def main() -> None:
         overall_pass = False
     print()
 
-    # ── 2. DATASET INPUT VALIDATION ──────────────────────────────────────
+    # ── 2. ARCHITECTURE IMPORT BOUNDARIES ───────────────────────────────
+    print("=" * 60)
+    print("ARCHITECTURE IMPORT BOUNDARIES")
+    print("=" * 60)
+
+    boundary_ok, boundary_msgs = check_import_boundaries()
+    for m in boundary_msgs:
+        print(f"  {m}")
+    section_results["BOUNDARIES"] = "PASS" if boundary_ok else "FAIL"
+    if not boundary_ok:
+        overall_pass = False
+    print()
+
+    # ── 3. DATASET INPUT VALIDATION ──────────────────────────────────────
     print("=" * 60)
     print("DATASET INPUT VALIDATION")
     print("=" * 60)
@@ -718,7 +732,7 @@ def main() -> None:
         overall_pass = False
     print()
 
-    # ── 3. PIPELINE OUTPUT VALIDATION ────────────────────────────────────
+    # ── 4. PIPELINE OUTPUT VALIDATION ────────────────────────────────────
     print("=" * 60)
     print("PIPELINE OUTPUT VALIDATION")
     print("=" * 60)
@@ -742,7 +756,7 @@ def main() -> None:
         overall_pass = False
     print()
 
-    # ── 4. GOLDEN SNAPSHOT VERIFICATION ──────────────────────────────────
+    # ── 5. GOLDEN SNAPSHOT VERIFICATION ──────────────────────────────────
     if args.skip_golden:
         print("=" * 60)
         print("GOLDEN SNAPSHOT VERIFICATION — SKIPPED (--skip-golden)")
@@ -761,7 +775,7 @@ def main() -> None:
             overall_pass = False
     print()
 
-    # ── 5. DETERMINISM SMOKE CHECK ───────────────────────────────────────
+    # ── 6. DETERMINISM SMOKE CHECK ───────────────────────────────────────
     print("=" * 60)
     print("DETERMINISM SMOKE CHECK")
     print("=" * 60)
