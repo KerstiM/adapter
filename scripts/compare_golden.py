@@ -22,7 +22,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "backend"))
 
-from adapter.pipeline import run_pipeline
+from entrypoints.wiring_fs import run_pipeline_fs
 
 GOLDEN_CREATED_AT = "2000-01-01T00:00:00Z"
 
@@ -99,9 +99,10 @@ def compare_dataset(
     with tempfile.TemporaryDirectory() as tmp:
         tmp_out = Path(tmp)
         try:
-            summary = run_pipeline(
+            summary = run_pipeline_fs(
                 data_dir=dataset_dir,
                 output_dir=tmp_out,
+                spec_dir=REPO_ROOT / "spec",
                 run_id=run_id,
                 created_at_utc=created_at_utc,
             )
