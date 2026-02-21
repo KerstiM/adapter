@@ -177,7 +177,7 @@ Väljundid tekivad jooksu-kausta alla (vt Variant A kirjeldust):
 
 Valik: **lokaalselt käivitatav modulaarne monoliit**, kus tuumloogika on I/O-st eraldatav (Ports & Adapters), pipeline on sammupõhine ning veamudeliks on kogutud raport.
 
-Lühike arhitektuuri kokkuvõte: [`plans/variant-a-project-structure.md`](plans/variant-a-project-structure.md:1).
+Lühike arhitektuuri kokkuvõte: [`docs/plans/variant-a-project-structure.md`](docs/plans/variant-a-project-structure.md:1).
 
 Operatiivsed käsud (1 dataset / kõik datasetid / validaator): [`docs/runbook.md`](docs/runbook.md:1).
 

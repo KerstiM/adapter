@@ -128,7 +128,7 @@ adapter/
   datasets/
   scripts/
   docs/
-  plans/
+    plans/
 ```
 
 Klikitavus (eesmärk):
@@ -254,9 +254,9 @@ Soovituslik paigutus (target):
 
 - Arhitektuur: `docs/architecture/variant_a.md`
 - Käivitamine: [`docs/runbook.md`](docs/runbook.md)
-- Plaanid/ADR/gap-id: `plans/`
+- Plaanid/ADR/gap-id: `docs/plans/`
 
-Kui tahad target ja current ausalt koos hoida, lisa “gap list” eraldi faili: [`plans/gaps_variant_a.md`](plans/gaps_variant_a.md).
+Kui tahad target ja current ausalt koos hoida, lisa "gap list" eraldi faili: [`docs/plans/gaps_variant_a.md`](docs/plans/gaps_variant_a.md).
 
 ## Ümbertõstmise kaardistus (current → target)
 

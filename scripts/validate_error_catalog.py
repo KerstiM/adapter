@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Validate that every issue code in a report.json is registered in the
-Error Catalog (spec/error_catalog.yaml).
+Error Catalog (spec/rulesets/error_catalog.yaml).
 
 Usage:
     python scripts/validate_error_catalog.py <report.json> [<report2.json> ...]
@@ -17,7 +17,7 @@ from pathlib import Path
 import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-CATALOG_PATH = REPO_ROOT / "spec" / "error_catalog.yaml"
+CATALOG_PATH = REPO_ROOT / "spec" / "rulesets" / "error_catalog.yaml"
 
 
 def load_catalog_codes(catalog_path: Path) -> set[str]:
@@ -85,7 +85,7 @@ def main() -> None:
         print(f"\nFAILED: {len(all_missing)} unregistered issue code(s):")
         for code, files in sorted(all_missing.items()):
             print(f"  {code}  (in {', '.join(files)})")
-        print("\nAdd missing codes to spec/error_catalog.yaml to fix.", file=sys.stderr)
+        print("\nAdd missing codes to spec/rulesets/error_catalog.yaml to fix.", file=sys.stderr)
         sys.exit(1)
     else:
         print("\nOK: all issue codes are registered in the error catalog.")
