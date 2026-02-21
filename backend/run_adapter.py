@@ -10,7 +10,7 @@ Usage:
 import argparse
 from pathlib import Path
 
-from adapter.pipeline import run_pipeline
+from entrypoints.wiring_fs import run_pipeline_fs
 
 ROOT = Path(__file__).resolve().parent.parent
 SEARCH_DIRS = [ROOT / "datasets"]
@@ -77,7 +77,7 @@ def main() -> None:
     print(f"Output to:  {output_dir}")
     print()
 
-    summary = run_pipeline(data_dir, output_dir)
+    summary = run_pipeline_fs(data_dir, output_dir, spec_dir=ROOT / "spec")
 
     print(f"Outcome:    {summary['outcome']}")
     print(f"stop_reason: {summary.get('stop_reason', '?')}")
