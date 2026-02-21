@@ -21,7 +21,7 @@ from pathlib import Path
 import jsonschema
 import pytest
 
-from adapter.pipeline import run_pipeline
+from entrypoints.wiring_fs import run_pipeline_fs
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SPEC_DIR = PROJECT_ROOT / "spec"
@@ -44,9 +44,10 @@ def _load_schema(name: str) -> dict:
 @pytest.fixture()
 def d1_output(tmp_path: Path) -> tuple[dict, Path]:
     """Run pipeline on D1 and return (summary, run_folder)."""
-    summary = run_pipeline(
+    summary = run_pipeline_fs(
         data_dir=DATA_D1,
         output_dir=tmp_path,
+        spec_dir=SPEC_DIR,
         run_id=FIXED_RUN_ID,
         created_at_utc=FIXED_TS,
     )
@@ -469,8 +470,8 @@ class TestDeterminism:
         out2 = tmp_path / "run2"
 
         ts = "2026-01-01T00:00:00Z"
-        run_pipeline(DATA_D1, out1, run_id="determinism-test", created_at_utc=ts)
-        run_pipeline(DATA_D1, out2, run_id="determinism-test", created_at_utc=ts)
+        run_pipeline_fs(DATA_D1, out1, SPEC_DIR, run_id="determinism-test", created_at_utc=ts)
+        run_pipeline_fs(DATA_D1, out2, SPEC_DIR, run_id="determinism-test", created_at_utc=ts)
 
         # Find the run folders
         folder1 = list(out1.iterdir())[0]
@@ -492,9 +493,10 @@ class TestD6Deduplication:
     @pytest.fixture()
     def d6_output(self, tmp_path: Path) -> tuple[dict, Path]:
         data_dir = DATASETS_DIR / "D6_synth_dupes_seed99"
-        summary = run_pipeline(
+        summary = run_pipeline_fs(
             data_dir=data_dir,
             output_dir=tmp_path,
+            spec_dir=SPEC_DIR,
             run_id="d6-dedupe-test",
             created_at_utc=FIXED_TS,
         )
@@ -569,9 +571,10 @@ class TestD4FailGate:
     @pytest.fixture()
     def d4_output(self, tmp_path: Path) -> tuple[dict, Path]:
         data_dir = DATASETS_DIR / "D4_synth_errors_seed42"
-        summary = run_pipeline(
+        summary = run_pipeline_fs(
             data_dir=data_dir,
             output_dir=tmp_path,
+            spec_dir=SPEC_DIR,
             run_id="d4-fail-test",
             created_at_utc=FIXED_TS,
         )
