@@ -97,8 +97,8 @@ def discover_datasets(filter_names: list[str] | None = None) -> list[Path]:
 def run_adapter(dataset_dir: Path, output_dir: Path) -> dict:
     """Run the adapter pipeline on a dataset. Returns the summary dict."""
     sys.path.insert(0, str(REPO_ROOT / "backend"))
-    from adapter.pipeline import run_pipeline
-    return run_pipeline(dataset_dir, output_dir)
+    from entrypoints.wiring_fs import run_pipeline_fs
+    return run_pipeline_fs(dataset_dir, output_dir, spec_dir=SPEC_DIR)
 
 
 # ---------------------------------------------------------------------------

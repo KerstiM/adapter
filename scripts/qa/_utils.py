@@ -148,14 +148,15 @@ def run_pipeline_deterministic(dataset_dir: Path, output_dir: Path, run_id: str 
     """Run pipeline with fixed deterministic metadata."""
     import sys
     sys.path.insert(0, str(REPO_ROOT / "backend"))
-    from adapter.pipeline import run_pipeline
+    from entrypoints.wiring_fs import run_pipeline_fs
 
     ds_name = dataset_dir.name
     if run_id is None:
         run_id = f"GOLDEN_{ds_name}"
-    return run_pipeline(
+    return run_pipeline_fs(
         data_dir=dataset_dir,
         output_dir=output_dir,
+        spec_dir=SPEC_DIR,
         run_id=run_id,
         created_at_utc=GOLDEN_CREATED_AT,
     )
