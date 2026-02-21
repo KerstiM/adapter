@@ -14,24 +14,18 @@ Stages:
   7. WRITE_OUTPUTS     — persist artifacts via OutputPort + build report
 """
 
-import csv
-import json
-import uuid
-from datetime import datetime, timezone
-from pathlib import Path
+from __future__ import annotations
+
 from typing import Any
 
 import jsonschema
 
 from domain.mapping.c01_raw_to_sv import (
     build_sv_bundle as _build_sv_bundle,
-    flatten_report_file as _flatten_report_file,
-    map_single_transaction as _map_single_transaction,
 )
 from domain.projections.c02_sv_to_ml import project_ml as _project_ml
 from domain.projections.c03_sv_to_llm import project_llm as _project_llm
 from domain.report.ops import (
-    ADAPTER_VERSION,
     build_dropped_details as _build_dropped_details,
     build_report as _build_report,
     count_flags_by_severity as _count_flags_by_severity,
@@ -41,84 +35,15 @@ from domain.rules.invariants_r01 import (
     check_invariants as _check_invariants,
     deduplicate_transactions as _deduplicate_transactions,
 )
-
-
-# ---------------------------------------------------------------------------
-# Constants
-# ---------------------------------------------------------------------------
-
-REPO_ROOT = Path(__file__).resolve().parents[2]
-SPEC_DIR = REPO_ROOT / "spec"
+from ports.clock_port import ClockPort
+from ports.dataset_port import DatasetPort
+from ports.output_port import OutputPort
+from ports.spec_port import SpecPort
 
 
 # ---------------------------------------------------------------------------
 # Helpers — pure data utilities (no I/O)
 # ---------------------------------------------------------------------------
-
-def _load_json(path: Path) -> dict:
-    with open(path, encoding="utf-8") as f:
-        return json.load(f)
-
-
-def _load_yaml_file(path: Path) -> dict:
-    with open(path, encoding="utf-8") as f:
-        return yaml.safe_load(f)
-
-
-def _resolve_spec_path(relpath: str) -> Path:
-    """
-    Resolve a spec path EXACTLY as written in the profile.
-    No fallbacks, no guessing. If missing -> fail fast.
-    """
-    path = (REPO_ROOT / relpath).resolve()
-    if not path.exists():
-        raise FileNotFoundError(f"Spec file missing (profile points to it): {relpath} -> {path}")
-    return path
-
-
-def load_profile() -> dict:
-    """Load default profile and resolve all referenced spec files."""
-    profile_path = SPEC_DIR / "profiles" / "default.yaml"
-    profile = _load_yaml_file(profile_path)
-
-    resolved: dict[str, Any] = {
-        "id": profile["id"],
-        "version": profile["version"],
-    }
-
-    # Load schemas
-    resolved["schemas"] = {}
-    for key, relpath in profile.get("schemas", {}).items():
-        path = _resolve_spec_path(relpath)
-        resolved["schemas"][key] = _load_json(path)
-
-    # Load contracts
-    resolved["contracts"] = {}
-    for key, relpath in profile.get("contracts", {}).items():
-        path = _resolve_spec_path(relpath)
-        resolved["contracts"][key] = _load_yaml_file(path)
-
-    # Load rulesets
-    resolved["rulesets"] = {}
-    for key, relpath in profile.get("rulesets", {}).items():
-        path = _resolve_spec_path(relpath)
-        resolved["rulesets"][key] = _load_yaml_file(path)
-
-    return resolved
-
-
-# ---------------------------------------------------------------------------
-# Helpers — data utilities
-# ---------------------------------------------------------------------------
-
-def _now_utc() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
-
-def _ts_prefix(created_at_utc: str) -> str:
-    """Derive a filesystem-safe timestamp prefix from an ISO timestamp."""
-    return created_at_utc.replace("-", "").replace(":", "").replace("T", "T").split(".")[0]
-
 
 def _is_download_only(data: dict) -> bool:
     """Check if a transaction response is download-only (C-01 rule)."""
@@ -218,34 +143,73 @@ def _validate_sv_schema(sv_bundle: dict, schema: dict) -> list[dict]:
 # ---------------------------------------------------------------------------
 
 def run_pipeline(
-    dataset: Any,
-    out: Any,
-    spec: Any,
-    clock: Any,
+    dataset: DatasetPort,
+    out: OutputPort,
+    spec: SpecPort,
+    clock: ClockPort,
     profile_id: str = "default",
     *,
     dataset_id: str = "",
     input_dir: str = "",
-) -> dict:
-    """
-    Run the full adapter pipeline via ports: RAW -> SV -> ML/LLM projections.
+) -> dict[str, Any]:
+    """Run the full adapter pipeline via ports: RAW -> SV -> ML/LLM projections.
+
+    This is the **single public entry point** of the application layer.
+    It depends only on ``ports.*`` and ``domain.*`` — never on concrete
+    adapters or filesystem paths.
 
     Parameters
     ----------
-    dataset:    DatasetPort  — provides read_accounts(), list_transaction_reports(),
-                               read_transactions_report(), read_standing_orders_optional()
-    out:        OutputPort   — provides init_run_folder(), write_sv(), write_ml(),
-                               write_llm(), write_report()
-    spec:       SpecPort     — provides load_profile()
-    clock:      ClockPort    — provides now_utc(), new_run_id()
-    profile_id: str          — profile to load (default: "default")
-    dataset_id: str          — dataset name for the run report (keyword-only)
-    input_dir:  str          — input path string for the run report (keyword-only)
+    dataset : DatasetPort
+        Read-only access to raw Berlin AIS input files
+        (accounts, transaction reports, standing orders).
+    out : OutputPort
+        Write access for persisting run artefacts
+        (sv.json, ml_v1.csv, llm_context_v1.json, report.json).
+    spec : SpecPort
+        Read-only access to specification artefacts
+        (schemas, contracts, rulesets, run profiles).
+    clock : ClockPort
+        Source of wall-clock time and unique run identifiers.
+    profile_id : str, default ``"default"``
+        Which run profile to load via *spec*.
+    dataset_id : str, keyword-only
+        Human-readable dataset name included in the run report.
+    input_dir : str, keyword-only
+        Input path string included in the run report for traceability.
 
     Returns
     -------
-    Summary dict with outcome, run_id, counts, flags, issues, dropped_details.
-    Note: run_folder is NOT included here — FS callers read it from FsOutputAdapter.run_folder.
+    dict[str, Any]
+        Summary dict conforming to the structure::
+
+            {
+                "outcome":         str,   # SUCCESS | PARTIAL_SUCCESS | FAIL
+                "stop_reason":     str,
+                "run_id":          str,
+                "counts": {
+                    "accounts_total":           int,
+                    "transactions_total":       int,
+                    "transactions_emitted_sv":  int,
+                    "transactions_dropped":     int,
+                    "ml_rows":                  int,
+                    "llm_contexts":             int,
+                },
+                "by_severity":     dict[str, int],
+                "run_flags":       list[dict],
+                "issues":          list[dict],
+                "dropped_details": list[dict],
+            }
+
+        The full ``CollectedRunReport`` (see ``domain.report.models``) is
+        written to *out* via ``out.write_report()``; this dict is a
+        lightweight caller-facing summary.
+
+    Notes
+    -----
+    ``run_folder`` is intentionally absent from the return value.
+    Filesystem callers can read it from ``FsOutputAdapter.run_folder``
+    after the call returns.
     """
     # ── RunContext ────────────────────────────────────────────────────────
     run_id = clock.new_run_id()
@@ -443,13 +407,6 @@ def run_pipeline(
             "warnings": entry.get("warnings", 0),
             "infos": 0,
         })
-
-    # Resolve dataset_id and input_dir for report (handle Path -> str here)
-    dataset_id = data_dir.name
-    try:
-        input_dir = str(data_dir.resolve().relative_to(REPO_ROOT).as_posix())
-    except Exception:
-        input_dir = str(data_dir.resolve().as_posix())
 
     # report.json
     report = _build_report(
