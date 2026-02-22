@@ -1,32 +1,32 @@
 # D4_synth_errors_seed42
 
-Targeted error injections (E01–E04) that each violate S-00B schema constraints and produce ERROR-level drops. With 4 drops out of 39 records (10.3%), the drop ratio exceeds the default.yaml threshold of 5%, so the adapter outcome is FAILED.
+Sihitud veasüstid (E01–E04), mis rikuvad S-00B skeemipiiranguid ja tekitavad ERROR-tasemel droppe. 4 droppi 39 kirjest (10,3%) ületab default.yaml lävendi 5%, seega adapteri tulemus on FAIL.
 
-## Properties
+## Omadused
 
-| Property | Value |
+| Omadus | Väärtus |
 |---|---|
 | Seed | 42 |
-| Date range | 2024-01-01 – 2024-12-31 |
-| Booked | 34 |
-| Pending | 5 |
-| Expected dropped | 4 |
-| Expected outcome | FAILED |
+| Kuupäevavahemik | 2024-01-01 – 2024-12-31 |
+| Broneeritud (booked) | 34 |
+| Ootel (pending) | 5 |
+| Oodatav dropitud | 4 |
+| Oodatav tulemus | FAIL |
 
-## What this dataset tests
+## Mida see dataset testib
 
-Targeted error injections (E01–E04) that each violate S-00B schema constraints and produce ERROR-level drops. With 4 drops out of 39 records (10.3%), the drop ratio exceeds the default.yaml threshold of 5%, so the adapter outcome is FAILED.
+Sihitud veasüstid (E01–E04), mis rikuvad S-00B skeemipiiranguid ja tekitavad ERROR-tasemel droppe. 4 droppi 39 kirjest (10,3%) ületab default.yaml lävendi 5%, seega adapteri tulemus on FAIL.
 
-## Variations / injected codes
+## Variatsioonid / süstitud koodid
 
-  - `E01_INVALID_CURRENCY: currency='EURO' (4 chars) → ERROR DROP`
-  - `E02_MISSING_VALUE_DATE: no valueDate → ERROR DROP`
+  - `E01_INVALID_CURRENCY: currency='EURO' (4 tähemärki) → ERROR DROP`
+  - `E02_MISSING_VALUE_DATE: valueDate puudub → ERROR DROP`
   - `E03_UNPARSEABLE_AMOUNT: amount='not_a_number' → ERROR DROP`
   - `E04_EMPTY_CURRENCY: currency='' → ERROR DROP`
 
-## Quality gate warnings
+## Kvaliteedivärava hoiatused
 
-- D4_synth_errors_seed42: $.transactions.booked[30] currency 'EURO' invalid
-- D4_synth_errors_seed42: $.transactions.booked[31] missing valueDate
-- D4_synth_errors_seed42: $.transactions.booked[32] amount 'not_a_number' does not match pattern
-- D4_synth_errors_seed42: $.transactions.booked[33] currency '' invalid
+- D4_synth_errors_seed42: $.transactions.booked[30] valuuta 'EURO' vigane
+- D4_synth_errors_seed42: $.transactions.booked[31] valueDate puudub
+- D4_synth_errors_seed42: $.transactions.booked[32] summa 'not_a_number' ei vasta mustrile
+- D4_synth_errors_seed42: $.transactions.booked[33] valuuta '' vigane

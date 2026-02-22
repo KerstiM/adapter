@@ -1,26 +1,26 @@
 # D1_public_valid_small
 
-Clean happy-path smoke test. All transactions valid, amounts sign-match direction, every required field present. Adapter should produce SUCCESS with 0 drops and 0 WARNs.
+Puhas happy-path suitsutestimine. Kõik tehingud on kehtivad, summade märgid vastavad suunale, kõik kohustuslikud väljad on olemas. Adapter peab andma tulemuse SUCCESS: 0 droppi ja 0 WARN-i.
 
-## Properties
+## Omadused
 
-| Property | Value |
+| Omadus | Väärtus |
 |---|---|
 | Seed | 1 |
-| Date range | 2024-01-01 – 2024-12-31 |
-| Booked | 5 |
-| Pending | 2 |
-| Expected dropped | 0 |
-| Expected outcome | SUCCESS |
+| Kuupäevavahemik | 2024-01-01 – 2024-12-31 |
+| Broneeritud (booked) | 5 |
+| Ootel (pending) | 2 |
+| Oodatav dropitud | 0 |
+| Oodatav tulemus | SUCCESS |
 
-## What this dataset tests
+## Mida see dataset testib
 
-Clean happy-path smoke test. All transactions valid, amounts sign-match direction, every required field present. Adapter should produce SUCCESS with 0 drops and 0 WARNs.
+Puhas happy-path suitsutestimine. Kõik tehingud on kehtivad, summade märgid vastavad suunale, kõik kohustuslikud väljad on olemas. Adapter peab andma tulemuse SUCCESS: 0 droppi ja 0 WARN-i.
 
-## Variations / injected codes
+## Variatsioonid / süstitud koodid
 
-  (none)
+  (puuduvad)
 
-## Quality gate warnings
+## Kvaliteedivärava hoiatused
 
-(none)
+(puuduvad)

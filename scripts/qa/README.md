@@ -1,60 +1,60 @@
-# QA Scripts
+# QA skriptid
 
-End-to-end quality assurance for the adapter pipeline.
+Adapteri pipeline end-to-end kvaliteedikontroll.
 
-## `run_full_qa.py` — Full QA Entrypoint
+## `run_full_qa.py` — QA peamine sisenemispunkt
 
-Runs all verification stages in sequence:
+Jooksutab kõik kontrollietapid järjest:
 
-1. **Spec integrity** — profile references, file existence, version fields
-2. **Dataset input validation** — schema + semantic checks on raw inputs
-3. **Pipeline output validation** — schema validation + cross-artifact consistency
-4. **Golden snapshot verification** — SHA-256 comparison against frozen goldens
-5. **Determinism smoke check** — pipeline produces identical output on repeated runs
+1. **Spetsifikatsiooni terviklikkus** — profiili viited, failide olemasolu, versioonivälad
+2. **Dataseti sisendi valideerimine** — skeemi- ja semantilised kontrollid toorsisenditel
+3. **Pipeline väljundi valideerimine** — skeemivalideerimine + artefaktide ristkontroll
+4. **Golden-snapshotide võrdlus** — SHA-256 võrdlus külmutatud goldenitega
+5. **Determinismi suitsukontroll** — pipeline toodab kordusjooksul identse väljundi
 
-### Quick start
+### Kiirkäivitus
 
 ```bash
-# Run all datasets (from repo root)
+# Kõik datasetid (repo juurkaustast)
 python scripts/qa/run_full_qa.py
 
-# Single dataset
+# Üks dataset
 python scripts/qa/run_full_qa.py --dataset D1_public_valid_small
 
-# Multiple datasets
+# Mitu datasetti
 python scripts/qa/run_full_qa.py --dataset D1,D2
 
-# Fast mode (D1 + D3 only)
+# Kiire režiim (ainult D1 + D3)
 python scripts/qa/run_full_qa.py --fast
 
-# Skip golden comparison (validate only)
+# Ilma golden-võrdluseta (ainult valideerimine)
 python scripts/qa/run_full_qa.py --skip-golden
 ```
 
 ### Windows PowerShell
 
 ```powershell
-# Run all datasets
+# Kõik datasetid
 python scripts\qa\run_full_qa.py
 
-# Single dataset
+# Üks dataset
 python scripts\qa\run_full_qa.py --dataset D1_public_valid_small
 
-# Fast mode
+# Kiire režiim
 python scripts\qa\run_full_qa.py --fast
 
-# Skip golden comparison
+# Ilma golden-võrdluseta
 python scripts\qa\run_full_qa.py --skip-golden
 ```
 
-### Exit codes
+### Väljundikoodid
 
-| Code | Meaning |
-|------|---------|
-| `0` | All checks passed |
-| `1` | One or more checks failed |
+| Kood | Tähendus |
+|------|----------|
+| `0` | Kõik kontrollid läbitud |
+| `1` | Üks või enam kontrolli ebaõnnestus |
 
-### Output format
+### Väljundi formaat
 
 ```
 SPEC: PASS
@@ -64,19 +64,17 @@ GOLDENS: PASS/FAIL
 DETERMINISM: PASS/FAIL
 ```
 
-Failures include compact per-dataset and per-file details.
+Ebaõnnestumiste korral kuvatakse kompaktsed dataseti- ja failipõhised üksikasjad.
 
-## Other QA scripts
+## Muud QA skriptid
 
-| Script | Purpose |
+| Skript | Eesmärk |
 |--------|---------|
-| `build_spec_lock.py` | Generate `frozen/v1.0.0/spec.lock.json` from profile |
-| `freeze_goldens.py` | Freeze pipeline outputs into `frozen/v1.0.0/golden/` |
-| `verify_goldens.py` | Verify frozen goldens are still reproducible |
+| `build_spec_lock.py` | Genereerib `frozen/v1.0.0/spec.lock.json` profiilist |
+| `freeze_goldens.py` | Külmutab pipeline väljundid kausta `frozen/v1.0.0/golden/` |
+| `verify_goldens.py` | Kontrollib, et külmutatud goldenid on endiselt reprodutseeritavad |
 
-### Prerequisites
-
-Install Python dependencies (from repo root):
+### Eeldused
 
 ```bash
 pip install jsonschema pyyaml

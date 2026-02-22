@@ -1,36 +1,36 @@
-# D7 — Standing Orders (seed 77)
+# D7 — Püsikorraldused (seed 77)
 
-Focused dataset for validating standing-order / INFORMATION transaction mapping
-via the `nextExecutionDate` fallback introduced in Task 5.
+Fookusega dataset püsikorralduste / INFORMATION tehingute kaardistuse valideerimiseks
+`nextExecutionDate` fallback'i kaudu.
 
-## Contents
+## Sisu
 
-| File                   | Description                                           |
+| Fail                   | Kirjeldus                                             |
 |------------------------|-------------------------------------------------------|
-| accounts.json          | Single EUR current account                            |
-| transactions.json      | 1 booked transaction, empty pending array             |
-| standing_orders.json   | 3 INFORMATION standing-order items (see details below)|
+| accounts.json          | Üks EUR arvelduskonto                                 |
+| transactions.json      | 1 broneeritud tehing, tühi ootel massiiv              |
+| standing_orders.json   | 3 INFORMATION püsikorralduse kirjet (vt allpool)      |
 
-## Standing-order items
+## Püsikorralduse kirjed
 
-| # | creditorName          | valueDate  | nextExecutionDate | Expected value_date |
-|---|-----------------------|------------|-------------------|---------------------|
-| 1 | Stadtwerke Berlin     | _(absent)_ | 2025-02-01        | 2025-02-01 (fallback to nextExecutionDate) |
-| 2 | Vonovia SE            | 2025-02-01 | 2025-03-01        | 2025-02-01 (valueDate takes precedence)    |
-| 3 | Allianz Versicherung  | _(absent)_ | 2025-04-01        | 2025-04-01 (fallback to nextExecutionDate) |
+| # | creditorName          | valueDate  | nextExecutionDate | Oodatav value_date |
+|---|-----------------------|------------|-------------------|--------------------|
+| 1 | Stadtwerke Berlin     | _(puudub)_ | 2025-02-01        | 2025-02-01 (fallback nextExecutionDate'ile) |
+| 2 | Vonovia SE            | 2025-02-01 | 2025-03-01        | 2025-02-01 (valueDate on eelistatud)        |
+| 3 | Allianz Versicherung  | _(puudub)_ | 2025-04-01        | 2025-04-01 (fallback nextExecutionDate'ile) |
 
-## Expected pipeline outcome
+## Oodatav pipeline tulemus
 
-- **Outcome**: `SUCCESS` or `PARTIAL_SUCCESS`
+- **Tulemus**: `SUCCESS` või `PARTIAL_SUCCESS`
 - **accounts_total**: 1
-- **transactions_total**: 4 (1 booked + 3 information)
+- **transactions_total**: 4 (1 broneeritud + 3 information)
 - **transactions_emitted_sv**: 4
 - **transactions_dropped**: 0
 
-No error injections — all transactions should map successfully. Items 1 and 3
-exercise the `coalesce(valueDate, nextExecutionDate)` fallback rule for
-INFORMATION status; item 2 confirms that `valueDate` is preferred when present.
+Veasüste ei ole — kõik tehingud peaksid edukalt kaardistuma. Kirjed 1 ja 3
+harjutavad `coalesce(valueDate, nextExecutionDate)` fallback-reeglit
+INFORMATION staatusega tehingute jaoks; kirje 2 kinnitab, et `valueDate` on eelistatud, kui olemas.
 
-INFORMATION transactions are excluded from ML and LLM projections (C-02 / C-03
-filter to BOOKED + PENDING only), so projections will contain only the single
-booked transaction.
+INFORMATION tehingud jäetakse välja ML ja LLM projektsioonidest (C-02 / C-03
+filtreerivad ainult BOOKED + PENDING), seega projektsioonid sisaldavad ainult üht
+broneeritud tehingut.
