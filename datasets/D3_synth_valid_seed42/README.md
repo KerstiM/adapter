@@ -1,30 +1,30 @@
 # D3_synth_valid_seed42
 
-Multi-account synthetic baseline with separate report files per account. Two accounts (DE primary, EE secondary), each with its own transactions file. Sign-matched amounts, no error injections.
+Mitme konto sünteetiline baasjoon eraldi tehingufailidega konto kohta. Kaks kontot (DE esmane, EE teisene), kummalgi oma tehingufail. Märgid vastavad summadele, veasüste ei ole.
 
-**Report files:** transactions_1.json, transactions_2.json
+**Tehingufailid:** transactions_1.json, transactions_2.json
 
-## Properties
+## Omadused
 
-| Property | Value |
+| Omadus | Väärtus |
 |---|---|
 | Seed | 42 |
-| Date range | 2024-01-01 – 2024-12-31 |
-| Booked (total) | 125 |
-| Pending (total) | 25 |
-| transactions_1.json | 100 booked + 20 pending (iban: DE43321819600133890838) |
-| transactions_2.json | 25 booked + 5 pending (iban: EE402654235116155940) |
-| Expected dropped | 0 |
-| Expected outcome | SUCCESS |
+| Kuupäevavahemik | 2024-01-01 – 2024-12-31 |
+| Broneeritud (kokku) | 125 |
+| Ootel (kokku) | 25 |
+| transactions_1.json | 100 broneeritud + 20 ootel (iban: DE43321819600133890838) |
+| transactions_2.json | 25 broneeritud + 5 ootel (iban: EE402654235116155940) |
+| Oodatav dropitud | 0 |
+| Oodatav tulemus | SUCCESS |
 
-## What this dataset tests
+## Mida see dataset testib
 
-Multi-account synthetic baseline with separate report files per account. Two accounts (DE primary, EE secondary), each with its own transactions file. Sign-matched amounts, no error injections.
+Mitme konto sünteetiline baasjoon eraldi tehingufailidega konto kohta. Kaks kontot (DE esmane, EE teisene), kummalgi oma tehingufail. Märgid vastavad summadele, veasüste ei ole.
 
-## Variations / injected codes
+## Variatsioonid / süstitud koodid
 
-  (none)
+  (puuduvad)
 
-## Quality gate warnings
+## Kvaliteedivärava hoiatused
 
-(none)
+(puuduvad)

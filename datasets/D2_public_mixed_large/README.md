@@ -1,30 +1,30 @@
 # D2_public_mixed_large
 
-Large mixed dataset with natural Berlin Group sign convention (positive amounts on OUT) causing INV-05 WARNs. Pending transactions omit bookingDate. No drops expected.
+Suur segadataset Berlin Group loomulike märgikonventsioonidega (positiivsed summad OUT-il), mis põhjustavad INV-05 WARN-e. Ootel tehingutel puudub bookingDate. Droppe ei oodata.
 
-## Properties
+## Omadused
 
-| Property | Value |
+| Omadus | Väärtus |
 |---|---|
 | Seed | 2 |
-| Date range | 2024-01-01 – 2024-12-31 |
-| Booked | 50 |
-| Pending | 16 |
-| Expected dropped | 0 |
-| Expected outcome | PARTIAL_SUCCESS |
+| Kuupäevavahemik | 2024-01-01 – 2024-12-31 |
+| Broneeritud (booked) | 50 |
+| Ootel (pending) | 16 |
+| Oodatav dropitud | 0 |
+| Oodatav tulemus | PARTIAL_SUCCESS |
 
-## What this dataset tests
+## Mida see dataset testib
 
-Large mixed dataset with natural Berlin Group sign convention (positive amounts on OUT) causing INV-05 WARNs. Pending transactions omit bookingDate. No drops expected.
+Suur segadataset Berlin Group loomulike märgikonventsioonidega (positiivsed summad OUT-il), mis põhjustavad INV-05 WARN-e. Ootel tehingutel puudub bookingDate. Droppe ei oodata.
 
-## Variations / injected codes
+## Variatsioonid / süstitud koodid
 
-  - `WARN_INV05: booked[28] sign mismatch (IN with negative amount)`
-  - `WARN_INV05: booked[9] sign mismatch (IN with negative amount)`
-  - `WARN_INV05: booked[12] sign mismatch (IN with negative amount)`
-  - `WARN_INV05: booked[24] sign mismatch (IN with negative amount)`
-  - `WARN_INV05: booked[30] sign mismatch (IN with negative amount)`
+  - `WARN_INV05: booked[28] märgi lahknevus (IN negatiivse summaga)`
+  - `WARN_INV05: booked[9] märgi lahknevus (IN negatiivse summaga)`
+  - `WARN_INV05: booked[12] märgi lahknevus (IN negatiivse summaga)`
+  - `WARN_INV05: booked[24] märgi lahknevus (IN negatiivse summaga)`
+  - `WARN_INV05: booked[30] märgi lahknevus (IN negatiivse summaga)`
 
-## Quality gate warnings
+## Kvaliteedivärava hoiatused
 
-(none)
+(puuduvad)

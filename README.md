@@ -33,6 +33,12 @@ Väljund tekib jooksu-kausta alla:
         llm_context_v1.json          # LLM kontekst
 ```
 
+Täpsem käivitusjuhend: [`docs/runbook.md`](docs/runbook.md).
+
+## Testide käivitamine
+
+```bash
+cd backend && python -m pytest tests/ -v
 Täpsem runbook: [`docs/runbook.md`](docs/runbook.md).
 
 ---
@@ -77,6 +83,17 @@ backend/
 **Importimisreegel:** `domain` → ei impordi `adapters`, `ports`, `pathlib`, `os`.
 `application` → impordib `domain` + `ports`, ei tee I/O-d. `adapters` → impordib `ports`.
 
+Täpsem testistrateegia: [`docs/TESTIMINE.md`](docs/TESTIMINE.md).
+
+## Dokumentatsioon
+
+| Dokument | Kirjeldus |
+|----------|-----------|
+| [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md) | Ports & Adapters arhitektuur, pipeline, failipuu |
+| [`docs/ARENDUSLOGI.md`](docs/ARENDUSLOGI.md) | Tehtud otsused, valideerimisparandused, lõhed |
+| [`docs/TESTIMINE.md`](docs/TESTIMINE.md) | Testiklassid, käivitamisjuhised |
+| [`docs/SPETSIFIKATSIOONID.md`](docs/SPETSIFIKATSIOONID.md) | Skeemide, lepingute ja reeglistike indeks |
+| [`docs/runbook.md`](docs/runbook.md) | Operatiivsed käivitamiskäsud |
 Täpsem arhitektuuridokument: [`docs/plans/variant-a-project-structure.md`](docs/plans/variant-a-project-structure.md).
 
 ---
