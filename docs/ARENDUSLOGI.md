@@ -1,88 +1,68 @@
 # Arenduslogi
 
-Lühike ülevaade tehtud otsustest, valideerimisparandustest ja avatud lõhedest.
+Prototüübi arenduse kronoloogiline ülevaade.
 
 ---
 
-## 1. Skeemide/lepingute valideerimine ja parandused
+### 2026-02-10
+- Spetsifikatsioonide algversioon: R-01 invariandid
 
-### S-05 (raporti skeem) — suurem struktuuriline lahknevus
+### 2026-02-11
+- **Happy-path pipeline** valmis: RAW (Berlin AIS) → SV → ML/LLM projektsioonid → raport
+- Pipeline ümberkirjutus vastavusse spec v2-ga (S-01, C-01/C-02/C-03)
+- Refaktor: ühtne RunContext, jooksukaustad, report.json
+- Vana koodi puhastus (core.py, io_excel.py, io_json.py)
+- Tehingute drop-loenduse parandus ja valueDate fallback-poliitika
 
-**Probleem:** S-05 eeldas teistsugust struktuuri kui tegelik `report.json`.
+### 2026-02-12
+- Dataseti generaator ja D1–D6 testdatasetid
+- CLI `--data/-d` lipp dataseti valimiseks
 
-| Aspekt | S-05 eeldas | Tegelik väljund |
-|--------|-------------|-----------------|
-| `report_schema_version` | Kohustuslik | Puudus |
-| `outcome` | Tipptasemel objekt `status` + `stop_reason` | String `summary` sees |
-| `issues` | Struktureeritud objektide massiiv | Lihtsate stringide massiiv |
-| `by_stage` | Massiiv `{stage, errors, warnings, infos}` | Dict etapi nime järgi |
-| `run_flags` | Puudub skeemist | Olemas väljundis |
+### 2026-02-13
+- D4: deterministlik FAIL-dataset (>5% drop threshold)
+- INV-09 duplikaadireegli lisamine R-01-sse (v1.1.0)
+- Dedupe samm ja fail-gate pipeline'is
+- D6: duplikaatide testdataset
 
-**Lahendus:** Uuendati **nii pipeline koodi kui ka S-05 skeemi** (lepitusviis):
-- Pipeline: outcome enum `FAILED`→`FAIL`, struktureeritud issues, massiivipõhine `by_stage`, lisatud `report_schema_version` ja `stop_reason`.
-- S-05: lisatud `run_flags`, `dropped_details`, laiendatud `counts`, eemaldatud `metrics` (prototüübis ei toodeta).
+### 2026-02-16
+- **Skeemide/lepingute valideerimine ja lepitamine:**
+  - S-05 raporti skeem: täielik ümberkirjutus (outcome enum, struktureeritud issues, by_stage massiiv)
+  - S-03 LLM kontekst: lisatud `oneOf` (objekt / massiiv mitme konto korral)
+  - default.yaml: parandatud S-00A/S-00B failiteed
+  - C-03: uuendatud mitme konto kardinaalsus
+- S-00C püsikorralduste skeem + profiili sidumine
+- D7 püsikorralduste dataset + valueDate fallback parandus
+- Valideerimistulemus: 35/36 PASS (1 oodatud FAIL D4-l)
 
-### S-03 (LLM konteksti skeem) — massiiv vs objekt
+### 2026-02-17
+- **Golden/regressioonitestid:** freeze_goldens.py, verify_goldens.py, spec.lock.json
+- **QA entrypoint:** run_full_qa.py (5-etapiline E2E kontroll)
+- D3 mitme konto versioon (eraldi tehingufailid)
+- frozen/v1.0.0/ struktuur (manifest + goldenid)
 
-**Probleem:** S-03 defineeris `type: "object"`, aga mitme konto korral (D3) toodetakse massiiv.
+### 2026-02-18
+- **Ports & Adapters refaktor algus:**
+  - Sihtstruktuuri kaustad
+  - Portide liidesed (SpecPort, DatasetPort, OutputPort, ClockPort)
+  - FS-adapterid kõigile portidele
+  - Pipeline orkestreerimine portide kaudu (mitte otse failisüsteemist)
+- Puhas loogika eraldatud `domain/` moodulisse
+- frozen/v1.0.0 lukustamine
 
-**Lahendus:** S-03 uuendatud `oneOf`-ga — aktsepteerib nii ühte objekti kui massiivi.
+### 2026-02-19
+- Arhitektuuri importimispiiride test (`test_import_boundaries.py`)
+- Veakataloog → reeglistikud; plaanid → docs/
 
-### default.yaml — valed skeemiteed
+### 2026-02-21
+- **Compat-kihi eemaldamine:**
+  - `entrypoints/wiring_fs.py` kui FS driving-adapter
+  - `run_adapter.py` ümber ühendatud läbi wiring_fs
+  - Fake-portide unit-testid `run_pipeline`-le
+  - Testide sõltuvus compat-kihist eemaldatud
+  - `backend/adapter/` (vana compat-kiht) kustutatud
+- README uuendatud peegeldama Ports & Adapters arhitektuuri
 
-**Probleem:** Profiil viitas `S-00_berlin_accounts.schema.json`-le, tegelikud failid on `S-00A_...` ja `S-00B_...`.
-
-**Lahendus:** Parandatud `default.yaml` teed.
-
-### C-03 leping — aegunud kujukirjeldus
-
-**Probleem:** C-03 viitas `$.accounts[0].*`, eeldades ainult ühte kontot.
-
-**Lahendus:** Uuendatud C-03 dokumenteerima `cardinality` reegel ja kasutama `@current_account.*`.
-
-### Valideerimistulemused (pärast parandusi)
-
-6 datasetti × 6 artefakti = 36 valideerimist:
-- **35 PASS** — kõik artefaktid valideeruvad skeemide vastu
-- **1 oodatud FAIL** — D4 `transactions.json` vs S-00B (tahtlikult vigane sisend)
-
----
-
-## 2. Lõhed (target → current)
-
-### Lõhe 1: sõltuvuspiirid (impordireeglid)
-- `domain` impordid peavad olema "puhtad" (ei failisüsteemi, ei adaptereid).
-- **Staatus:** tehtud. Arhitektuuritest `test_import_boundaries.py` kontrollib.
-
-### Lõhe 2: kogutud raport kui keskne artefakt
-- Raport peab olema pipeline keskne väljund, mitte "kirjutame faili lõpus".
-- **Staatus:** tehtud. Outcome otsus tugineb raportile + poliitikale.
-
-### Lõhe 3: pipeline nähtav application-kihis
-- Pipeline sammud peavad olema eraldi ja puhtad (I/O portide taga).
-- **Staatus:** tehtud. `application/pipeline.py` sisaldab 7-sammulise orkestreerimise.
-
-### Lõhe 4: portid on päris portid
-- Portide API räägib kontseptsioonidest, mitte path'idest.
-- **Staatus:** tehtud. `ports/*` ei kasuta `Path` ega failisüsteemi.
-
-### Lõhe 5: testide kihistus
-- Unit/contract/E2E jaotus peab olema sisuliselt korrektne.
-- **Staatus:** tehtud. Unit-testid kasutavad fake-porte, E2E kasutab päris adaptereid.
-
-### Lõhe 6: golden/regressioonitestid determinismile
-- Determinismi lubadus peab olema kinnitatud golden-artefaktide võrdlusega.
-- **Staatus:** tehtud. `frozen/v1.0.0/golden/` + `scripts/qa/verify_goldens.py`.
-
----
-
-## 3. Muudetud failid (kokkuvõte)
-
-| Fail | Muudatus |
-|------|----------|
-| `backend/application/pipeline.py` | Raporti struktuur: outcome enum, struktureeritud issues, massiivipõhine by_stage |
-| `backend/run_adapter.py` | Struktureeritud issues'te kuvamine |
-| `spec/schemas/S-05_collected_report_schema.json` | Täielik ümberkirjutus |
-| `spec/schemas/S-03_llm_context_schema.json` | Lisatud oneOf (objekt / massiiv) |
-| `spec/contracts/C-03_sv_to_llm.yaml` | Dokumenteeritud mitme konto kardinaalsus |
-| `spec/profiles/default.yaml` | Parandatud S-00A/S-00B failiteed |
+### 2026-02-22
+- Dokumentatsiooni ümberkorraldus: minimaalne eestikeelne komplekt
+- Duplikaatfailide kustutamine (NOTES.md, VALIDATION_REPORT.md)
+- 4 uut tuumdokumenti: ARHITEKTUUR, ARENDUSLOGI, TESTIMINE, SPETSIFIKATSIOONID
