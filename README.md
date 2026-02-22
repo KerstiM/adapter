@@ -1,148 +1,3 @@
-# Arenduslogi
-
-## 2025-11-21
-
-### Muudatused
-- [x] Loon projekti struktuuri `backend/` ja `frontend/` kaustadega.
-- [x] Loon Pythoni virtuaalkeskkonna `backend/venv` alla.
-
-### Põhjendus
-- **Eraldi `backend` ja `frontend` kaustad**  
-  - `backend`: Pythoni adapter, mis tegeleb andmete lugemise, transformatsiooni ja mudeli sisendite genereerimisega.  
-  - `frontend`: Vue/JavaScript kiht, millega saab hiljem tulemusi visualiseerida või prototüübi kasutusvoogu demonstreerida.  
-  - Selline eraldatus hoiab andmetöötluse loogika ja kasutajaliidese eraldi ning teeb projekti ülesehituse arusaadavamaks.
-
-- **Virtuaalkeskkond (`venv`) backendis**  
-  - Hoian projekti jaoks eraldi virtuaalkeskkonda konkreetse Pythoni versiooni ja muude sõltuvustega, et:
-    - mitte panna kõiki projekte sõltuma ühest globaalsest Pythonist ja paketikomplektist; 
-    - vältida konflikte eri projektide paketiversioonide vahel; 
-    - muuta projekti keskkond taasesitatavaks: sama Pythoni versioon ja samad sõltuvused on taastatavad `venv + requirements.txt` abil. 
-      - `python -m venv venv` + `pip install -r requirements.txt` taastab sama keskkonna.
-    > **Märkus:** `backend/venv` kataloogi sisu on automaatselt genereeritud virtuaalkeskkond (Pythoni tõlgid ja paketid) ning seda tavaliselt versioonihalduses ei hoita; keskkond on taasesitatav käsuga `python -m venv venv` ja `pip install -r requirements.txt`.
-    ::contentReference[oaicite:0]{index=0}
-
-## 2025-11-21 – projekti esmane seadistus
-
-```bash
-# Loon Pythoni virtuaalkeskkonna (eraldi keskkond ainult selle projekti jaoks)
-cd /path/to/project/backend
-python3 -m venv venv
-
-# Aktiveerin virtuaalkeskkonna (edasi kasutatav python/pip viitab venv'ile)
-source venv/bin/activate
-
-# Installin pandas teegi Exceli/andmete töötlemiseks
-pip install pandas
-
-# Installin openpyxl teegi, mida pandas kasutab .xlsx failide lugemiseks
-pip install openpyxl
-
-# Salvestan projekti Pythoni sõltuvused requirements.txt faili
-pip freeze > requirements.txt
-```
-
-## 2026-02-11 – Happy-path pipeline ja skeemid
-
-### Mida tegin
-- [x] Lisasin Berlin AIS (PSD2) sisendandmete skeemid: `S-00A_berlin_accounts.schema.json`, `S-00B_berlin_transactions.schema.json`
-- [x] Lisasin väljundskeemid: `S-01_sv_schema.json` (SVBundle), `S-02_ml_projection_schema.json`, `S-03_llm_context_schema.json`
-- [x] Lisasin lepingud (contracts): `C-01_berlin_to_sv.yaml`, `C-02_sv_to_ml.yaml`, `C-03_sv_to_llm.yaml`
-- [x] Lisasin reeglid: `R-01_sv_invariants.yaml` (6 invarianti)
-- [x] Lisasin D1 testiandmestiku: `accounts.json`, `transactions.json`, `standing_orders.json`, `transactions_download.json`
-- [x] Realiseerisin `backend/adapter/pipeline.py` — täielik pipeline RAW (Berlin AIS JSON) → SV (kanooniline) → ML projektsioon (CSV) + LLM projektsioon (JSON) + raport
-- [x] Kirjutasin 26 happy-path testi (`backend/tests/tests.py`): SV skeemivalidatsioon, suuna tuletamine, summade normaliseerimine, ML/LLM projektsioonide kontroll, determinismi test
-- [x] Kõik 26 testi läbivad edukalt
-
-### Miks
-- **Pipeline** realiseerib lõputöö prototüübi tuumiku: sisend (Berlin AIS) → standardiseeritud vaheesitus (SV) → mudelispetsiifilised projektsioonid (ML ja LLM)
-- **Skeemid** ja **lepingud** tagavad, et pipeline käitumine on deklaratiivselt määratud ja valideeritav
-- **Testid** tõendavad, et D1 andmestiku happy-path töötab korrektselt ja on determineeritud (sama sisend → sama väljund)
-
-### Tehniline ülevaade
-- **Suuna tuletamine (C-01):** `debtorName` → IN, `creditorName` → OUT, varuvariant summa märgi põhjal
-- **Summa objekt (S-01):** `{currency, raw, signed, abs}` — OUT = negatiivne signed, IN = positiivne signed
-- **Mitme sisendfaili tugi:** `transactions.json` + `standing_orders.json` + download-only tuvastus
-- **Invariandid (R-01):** valuuta kontroll, value_date kohustuslik, summa parsimine, booking_date valideerimine, summa märk vs suund, counterparty kontroll
-- **ML projektsioon (C-02):** BOOKED + PENDING, sorteeritud (account_id, value_date, record_id), row_id täisarvuna
-- **LLM projektsioon (C-03):** lühikesed väljanimede (id, d, s, dir, a, c, cp, r), viimased 200 kirjet
-
-### Väljundfailid (`backend/out/`)
-- `sv_bundle.json` — kanooniline SVBundle (3 transaktsiooni)
-- `ml_projection.csv` — ML projektsioon (3 rida, 12 veergu)
-- `llm_context.json` — LLM kontekst lühikeste väljanimedega
-- `report.json` — pipeline käivituse aruanne
-
----
-
-## Projekti struktuur
-
-```text
-Adapter/                          # projekti juurkaust (repo)
-  README.md                       # projekti ülevaade ja arenduslogi
-
-  spec/                           # deklaratiivsed spetsifikatsioonid
-    schemas/                      # JSON Schema failid
-      S-00A_berlin_accounts.schema.json   # Berlin AIS kontode sisendi skeema
-      S-00B_berlin_transactions.schema.json # Berlin AIS tehingute sisendi skeema
-      S-01_sv_schema.json                 # SVBundle väljundi skeema (kanooniline vaheesitus)
-      S-02_ml_projection_schema.json      # ML projektsiooni skeema
-      S-03_llm_context_schema.json        # LLM konteksti skeema
-    contracts/                    # lepingud (transformatsioonireeglid)
-      C-01_berlin_to_sv.yaml      # Berlin AIS → SV kaardistus
-      C-02_sv_to_ml.yaml          # SV → ML projektsioon
-      C-03_sv_to_llm.yaml         # SV → LLM projektsioon
-    rulesets/                     # invariandid ja reeglid
-      R-01_sv_invariants.yaml     # SV kvaliteedi invariandid (6 reeglit)
-    profiles/                     # profiilid
-      default.yaml                # vaikimisi profiil (viitab kõigile spec-failidele)
-
-  datasets/                       # testiandmestikud (Berlin AIS JSON)
-    D1_public_valid_small/        # happy-path andmestik
-      accounts.json               # 1 konto (DE IBAN, EUR)
-      transactions.json           # 7 tehingut (booked + pending)
-    D4_synth_errors_seed42/       # vigaste andmetega andmestik
-      accounts.json
-      transactions.json
-
-  backend/                        # Pythoni adapter (andmete töötlemine)
-    run_adapter.py                # peamine käivitusfail; käivitab pipeline'i
-    requirements.txt              # Pythoni sõltuvused (jsonschema, PyYAML, ...)
-    venv/                         # Pythoni virtuaalkeskkond
-
-    adapter/                      # adapteri Pythoni moodul
-      __init__.py                 # ekspordib run_pipeline
-      pipeline.py                 # täielik pipeline: RAW → SV → ML/LLM → raport
-
-    out/                          # pipeline väljundid (run-kaustadena)
-      <timestamp>_<run_id>/       # ühe käivituse kaust
-        sv.json                   # kanooniline SVBundle
-        report.json               # pipeline käivituse aruanne
-        projections/
-          ml_v1.csv               # ML projektsioon (CSV)
-          llm_context_v1.json     # LLM kontekst (JSON)
-
-    tests/                        # automaattestid
-      tests.py                    # 36 happy-path testi (pytest)
-
-  frontend/                       # Vue/JavaScript kasutajaliides / demo
-```
----
-
-## Üldine templiit iga olulise täienduse jaoks
-
-```md
-## AAAA-KK-PP
-
-### Mida tegin
-- ...
-
-### Miks
-- ...
-
-### Järgmised sammud
-- ...
-```
-
 # Adapter / standardiseerimiskiht
 
 Prototüüp loeb Berlin Group / PSD2 AIS stiilis sisendfailid ja teisendab need standardiseeritud vaheesituseks (SV).
@@ -150,39 +5,109 @@ SV põhjal tuletatakse deterministlikud projektsioonid (ML CSV ja LLM context JS
 
 Normatiivne käitumine on kirjeldatud `spec/` kataloogi versioonitud skeemide, lepingute ja reeglitega.
 
-## Kiirstart (D1 happy path)
+## Käivitamine
 
-Sisend:
-- `datasets/D1_public_valid_small/accounts.json`
-- `datasets/D1_public_valid_small/transactions.json`
-
-Kasutatav profiil:
-- `spec/profiles/default.yaml`
-
-Käivitamine:
 ```bash
-python backend/run_adapter.py \
-  --data D1 \
-  --out backend/out
+# Eeldused: Python 3.10+, sõltuvused paigaldatud
+cd backend && pip install -r requirements.txt
+
+# Üks dataset (prefix-match: D1 → D1_public_valid_small)
+python backend/run_adapter.py --data D1 --out backend/out
+
+# Kõik datasetid
+for d in datasets/D*; do python backend/run_adapter.py --data "$d" --out backend/out; done
 ```
 
-Väljundid tekivad jooksu-kausta alla (vt Variant A kirjeldust):
-- `backend/out/<timestamp>_<run_id>/sv.json`
-- `backend/out/<timestamp>_<run_id>/projections/ml_v1.csv`
-- `backend/out/<timestamp>_<run_id>/projections/llm_context_v1.json`
+CLI argumendid:
+- `--data / -d` — dataseti nimi (nt `D1`, `D4`) või kaustatee. Vaikimisi: `D1_public_valid_small`.
+- `--out / -o` — väljundi juurkaust. Vaikimisi: `<repo>/.backend/out/`.
+
+Väljund tekib jooksu-kausta alla:
+
+```
+<out>/<timestamp>_<run_id>/
+    sv.json                          # kanooniline SVBundle
+    report.json                      # koondraport (outcome, issues, counts)
+    projections/
+        ml_v1.csv                    # ML projektsioon
+        llm_context_v1.json          # LLM kontekst
+```
+
+Täpsem runbook: [`docs/runbook.md`](docs/runbook.md).
 
 ---
 
-## Arhitektuur (Variant A)
+## Arhitektuur (Ports & Adapters)
 
-Valik: **lokaalselt käivitatav modulaarne monoliit**, kus tuumloogika on I/O-st eraldatav (Ports & Adapters), pipeline on sammupõhine ning veamudeliks on kogutud raport.
+Lokaalselt käivitatav modulaarne monoliit. Tuumloogika on I/O-st lahutatud portide kaudu.
 
-Lühike arhitektuuri kokkuvõte: [`docs/plans/variant-a-project-structure.md`](docs/plans/variant-a-project-structure.md:1).
+```
+backend/
+    run_adapter.py                   # CLI entry point (argparse → wiring)
 
-Operatiivsed käsud (1 dataset / kõik datasetid / validaator): [`docs/runbook.md`](docs/runbook.md:1).
+    domain/                          # puhas äriloogika, ei tee I/O-d
+        mapping/c01_raw_to_sv.py     #   RAW → SV kaardistus (C-01)
+        projections/c02_sv_to_ml.py  #   SV → ML projektsioon (C-02)
+        projections/c03_sv_to_llm.py #   SV → LLM kontekst (C-03)
+        rules/invariants_r01.py      #   invariandid + dedupe (R-01)
+        report/models.py             #   Issue, RunFlag, CollectedRunReport
+        report/ops.py                #   outcome, counts, by_severity
+
+    ports/                           # abstraktsed liidesed (ei I/O, ei Path)
+        dataset_port.py              #   sisendi lugemine
+        output_port.py               #   artefaktide kirjutamine
+        spec_port.py                 #   skeemid, lepingud, profiilid
+        clock_port.py                #   aeg + run ID (determinism)
+
+    application/                     # orkestreerimine, räägib ainult portidega
+        pipeline.py                  #   7-etapiline pipeline (run_pipeline)
+
+    entrypoints/                     # driving-adapter: portide kokkuühendamine
+        wiring_fs.py                 #   FS-adapterid → run_pipeline
+
+    adapters/fs/                     # konkreetsed I/O teostused
+        dataset_fs.py                #   datasets/ lugemine failisüsteemist
+        output_fs.py                 #   run folder + failide kirjutamine
+        spec_fs.py                   #   spec/ laadimine failisüsteemist
+        clock_impl.py                #   SystemClock + FixedClock
+
+    tests/                           # testid (vt allpool)
+```
+
+**Importimisreegel:** `domain` → ei impordi `adapters`, `ports`, `pathlib`, `os`.
+`application` → impordib `domain` + `ports`, ei tee I/O-d. `adapters` → impordib `ports`.
+
+Täpsem arhitektuuridokument: [`docs/plans/variant-a-project-structure.md`](docs/plans/variant-a-project-structure.md).
 
 ---
 
-## Runbook
+## Testistrateegia
 
-Kõik käivitus- ja valideerimiskäsud on koondatud: [`docs/runbook.md`](docs/runbook.md:1).
+```
+backend/tests/
+    unit/
+        test_pipeline_with_fakes.py  # pipeline läbi fake-portide (mälus, I/O-vaba)
+        test_import_boundaries.py    # domain ei impordi keelatud mooduleid
+    fakes/                           # in-memory port-teostused testidele
+        fake_dataset_port.py
+        fake_output_port.py
+        fake_spec_port.py
+        fixed_clock.py
+    tests.py                         # integratsioonitestid (FS + tmp_path)
+    test_no_compat_imports.py        # guard: vana compat-kiht on eemaldatud
+```
+
+**Unit-testid** (`unit/`) kasutavad fake-porte — `FakeDatasetPort`, `FakeOutputPort`, `FakeSpecPort`, `FixedClock`.
+Pipeline jookseb täielikult mälus, failisüsteemi ei puudutata. Testivad äriloogikat: mapping, invariandid, projektsioonid, outcome.
+
+**Integratsioonitestid** (`tests.py`) kasutavad päris FS-adaptereid läbi `entrypoints/wiring_fs.py`.
+Väljund kirjutatakse `tmp_path` kausta (pytest fixture). Testivad end-to-end voo: sisend → SV → ML/LLM → raport → skeemivalideerimine.
+
+**Arhitektuuritestid** tagavad kihistuse: `test_import_boundaries.py` skaneerib `domain/` importe AST-ga;
+`test_no_compat_imports.py` kinnitab, et vana `backend/adapter/` compat-kiht on eemaldatud.
+
+Käivitamine:
+
+```bash
+cd backend && python -m pytest tests/ -v
+```
