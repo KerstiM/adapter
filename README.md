@@ -39,6 +39,8 @@ Täpsem käivitusjuhend: [`docs/runbook.md`](docs/runbook.md).
 
 ```bash
 cd backend && python -m pytest tests/ -v
+```
+
 Täpsem runbook: [`docs/runbook.md`](docs/runbook.md).
 
 ---
@@ -81,7 +83,7 @@ backend/
 ```
 
 **Importimisreegel:** `domain` → ei impordi `adapters`, `ports`, `pathlib`, `os`.
-`application` → impordib `domain` + `ports`, ei tee I/O-d. `adapters` → impordib `ports`.
+`application` → impordib `domain` + `ports`, ei tee I/O-d. `adapters` → teostavad portide liideseid (duck typing).
 
 Täpsem testistrateegia: [`docs/TESTIMINE.md`](docs/TESTIMINE.md).
 
@@ -94,7 +96,6 @@ Täpsem testistrateegia: [`docs/TESTIMINE.md`](docs/TESTIMINE.md).
 | [`docs/TESTIMINE.md`](docs/TESTIMINE.md) | Testiklassid, käivitamisjuhised |
 | [`docs/SPETSIFIKATSIOONID.md`](docs/SPETSIFIKATSIOONID.md) | Skeemide, lepingute ja reeglistike indeks |
 | [`docs/runbook.md`](docs/runbook.md) | Operatiivsed käivitamiskäsud |
-Täpsem arhitektuuridokument: [`docs/plans/variant-a-project-structure.md`](docs/plans/variant-a-project-structure.md).
 
 ---
 
