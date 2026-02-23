@@ -57,6 +57,9 @@ out/
 # Golden outputs for regression testing — committed, NOT ignored
 # golden/
 
+# Audit review notes (local only)
+docs/CONSISTENCY_REVIEW.md
+
 # AI ja IDE seaded
 .kilocode/
 .claude/
