@@ -430,7 +430,7 @@ class TestHappyPathPipeline:
     def test_schema_validation_no_issues(self, d1_output: tuple) -> None:
         """D1 has no standing_orders.json -> no schema validation issues."""
         summary, _ = d1_output
-        schema_issues = [i for i in summary["issues"] if "validation" in i.lower()]
+        schema_issues = [i for i in summary["issues"] if "validation" in i.get("message", "").lower()]
         assert len(schema_issues) == 0
 
     def test_dropped_details_in_report(self, d1_output: tuple) -> None:

@@ -17,6 +17,45 @@ Operatiivsed käsud ja käivitamisnäited: [`docs/runbook.md`](runbook.md).
 
 ---
 
+## Sõltuvusskeem
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     entrypoints/                            │
+│         wiring_fs.py  (composition root)                    │
+│         run_adapter.py (CLI)                                │
+└──────┬──────────────┬───────────────────┬───────────────────┘
+       │              │                   │
+       │ loob         │ loob              │ delegeerib
+       ▼              ▼                   ▼
+┌──────────────┐ ┌──────────┐ ┌─────────────────────────────┐
+│  adapters/   │ │  ports/  │ │       application/           │
+│  fs/         │ │ (Proto-  │ │       pipeline.py             │
+│  ─────────── │ │  col)    │ │  impordib: domain + ports    │
+│  dataset_fs  │ │ ──────── │ │  kasutab ka: jsonschema      │
+│  output_fs   │ │ Dataset  │ └──────────────┬────────────────┘
+│  spec_fs     │ │ Output   │                │
+│  clock_impl  │ │ Spec     │                │ kutsub
+│              │ │ Clock    │                ▼
+│ teostavad    │ │          │ ┌─────────────────────────────┐
+│ portide      │ │          │ │         domain/              │
+│ liideseid    │ │          │ │  puhas loogika (ei I/O)      │
+│ (duck typing)│ │          │ │  ───────────────────────     │
+└──────────────┘ └──────────┘ │  mapping/   → C-01           │
+                              │  rules/     → R-01           │
+                              │  projections/ → C-02, C-03   │
+                              │  report/    → models + ops   │
+                              └─────────────────────────────┘
+
+Sõltuvuste suund:
+  entrypoints → adapters, application, ports
+  application → domain, ports
+  adapters    ⇢ ports (teostavad liideseid, ei impordi eksplitsiitselt)
+  domain      → (ainult standardlib: hashlib, decimal, re, datetime)
+```
+
+---
+
 ## Sisend ja väljund
 
 - Sisend on dataseti kaust Berlin AIS JSON-failidega; *standing orders* on valikuline.
@@ -26,13 +65,15 @@ Operatiivsed käsud ja käivitamisnäited: [`docs/runbook.md`](runbook.md).
 
 ## Pipeline etapid (7 sammu)
 
-1. Sisendi lugemine (dataset → sisendobjektid)
-2. RAW skeemivalideerimine
-3. RAW → SV standardiseerimine (kaardistus)
-4. SV skeemivalideerimine
-5. Invariantide kontroll (võib tekitada drop'e)
-6. Projektsioonid (ML CSV + LLM kontekst)
-7. Artefaktide kirjutamine + raporti koostamine + outcome otsus
+| # | Koodi etapp (`stage_log`) | Kirjeldus |
+|---|--------------------------|-----------|
+| 1 | `READ_INPUT` | Sisendi lugemine + RAW skeemivalideerimine (S-00A/B/C) |
+| 2 | `STANDARDIZE_TO_SV` | RAW → SV standardiseerimine, kaardistus (C-01) |
+| 3 | `VALIDATE_SCHEMA` | SV skeemivalideerimine (S-01) |
+| 4 | `CHECK_INVARIANTS` | Invariantide kontroll (R-01) + dedupe (INV-09); võib tekitada drop'e |
+| 5 | `PROJECT_ML` | ML CSV projektsioon (C-02) |
+| 6 | `PROJECT_LLM` | LLM kontekst projektsioon (C-03) |
+| 7 | `WRITE_OUTPUTS` | Artefaktide kirjutamine + raporti koostamine + outcome otsus |
 
 ---
 
@@ -100,10 +141,10 @@ backend/
 ## Importimisreegel (sõltuvuspiir)
 
 - **`domain`** → ei impordi `adapters`, `ports`, `pathlib`, `os`.
-- **`application`** → impordib `domain` + `ports`, ei tee I/O-d.
-- **`ports`** → ainult liidesed/tüübid (ei I/O, ei `Path`).
-- **`adapters`** → impordib `ports` + I/O teegid; teeb päris I/O.
-- **`entrypoints/cli`** → impordib `application` ja valib adapterid.
+- **`application`** → impordib `domain` + `ports`; kasutab ka `jsonschema` valideerimiseks. Ei tee I/O-d.
+- **`ports`** → ainult liidesed/tüübid (`Protocol`); ei I/O, ei `Path`.
+- **`adapters`** → teostavad portide liideseid (duck typing); impordivad I/O teegid (`json`, `csv`, `pathlib`, `yaml`).
+- **`entrypoints/cli`** → impordib `application` ja `adapters`; composition root.
 
 ---
 
@@ -118,9 +159,9 @@ backend/
 
 ## Portid: liidesed, mitte teostus
 
-- `DatasetPort`: `read_accounts()`, `read_transactions()`, `read_standing_orders_optional()`
-- `SpecPort`: `load_schema(id)`, `load_contract(id)`, `load_ruleset(id)`, `load_profile(profile_id)`
-- `OutputPort`: `write_sv(bundle)`, `write_projection_ml(rows)`, `write_llm_context(ctx)`, `write_report(report)`
+- `DatasetPort`: `read_accounts()`, `list_transaction_reports()`, `read_transactions_report(name)`, `read_standing_orders_optional()`
+- `SpecPort`: `load_profile(profile_id)`, `load_schema(id)`, `load_contract(id)`, `load_ruleset(id)`
+- `OutputPort`: `init_run_folder(run_id, created_at_utc)`, `write_sv(bundle)`, `write_ml(rows)`, `write_llm(context)`, `write_report(report)`
 - `ClockPort`: `now_utc()`, `new_run_id()`
 
 ---

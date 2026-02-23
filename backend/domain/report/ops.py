@@ -87,7 +87,7 @@ def determine_outcome(
     drop_ratio = error_drops / total_raw if total_raw > 0 else 0.0
     if drop_ratio > fail_ratio:
         return "FAIL", f"error drop ratio {drop_ratio:.4f} exceeds threshold {fail_ratio}"
-    elif by_severity["ERROR"] > 0 or any(i.get("code", "").startswith("S-01") for i in issues):
+    elif by_severity["ERROR"] > 0 or any(i.get("severity") == "ERROR" for i in issues):
         return "PARTIAL_SUCCESS", "errors present but below fail threshold"
     elif run_flags or by_severity["WARN"] > 0:
         return "PARTIAL_SUCCESS", "warnings present"
