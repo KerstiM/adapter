@@ -20,38 +20,48 @@ Operatiivsed käsud ja käivitamisnäited: [`docs/runbook.md`](runbook.md).
 ## Sõltuvusskeem
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                     entrypoints/                            │
-│         wiring_fs.py  (composition root)                    │
-│         run_adapter.py (CLI)                                │
-└──────┬──────────────┬───────────────────┬───────────────────┘
-       │              │                   │
-       │ loob         │ loob              │ delegeerib
-       ▼              ▼                   ▼
-┌──────────────┐ ┌──────────┐ ┌─────────────────────────────┐
-│  adapters/   │ │  ports/  │ │       application/           │
-│  fs/         │ │ (Proto-  │ │       pipeline.py             │
-│  ─────────── │ │  col)    │ │  impordib: domain + ports    │
-│  dataset_fs  │ │ ──────── │ │  kasutab ka: jsonschema      │
-│  output_fs   │ │ Dataset  │ └──────────────┬────────────────┘
-│  spec_fs     │ │ Output   │                │
-│  clock_impl  │ │ Spec     │                │ kutsub
-│              │ │ Clock    │                ▼
-│ teostavad    │ │          │ ┌─────────────────────────────┐
-│ portide      │ │          │ │         domain/              │
-│ liideseid    │ │          │ │  puhas loogika (ei I/O)      │
-│ (duck typing)│ │          │ │  ───────────────────────     │
-└──────────────┘ └──────────┘ │  mapping/   → C-01           │
-                              │  rules/     → R-01           │
-                              │  projections/ → C-02, C-03   │
-                              │  report/    → models + ops   │
-                              └─────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                  MODULAARNE MONOLIIT (üks deploy-ühik)            │
+│                                                                   │
+│  ┌─────────────────────────────────────────────────────────────┐  │
+│  │                    entrypoints/                              │  │
+│  │          wiring_fs.py (composition root)                     │  │
+│  │          run_adapter.py (CLI)                                │  │
+│  └──────────┬──────────────────────────────┬───────────────────┘  │
+│             │ loob adapterid               │ delegeerib           │
+│             ▼                              ▼                      │
+│  ┌────────────────────┐         ┌────────────────────────────┐    │
+│  │    adapters/fs/    │         │       application/          │    │
+│  │  ────────────────  │         │       pipeline.py           │    │
+│  │  dataset_fs        │         │                             │    │
+│  │  output_fs         │         │  impordib: ports + domain   │    │
+│  │  spec_fs           │         │  kasutab ka: jsonschema     │    │
+│  │  clock_impl        │         └──────┬──────────┬──────────┘    │
+│  └────────┬───────────┘                │          │               │
+│           │                            │          │               │
+│           │ implements                 │ kasutab   │ kutsub        │
+│           │ Protocol                   │ liideseid │               │
+│           ▼                            ▼          ▼               │
+│  ┌─────────────────────┐    ┌─────────────────────────────────┐   │
+│  │       ports/        │    │           domain/                │   │
+│  │  (Protocol-liidesed)│    │  puhas loogika (standardlib)     │   │
+│  │  ─────────────────  │    │  ──────────────────────────────  │   │
+│  │  DatasetPort        │    │  mapping/     → C-01             │   │
+│  │  OutputPort         │    │  rules/       → R-01             │   │
+│  │  SpecPort           │    │  projections/ → C-02, C-03       │   │
+│  │  ClockPort          │    │  report/      → models + ops     │   │
+│  └─────────────────────┘    └─────────────────────────────────┘   │
+│                                                                    │
+│  ports defineerivad liidesed · application kasutab liideseid ·     │
+│  adapters pakuvad I/O realiseeringud · domain sisaldab äriloogikat │
+└──────────────────────────────────────────────────────────────────┘
 
 Sõltuvuste suund:
-  entrypoints → adapters, application, ports
-  application → domain, ports
-  adapters    ⇢ ports (teostavad liideseid, ei impordi eksplitsiitselt)
-  domain      → (ainult standardlib: hashlib, decimal, re, datetime)
+  entrypoints  → application, adapters  (composition root)
+  application  → domain, ports          (orkestreerib äriloogikat portide kaudu)
+  adapters     → ports                  (implements Protocol/ABC)
+  domain       → (ainult standardlib: hashlib, decimal, datetime)
+  ports        → (ainult typing: Protocol)
 ```
 
 ---
@@ -140,11 +150,11 @@ backend/
 
 ## Importimisreegel (sõltuvuspiir)
 
-- **`domain`** → ei impordi `adapters`, `ports`, `pathlib`, `os`.
+- **`domain`** → ei impordi `adapters`, `ports`, `pathlib`, `os`. Ainult standardlib (`hashlib`, `decimal`, `datetime`).
 - **`application`** → impordib `domain` + `ports`; kasutab ka `jsonschema` valideerimiseks. Ei tee I/O-d.
-- **`ports`** → ainult liidesed/tüübid (`Protocol`); ei I/O, ei `Path`.
-- **`adapters`** → teostavad portide liideseid (duck typing); impordivad I/O teegid (`json`, `csv`, `pathlib`, `yaml`).
-- **`entrypoints/cli`** → impordib `application` ja `adapters`; composition root.
+- **`ports`** → ainult liidesed (`Protocol`-klassid); ei I/O, ei `Path`.
+- **`adapters`** → teostavad `ports/` Protocol-liideseid (strukturaalne alamtüüpimine); impordivad I/O teegid (`json`, `csv`, `pathlib`, `yaml`).
+- **`entrypoints`** → impordib `application` ja `adapters`; composition root (portide liideseid otse ei impordi).
 
 ---
 
