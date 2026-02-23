@@ -6,7 +6,6 @@ No I/O, no jsonschema/pathlib/os imports.
 from __future__ import annotations
 
 import hashlib
-import re
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
 
@@ -113,7 +112,7 @@ def map_single_transaction(
     direction = infer_direction(raw_tx, amount_raw)
 
     amount_abs = _decimal_str(abs(amt))
-    if direction == "OUT":
+    if direction == "OUT" and amt != 0:
         amount_signed = "-" + amount_abs if not amount_abs.startswith("-") else amount_abs
     else:
         amount_signed = amount_abs
