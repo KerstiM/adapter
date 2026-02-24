@@ -1,5 +1,8 @@
 <script setup>
 import { computed } from 'vue'
+import { useI18n } from '@/composables/useI18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   result: { type: Object, default: null },
@@ -15,8 +18,7 @@ const outcomeBadge = computed(() => {
 
 const outcomeLabel = computed(() => {
   if (!props.result) return ''
-  const map = { SUCCESS: 'Edukas', PARTIAL_SUCCESS: 'Osaline edu', FAIL: 'Eba\u00f5nnestus' }
-  return map[props.result.outcome] || props.result.outcome
+  return t('results.outcome.' + props.result.outcome)
 })
 
 const elapsedFormatted = computed(() => {
@@ -32,16 +34,7 @@ function stageBadge(stage) {
 }
 
 function stageLabel(stage) {
-  const map = {
-    READ_INPUT: 'Sisendi lugemine',
-    STANDARDIZE_TO_SV: 'SV standardiseerimine',
-    VALIDATE_SCHEMA: 'Skeemi valideerimine',
-    CHECK_INVARIANTS: 'Invariantide kontroll',
-    PROJECT_ML: 'ML projektsioon',
-    PROJECT_LLM: 'LLM kontekst',
-    WRITE_OUTPUTS: 'V\u00e4ljundite kirjutamine',
-  }
-  return map[stage.stage] || stage.stage
+  return t('results.stages.' + stage.stage)
 }
 </script>
 
@@ -49,7 +42,7 @@ function stageLabel(stage) {
   <!-- Loading state -->
   <div v-if="loading" class="loading-panel card">
     <div class="spinner"></div>
-    <p>Pipeline t\u00f6\u00f6tab...</p>
+    <p>{{ t('results.loading') }}</p>
   </div>
 
   <!-- Empty state -->
@@ -62,7 +55,7 @@ function stageLabel(stage) {
         <line x1="16" y1="17" x2="8" y2="17" />
       </svg>
     </div>
-    <p>Vali andmestik ja mudel ning k\u00e4ivita pipeline, et n\u00e4ha tulemusi</p>
+    <p>{{ t('results.empty') }}</p>
   </div>
 
   <!-- Results -->
@@ -76,7 +69,7 @@ function stageLabel(stage) {
         <span class="rh-model">{{ result.modelId === 'ml' ? 'ML' : 'LLM' }}</span>
       </div>
       <div class="rh-right">
-        <span class="rh-time" title="Pipeline t\u00f6\u00f6tlemise aeg">
+        <span class="rh-time" :title="t('results.elapsed')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10" /><polyline points="12,6 12,12 16,14" />
           </svg>
@@ -89,41 +82,41 @@ function stageLabel(stage) {
     <div class="counts-grid">
       <div class="count-item card">
         <span class="count-value">{{ result.counts.accounts_total }}</span>
-        <span class="count-label">Kontod</span>
+        <span class="count-label">{{ t('results.counts.accounts') }}</span>
       </div>
       <div class="count-item card">
         <span class="count-value">{{ result.counts.transactions_total }}</span>
-        <span class="count-label">Tehingud kokku</span>
+        <span class="count-label">{{ t('results.counts.transactions') }}</span>
       </div>
       <div class="count-item card">
         <span class="count-value">{{ result.counts.transactions_emitted_sv }}</span>
-        <span class="count-label">SV-sse emiteeritud</span>
+        <span class="count-label">{{ t('results.counts.emitted') }}</span>
       </div>
       <div class="count-item card">
         <span class="count-value" :class="{ 'text-warn': result.counts.transactions_dropped > 0 }">
           {{ result.counts.transactions_dropped }}
         </span>
-        <span class="count-label">Eemaldatud</span>
+        <span class="count-label">{{ t('results.counts.dropped') }}</span>
       </div>
       <div class="count-item card">
         <span class="count-value">{{ result.counts.ml_rows }}</span>
-        <span class="count-label">ML read</span>
+        <span class="count-label">{{ t('results.counts.mlRows') }}</span>
       </div>
       <div class="count-item card">
         <span class="count-value">{{ result.counts.llm_contexts }}</span>
-        <span class="count-label">LLM kontekstid</span>
+        <span class="count-label">{{ t('results.counts.llmContexts') }}</span>
       </div>
     </div>
 
     <!-- Stage log -->
     <div class="section card">
-      <h4 class="section-title">Pipeline etapid</h4>
+      <h4 class="section-title">{{ t('results.stages.title') }}</h4>
       <div class="stage-list">
         <div v-for="stage in result.stageLog" :key="stage.stage" class="stage-row">
           <span class="stage-name">{{ stageLabel(stage) }}</span>
           <span class="stage-counts">
-            <span v-if="stage.errors > 0" class="badge badge-error">{{ stage.errors }} viga</span>
-            <span v-if="stage.warnings > 0" class="badge badge-warning">{{ stage.warnings }} hoiatus</span>
+            <span v-if="stage.errors > 0" class="badge badge-error">{{ stage.errors }} {{ t('results.stages.errors') }}</span>
+            <span v-if="stage.warnings > 0" class="badge badge-warning">{{ stage.warnings }} {{ t('results.stages.warnings') }}</span>
           </span>
           <span class="badge" :class="stageBadge(stage)">
             {{ stage.errors > 0 ? 'ERROR' : stage.warnings > 0 ? 'WARN' : 'OK' }}
@@ -134,7 +127,7 @@ function stageLabel(stage) {
 
     <!-- Issues -->
     <div v-if="result.issues.length > 0" class="section card">
-      <h4 class="section-title">Probleemid ({{ result.issues.length }})</h4>
+      <h4 class="section-title">{{ t('results.issues.title') }} ({{ result.issues.length }})</h4>
       <div class="issues-list">
         <div v-for="(issue, i) in result.issues" :key="i" class="issue-row">
           <span class="badge" :class="issue.severity === 'ERROR' ? 'badge-error' : 'badge-warning'">
@@ -149,7 +142,7 @@ function stageLabel(stage) {
 
     <!-- ML Preview -->
     <div v-if="result.mlPreview" class="section card">
-      <h4 class="section-title">ML projektsiooni eelvaade ({{ result.mlPreview.totalRows }} rida kokku)</h4>
+      <h4 class="section-title">{{ t('results.mlPreview.title') }} ({{ result.mlPreview.totalRows }} {{ t('results.mlPreview.totalRows') }})</h4>
       <div class="table-wrap">
         <table class="preview-table">
           <thead>
@@ -164,12 +157,12 @@ function stageLabel(stage) {
           </tbody>
         </table>
       </div>
-      <p class="preview-note">N\u00e4idatakse esimesed 5 rida {{ result.mlPreview.totalRows }}-st</p>
+      <p class="preview-note">{{ t('results.mlPreview.showingFirst', { total: result.mlPreview.totalRows }) }}</p>
     </div>
 
     <!-- LLM Preview -->
     <div v-if="result.llmPreview" class="section card">
-      <h4 class="section-title">LLM konteksti eelvaade</h4>
+      <h4 class="section-title">{{ t('results.llmPreview.title') }}</h4>
 
       <div class="llm-narrative">
         <p>{{ result.llmPreview.narrative }}</p>
@@ -177,26 +170,26 @@ function stageLabel(stage) {
 
       <div class="llm-stats">
         <div class="llm-stat">
-          <span class="llm-stat-label">Periood</span>
-          <span class="llm-stat-value">{{ result.llmPreview.accountSummary.periodStart }} \u2013 {{ result.llmPreview.accountSummary.periodEnd }}</span>
+          <span class="llm-stat-label">{{ t('results.llmPreview.period') }}</span>
+          <span class="llm-stat-value">{{ result.llmPreview.accountSummary.periodStart }} – {{ result.llmPreview.accountSummary.periodEnd }}</span>
         </div>
         <div class="llm-stat">
-          <span class="llm-stat-label">Tulud</span>
+          <span class="llm-stat-label">{{ t('results.llmPreview.income') }}</span>
           <span class="llm-stat-value income">+{{ result.llmPreview.accountSummary.totalIncome.toFixed(2) }} EUR</span>
         </div>
         <div class="llm-stat">
-          <span class="llm-stat-label">Kulud</span>
+          <span class="llm-stat-label">{{ t('results.llmPreview.expenses') }}</span>
           <span class="llm-stat-value expense">{{ result.llmPreview.accountSummary.totalExpenses.toFixed(2) }} EUR</span>
         </div>
         <div class="llm-stat">
-          <span class="llm-stat-label">Netorahavoog</span>
+          <span class="llm-stat-label">{{ t('results.llmPreview.netFlow') }}</span>
           <span class="llm-stat-value" :class="result.llmPreview.accountSummary.netFlow >= 0 ? 'income' : 'expense'">
             {{ result.llmPreview.accountSummary.netFlow >= 0 ? '+' : '' }}{{ result.llmPreview.accountSummary.netFlow.toFixed(2) }} EUR
           </span>
         </div>
       </div>
 
-      <h5 class="subsection-title">Kulukategooriad</h5>
+      <h5 class="subsection-title">{{ t('results.llmPreview.categories') }}</h5>
       <div class="categories-list">
         <div v-for="cat in result.llmPreview.topCategories" :key="cat.category" class="cat-row">
           <span class="cat-name">{{ cat.category }}</span>

@@ -1,6 +1,8 @@
 <script setup>
 import { getModels } from '@/services/api'
+import { useI18n } from '@/composables/useI18n'
 
+const { t } = useI18n()
 const models = getModels()
 
 const props = defineProps({
@@ -27,9 +29,9 @@ function select(id) {
           <path d="M2 12l10 5 10-5" />
         </svg>
       </span>
-      Mudel
+      {{ t('model.title') }}
     </h3>
-    <p class="selector-hint">Vali v\u00e4ljundi t\u00fc\u00fcp: ML tabeliprojectsioon v\u00f5i LLM kontekst</p>
+    <p class="selector-hint">{{ t('model.hint') }}</p>
 
     <div class="model-grid">
       <button
@@ -52,8 +54,8 @@ function select(id) {
           </span>
           <span class="model-output-type badge badge-info">{{ m.outputType }}</span>
         </div>
-        <div class="model-name">{{ m.name }}</div>
-        <div class="model-desc">{{ m.description }}</div>
+        <div class="model-name">{{ t('model.' + m.id + '.name') }}</div>
+        <div class="model-desc">{{ t('model.' + m.id + '.description') }}</div>
       </button>
     </div>
   </div>

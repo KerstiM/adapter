@@ -1,6 +1,8 @@
 <script setup>
 import { getDatasets } from '@/services/api'
+import { useI18n } from '@/composables/useI18n'
 
+const { t } = useI18n()
 const datasets = getDatasets()
 
 const props = defineProps({
@@ -27,9 +29,9 @@ function select(id) {
           <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
         </svg>
       </span>
-      Andmestik
+      {{ t('dataset.title') }}
     </h3>
-    <p class="selector-hint">Vali dataset, millega pipeline k\u00e4ivitada</p>
+    <p class="selector-hint">{{ t('dataset.hint') }}</p>
 
     <div class="dataset-grid">
       <button
@@ -42,10 +44,10 @@ function select(id) {
       >
         <div class="ds-header">
           <span class="ds-id">{{ ds.id }}</span>
-          <span class="ds-records">{{ ds.records }}</span>
+          <span class="ds-records">~{{ ds.records }} {{ t('dataset.recordsUnit') }}</span>
         </div>
         <div class="ds-name">{{ ds.name }}</div>
-        <div class="ds-desc">{{ ds.description }}</div>
+        <div class="ds-desc">{{ t('dataset.' + ds.id) }}</div>
       </button>
     </div>
   </div>

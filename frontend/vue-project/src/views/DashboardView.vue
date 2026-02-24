@@ -4,6 +4,9 @@ import DatasetSelector from '@/components/DatasetSelector.vue'
 import ModelSelector from '@/components/ModelSelector.vue'
 import ResultsPanel from '@/components/ResultsPanel.vue'
 import { runPipeline } from '@/services/api'
+import { useI18n } from '@/composables/useI18n'
+
+const { t } = useI18n()
 
 const selectedDataset = ref('')
 const selectedModel = ref('')
@@ -27,7 +30,7 @@ async function handleRun() {
     result.value = response.result
     elapsedMs.value = response.elapsed_ms
   } catch (e) {
-    error.value = e.message || 'Pipeline k\u00e4ivitamine eba\u00f5nnestus'
+    error.value = e.message || t('errors.runFailed')
   } finally {
     loading.value = false
   }
@@ -58,14 +61,14 @@ function handleReset() {
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
             <polygon points="5,3 19,12 5,21" />
           </svg>
-          K\u00e4ivita pipeline
+          {{ t('actions.run') }}
         </button>
         <button
           class="btn btn-outline"
           :disabled="loading"
           @click="handleReset"
         >
-          L\u00e4htesta
+          {{ t('actions.reset') }}
         </button>
       </div>
 
