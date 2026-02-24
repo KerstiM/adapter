@@ -7,30 +7,18 @@
  */
 
 const DATASETS = [
-  { id: 'D1', name: 'D1_public_valid_small', description: 'Avalik, validne, v\u00e4ike', records: '~50 tehingut' },
-  { id: 'D2', name: 'D2_public_mixed_large', description: 'Avalik, segatud, suur', records: '~500 tehingut' },
-  { id: 'D3', name: 'D3_synth_valid_seed42', description: 'S\u00fcnteetiline, validne', records: '~200 tehingut' },
-  { id: 'D4', name: 'D4_synth_errors_seed42', description: 'S\u00fcnteetiline, vigadega', records: '~200 tehingut' },
-  { id: 'D5', name: 'D5_synth_edges_seed99', description: '\u00c4\u00e4rejuhud (edge cases)', records: '~150 tehingut' },
-  { id: 'D6', name: 'D6_synth_dupes_seed99', description: 'Duplikaatidega', records: '~180 tehingut' },
-  { id: 'D7', name: 'D7_standing_orders_seed77', description: 'P\u00fcsikorraldused', records: '~120 tehingut' },
+  { id: 'D1', name: 'D1_public_valid_small', records: 50 },
+  { id: 'D2', name: 'D2_public_mixed_large', records: 500 },
+  { id: 'D3', name: 'D3_synth_valid_seed42', records: 200 },
+  { id: 'D4', name: 'D4_synth_errors_seed42', records: 200 },
+  { id: 'D5', name: 'D5_synth_edges_seed99', records: 150 },
+  { id: 'D6', name: 'D6_synth_dupes_seed99', records: 180 },
+  { id: 'D7', name: 'D7_standing_orders_seed77', records: 120 },
 ]
 
 const MODELS = [
-  {
-    id: 'ml',
-    name: 'ML projektsioon',
-    description: 'Masin\u00f5ppe CSV v\u00e4ljund (C-02). Deterministlik tabelandmete projektsioon.',
-    outputType: 'CSV',
-    icon: 'chart',
-  },
-  {
-    id: 'llm',
-    name: 'LLM kontekst',
-    description: 'Keelemudelile optimeeritud JSON kontekst (C-03). Struktureeritud narratiiv.',
-    outputType: 'JSON',
-    icon: 'brain',
-  },
+  { id: 'ml', outputType: 'CSV', icon: 'chart' },
+  { id: 'llm', outputType: 'JSON', icon: 'brain' },
 ]
 
 /**
@@ -59,7 +47,7 @@ function _generateMockResult(datasetId, modelId) {
     )
   }
   if (hasDupes) {
-    issues.push({ code: 'INV-09', severity: 'WARN', message: 'Duplikaat (account_id, record_id)', count: 9 })
+    issues.push({ code: 'INV-09', severity: 'WARN', message: 'Duplicate (account_id, record_id)', count: 9 })
   }
   if (hasEdges) {
     issues.push({ code: 'INV-02', severity: 'WARN', message: 'Currency mismatch EUR vs USD', count: 3 })
@@ -101,10 +89,10 @@ function _generateMockResult(datasetId, modelId) {
           ],
           rows: [
             ['EE123456', 'TX-001', '2025-01-15', '-42.50', 'EUR', 'DEBIT', 'Selver AS', 'groceries'],
-            ['EE123456', 'TX-002', '2025-01-16', '2500.00', 'EUR', 'CREDIT', 'T\u00f6\u00f6andja O\u00dc', 'salary'],
+            ['EE123456', 'TX-002', '2025-01-16', '2500.00', 'EUR', 'CREDIT', 'Tööandja OÜ', 'salary'],
             ['EE123456', 'TX-003', '2025-01-17', '-89.99', 'EUR', 'DEBIT', 'Telia Eesti', 'telecom'],
             ['EE789012', 'TX-004', '2025-01-18', '-15.00', 'EUR', 'DEBIT', 'Bolt Technology', 'transport'],
-            ['EE789012', 'TX-005', '2025-01-19', '-320.00', 'EUR', 'DEBIT', '\u00dcritaja O\u00dc', 'rent'],
+            ['EE789012', 'TX-005', '2025-01-19', '-320.00', 'EUR', 'DEBIT', 'Üritaja OÜ', 'rent'],
           ],
           totalRows: emitted,
         }
@@ -130,7 +118,7 @@ function _generateMockResult(datasetId, modelId) {
             { category: 'telecom', total: -89.99, count: 1 },
             { category: 'transport', total: -245.0, count: 8 },
           ],
-          narrative: `Kliendil on ${accountsTotal} kontot. Perioodi ${dataset?.name || datasetId} jooksul tehti ${emitted} tehingut. Peamine sissetulek on palk (2 500 EUR/kuu). Suurimad kulukategooriad: toidukaubad, \u00fc\u00fcr ja transport. Netorahavoog on positiivne (+1 602,50 EUR).`,
+          narrative: `Client has ${accountsTotal} account(s). During period ${dataset?.name || datasetId}, ${emitted} transactions were processed. Primary income: salary (2 500 EUR/month). Top expense categories: groceries, rent, transport. Net cash flow is positive (+1 602.50 EUR).`,
         }
       : null
 

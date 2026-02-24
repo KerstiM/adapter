@@ -80,22 +80,22 @@
 }
 
 .badge-success {
-  background: rgba(39, 174, 96, 0.12);
+  background: var(--brand-success-bg);
   color: var(--brand-success);
 }
 
 .badge-warning {
-  background: rgba(245, 166, 35, 0.12);
+  background: var(--brand-warning-bg);
   color: var(--brand-warning);
 }
 
 .badge-error {
-  background: rgba(231, 76, 60, 0.12);
+  background: var(--brand-error-bg);
   color: var(--brand-error);
 }
 
 .badge-info {
-  background: rgba(52, 152, 219, 0.12);
+  background: var(--brand-info-bg);
   color: var(--brand-info);
 }
 

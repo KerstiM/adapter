@@ -1,23 +1,29 @@
 <script setup>
 import { RouterView } from 'vue-router'
+import { useI18n } from '@/composables/useI18n'
+
+const { t, locale, setLocale } = useI18n()
+
+function toggleLocale() {
+  setLocale(locale.value === 'et' ? 'en' : 'et')
+}
 </script>
 
 <template>
   <header class="app-header">
     <div class="header-inner">
       <div class="brand">
-        <svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none">
-          <rect width="32" height="32" rx="8" fill="var(--brand-primary)" />
-          <path d="M8 10h6a4 4 0 0 1 0 8H8V10z" fill="var(--brand-accent)" />
-          <path d="M8 18h7a4 4 0 0 1 0 8H8V18z" fill="#fff" opacity="0.85" />
-          <rect x="20" y="10" width="4" height="16" rx="2" fill="var(--brand-accent)" opacity="0.6" />
-        </svg>
         <div class="brand-text">
           <span class="brand-name">Adapter</span>
-          <span class="brand-sub">Standardiseerimiskiht</span>
+          <span class="brand-sub">{{ t('header.subtitle') }}</span>
         </div>
       </div>
-      <span class="version-tag">prototüüp v0.1</span>
+      <div class="header-right">
+        <button class="lang-toggle" :title="t('lang.' + (locale === 'et' ? 'en' : 'et'))" @click="toggleLocale">
+          {{ locale === 'et' ? 'EN' : 'ET' }}
+        </button>
+        <span class="version-tag">{{ t('header.version') }}</span>
+      </div>
     </div>
   </header>
 
@@ -43,7 +49,6 @@ import { RouterView } from 'vue-router'
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
 }
 
 .brand-text {
@@ -63,6 +68,30 @@ import { RouterView } from 'vue-router'
   font-size: 0.72rem;
   color: var(--vt-c-text-light-2);
   line-height: 1.2;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.lang-toggle {
+  padding: 0.2rem 0.5rem;
+  border: 1.5px solid var(--color-border-hover);
+  border-radius: var(--radius-sm);
+  background: var(--color-background);
+  color: var(--brand-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  letter-spacing: 0.03em;
+}
+
+.lang-toggle:hover {
+  border-color: var(--brand-accent);
+  color: var(--brand-accent);
 }
 
 .version-tag {

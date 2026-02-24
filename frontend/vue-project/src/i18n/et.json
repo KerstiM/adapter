@@ -1,0 +1,87 @@
+{
+  "header": {
+    "subtitle": "Standardiseerimiskiht",
+    "version": "prototüüp v0.1"
+  },
+  "lang": {
+    "et": "Eesti",
+    "en": "English"
+  },
+  "dataset": {
+    "title": "Andmestik",
+    "hint": "Vali dataset, millega pipeline käivitada",
+    "recordsUnit": "tehingut",
+    "D1": "Avalik, validne, väike",
+    "D2": "Avalik, segatud, suur",
+    "D3": "Sünteetiline, validne",
+    "D4": "Sünteetiline, vigadega",
+    "D5": "Äärejuhud (edge cases)",
+    "D6": "Duplikaatidega",
+    "D7": "Püsikorraldused"
+  },
+  "model": {
+    "title": "Mudel",
+    "hint": "Vali väljundi tüüp: ML tabeliprojektsioon või LLM kontekst",
+    "ml": {
+      "name": "ML projektsioon",
+      "description": "Masinõppe CSV väljund (C-02). Deterministlik tabelandmete projektsioon."
+    },
+    "llm": {
+      "name": "LLM kontekst",
+      "description": "Keelemudelile optimeeritud JSON kontekst (C-03). Struktureeritud narratiiv."
+    }
+  },
+  "actions": {
+    "run": "Käivita pipeline",
+    "reset": "Lähtesta"
+  },
+  "errors": {
+    "runFailed": "Pipeline käivitamine ebaõnnestus"
+  },
+  "results": {
+    "loading": "Pipeline töötab...",
+    "empty": "Vali andmestik ja mudel ning käivita pipeline, et näha tulemusi",
+    "elapsed": "Pipeline töötlemise aeg",
+    "outcome": {
+      "SUCCESS": "Edukas",
+      "PARTIAL_SUCCESS": "Osaline edu",
+      "FAIL": "Ebaõnnestus"
+    },
+    "counts": {
+      "accounts": "Kontod",
+      "transactions": "Tehingud kokku",
+      "emitted": "SV-sse emiteeritud",
+      "dropped": "Eemaldatud",
+      "mlRows": "ML read",
+      "llmContexts": "LLM kontekstid"
+    },
+    "stages": {
+      "title": "Pipeline etapid",
+      "READ_INPUT": "Sisendi lugemine",
+      "STANDARDIZE_TO_SV": "SV standardiseerimine",
+      "VALIDATE_SCHEMA": "Skeemi valideerimine",
+      "CHECK_INVARIANTS": "Invariantide kontroll",
+      "PROJECT_ML": "ML projektsioon",
+      "PROJECT_LLM": "LLM kontekst",
+      "WRITE_OUTPUTS": "Väljundite kirjutamine",
+      "errors": "viga",
+      "warnings": "hoiatus"
+    },
+    "issues": {
+      "title": "Probleemid"
+    },
+    "mlPreview": {
+      "title": "ML projektsiooni eelvaade",
+      "totalRows": "rida kokku",
+      "showingFirst": "Näidatakse esimesed 5 rida {total}-st"
+    },
+    "llmPreview": {
+      "title": "LLM konteksti eelvaade",
+      "period": "Periood",
+      "income": "Tulud",
+      "expenses": "Kulud",
+      "netFlow": "Netorahavoog",
+      "categories": "Kulukategooriad"
+    }
+  }
+}
