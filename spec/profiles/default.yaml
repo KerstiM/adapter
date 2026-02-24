@@ -6,7 +6,6 @@ schemas:
   S-00B: "spec/schemas/S-00B_berlin_transactions.schema.json"
   S-00C: "spec/schemas/S-00C_berlin_standing_orders.schema.json"
   S-01:  "spec/schemas/S-01_sv_schema.json"
-  S-02:  "spec/schemas/S-02_ml_projection_schema.json"
   S-03:  "spec/schemas/S-03_llm_context_schema.json"
   S-05:  "spec/schemas/S-05_collected_report_schema.json"
 

@@ -19,7 +19,6 @@ def _default_profile() -> dict[str, Any]:
             "S-00B": {},   # accepts any transactions payload
             "S-00C": {},   # accepts any standing-orders payload
             "S-01": {},    # accepts any SV bundle
-            "S-02": {},
             "S-03": {},
             "S-05": {},
         },
