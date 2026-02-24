@@ -1,0 +1,140 @@
+<script setup>
+import { getDatasets } from '@/services/api'
+
+const datasets = getDatasets()
+
+const props = defineProps({
+  modelValue: { type: String, default: '' },
+  disabled: { type: Boolean, default: false },
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+function select(id) {
+  if (!props.disabled) {
+    emit('update:modelValue', id)
+  }
+}
+</script>
+
+<template>
+  <div class="selector-group">
+    <h3 class="selector-title">
+      <span class="selector-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <ellipse cx="12" cy="5" rx="9" ry="3" />
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+        </svg>
+      </span>
+      Andmestik
+    </h3>
+    <p class="selector-hint">Vali dataset, millega pipeline k\u00e4ivitada</p>
+
+    <div class="dataset-grid">
+      <button
+        v-for="ds in datasets"
+        :key="ds.id"
+        class="dataset-card card"
+        :class="{ active: modelValue === ds.id, disabled }"
+        :disabled="disabled"
+        @click="select(ds.id)"
+      >
+        <div class="ds-header">
+          <span class="ds-id">{{ ds.id }}</span>
+          <span class="ds-records">{{ ds.records }}</span>
+        </div>
+        <div class="ds-name">{{ ds.name }}</div>
+        <div class="ds-desc">{{ ds.description }}</div>
+      </button>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.selector-group {
+  margin-bottom: 1.5rem;
+}
+
+.selector-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-heading);
+  margin-bottom: 0.25rem;
+}
+
+.selector-icon {
+  display: flex;
+  color: var(--brand-accent);
+}
+
+.selector-hint {
+  font-size: 0.82rem;
+  color: var(--vt-c-text-light-2);
+  margin-bottom: 0.75rem;
+}
+
+.dataset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.6rem;
+}
+
+.dataset-card {
+  padding: 0.75rem 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-background);
+  transition: all var(--transition-fast);
+}
+
+.dataset-card:hover:not(.disabled) {
+  border-color: var(--brand-accent);
+}
+
+.dataset-card.active {
+  border-color: var(--brand-accent);
+  background: rgba(0, 180, 160, 0.06);
+  box-shadow: 0 0 0 2px rgba(0, 180, 160, 0.18);
+}
+
+.dataset-card.disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.ds-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
+
+.ds-id {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--brand-primary);
+}
+
+.ds-records {
+  font-size: 0.72rem;
+  color: var(--vt-c-text-light-2);
+}
+
+.ds-name {
+  font-size: 0.78rem;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  color: var(--vt-c-text-light-2);
+  margin-bottom: 0.2rem;
+  word-break: break-all;
+}
+
+.ds-desc {
+  font-size: 0.8rem;
+  color: var(--color-text);
+}
+</style>

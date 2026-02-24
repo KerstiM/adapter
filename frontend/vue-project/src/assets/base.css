@@ -1,27 +1,36 @@
-/* color palette from <https://github.com/vuejs/theme> */
+/* ── Brand color palette ── */
 :root {
+  --brand-primary: #003154;
+  --brand-primary-light: #00497a;
+  --brand-primary-dark: #001f38;
+  --brand-accent: #00b4a0;
+  --brand-accent-light: #33c9b8;
+  --brand-accent-dark: #008a7a;
+  --brand-warning: #f5a623;
+  --brand-error: #e74c3c;
+  --brand-success: #27ae60;
+  --brand-info: #3498db;
+
   --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
+  --vt-c-white-soft: #f5f7fa;
+  --vt-c-white-mute: #eef1f6;
 
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
+  --vt-c-black: #0a0f1a;
+  --vt-c-black-soft: #141c2b;
+  --vt-c-black-mute: #1e2a3d;
 
-  --vt-c-indigo: #2c3e50;
+  --vt-c-divider-light-1: rgba(0, 49, 84, 0.12);
+  --vt-c-divider-light-2: rgba(0, 49, 84, 0.06);
+  --vt-c-divider-dark-1: rgba(0, 180, 160, 0.25);
+  --vt-c-divider-dark-2: rgba(0, 180, 160, 0.15);
 
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
-
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+  --vt-c-text-light-1: #1a2b42;
+  --vt-c-text-light-2: rgba(26, 43, 66, 0.66);
+  --vt-c-text-dark-1: #f0f4f8;
+  --vt-c-text-dark-2: rgba(240, 244, 248, 0.64);
 }
 
-/* semantic color variables for this project */
+/* ── Semantic tokens ── */
 :root {
   --color-background: var(--vt-c-white);
   --color-background-soft: var(--vt-c-white-soft);
@@ -30,10 +39,17 @@
   --color-border: var(--vt-c-divider-light-2);
   --color-border-hover: var(--vt-c-divider-light-1);
 
-  --color-heading: var(--vt-c-text-light-1);
+  --color-heading: var(--brand-primary);
   --color-text: var(--vt-c-text-light-1);
 
-  --section-gap: 160px;
+  --section-gap: 40px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-card: 0 1px 3px rgba(0, 49, 84, 0.08), 0 4px 12px rgba(0, 49, 84, 0.04);
+  --shadow-card-hover: 0 2px 8px rgba(0, 49, 84, 0.12), 0 8px 24px rgba(0, 49, 84, 0.06);
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -45,8 +61,11 @@
     --color-border: var(--vt-c-divider-dark-2);
     --color-border-hover: var(--vt-c-divider-dark-1);
 
-    --color-heading: var(--vt-c-text-dark-1);
+    --color-heading: var(--brand-accent-light);
     --color-text: var(--vt-c-text-dark-2);
+
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2);
+    --shadow-card-hover: 0 2px 8px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -67,7 +86,7 @@ body {
     background-color 0.5s;
   line-height: 1.6;
   font-family:
-    Inter,
+    'Inter',
     -apple-system,
     BlinkMacSystemFont,
     'Segoe UI',
