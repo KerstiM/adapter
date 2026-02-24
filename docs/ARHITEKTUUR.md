@@ -31,12 +31,12 @@ Operatiivsed käsud ja käivitamisnäited: [`docs/runbook.md`](runbook.md).
 │             │ loob adapterid               │ delegeerib           │
 │             ▼                              ▼                      │
 │  ┌────────────────────┐         ┌────────────────────────────┐    │
-│  │    adapters/fs/    │         │       application/          │    │
+│  │  adapters/         │         │       application/          │    │
 │  │  ────────────────  │         │       pipeline.py           │    │
-│  │  dataset_fs        │         │                             │    │
-│  │  output_fs         │         │  impordib: ports + domain   │    │
-│  │  spec_fs           │         │  kasutab ka: jsonschema     │    │
-│  │  clock_impl        │         └──────┬──────────┬──────────┘    │
+│  │  fs/  (dataset,    │         │                             │    │
+│  │       output, spec)│         │  impordib: ports + domain   │    │
+│  │  system/clock_real │         │  kasutab ka: jsonschema     │    │
+│  │  testing/clock_fix │         └──────┬──────────┬──────────┘    │
 │  └────────┬───────────┘                │          │               │
 │           │                            │          │               │
 │           │ implements                 │ kasutab   │ kutsub        │
@@ -137,11 +137,16 @@ backend/
     entrypoints/                     # driving-adapter: portide kokkuühendamine
         wiring_fs.py                 #   FS-adapterid → run_pipeline
 
-    adapters/fs/                     # konkreetsed I/O teostused
+    adapters/fs/                     # failisüsteemi I/O teostused
         dataset_fs.py                #   datasets/ lugemine failisüsteemist
         output_fs.py                 #   run folder + failide kirjutamine
         spec_fs.py                   #   spec/ laadimine failisüsteemist
-        clock_impl.py                #   SystemClock + FixedClock
+
+    adapters/system/                 # tootmise adapterid
+        clock_real.py                #   RealClock (datetime.now(utc) + uuid4)
+
+    adapters/testing/                # testide adapterid
+        clock_fixed.py               #   FixedClock (deterministlik kell)
 
     tests/                           # testid (vt docs/TESTIMINE.md)
 ```
