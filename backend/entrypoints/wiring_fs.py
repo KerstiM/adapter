@@ -22,10 +22,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from adapters.fs.clock_impl import FixedClock, SystemClock
 from adapters.fs.dataset_fs import FsDatasetAdapter
 from adapters.fs.output_fs import FsOutputAdapter
 from adapters.fs.spec_fs import FsSpecAdapter
+from adapters.system.clock_real import RealClock
+from adapters.testing.clock_fixed import FixedClock
 from application.pipeline import run_pipeline as _app_run_pipeline
 
 
@@ -53,10 +54,10 @@ def run_pipeline_fs(
         Which run profile to load from *spec_dir*.
     run_id : str | None
         Fixed run ID for deterministic / test runs.  When ``None``,
-        ``SystemClock`` generates a random one.
+        ``RealClock`` generates a random one.
     created_at_utc : str | None
         Fixed UTC timestamp for deterministic / test runs.  When ``None``,
-        ``SystemClock`` uses the current wall-clock time.
+        ``RealClock`` uses the current wall-clock time.
 
     Returns
     -------
@@ -73,13 +74,13 @@ def run_pipeline_fs(
     spec = FsSpecAdapter(spec_dir)
 
     if run_id is not None or created_at_utc is not None:
-        _sys = SystemClock()
+        _sys = RealClock()
         clock = FixedClock(
             fixed_utc=created_at_utc if created_at_utc is not None else _sys.now_utc(),
             fixed_run_id=run_id if run_id is not None else _sys.new_run_id(),
         )
     else:
-        clock = SystemClock()
+        clock = RealClock()
 
     # --- Derive report metadata from filesystem paths ---
     dataset_id = data_dir.name
