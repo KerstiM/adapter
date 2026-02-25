@@ -43,15 +43,6 @@ function select(id) {
         @click="select(m.id)"
       >
         <div class="model-header">
-          <span class="model-icon-wrap">
-            <svg v-if="m.icon === 'chart'" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M18 20V10" /><path d="M12 20V4" /><path d="M6 20v-6" />
-            </svg>
-            <svg v-else width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 2a8 8 0 0 1 8 8c0 3-1.5 5.5-4 7v3H8v-3c-2.5-1.5-4-4-4-7a8 8 0 0 1 8-8z" />
-              <path d="M10 22h4" />
-            </svg>
-          </span>
           <span class="model-output-type badge badge-info">{{ m.outputType }}</span>
         </div>
         <div class="model-name">{{ t('model.' + m.id + '.name') }}</div>
