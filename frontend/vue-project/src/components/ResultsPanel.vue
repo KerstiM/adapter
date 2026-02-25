@@ -22,7 +22,7 @@ const outcomeLabel = computed(() => {
 })
 
 const elapsedFormatted = computed(() => {
-  if (!props.elapsedMs) return '—'
+  if (props.elapsedMs == null) return '—'
   if (props.elapsedMs < 1000) return `${props.elapsedMs} ms`
   return `${(props.elapsedMs / 1000).toFixed(2)} s`
 })
