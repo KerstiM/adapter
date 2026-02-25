@@ -348,6 +348,19 @@ class TestHappyPathPipeline:
         _, run_folder = d1_output
         assert (run_folder / "projections" / "ml_v1.csv").exists()
 
+    def test_ml_csv_validates_against_schema(self, d1_output: tuple) -> None:
+        _, run_folder = d1_output
+        schema = _load_schema("S-02_ml_projection_schema.json")
+        with open(run_folder / "projections" / "ml_v1.csv", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        for raw_row in rows:
+            row: dict = {**raw_row}
+            row["row_id"] = int(row["row_id"])
+            for field in ("booking_date", "counterparty_name", "remittance"):
+                if row.get(field) == "":
+                    row[field] = None
+            jsonschema.validate(row, schema)
+
     def test_ml_csv_correct_columns(self, d1_output: tuple) -> None:
         _, run_folder = d1_output
         with open(run_folder / "projections" / "ml_v1.csv", encoding="utf-8") as f:
