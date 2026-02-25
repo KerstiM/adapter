@@ -208,3 +208,56 @@ Käivitamine:
 ```bash
 cd backend && python -m pytest tests/ -v
 ```
+
+---
+
+## Reprodutseerimise juhend
+
+Sammhaaval juhend pipeline tulemuste reprodutseerimiseks. Täpsem LaTeX-versioon: [`docs/lisa_reprodutseerimise_juhend.tex`](docs/lisa_reprodutseerimise_juhend.tex).
+
+### Eeldused
+
+- Python ≥ 3.11
+- Sõltuvused: `jsonschema ≥ 4.20.0`, `PyYAML ≥ 6.0`
+- API-võtmeid ega välisandmeid **ei vajata** — andmed on hoidlas (`datasets/`)
+
+### Sammud
+
+1. **Klooni ja fikseeri versioon**
+   ```bash
+   git clone https://github.com/KerstiM/adapter.git
+   cd adapter
+   git checkout 653ceea9d735904b3ac4f1dd6a8b7c6579cff7b8
+   ```
+
+2. **Paigalda sõltuvused**
+   ```bash
+   python -m venv .venv && source .venv/bin/activate
+   pip install -r backend/requirements.txt
+   ```
+
+3. **Käivita pipeline**
+   ```bash
+   python backend/run_adapter.py --data D1 --out backend/out
+   ```
+
+4. **Käivita testid ja SLI/SLO valideerimine**
+   ```bash
+   cd backend && python -m pytest tests/ -v
+   ```
+
+5. **Täielik QA (golden-võrdlus + determinism)**
+   ```bash
+   python scripts/qa/run_full_qa.py
+   ```
+
+### Oodatavad väljundid
+
+- Artefaktid: `backend/out/<ajatempel>_<run_id>/` — `sv.json`, `report.json`, `projections/ml_v1.csv`, `projections/llm_context_v1.json`
+- Raport kuvab `outcome` (SUCCESS / PARTIAL_SUCCESS / FAIL) ja SLI-1 kuni SLI-6 täituvust
+- Golden-võrdlus: `scripts/qa/verify_goldens.py` kontrollib SHA-256 kontrollsummasid `frozen/v1.0.0/golden/` vastu
+
+### Tõrkeotsing
+
+- **`ModuleNotFoundError`**: sõltuvused puuduvad → `pip install -r backend/requirements.txt`
+- **Golden mismatch**: kontrolli commitit (`git log --oneline -1`) ja et `frozen/` kaust ei ole muudetud
