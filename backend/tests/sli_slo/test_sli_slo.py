@@ -1,0 +1,491 @@
+"""SLI/SLO testid adapteri pipeline'ile.
+
+Iga testiklass vastab ühele teenustaseme indikaatorile (SLI) ja kontrollib,
+kas pipeline täidab vastava teenustaseme eesmärgi (SLO).
+
+SLI definitsioonid ja SLO sihtmärgid
+--------------------------------------
+SLI-1  Skeemikatvus          Kõik pipeline'i jooksud toodavad skeemi-vastavaid väljundeid
+                              SLO: 100 % kehtiva sisendiga jooksudest emiteerib korrektsed SV, ML, LLM, raporti
+
+SLI-2  Valideerimise läbivus  Sisendi skeemirikkumised püütakse kinni ja kajastatakse raportis
+                              SLO: 100 % rikkumistest ilmub report.dropped_details[] all
+
+SLI-3  Invariantide täituvus  Ärireeglite (R-01) rikkumised klassifitseeritakse ja juhivad tulemust
+                              SLO: viga-drop-suhe < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL
+
+SLI-4  Determinism            Identne sisend annab baidilt identse väljundi
+                              SLO: 100 % korduvjooksudest sama kellaga toodab identsed sõnastikud
+
+SLI-5  Spetsifikatsioonide    Iga jooks kannab kõiki versiooni metaandmeid
+       versioonid             SLO: 100 % jooksudest sisaldab sv_schema_version, mapping_version,
+                              ruleset_version, adapter_version väljades report.run
+
+SLI-6  Jõudlus               Pipeline lõpetab ajaeelarve piires väikeste datasettide korral
+                              SLO: ≤ 500 ms datasetile, kus on ≤ 10 tehingut
+"""
+
+from __future__ import annotations
+
+import time
+
+import pytest
+
+from application.pipeline import run_pipeline
+from tests.fakes import FakeDatasetPort, FakeOutputPort, FakeSpecPort, FixedClock
+
+
+# ---------------------------------------------------------------------------
+# Jagatud abifunktsioonid
+# ---------------------------------------------------------------------------
+
+def _accounts(
+    resource_id: str = "acct-001",
+    iban: str = "DE89370400440532013000",
+    currency: str = "EUR",
+    name: str = "Test Account",
+) -> dict:
+    return {
+        "accounts": [
+            {
+                "resourceId": resource_id,
+                "iban": iban,
+                "currency": currency,
+                "name": name,
+            }
+        ]
+    }
+
+
+def _tx(
+    *,
+    amount: str = "100.00",
+    currency: str = "EUR",
+    value_date: str = "2025-06-01",
+    booking_date: str | None = "2025-06-01",
+    debtor_name: str | None = "Alice",
+    creditor_name: str | None = None,
+    transaction_id: str | None = "TX001",
+    remittance: str | None = "Test payment",
+) -> dict:
+    t: dict = {
+        "transactionAmount": {"amount": amount, "currency": currency},
+        "valueDate": value_date,
+    }
+    if booking_date is not None:
+        t["bookingDate"] = booking_date
+    if debtor_name is not None:
+        t["debtorName"] = debtor_name
+        t["debtorAccount"] = {"iban": "NL91ABNA0417164300"}
+    if creditor_name is not None:
+        t["creditorName"] = creditor_name
+        t["creditorAccount"] = {"iban": "GB29NWBK60161331926819"}
+    if transaction_id is not None:
+        t["transactionId"] = transaction_id
+    if remittance is not None:
+        t["remittanceInformationUnstructured"] = remittance
+    return t
+
+
+def _report(iban: str = "DE89370400440532013000", booked: list | None = None, pending: list | None = None) -> dict:
+    return {
+        "account": {"iban": iban},
+        "transactions": {
+            "booked": booked or [],
+            "pending": pending or [],
+        },
+    }
+
+
+def _run(*, accounts: dict | None = None, booked: list | None = None, pending: list | None = None, clock: FixedClock | None = None) -> tuple[dict, FakeOutputPort]:
+    """Käivita pipeline etteantud andmetega; tagasta (kokkuvõte, väljundport)."""
+    dataset = FakeDatasetPort(
+        accounts=accounts or _accounts(),
+        transaction_reports={"transactions.json": _report(booked=booked or [], pending=pending or [])},
+    )
+    out = FakeOutputPort()
+    spec = FakeSpecPort()
+    _clock = clock or FixedClock()
+    summary = run_pipeline(
+        dataset=dataset,
+        out=out,
+        spec=spec,
+        clock=_clock,
+        dataset_id="sli-slo-test",
+        input_dir="<memory>",
+    )
+    return summary, out
+
+
+# ---------------------------------------------------------------------------
+# SLI-1: Skeemikatvus
+# SLO: 100 % kehtiva sisendiga jooksudest emiteerib korrektsed SV, ML, LLM, raporti
+# ---------------------------------------------------------------------------
+
+class TestSLI1SchemaCoverage:
+    """SLI-1 — kõik väljundartefaktid kannavad nõutud tipptaseme struktuuri."""
+
+    @pytest.fixture(scope="class")
+    def result(self) -> tuple[dict, FakeOutputPort]:
+        return _run(booked=[_tx()])
+
+    def test_sv_bundle_has_meta(self, result: tuple[dict, FakeOutputPort]) -> None:
+        """SV bundle peab sisaldama 'meta' sektsiooni."""
+        _, out = result
+        assert out.sv is not None, "sv not written"
+        assert "meta" in out.sv
+
+    def test_sv_bundle_has_accounts(self, result: tuple[dict, FakeOutputPort]) -> None:
+        """SV bundle peab loetlema töödeldud kontod."""
+        _, out = result
+        assert "accounts" in out.sv
+        assert len(out.sv["accounts"]) == 1
+
+    def test_sv_bundle_has_transactions(self, result: tuple[dict, FakeOutputPort]) -> None:
+        """SV bundle peab sisaldama tehingute nimekirja."""
+        _, out = result
+        assert "transactions" in out.sv
+
+    def test_ml_rows_have_required_fields(self, result: tuple[dict, FakeOutputPort]) -> None:
+        """Iga ML rida peab kandma account_id, record_id, value_date, signed_amount, currency, direction."""
+        _, out = result
+        assert out.ml is not None and len(out.ml) > 0, "ml not written"
+        required = {"account_id", "record_id", "value_date", "signed_amount", "currency", "direction"}
+        for row in out.ml:
+            missing = required - row.keys()
+            assert not missing, f"ML row missing fields: {missing}"
+
+    def test_llm_context_has_required_keys(self, result: tuple[dict, FakeOutputPort]) -> None:
+        """LLM kontekst peab sisaldama 'meta' (konto metaandmed) ja 'tx' (tehingud) võtmeid."""
+        _, out = result
+        assert out.llm is not None, "llm not written"
+        # Ühe konto korral on kontekst sõnastik võtmetega 'meta' ja 'tx'.
+        # Mitme konto korral on see selliste sõnastike nimekiri.
+        ctx = out.llm if isinstance(out.llm, list) else [out.llm]
+        for entry in ctx:
+            assert "meta" in entry, f"LLM entry missing 'meta': {list(entry.keys())}"
+            assert "tx" in entry, f"LLM entry missing 'tx': {list(entry.keys())}"
+
+    def test_report_has_outcome(self, result: tuple[dict, FakeOutputPort]) -> None:
+        """Raport peab sisaldama 'outcome' sektsiooni koos status väljaga."""
+        _, out = result
+        assert out.report is not None, "report not written"
+        assert "outcome" in out.report
+        assert "status" in out.report["outcome"]
+
+    def test_report_has_summary_counts(self, result: tuple[dict, FakeOutputPort]) -> None:
+        """Raporti summary peab sisaldama loendureid kontode, tehingute, ml_rows, llm_contexts kohta."""
+        _, out = result
+        counts = out.report["summary"]["counts"]
+        for field in ("accounts_total", "transactions_total", "transactions_emitted_sv", "transactions_dropped", "ml_rows", "llm_contexts"):
+            assert field in counts, f"counts missing '{field}'"
+
+    def test_report_has_by_severity(self, result: tuple[dict, FakeOutputPort]) -> None:
+        """Raport peab sisaldama tõsiduse jaotust: CRITICAL, ERROR, WARN, INFO."""
+        _, out = result
+        by_sev = out.report["summary"]["by_severity"]
+        for level in ("CRITICAL", "ERROR", "WARN", "INFO"):
+            assert level in by_sev, f"by_severity missing '{level}'"
+
+    def test_report_has_issues_list(self, result: tuple[dict, FakeOutputPort]) -> None:
+        """Raportil peab olema issues[] nimekiri (võib olla tühi)."""
+        _, out = result
+        assert "issues" in out.report
+        assert isinstance(out.report["issues"], list)
+
+    def test_report_has_dropped_details(self, result: tuple[dict, FakeOutputPort]) -> None:
+        """Raportil peab olema dropped_details[] nimekiri (võib olla tühi)."""
+        _, out = result
+        assert "dropped_details" in out.report
+        assert isinstance(out.report["dropped_details"], list)
+
+
+# ---------------------------------------------------------------------------
+# SLI-2: Valideerimise läbivus
+# SLO: 100 % skeemirikkumistest ilmub report.dropped_details[] all
+# ---------------------------------------------------------------------------
+
+class TestSLI2ValidationPassThrough:
+    """SLI-2 — sisendi skeemirikkumised püütakse kinni ja kajastatakse raportis."""
+
+    def test_valid_input_produces_no_issues(self) -> None:
+        """Skeemi-kehtiv sisend ei tohi tekitada ühtegi issue't raportis."""
+        summary, _ = _run(booked=[_tx()])
+        assert summary["issues"] == []
+
+    def test_valid_input_outcome_is_success(self) -> None:
+        """Täiesti puhas sisend peab andma SUCCESS staatuse."""
+        summary, _ = _run(booked=[_tx()])
+        assert summary["outcome"] == "SUCCESS"
+
+    def test_missing_value_date_produces_issue(self) -> None:
+        """Puuduva valueDate-ga tehing peab ilmuma dropped_details[] alla."""
+        bad = {
+            "transactionAmount": {"amount": "50.00", "currency": "EUR"},
+            "transactionId": "TX-NO-DATE",
+            "debtorName": "Someone",
+        }
+        summary, _ = _run(booked=[bad])
+        assert len(summary["dropped_details"]) == 1
+
+    def test_missing_value_date_drop_reason_contains_valuedate(self) -> None:
+        """Puuduva valueDate langetuspõhjus peab viitama valueDate puudumisele."""
+        bad = {
+            "transactionAmount": {"amount": "50.00", "currency": "EUR"},
+            "transactionId": "TX-NO-DATE",
+            "debtorName": "Someone",
+        }
+        summary, _ = _run(booked=[bad])
+        drop_reason = summary["dropped_details"][0]["drop_reason"]
+        assert "valueDate" in drop_reason or "value_date" in drop_reason.lower()
+
+    def test_invalid_transaction_is_captured_in_dropped_details(self) -> None:
+        """Standardiseerimatu tehing peab ilmuma dropped_details[] alla.
+
+        Kaardistamisetapi langetused (nt puuduv valueDate) salvestatakse
+        dropped_details[] alla, mitte by_severity alla, kuna need toimuvad
+        enne invariantide kontrollietappi. Tulemus on FAIL (100 % drop-suhe > 5 %).
+        """
+        bad = {
+            "transactionAmount": {"amount": "50.00", "currency": "EUR"},
+            "transactionId": "TX-NO-DATE",
+        }
+        summary, _ = _run(booked=[bad])
+        assert summary["counts"]["transactions_dropped"] > 0
+        assert len(summary["dropped_details"]) > 0
+
+
+# ---------------------------------------------------------------------------
+# SLI-3: Invariantide täituvus
+# SLO: viga-drop-suhe < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL
+# ---------------------------------------------------------------------------
+
+class TestSLI3InvariantCompliance:
+    """SLI-3 — R-01 invariantreeglid klassifitseerivad rikkumised ja juhivad tulemust."""
+
+    def test_inv01_bad_currency_drops_transaction(self) -> None:
+        """INV-01: vale valuutaformaadiga tehing peab langetatama (ERROR)."""
+        bad = _tx(currency="xx")  # väiketähed — ei vasta [A-Z]{3}
+        summary, _ = _run(booked=[_tx(), bad])
+        assert summary["counts"]["transactions_dropped"] >= 1
+
+    def test_inv01_bad_currency_does_not_exceed_fail_gate(self) -> None:
+        """INV-01: 1 vigane tehing 11-st on ~9 % → FAIL (viga-drop-suhe > 5 %)."""
+        bad = _tx(currency="xx", transaction_id="BAD")
+        good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(10)]
+        # 1 vigane / 11 kokku ≈ 9 % > 5 % → FAIL
+        summary, _ = _run(booked=good + [bad])
+        assert summary["outcome"] == "FAIL"
+
+    def test_inv02_missing_value_date_drops_transaction(self) -> None:
+        """INV-02: puuduv valueDate peab põhjustama tehingu langetamise."""
+        bad = {
+            "transactionAmount": {"amount": "10.00", "currency": "EUR"},
+            "transactionId": "TX-NODATE",
+            "debtorName": "Ghost",
+        }
+        summary, _ = _run(booked=[_tx(), _tx(transaction_id="TX002", amount="20.00"), bad])
+        assert summary["counts"]["transactions_dropped"] >= 1
+
+    def test_inv09_duplicate_is_deduplicated(self) -> None:
+        """INV-09: identsed tehingud peavad olema deduplitseeritud; üks säilitatakse."""
+        # Kaks tehingut, mis saavad sama record_id räsi (sama summa/kuupäev/suund)
+        dup = _tx(amount="77.77", value_date="2025-09-09", booking_date="2025-09-09",
+                  debtor_name="DupSender", transaction_id="DUP")
+        summary, out = _run(booked=[dup, dup])
+        # SV-sse peab jääma ainult üks
+        assert out.sv is not None
+        assert len(out.sv["transactions"]) == 1
+
+    def test_inv09_duplicate_appears_in_dropped_details(self) -> None:
+        """INV-09: langetatud duplikaat peab ilmuma report.dropped_details[] alla."""
+        dup = _tx(amount="77.77", value_date="2025-09-09", booking_date="2025-09-09",
+                  debtor_name="DupSender", transaction_id="DUP")
+        summary, _ = _run(booked=[dup, dup])
+        reasons = [d["drop_reason"] for d in summary["dropped_details"]]
+        assert any("INV-09" in r or "duplicate" in r.lower() for r in reasons)
+
+    def test_inv04_bad_booking_date_keeps_transaction_as_warn(self) -> None:
+        """INV-04: vigane bookingDate on WARN — tehingut ei tohi langetada."""
+        # Ehita tehing käsitsi vigase bookingDate-ga
+        t = {
+            "transactionAmount": {"amount": "30.00", "currency": "EUR"},
+            "valueDate": "2025-07-01",
+            "bookingDate": "not-a-date",
+            "debtorName": "WarnSender",
+            "debtorAccount": {"iban": "NL91ABNA0417164300"},
+            "transactionId": "TX-WARN",
+        }
+        summary, _ = _run(booked=[t])
+        assert summary["counts"]["transactions_dropped"] == 0
+        assert summary["counts"]["transactions_emitted_sv"] == 1
+
+    def test_below_5pct_error_rate_is_partial_success(self) -> None:
+        """Vigade suhe alla 5 % peab andma PARTIAL_SUCCESS, mitte FAIL."""
+        # 1 vigane 21-st kokku ≈ 4,8 % < 5 %
+        bad = _tx(currency="xx", transaction_id="BAD")
+        good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(20)]
+        summary, _ = _run(booked=good + [bad])
+        assert summary["outcome"] == "PARTIAL_SUCCESS"
+
+    def test_at_or_above_5pct_error_rate_is_fail(self) -> None:
+        """Vigade suhe 5 % või üle selle peab andma FAIL."""
+        # 1 vigane 10-st = 10 % → FAIL
+        bad = _tx(currency="xx", transaction_id="BAD")
+        good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(9)]
+        summary, _ = _run(booked=good + [bad])
+        assert summary["outcome"] == "FAIL"
+
+    def test_zero_errors_clean_run_is_success(self) -> None:
+        """Jooks ilma invariantide rikkumisteta peab andma SUCCESS."""
+        good = [_tx(transaction_id=f"T{i}", amount=str(10 + i)) for i in range(5)]
+        summary, _ = _run(booked=good)
+        assert summary["outcome"] == "SUCCESS"
+
+    def test_dropped_count_matches_dropped_details(self) -> None:
+        """summary.counts.transactions_dropped peab võrduma len(dropped_details)."""
+        bad = _tx(currency="xx", transaction_id="BAD-CUR")
+        summary, _ = _run(booked=[_tx(), bad])
+        assert summary["counts"]["transactions_dropped"] == len(summary["dropped_details"])
+
+
+# ---------------------------------------------------------------------------
+# SLI-4: Determinism
+# SLO: Kaks identset jooksu sama fikseeritud kellaga toodavad identsed väljundid
+# ---------------------------------------------------------------------------
+
+class TestSLI4Determinism:
+    """SLI-4 — korduvjooksud sama sisendi ja kellaga toodavad identse väljundi."""
+
+    @pytest.fixture(scope="class")
+    def two_runs(self) -> tuple[FakeOutputPort, FakeOutputPort]:
+        clock = FixedClock(fixed_utc="2026-03-01T12:00:00Z", fixed_run_id="det-run-42")
+        booked = [
+            _tx(amount="100.00", transaction_id="TX1"),
+            _tx(amount="200.00", transaction_id="TX2", debtor_name=None, creditor_name="Shop"),
+        ]
+        _, out1 = _run(booked=booked, clock=clock)
+        _, out2 = _run(booked=booked, clock=clock)
+        return out1, out2
+
+    def test_sv_is_identical(self, two_runs: tuple[FakeOutputPort, FakeOutputPort]) -> None:
+        """SV bundle peab olema identne kahe sama sisendiga jooksu vahel."""
+        out1, out2 = two_runs
+        assert out1.sv == out2.sv
+
+    def test_ml_is_identical(self, two_runs: tuple[FakeOutputPort, FakeOutputPort]) -> None:
+        """ML read peavad olema identsed kahe sama sisendiga jooksu vahel."""
+        out1, out2 = two_runs
+        assert out1.ml == out2.ml
+
+    def test_llm_is_identical(self, two_runs: tuple[FakeOutputPort, FakeOutputPort]) -> None:
+        """LLM kontekst peab olema identne kahe sama sisendiga jooksu vahel."""
+        out1, out2 = two_runs
+        assert out1.llm == out2.llm
+
+    def test_report_is_identical(self, two_runs: tuple[FakeOutputPort, FakeOutputPort]) -> None:
+        """Raport peab olema identne kahe sama sisendiga jooksu vahel."""
+        out1, out2 = two_runs
+        assert out1.report == out2.report
+
+    def test_run_id_is_fixed(self, two_runs: tuple[FakeOutputPort, FakeOutputPort]) -> None:
+        """run_id peab tulema kellalt, mitte juhuslikust generaatorist."""
+        out1, out2 = two_runs
+        assert out1.run_id == out2.run_id == "det-run-42"
+
+    def test_created_at_is_fixed(self, two_runs: tuple[FakeOutputPort, FakeOutputPort]) -> None:
+        """created_at_utc peab tulema kellalt, mitte süsteemiajalt."""
+        out1, out2 = two_runs
+        assert out1.created_at_utc == out2.created_at_utc == "2026-03-01T12:00:00Z"
+
+
+# ---------------------------------------------------------------------------
+# SLI-5: Spetsifikatsioonide versioonid
+# SLO: 100 % jooksudest kannab kõiki 4 versioonivälja report.run all
+# ---------------------------------------------------------------------------
+
+class TestSLI5SpecVersioning:
+    """SLI-5 — iga jooks emiteerib kõik nõutud versiooni metaandmete väljad."""
+
+    @pytest.fixture(scope="class")
+    def report(self) -> dict:
+        _, out = _run(booked=[_tx()])
+        assert out.report is not None
+        return out.report
+
+    def test_report_run_has_sv_schema_version(self, report: dict) -> None:
+        """report.run peab kandma sv_schema_version välja."""
+        assert "sv_schema_version" in report["run"]
+        assert report["run"]["sv_schema_version"] != ""
+
+    def test_report_run_has_mapping_version(self, report: dict) -> None:
+        """report.run peab kandma mapping_version välja."""
+        assert "mapping_version" in report["run"]
+        assert report["run"]["mapping_version"] != ""
+
+    def test_report_run_has_ruleset_version(self, report: dict) -> None:
+        """report.run peab kandma ruleset_version välja."""
+        assert "ruleset_version" in report["run"]
+        assert report["run"]["ruleset_version"] != ""
+
+    def test_report_run_has_adapter_version(self, report: dict) -> None:
+        """report.run peab kandma adapter_version välja."""
+        assert "adapter_version" in report["run"]
+        assert report["run"]["adapter_version"] != ""
+
+    def test_report_run_has_run_id(self, report: dict) -> None:
+        """report.run peab kandma run_id välja."""
+        assert "run_id" in report["run"]
+        assert report["run"]["run_id"] != ""
+
+    def test_report_run_has_created_at_utc(self, report: dict) -> None:
+        """report.run peab kandma created_at_utc ajatemplit."""
+        assert "created_at_utc" in report["run"]
+        assert report["run"]["created_at_utc"] != ""
+
+    def test_report_has_schema_version_field(self, report: dict) -> None:
+        """Raport ise peab kandma report_schema_version välja juuretasemel."""
+        assert "report_schema_version" in report
+        assert report["report_schema_version"] != ""
+
+
+# ---------------------------------------------------------------------------
+# SLI-6: Jõudlus
+# SLO: Pipeline lõpetab ≤ 500 ms, kui datasett sisaldab ≤ 10 tehingut
+# ---------------------------------------------------------------------------
+
+_PERFORMANCE_SLO_MS = 500  # millisekundit
+
+
+class TestSLI6Performance:
+    """SLI-6 — pipeline peab lõpetama 500 ms jooksul väikeste datasettide korral."""
+
+    def test_single_transaction_within_slo(self) -> None:
+        """Pipeline 1 tehinguga peab lõpetama ≤ 500 ms."""
+        t0 = time.perf_counter()
+        _run(booked=[_tx()])
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+        assert elapsed_ms <= _PERFORMANCE_SLO_MS, (
+            f"Pipeline took {elapsed_ms:.1f} ms — exceeds SLO of {_PERFORMANCE_SLO_MS} ms"
+        )
+
+    def test_ten_transactions_within_slo(self) -> None:
+        """Pipeline 10 tehinguga peab lõpetama ≤ 500 ms."""
+        txns = [_tx(transaction_id=f"T{i}", amount=str(10 + i)) for i in range(10)]
+        t0 = time.perf_counter()
+        _run(booked=txns)
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+        assert elapsed_ms <= _PERFORMANCE_SLO_MS, (
+            f"Pipeline took {elapsed_ms:.1f} ms — exceeds SLO of {_PERFORMANCE_SLO_MS} ms"
+        )
+
+    def test_mixed_booked_and_pending_within_slo(self) -> None:
+        """Pipeline 5 booked + 5 pending tehinguga peab lõpetama ≤ 500 ms."""
+        booked = [_tx(transaction_id=f"B{i}", amount=str(10 + i)) for i in range(5)]
+        pending = [_tx(transaction_id=f"P{i}", amount=str(50 + i), booking_date=None) for i in range(5)]
+        t0 = time.perf_counter()
+        _run(booked=booked, pending=pending)
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+        assert elapsed_ms <= _PERFORMANCE_SLO_MS, (
+            f"Pipeline took {elapsed_ms:.1f} ms — exceeds SLO of {_PERFORMANCE_SLO_MS} ms"
+        )
