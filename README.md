@@ -188,7 +188,6 @@ backend/tests/
         fake_spec_port.py
         fixed_clock.py               # FixedClock (vaikeväärustega unit-testidele)
     tests.py                         # integratsioonitestid (FS + tmp_path)
-    test_no_compat_imports.py        # guard: vana compat-kiht on eemaldatud
 ```
 
 **Unit-testid** (`unit/`) kasutavad fake-porte — `FakeDatasetPort`, `FakeOutputPort`, `FakeSpecPort`, `FixedClock`.
@@ -200,8 +199,7 @@ Väljund kirjutatakse `tmp_path` kausta (pytest fixture). Testivad end-to-end vo
 
 **Determinismitest** (`TestDeterminism`) käivitab pipeline kaks korda sama fikseeritud kellaga ja kontrollib, et kõik väljundfailid on identsed.
 
-**Arhitektuuritestid** tagavad kihistuse: `test_import_boundaries.py` skaneerib `domain/` importe AST-ga;
-`test_no_compat_imports.py` kinnitab, et vana `backend/adapter/` compat-kiht on eemaldatud.
+**Arhitektuuritestid** tagavad kihistuse: `test_import_boundaries.py` skaneerib `domain/` importe AST-ga.
 
 Käivitamine:
 

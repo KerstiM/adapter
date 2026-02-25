@@ -30,7 +30,6 @@ Testivad end-to-end voo: sisend → SV → ML/LLM → raport → skeemivalideeri
 | Fail | Testib |
 |------|--------|
 | `test_import_boundaries.py` | `domain/` importe AST-ga — keelatud impordid (pathlib, os, adapters) |
-| `test_no_compat_imports.py` | Vana `backend/adapter/` compat-kiht on eemaldatud |
 
 ### QA / E2E valideerimine (`scripts/qa/`)
 
