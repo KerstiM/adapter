@@ -172,9 +172,9 @@ export function getModels() {
  * Returns { result, elapsed_ms }.
  */
 export async function runPipeline(datasetId, modelId) {
-  const t0 = performance.now()
   await _simulateDelay()
+  const t0 = performance.now()
   const result = _generateMockResult(datasetId, modelId)
-  const elapsed_ms = Math.round(performance.now() - t0)
+  const elapsed_ms = parseFloat((performance.now() - t0).toFixed(2))
   return { result, elapsed_ms }
 }
