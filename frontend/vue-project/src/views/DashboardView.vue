@@ -25,12 +25,11 @@ const MODEL_LABELS = {
 
 const activeStep = computed(() => {
   if (!selectedDataset.value) return 1
-  if (selectedModels.value.length === 0) return 2
-  if (!result.value) return 3
-  return 4
+  if (!result.value) return 2
+  return 3
 })
 
-const canRun = () => selectedDataset.value && selectedModels.value.length > 0 && !loading.value
+const canRun = () => selectedDataset.value && !loading.value
 
 async function handleRun() {
   if (!canRun()) return

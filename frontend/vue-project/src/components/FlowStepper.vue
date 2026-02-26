@@ -9,9 +9,8 @@ defineProps({
 
 const steps = [
   { num: 1, key: 'flow.dataSelection' },
-  { num: 2, key: 'flow.modelSelection' },
-  { num: 3, key: 'flow.results' },
-  { num: 4, key: 'flow.projections' },
+  { num: 2, key: 'flow.runPipeline' },
+  { num: 3, key: 'flow.projections' },
 ]
 </script>
 

@@ -27,20 +27,22 @@
   "flow": {
     "dataSelection": "Andmete valik",
     "modelSelection": "Mudeli valik",
+    "runPipeline": "Tulemused",
     "results": "Tulemused",
     "projections": "Projektsioonid"
   },
   "data": {
     "chooseDataset": "Vali andmestik",
-    "chooseYourData": "Vali oma andmeallikas pipeline jaoks",
+    "chooseYourData": "Vali oma andmeallikad",
     "allowedFormatsTitle": "Lubatud formaadid",
-    "allowedFormatsBody": "JSON (Berlin Group PSD2 AIS) – accounts.json + transactions.json. Skeemi detailid: docs/SPETSIFIKATSIOONID.md."
+    "allowedFormatsBody": "JSON (Berlin Group PSD2 AIS) – accounts.json + transactions.json. Skeemi detailid: docs/SPETSIFIKATSIOONID.md.",
+    "notAvailable": "Pole veel saadaval"
   },
   "models": {
     "forwardTo": "Edasta mudelile",
     "addModel": "Lisa mudel",
     "removeModel": "Eemalda mudel",
-    "noneSelectedHint": "Jätkamiseks vali vähemalt üks mudel"
+    "noneSelectedHint": "Sihtmudelid pole valitud (valikuline)"
   },
   "actions": {
     "run": "Käivita pipeline",
@@ -53,7 +55,7 @@
   },
   "results": {
     "loading": "Pipeline töötab...",
-    "empty": "Vali andmestik ja mudel ning käivita pipeline, et näha tulemusi",
+    "empty": "Vali andmestik ja käivita pipeline, et näha tulemusi",
     "elapsed": "Pipeline töötlemise aeg",
     "outcome": {
       "SUCCESS": "Edukas",

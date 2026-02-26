@@ -44,18 +44,16 @@ function select(id) {
       >
         <div class="ds-header">
           <span class="ds-id">{{ ds.id }}</span>
-          <span class="ds-records">~{{ ds.records }} {{ t('dataset.recordsUnit') }}</span>
+          <span class="ds-records">{{ ds.records }} {{ t('dataset.recordsUnit') }}</span>
         </div>
         <div class="ds-name">{{ ds.name }}</div>
         <div class="ds-desc">{{ t('dataset.' + ds.id) }}</div>
       </button>
 
-      <!-- Custom data card -->
+      <!-- Custom data card (not yet available) -->
       <button
-        class="dataset-card card custom-card"
-        :class="{ active: modelValue === 'CUSTOM', disabled }"
-        :disabled="disabled"
-        @click="select('CUSTOM')"
+        class="dataset-card card custom-card custom-unavailable"
+        disabled
       >
         <div class="ds-header">
           <span class="ds-id custom-icon">
@@ -65,6 +63,7 @@ function select(id) {
               <line x1="12" y1="3" x2="12" y2="15" />
             </svg>
           </span>
+          <span class="custom-status-badge">{{ t('data.notAvailable') }}</span>
         </div>
         <div class="ds-name custom-title">{{ t('data.chooseYourData') }}</div>
         <div class="ds-desc">
@@ -165,6 +164,29 @@ function select(id) {
 
 .custom-card {
   border-style: dashed;
+}
+
+.custom-unavailable {
+  background: var(--color-background-mute);
+  opacity: 0.6;
+  cursor: not-allowed;
+  position: relative;
+}
+
+.custom-unavailable:hover {
+  border-color: var(--color-border);
+}
+
+.custom-status-badge {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.12rem 0.4rem;
+  border-radius: 999px;
+  background: var(--color-border-hover);
+  color: var(--vt-c-text-light-2);
+  white-space: nowrap;
 }
 
 .custom-icon {
