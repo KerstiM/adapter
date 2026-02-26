@@ -21,16 +21,8 @@
     "CUSTOM": "Sinu oma andmed"
   },
   "model": {
-    "title": "Mudel",
-    "hint": "Vali väljundi tüüp: ML tabeliprojektsioon või LLM kontekst",
-    "ml": {
-      "name": "ML projektsioon",
-      "description": "Masinõppe CSV väljund (C-02). Deterministlik tabelandmete projektsioon."
-    },
-    "llm": {
-      "name": "LLM kontekst",
-      "description": "Keelemudelile optimeeritud JSON kontekst (C-03). Struktureeritud narratiiv."
-    }
+    "title": "Sihtmudelid",
+    "hint": "Vali mudelid, kuhu pipeline väljund edastada"
   },
   "flow": {
     "dataSelection": "Andmete valik",

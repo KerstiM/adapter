@@ -9,13 +9,13 @@ import { useI18n } from '@/composables/useI18n'
 const { t } = useI18n()
 
 const selectedDataset = ref('')
-const selectedModel = ref('')
+const selectedModels = ref([])
 const loading = ref(false)
 const result = ref(null)
 const elapsedMs = ref(0)
 const error = ref('')
 
-const canRun = () => selectedDataset.value && selectedModel.value && !loading.value
+const canRun = () => selectedDataset.value && selectedModels.value.length > 0 && !loading.value
 
 async function handleRun() {
   if (!canRun()) return
@@ -26,7 +26,7 @@ async function handleRun() {
   elapsedMs.value = 0
 
   try {
-    const response = await runPipeline(selectedDataset.value, selectedModel.value)
+    const response = await runPipeline(selectedDataset.value, selectedModels.value)
     result.value = response.result
     elapsedMs.value = response.elapsed_ms
   } catch (e) {
@@ -38,7 +38,7 @@ async function handleRun() {
 
 function handleReset() {
   selectedDataset.value = ''
-  selectedModel.value = ''
+  selectedModels.value = []
   result.value = null
   elapsedMs.value = 0
   error.value = ''
@@ -50,7 +50,7 @@ function handleReset() {
     <!-- Left panel: configuration -->
     <aside class="config-panel">
       <DatasetSelector v-model="selectedDataset" :disabled="loading" />
-      <ModelSelector v-model="selectedModel" :disabled="loading" />
+      <ModelSelector v-model="selectedModels" :disabled="loading" />
 
       <div class="actions">
         <button

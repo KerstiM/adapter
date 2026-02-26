@@ -21,16 +21,8 @@
     "CUSTOM": "Your own data"
   },
   "model": {
-    "title": "Model",
-    "hint": "Select output type: ML table projection or LLM context",
-    "ml": {
-      "name": "ML Projection",
-      "description": "Machine learning CSV output (C-02). Deterministic tabular data projection."
-    },
-    "llm": {
-      "name": "LLM Context",
-      "description": "Language model optimised JSON context (C-03). Structured narrative."
-    }
+    "title": "Destination models",
+    "hint": "Select models to forward pipeline output to"
   },
   "flow": {
     "dataSelection": "Data selection",

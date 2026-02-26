@@ -1,20 +1,46 @@
 <script setup>
-import { getModels } from '@/services/api'
+import { computed, ref } from 'vue'
 import { useI18n } from '@/composables/useI18n'
 
 const { t } = useI18n()
-const models = getModels()
+
+const MODEL_CATALOG = [
+  { id: 'openai_gpt4o', label: 'OpenAI GPT-4o' },
+  { id: 'anthropic_claude35_sonnet', label: 'Anthropic Claude 3.5 Sonnet' },
+  { id: 'google_gemini15_pro', label: 'Google Gemini 1.5 Pro' },
+]
 
 const props = defineProps({
-  modelValue: { type: String, default: '' },
+  modelValue: { type: Array, default: () => [] },
   disabled: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['update:modelValue'])
 
-function select(id) {
-  if (!props.disabled) {
-    emit('update:modelValue', id)
+const dropdownOpen = ref(false)
+
+const availableModels = computed(() =>
+  MODEL_CATALOG.filter((m) => !props.modelValue.includes(m.id)),
+)
+
+function addModel(id) {
+  emit('update:modelValue', [...props.modelValue, id])
+  dropdownOpen.value = false
+}
+
+function removeModel(id) {
+  if (props.disabled) return
+  const next = props.modelValue.filter((m) => m !== id)
+  emit('update:modelValue', next)
+}
+
+function getLabel(id) {
+  return MODEL_CATALOG.find((m) => m.id === id)?.label ?? id
+}
+
+function toggleDropdown() {
+  if (!props.disabled && availableModels.value.length > 0) {
+    dropdownOpen.value = !dropdownOpen.value
   }
 }
 </script>
@@ -29,25 +55,55 @@ function select(id) {
           <path d="M2 12l10 5 10-5" />
         </svg>
       </span>
-      {{ t('model.title') }}
+      {{ t('models.forwardTo') }}
     </h3>
-    <p class="selector-hint">{{ t('model.hint') }}</p>
 
-    <div class="model-grid">
-      <button
-        v-for="m in models"
-        :key="m.id"
-        class="model-card card"
-        :class="{ active: modelValue === m.id, disabled }"
-        :disabled="disabled"
-        @click="select(m.id)"
+    <!-- Selected model chips -->
+    <div class="chips-area">
+      <span
+        v-for="id in modelValue"
+        :key="id"
+        class="chip"
+        :class="{ disabled }"
       >
-        <div class="model-header">
-          <span class="model-output-type badge badge-info">{{ m.outputType }}</span>
-        </div>
-        <div class="model-name">{{ t('model.' + m.id + '.name') }}</div>
-        <div class="model-desc">{{ t('model.' + m.id + '.description') }}</div>
+        {{ getLabel(id) }}
+        <button
+          v-if="!disabled"
+          class="chip-remove"
+          :aria-label="t('models.removeModel')"
+          @click="removeModel(id)"
+        >&times;</button>
+      </span>
+
+      <span v-if="modelValue.length === 0" class="no-selection-hint">
+        {{ t('models.noneSelectedHint') }}
+      </span>
+    </div>
+
+    <!-- Add model dropdown -->
+    <div v-if="availableModels.length > 0" class="dropdown-wrap">
+      <button
+        class="btn btn-outline add-model-btn"
+        :disabled="disabled"
+        @click="toggleDropdown"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+        {{ t('models.addModel') }}
       </button>
+
+      <ul v-if="dropdownOpen" class="dropdown-list">
+        <li
+          v-for="m in availableModels"
+          :key="m.id"
+          class="dropdown-item"
+          @click="addModel(m.id)"
+        >
+          {{ m.label }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -64,7 +120,7 @@ function select(id) {
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--color-heading);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .selector-icon {
@@ -72,76 +128,96 @@ function select(id) {
   color: var(--brand-accent);
 }
 
-.selector-hint {
+.chips-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  min-height: 2rem;
+  margin-bottom: 0.6rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.65rem;
+  background: rgba(0, 49, 84, 0.08);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
   font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-heading);
+}
+
+.chip.disabled {
+  opacity: 0.55;
+}
+
+.chip-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
   color: var(--vt-c-text-light-2);
-  margin-bottom: 0.75rem;
-}
-
-.model-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
-}
-
-@media (max-width: 600px) {
-  .model-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.model-card {
-  padding: 1rem 1.1rem;
-  text-align: left;
+  font-size: 1rem;
+  line-height: 1;
   cursor: pointer;
-  border: 1.5px solid var(--color-border);
-  background: var(--color-background);
   transition: all var(--transition-fast);
 }
 
-.model-card:hover:not(.disabled) {
-  border-color: var(--brand-primary);
+.chip-remove:hover {
+  background: rgba(231, 76, 60, 0.12);
+  color: var(--brand-error);
 }
 
-.model-card.active {
-  border-color: var(--brand-primary);
-  background: rgba(0, 49, 84, 0.04);
-  box-shadow: 0 0 0 2px rgba(0, 49, 84, 0.15);
-}
-
-.model-card.disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.model-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.model-icon-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: var(--radius-sm);
-  background: rgba(0, 49, 84, 0.06);
-  color: var(--brand-primary);
-}
-
-.model-name {
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--color-heading);
-  margin-bottom: 0.25rem;
-}
-
-.model-desc {
-  font-size: 0.8rem;
+.no-selection-hint {
+  font-size: 0.82rem;
   color: var(--vt-c-text-light-2);
-  line-height: 1.45;
+  padding: 0.3rem 0;
+}
+
+.dropdown-wrap {
+  position: relative;
+}
+
+.add-model-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  padding: 0.35rem 0.75rem;
+}
+
+.dropdown-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 240px;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 0.25rem 0;
+  margin: 0;
+  z-index: 10;
+}
+
+.dropdown-item {
+  padding: 0.5rem 0.85rem;
+  font-size: 0.85rem;
+  color: var(--color-heading);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.dropdown-item:hover {
+  background: rgba(0, 49, 84, 0.06);
 }
 </style>
