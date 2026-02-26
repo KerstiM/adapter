@@ -17,7 +17,8 @@
     "D4": "Sünteetiline, vigadega",
     "D5": "Äärejuhud (edge cases)",
     "D6": "Duplikaatidega",
-    "D7": "Püsikorraldused"
+    "D7": "Püsikorraldused",
+    "CUSTOM": "Sinu oma andmed"
   },
   "model": {
     "title": "Mudel",
@@ -41,7 +42,7 @@
     "chooseDataset": "Vali andmestik",
     "chooseYourData": "Vali oma andmeallikas pipeline jaoks",
     "allowedFormatsTitle": "Lubatud formaadid",
-    "allowedFormatsBody": "CSV, JSON, XML – max 50 MB faili kohta"
+    "allowedFormatsBody": "JSON (Berlin Group PSD2 AIS) – accounts.json + transactions.json. Skeemi detailid: docs/SPETSIFIKATSIOONID.md."
   },
   "models": {
     "forwardTo": "Edasta mudelile",
