@@ -17,8 +17,9 @@ const DATASETS = [
 ]
 
 const MODELS = [
-  { id: 'ml', outputType: 'CSV', icon: 'chart' },
-  { id: 'llm', outputType: 'JSON', icon: 'brain' },
+  { id: 'openai_gpt4o', label: 'OpenAI GPT-4o' },
+  { id: 'anthropic_claude35_sonnet', label: 'Anthropic Claude 3.5 Sonnet' },
+  { id: 'google_gemini15_pro', label: 'Google Gemini 1.5 Pro' },
 ]
 
 // ── Public API ──
