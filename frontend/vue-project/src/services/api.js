@@ -7,13 +7,13 @@
  */
 
 const DATASETS = [
-  { id: 'D1', name: 'D1_public_valid_small', records: 50 },
-  { id: 'D2', name: 'D2_public_mixed_large', records: 500 },
-  { id: 'D3', name: 'D3_synth_valid_seed42', records: 200 },
-  { id: 'D4', name: 'D4_synth_errors_seed42', records: 200 },
-  { id: 'D5', name: 'D5_synth_edges_seed99', records: 150 },
-  { id: 'D6', name: 'D6_synth_dupes_seed99', records: 180 },
-  { id: 'D7', name: 'D7_standing_orders_seed77', records: 120 },
+  { id: 'D1', name: 'D1_public_valid_small', records: 7 },
+  { id: 'D2', name: 'D2_public_mixed_large', records: 66 },
+  { id: 'D3', name: 'D3_synth_valid_seed42', records: 150 },
+  { id: 'D4', name: 'D4_synth_errors_seed42', records: 39 },
+  { id: 'D5', name: 'D5_synth_edges_seed99', records: 33 },
+  { id: 'D6', name: 'D6_synth_dupes_seed99', records: 24 },
+  { id: 'D7', name: 'D7_standing_orders_seed77', records: 4 },
 ]
 
 const MODELS = [

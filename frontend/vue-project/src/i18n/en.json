@@ -27,20 +27,22 @@
   "flow": {
     "dataSelection": "Data selection",
     "modelSelection": "Model selection",
+    "runPipeline": "Results",
     "results": "Results",
     "projections": "Projections"
   },
   "data": {
     "chooseDataset": "Choose dataset",
-    "chooseYourData": "Choose your data source for the pipeline",
+    "chooseYourData": "Choose your data sources",
     "allowedFormatsTitle": "Allowed formats",
-    "allowedFormatsBody": "JSON (Berlin Group PSD2 AIS) – accounts.json + transactions.json. See docs/SPETSIFIKATSIOONID.md for schema details."
+    "allowedFormatsBody": "JSON (Berlin Group PSD2 AIS) – accounts.json + transactions.json. See docs/SPETSIFIKATSIOONID.md for schema details.",
+    "notAvailable": "Not yet available"
   },
   "models": {
     "forwardTo": "Forward to",
     "addModel": "Add model",
     "removeModel": "Remove model",
-    "noneSelectedHint": "Select at least one model to continue"
+    "noneSelectedHint": "No destination models selected (optional)"
   },
   "actions": {
     "run": "Run pipeline",
@@ -53,7 +55,7 @@
   },
   "results": {
     "loading": "Pipeline running...",
-    "empty": "Select a dataset and model, then run the pipeline to see results",
+    "empty": "Select a dataset and run the pipeline to see results",
     "elapsed": "Pipeline processing time",
     "outcome": {
       "SUCCESS": "Success",

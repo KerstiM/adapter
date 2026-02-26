@@ -64,19 +64,19 @@ function stageLabel(stage) {
   <div v-else class="results">
     <!-- Header row -->
     <div class="results-header card">
-      <div class="rh-left">
+      <div class="rh-top">
         <span class="badge" :class="outcomeBadge">{{ outcomeLabel }}</span>
-        <span class="rh-dataset">{{ result.datasetName }}</span>
-        <span class="rh-sep">&rarr;</span>
-        <span class="rh-model">{{ result.modelId === 'ml' ? 'ML' : 'LLM' }}</span>
-      </div>
-      <div class="rh-right">
         <span class="rh-time" :title="t('results.elapsed')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10" /><polyline points="12,6 12,12 16,14" />
           </svg>
           {{ elapsedFormatted }}
         </span>
+      </div>
+      <div class="rh-bottom">
+        <span class="rh-dataset">{{ result.datasetName }}</span>
+        <span class="rh-sep">&rarr;</span>
+        <span class="rh-model">ML + LLM</span>
       </div>
     </div>
 
@@ -114,7 +114,8 @@ function stageLabel(stage) {
     <div class="section card">
       <h4 class="section-title">{{ t('results.stages.title') }}</h4>
       <div class="stage-list">
-        <div v-for="stage in result.stageLog" :key="stage.stage" class="stage-row">
+        <div v-for="(stage, idx) in result.stageLog" :key="stage.stage" class="stage-row">
+          <span class="stage-num">{{ idx + 1 }}</span>
           <span class="stage-name">{{ stageLabel(stage) }}</span>
           <span class="stage-counts">
             <span v-if="stage.errors > 0" class="badge badge-error">{{ stage.errors }} {{ t('results.stages.errors') }}</span>
@@ -208,13 +209,19 @@ function stageLabel(stage) {
 /* ── Results header ── */
 .results-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.85rem 1.1rem;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.15rem 1.35rem;
   margin-bottom: 0.75rem;
 }
 
-.rh-left {
+.rh-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rh-bottom {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -222,17 +229,20 @@ function stageLabel(stage) {
 }
 
 .rh-dataset {
-  font-weight: 600;
-  font-size: 0.88rem;
+  font-weight: 700;
+  font-size: 1.05rem;
   font-family: 'Fira Code', monospace;
+  color: var(--color-heading);
 }
 
 .rh-sep {
   color: var(--vt-c-text-light-2);
+  font-size: 1.1rem;
 }
 
 .rh-model {
   font-weight: 700;
+  font-size: 0.95rem;
   color: var(--brand-primary);
 }
 
@@ -318,6 +328,20 @@ function stageLabel(stage) {
 
 .stage-row:last-child {
   border-bottom: none;
+}
+
+.stage-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  background: var(--color-background-mute);
+  color: var(--vt-c-text-light-2);
 }
 
 .stage-name {
