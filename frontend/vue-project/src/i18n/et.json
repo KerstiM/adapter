@@ -31,9 +31,29 @@
       "description": "Keelemudelile optimeeritud JSON kontekst (C-03). Struktureeritud narratiiv."
     }
   },
+  "flow": {
+    "dataSelection": "Andmete valik",
+    "modelSelection": "Mudeli valik",
+    "results": "Tulemused",
+    "projections": "Projektsioonid"
+  },
+  "data": {
+    "chooseDataset": "Vali andmestik",
+    "chooseYourData": "Vali oma andmeallikas pipeline jaoks",
+    "allowedFormatsTitle": "Lubatud formaadid",
+    "allowedFormatsBody": "CSV, JSON, XML – max 50 MB faili kohta"
+  },
+  "models": {
+    "forwardTo": "Edasta mudelile",
+    "addModel": "Lisa mudel",
+    "removeModel": "Eemalda mudel",
+    "noneSelectedHint": "Jätkamiseks vali vähemalt üks mudel"
+  },
   "actions": {
     "run": "Käivita pipeline",
-    "reset": "Lähtesta"
+    "reset": "Lähtesta",
+    "view": "Vaata",
+    "close": "Sulge"
   },
   "errors": {
     "runFailed": "Pipeline käivitamine ebaõnnestus"

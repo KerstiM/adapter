@@ -31,9 +31,29 @@
       "description": "Language model optimised JSON context (C-03). Structured narrative."
     }
   },
+  "flow": {
+    "dataSelection": "Data selection",
+    "modelSelection": "Model selection",
+    "results": "Results",
+    "projections": "Projections"
+  },
+  "data": {
+    "chooseDataset": "Choose dataset",
+    "chooseYourData": "Choose your data source for the pipeline",
+    "allowedFormatsTitle": "Allowed formats",
+    "allowedFormatsBody": "CSV, JSON, XML – max 50 MB per file"
+  },
+  "models": {
+    "forwardTo": "Forward to",
+    "addModel": "Add model",
+    "removeModel": "Remove model",
+    "noneSelectedHint": "Select at least one model to continue"
+  },
   "actions": {
     "run": "Run pipeline",
-    "reset": "Reset"
+    "reset": "Reset",
+    "view": "View",
+    "close": "Close"
   },
   "errors": {
     "runFailed": "Pipeline execution failed"
