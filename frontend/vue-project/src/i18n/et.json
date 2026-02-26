@@ -86,7 +86,8 @@
     "mlPreview": {
       "title": "ML projektsiooni eelvaade",
       "totalRows": "rida kokku",
-      "showingFirst": "Näidatakse esimesed 5 rida {total}-st"
+      "showingFirst": "Näidatakse esimesed 5 rida {total}-st",
+      "summary": "ML CSV: {count} rida"
     },
     "llmPreview": {
       "title": "LLM konteksti eelvaade",
@@ -94,7 +95,8 @@
       "income": "Tulud",
       "expenses": "Kulud",
       "netFlow": "Netorahavoog",
-      "categories": "Kulukategooriad"
+      "categories": "Kulukategooriad",
+      "summary": "LLM kontekst: {count} tehingut"
     }
   }
 }

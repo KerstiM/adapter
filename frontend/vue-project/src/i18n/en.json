@@ -86,7 +86,8 @@
     "mlPreview": {
       "title": "ML projection preview",
       "totalRows": "rows total",
-      "showingFirst": "Showing first 5 rows of {total}"
+      "showingFirst": "Showing first 5 rows of {total}",
+      "summary": "ML CSV: {count} rows"
     },
     "llmPreview": {
       "title": "LLM context preview",
@@ -94,7 +95,8 @@
       "income": "Income",
       "expenses": "Expenses",
       "netFlow": "Net cash flow",
-      "categories": "Spending categories"
+      "categories": "Spending categories",
+      "summary": "LLM context: {count} transactions"
     }
   }
 }
