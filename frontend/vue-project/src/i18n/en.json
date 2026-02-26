@@ -17,7 +17,8 @@
     "D4": "Synthetic, with errors",
     "D5": "Edge cases",
     "D6": "With duplicates",
-    "D7": "Standing orders"
+    "D7": "Standing orders",
+    "CUSTOM": "Your own data"
   },
   "model": {
     "title": "Model",
@@ -41,7 +42,7 @@
     "chooseDataset": "Choose dataset",
     "chooseYourData": "Choose your data source for the pipeline",
     "allowedFormatsTitle": "Allowed formats",
-    "allowedFormatsBody": "CSV, JSON, XML – max 50 MB per file"
+    "allowedFormatsBody": "JSON (Berlin Group PSD2 AIS) – accounts.json + transactions.json. See docs/SPETSIFIKATSIOONID.md for schema details."
   },
   "models": {
     "forwardTo": "Forward to",

@@ -49,6 +49,29 @@ function select(id) {
         <div class="ds-name">{{ ds.name }}</div>
         <div class="ds-desc">{{ t('dataset.' + ds.id) }}</div>
       </button>
+
+      <!-- Custom data card -->
+      <button
+        class="dataset-card card custom-card"
+        :class="{ active: modelValue === 'CUSTOM', disabled }"
+        :disabled="disabled"
+        @click="select('CUSTOM')"
+      >
+        <div class="ds-header">
+          <span class="ds-id custom-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+          </span>
+        </div>
+        <div class="ds-name custom-title">{{ t('data.chooseYourData') }}</div>
+        <div class="ds-desc">
+          <strong>{{ t('data.allowedFormatsTitle') }}</strong>
+        </div>
+        <div class="ds-formats">{{ t('data.allowedFormatsBody') }}</div>
+      </button>
     </div>
   </div>
 </template>
@@ -138,5 +161,28 @@ function select(id) {
 .ds-desc {
   font-size: 0.8rem;
   color: var(--color-text);
+}
+
+.custom-card {
+  border-style: dashed;
+}
+
+.custom-icon {
+  display: flex;
+  align-items: center;
+  color: var(--brand-accent);
+}
+
+.custom-title {
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+.ds-formats {
+  font-size: 0.72rem;
+  color: var(--vt-c-text-light-2);
+  margin-top: 0.25rem;
+  line-height: 1.4;
 }
 </style>
