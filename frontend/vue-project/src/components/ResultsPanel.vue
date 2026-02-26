@@ -10,6 +10,8 @@ const props = defineProps({
   loading: { type: Boolean, default: false },
 })
 
+const emit = defineEmits(['open-projection'])
+
 const outcomeBadge = computed(() => {
   if (!props.result) return ''
   const map = { SUCCESS: 'badge-success', PARTIAL_SUCCESS: 'badge-warning', FAIL: 'badge-error' }
@@ -140,72 +142,21 @@ function stageLabel(stage) {
       </div>
     </div>
 
-    <!-- ML Preview -->
-    <div v-if="result.mlPreview" class="section card">
-      <h4 class="section-title">{{ t('results.mlPreview.title') }} ({{ result.mlPreview.totalRows }} {{ t('results.mlPreview.totalRows') }})</h4>
-      <div class="table-wrap">
-        <table class="preview-table">
-          <thead>
-            <tr>
-              <th v-for="h in result.mlPreview.headers" :key="h">{{ h }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(row, i) in result.mlPreview.rows" :key="i">
-              <td v-for="(cell, j) in row" :key="j">{{ cell }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="preview-note">{{ t('results.mlPreview.showingFirst', { total: result.mlPreview.totalRows }) }}</p>
-    </div>
-
-    <!-- LLM Preview -->
-    <div v-if="result.llmPreview" class="section card">
-      <h4 class="section-title">{{ t('results.llmPreview.title') }}</h4>
-
-      <div class="llm-narrative">
-        <p>{{ result.llmPreview.narrative }}</p>
-      </div>
-
-      <div class="llm-stats">
-        <div class="llm-stat">
-          <span class="llm-stat-label">{{ t('results.llmPreview.period') }}</span>
-          <span class="llm-stat-value">{{ result.llmPreview.accountSummary.periodStart }} – {{ result.llmPreview.accountSummary.periodEnd }}</span>
+    <!-- Projection summaries -->
+    <div v-if="result.mlPreview || result.llmPreview" class="section card">
+      <h4 class="section-title">{{ t('flow.projections') }}</h4>
+      <div class="projection-summaries">
+        <div v-if="result.mlPreview" class="projection-row">
+          <span class="projection-label">{{ t('results.mlPreview.summary', { count: result.mlPreview.totalRows }) }}</span>
+          <button class="btn btn-outline btn-sm" @click="emit('open-projection', { kind: 'ml' })">
+            {{ t('actions.view') }}
+          </button>
         </div>
-        <div class="llm-stat">
-          <span class="llm-stat-label">{{ t('results.llmPreview.income') }}</span>
-          <span class="llm-stat-value income">+{{ result.llmPreview.accountSummary.totalIncome.toFixed(2) }} EUR</span>
-        </div>
-        <div class="llm-stat">
-          <span class="llm-stat-label">{{ t('results.llmPreview.expenses') }}</span>
-          <span class="llm-stat-value expense">{{ result.llmPreview.accountSummary.totalExpenses.toFixed(2) }} EUR</span>
-        </div>
-        <div class="llm-stat">
-          <span class="llm-stat-label">{{ t('results.llmPreview.netFlow') }}</span>
-          <span class="llm-stat-value" :class="result.llmPreview.accountSummary.netFlow >= 0 ? 'income' : 'expense'">
-            {{ result.llmPreview.accountSummary.netFlow >= 0 ? '+' : '' }}{{ result.llmPreview.accountSummary.netFlow.toFixed(2) }} EUR
-          </span>
-        </div>
-      </div>
-
-      <h5 class="subsection-title">{{ t('results.llmPreview.categories') }}</h5>
-      <div class="categories-list">
-        <div v-for="cat in result.llmPreview.topCategories" :key="cat.category" class="cat-row">
-          <span class="cat-name">{{ cat.category }}</span>
-          <span class="cat-bar-wrap">
-            <span
-              class="cat-bar"
-              :style="{
-                width: Math.min(100, Math.abs(cat.total) / 30) + '%',
-                background: cat.total >= 0 ? 'var(--brand-success)' : 'var(--brand-primary)',
-              }"
-            ></span>
-          </span>
-          <span class="cat-total" :class="cat.total >= 0 ? 'income' : ''">
-            {{ cat.total >= 0 ? '+' : '' }}{{ cat.total.toFixed(2) }}
-          </span>
-          <span class="cat-count">{{ cat.count }}x</span>
+        <div v-if="result.llmPreview" class="projection-row">
+          <span class="projection-label">{{ t('results.llmPreview.summary', { count: result.counts.transactions_total }) }}</span>
+          <button class="btn btn-outline btn-sm" @click="emit('open-projection', { kind: 'llm' })">
+            {{ t('actions.view') }}
+          </button>
         </div>
       </div>
     </div>
@@ -418,153 +369,33 @@ function stageLabel(stage) {
   color: var(--vt-c-text-light-2);
 }
 
-/* ── ML table ── */
-.table-wrap {
-  overflow-x: auto;
-  margin: 0 -0.5rem;
-  padding: 0 0.5rem;
-}
-
-.preview-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.8rem;
-}
-
-.preview-table th {
-  text-align: left;
-  padding: 0.4rem 0.6rem;
-  font-weight: 600;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--vt-c-text-light-2);
-  border-bottom: 2px solid var(--color-border);
-  white-space: nowrap;
-}
-
-.preview-table td {
-  padding: 0.35rem 0.6rem;
-  border-bottom: 1px solid var(--color-border);
-  white-space: nowrap;
-  font-family: 'Fira Code', monospace;
-  font-size: 0.78rem;
-}
-
-.preview-table tbody tr:hover {
-  background: var(--color-background-soft);
-}
-
-.preview-note {
-  font-size: 0.75rem;
-  color: var(--vt-c-text-light-2);
-  margin-top: 0.5rem;
-  text-align: right;
-}
-
-/* ── LLM preview ── */
-.llm-narrative {
-  background: var(--color-background-soft);
-  border-left: 3px solid var(--brand-accent);
-  padding: 0.75rem 1rem;
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  font-size: 0.88rem;
-  line-height: 1.55;
-  margin-bottom: 0.75rem;
-}
-
-.llm-stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-@media (max-width: 500px) {
-  .llm-stats {
-    grid-template-columns: 1fr;
-  }
-}
-
-.llm-stat {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.4rem 0.6rem;
-  background: var(--color-background-soft);
-  border-radius: var(--radius-sm);
-}
-
-.llm-stat-label {
-  font-size: 0.78rem;
-  color: var(--vt-c-text-light-2);
-}
-
-.llm-stat-value {
-  font-weight: 600;
-  font-size: 0.88rem;
-  font-family: 'Fira Code', monospace;
-}
-
-.llm-stat-value.income {
-  color: var(--brand-success);
-}
-
-.llm-stat-value.expense {
-  color: var(--brand-error);
-}
-
-/* ── Categories ── */
-.categories-list {
+/* ── Projection summaries ── */
+.projection-summaries {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.5rem;
 }
 
-.cat-row {
+.projection-row {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  font-size: 0.84rem;
-  padding: 0.25rem 0;
+  justify-content: space-between;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--color-border);
 }
 
-.cat-name {
-  min-width: 80px;
-  font-weight: 500;
+.projection-row:last-child {
+  border-bottom: none;
 }
 
-.cat-bar-wrap {
-  flex: 1;
-  height: 8px;
-  background: var(--color-background-mute);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.cat-bar {
-  display: block;
-  height: 100%;
-  border-radius: 4px;
-  transition: width 0.5s ease;
-}
-
-.cat-total {
-  min-width: 80px;
-  text-align: right;
+.projection-label {
+  font-size: 0.88rem;
   font-family: 'Fira Code', monospace;
-  font-size: 0.82rem;
-  font-weight: 600;
+  color: var(--color-heading);
 }
 
-.cat-total.income {
-  color: var(--brand-success);
-}
-
-.cat-count {
-  min-width: 30px;
-  text-align: right;
-  font-size: 0.75rem;
-  color: var(--vt-c-text-light-2);
+.btn-sm {
+  padding: 0.25rem 0.65rem;
+  font-size: 0.78rem;
 }
 </style>
