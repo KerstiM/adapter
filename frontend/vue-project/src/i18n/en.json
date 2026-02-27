@@ -11,6 +11,7 @@
     "title": "Dataset",
     "hint": "Select a dataset to run the pipeline",
     "recordsUnit": "transactions",
+    "accountsUnit": "accounts",
     "D1": "Public, valid, small",
     "D2": "Public, mixed, large",
     "D3": "Synthetic, valid",
