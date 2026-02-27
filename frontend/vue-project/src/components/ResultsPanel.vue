@@ -29,6 +29,10 @@ const elapsedFormatted = computed(() => {
   return `${(props.elapsedMs / 1000).toFixed(2)} s`
 })
 
+function fmt(val) {
+  return val != null ? val : '—'
+}
+
 function stageBadge(stage) {
   if (stage.errors > 0) return 'badge-error'
   if (stage.warnings > 0) return 'badge-warning'
@@ -62,51 +66,58 @@ function stageLabel(stage) {
 
   <!-- Results -->
   <div v-else class="results">
-    <!-- Header row -->
-    <div class="results-header card">
-      <div class="rh-top">
-        <span class="badge" :class="outcomeBadge">{{ outcomeLabel }}</span>
-        <span class="rh-time" :title="t('results.elapsed')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10" /><polyline points="12,6 12,12 16,14" />
-          </svg>
-          {{ elapsedFormatted }}
-        </span>
+    <!-- ═══ Summary card ═══ -->
+    <div class="summary-card card">
+      <!-- Top: status + dataset + elapsed -->
+      <div class="summary-top">
+        <div class="summary-main">
+          <div class="summary-status-row">
+            <span class="badge" :class="outcomeBadge">{{ outcomeLabel }}</span>
+          </div>
+          <div class="summary-dataset">
+            <span class="summary-label">{{ t('results.dataset') }}</span>
+            <span class="summary-value">{{ result.datasetName }}</span>
+          </div>
+          <div class="summary-elapsed">
+            <span class="summary-label">{{ t('results.elapsed') }}</span>
+            <span class="summary-value summary-time">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" /><polyline points="12,6 12,12 16,14" />
+              </svg>
+              {{ elapsedFormatted }}
+            </span>
+          </div>
+        </div>
       </div>
-      <div class="rh-bottom">
-        <span class="rh-dataset">{{ result.datasetName }}</span>
-        <span class="rh-sep">&rarr;</span>
-        <span class="rh-model">ML + LLM</span>
-      </div>
-    </div>
 
-    <!-- Counts -->
-    <div class="counts-grid">
-      <div class="count-item card">
-        <span class="count-value">{{ result.counts.accounts_total }}</span>
-        <span class="count-label">{{ t('results.counts.accounts') }}</span>
-      </div>
-      <div class="count-item card">
-        <span class="count-value">{{ result.counts.transactions_total }}</span>
-        <span class="count-label">{{ t('results.counts.transactions') }}</span>
-      </div>
-      <div class="count-item card">
-        <span class="count-value">{{ result.counts.transactions_emitted_sv }}</span>
-        <span class="count-label">{{ t('results.counts.emitted') }}</span>
-      </div>
-      <div class="count-item card">
-        <span class="count-value" :class="{ 'text-warn': result.counts.transactions_dropped > 0 }">
-          {{ result.counts.transactions_dropped }}
-        </span>
-        <span class="count-label">{{ t('results.counts.dropped') }}</span>
-      </div>
-      <div class="count-item card">
-        <span class="count-value">{{ result.counts.ml_rows }}</span>
-        <span class="count-label">{{ t('results.counts.mlRows') }}</span>
-      </div>
-      <div class="count-item card">
-        <span class="count-value">{{ result.counts.llm_contexts }}</span>
-        <span class="count-label">{{ t('results.counts.llmContexts') }}</span>
+      <!-- Bottom: meta counts in smaller text -->
+      <div class="summary-meta">
+        <div class="meta-item">
+          <span class="meta-value">{{ fmt(result.counts.accounts_total) }}</span>
+          <span class="meta-label">{{ t('results.counts.accounts') }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-value">{{ fmt(result.counts.transactions_total) }}</span>
+          <span class="meta-label">{{ t('results.counts.transactions') }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-value">{{ fmt(result.counts.transactions_emitted_sv) }}</span>
+          <span class="meta-label">{{ t('results.counts.emitted') }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-value" :class="{ 'text-warn': result.counts.transactions_dropped > 0 }">
+            {{ fmt(result.counts.transactions_dropped) }}
+          </span>
+          <span class="meta-label">{{ t('results.counts.dropped') }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-value">{{ fmt(result.counts.ml_rows) }}</span>
+          <span class="meta-label">{{ t('results.counts.mlRows') }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-value">{{ fmt(result.counts.llm_contexts) }}</span>
+          <span class="meta-label">{{ t('results.counts.llmContexts') }}</span>
+        </div>
       </div>
     </div>
 
@@ -206,89 +217,119 @@ function stageLabel(stage) {
   opacity: 0.35;
 }
 
-/* ── Results header ── */
-.results-header {
+/* ═══ Summary card ═══ */
+.summary-card {
+  padding: 0;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.summary-top {
+  padding: 1.25rem 1.35rem;
+}
+
+.summary-main {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  padding: 1.15rem 1.35rem;
-  margin-bottom: 0.75rem;
+  gap: 0.7rem;
 }
 
-.rh-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.summary-status-row {
+  margin-bottom: 0.15rem;
 }
 
-.rh-bottom {
+.summary-status-row .badge {
+  font-size: 0.88rem;
+  padding: 0.2rem 0.75rem;
+}
+
+.summary-dataset,
+.summary-elapsed {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  flex-wrap: wrap;
 }
 
-.rh-dataset {
-  font-weight: 700;
+.summary-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--vt-c-text-light-2);
+  min-width: 5.5rem;
+}
+
+.summary-value {
   font-size: 1.05rem;
+  font-weight: 700;
   font-family: 'Fira Code', monospace;
   color: var(--color-heading);
 }
 
-.rh-sep {
-  color: var(--vt-c-text-light-2);
-  font-size: 1.1rem;
-}
-
-.rh-model {
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--brand-primary);
-}
-
-.rh-time {
-  display: flex;
+.summary-time {
+  display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  font-size: 0.85rem;
-  font-weight: 600;
   color: var(--brand-accent-dark);
+  font-size: 0.95rem;
 }
 
-/* ── Counts grid ── */
-.counts-grid {
+/* ── Meta counts ── */
+.summary-meta {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.6rem;
-  margin-bottom: 0.75rem;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-background-soft);
 }
 
-@media (max-width: 600px) {
-  .counts-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.65rem 0.5rem;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
 }
 
-.count-item {
-  padding: 0.7rem 0.85rem;
-  text-align: center;
+.meta-item:nth-child(3n) {
+  border-right: none;
 }
 
-.count-value {
-  display: block;
-  font-size: 1.4rem;
+.meta-item:nth-last-child(-n+3) {
+  border-bottom: none;
+}
+
+.meta-value {
+  font-size: 1rem;
   font-weight: 700;
   color: var(--brand-primary);
   line-height: 1.2;
 }
 
-.count-value.text-warn {
+.meta-value.text-warn {
   color: var(--brand-warning);
 }
 
-.count-label {
-  font-size: 0.75rem;
+.meta-label {
+  font-size: 0.68rem;
   color: var(--vt-c-text-light-2);
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .summary-meta {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .meta-item:nth-child(3n) {
+    border-right: 1px solid var(--color-border);
+  }
+  .meta-item:nth-child(2n) {
+    border-right: none;
+  }
+  .meta-item:nth-last-child(-n+3) {
+    border-bottom: 1px solid var(--color-border);
+  }
+  .meta-item:nth-last-child(-n+2) {
+    border-bottom: none;
+  }
 }
 
 /* ── Section cards ── */
@@ -302,13 +343,6 @@ function stageLabel(stage) {
   font-weight: 700;
   color: var(--color-heading);
   margin-bottom: 0.65rem;
-}
-
-.subsection-title {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--color-heading);
-  margin: 0.8rem 0 0.45rem;
 }
 
 /* ── Stage log ── */

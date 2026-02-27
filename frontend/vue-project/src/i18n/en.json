@@ -43,7 +43,10 @@
     "forwardTo": "Forward to",
     "addModel": "Add model",
     "removeModel": "Remove model",
-    "noneSelectedHint": "No destination models selected (optional)"
+    "noneSelectedHint": "No destination models selected (optional)",
+    "forwardingTitle": "Forwarding to models",
+    "notAvailable": "Not available yet",
+    "defaultSelectedHint": "Default selected: {model}"
   },
   "actions": {
     "run": "Run pipeline",
@@ -63,6 +66,9 @@
       "PARTIAL_SUCCESS": "Partial success",
       "FAIL": "Failed"
     },
+    "summaryTitle": "Results summary",
+    "status": "Status",
+    "dataset": "Dataset",
     "counts": {
       "accounts": "Accounts",
       "transactions": "Total transactions",
