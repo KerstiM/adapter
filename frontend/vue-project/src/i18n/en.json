@@ -93,19 +93,26 @@
       "title": "Issues"
     },
     "mlPreview": {
-      "title": "ML projection preview",
+      "title": "ML projection (all rows)",
       "totalRows": "rows total",
       "showingFirst": "Showing first 5 rows of {total}",
-      "summary": "ML CSV: {count} rows"
+      "allRows": "Total {count} rows",
+      "summary": "ML CSV: {count} rows",
+      "noData": "No data available"
     },
     "llmPreview": {
-      "title": "LLM context preview",
+      "title": "LLM projection (all contexts)",
       "period": "Period",
       "income": "Income",
       "expenses": "Expenses",
       "netFlow": "Net cash flow",
       "categories": "Spending categories",
-      "summary": "LLM context: {count} transactions"
+      "summary": "LLM context: {count} transactions",
+      "noData": "No data available"
+    },
+    "projectionModal": {
+      "copy": "Copy",
+      "copied": "Copied!"
     }
   }
 }

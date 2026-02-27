@@ -70,8 +70,30 @@ const projectionModalTitle = computed(() => {
 
 const llmContextJson = computed(() => {
   if (!result.value?.llmPreview) return ''
+  const raw = result.value.llmPreview.rawContexts
+  if (raw) return JSON.stringify(raw, null, 2)
   return JSON.stringify(result.value.llmPreview, null, 2)
 })
+
+const copyFeedback = ref('')
+
+async function handleCopy() {
+  let text = ''
+  if (activeProjectionKind.value === 'ml' && result.value?.mlPreview) {
+    const { headers, rows } = result.value.mlPreview
+    text = [headers.join(','), ...rows.map(r => r.join(','))].join('\n')
+  } else if (activeProjectionKind.value === 'llm') {
+    text = llmContextJson.value
+  }
+  if (!text) return
+  try {
+    await navigator.clipboard.writeText(text)
+    copyFeedback.value = t('projectionModal.copied')
+    setTimeout(() => { copyFeedback.value = '' }, 2000)
+  } catch {
+    /* clipboard not available */
+  }
+}
 </script>
 
 <template>
@@ -127,28 +149,42 @@ const llmContextJson = computed(() => {
       :title="projectionModalTitle"
       @close="handleCloseProjection"
     >
-      <!-- ML: table rendering -->
-      <template v-if="activeProjectionKind === 'ml' && result?.mlPreview">
-        <div class="modal-table-wrap">
-          <table class="preview-table">
-            <thead>
-              <tr>
-                <th v-for="h in result.mlPreview.headers" :key="h">{{ h }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(row, i) in result.mlPreview.rows" :key="i">
-                <td v-for="(cell, j) in row" :key="j">{{ cell }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="preview-note">{{ t('results.mlPreview.showingFirst', { total: result.mlPreview.totalRows }) }}</p>
+      <!-- ML: full table -->
+      <template v-if="activeProjectionKind === 'ml'">
+        <template v-if="result?.mlPreview && result.mlPreview.rows.length > 0">
+          <div class="modal-table-wrap">
+            <table class="preview-table">
+              <thead>
+                <tr>
+                  <th v-for="h in result.mlPreview.headers" :key="h">{{ h }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(row, i) in result.mlPreview.rows" :key="i">
+                  <td v-for="(cell, j) in row" :key="j">{{ cell }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="preview-note">{{ t('results.mlPreview.allRows', { count: result.mlPreview.totalRows }) }}</p>
+        </template>
+        <p v-else class="no-data-msg">{{ t('results.mlPreview.noData') }}</p>
       </template>
 
-      <!-- LLM: JSON dump -->
-      <template v-if="activeProjectionKind === 'llm' && result?.llmPreview">
-        <pre class="llm-json">{{ llmContextJson }}</pre>
+      <!-- LLM: full JSON -->
+      <template v-if="activeProjectionKind === 'llm'">
+        <template v-if="result?.llmPreview">
+          <pre class="llm-json">{{ llmContextJson }}</pre>
+        </template>
+        <p v-else class="no-data-msg">{{ t('results.llmPreview.noData') }}</p>
+      </template>
+
+      <!-- Footer: copy button -->
+      <template #footer>
+        <span v-if="copyFeedback" class="copy-feedback">{{ copyFeedback }}</span>
+        <button class="btn btn-outline btn-sm" @click="handleCopy">
+          {{ t('projectionModal.copy') }}
+        </button>
       </template>
     </ProjectionModal>
   </div>
@@ -221,6 +257,10 @@ const llmContextJson = computed(() => {
   color: var(--vt-c-text-light-2);
   border-bottom: 2px solid var(--color-border);
   white-space: nowrap;
+  background: var(--color-background);
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .preview-table td {
@@ -253,5 +293,18 @@ const llmContextJson = computed(() => {
   overflow-x: auto;
   white-space: pre;
   margin: 0;
+}
+
+.no-data-msg {
+  text-align: center;
+  color: var(--vt-c-text-light-2);
+  padding: 2rem 1rem;
+  font-size: 0.9rem;
+}
+
+.copy-feedback {
+  font-size: 0.78rem;
+  color: var(--brand-accent-dark);
+  font-weight: 600;
 }
 </style>
