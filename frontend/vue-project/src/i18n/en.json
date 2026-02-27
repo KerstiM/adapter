@@ -117,10 +117,10 @@
       "categories": "Spending categories",
       "summary": "LLM context: {count} transactions",
       "noData": "No data available"
-    },
-    "projectionModal": {
-      "copy": "Copy",
-      "copied": "Copied!"
     }
+  },
+  "projectionModal": {
+    "copy": "Copy",
+    "copied": "Copied!"
   }
 }
