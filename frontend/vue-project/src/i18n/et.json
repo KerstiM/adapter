@@ -11,6 +11,7 @@
     "title": "Andmestik",
     "hint": "Vali dataset, millega pipeline käivitada",
     "recordsUnit": "tehingut",
+    "accountsUnit": "kontot",
     "D1": "Avalik, validne, väike",
     "D2": "Avalik, segatud, suur",
     "D3": "Sünteetiline, validne",

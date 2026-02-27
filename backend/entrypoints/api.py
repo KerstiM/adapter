@@ -58,7 +58,8 @@ def _read_ml_preview(run_folder: Path, max_rows: int = 10) -> dict | None:
 def _read_llm_preview(run_folder: Path) -> dict | None:
     """Read LLM context and transform to the shape the frontend expects.
 
-    Raw format:  { meta: {account_id, iban, currency, ...}, tx: [{a, c, d, dir, ...}] }
+    Raw format (single account):  { meta: {...}, tx: [...] }
+    Raw format (multi-account):   [ { meta: {...}, tx: [...] }, ... ]
     Frontend:    { narrative, accountSummary: {periodStart, periodEnd, totalIncome,
                    totalExpenses, netFlow}, topCategories: [{category, total, count}] }
     """
@@ -66,6 +67,12 @@ def _read_llm_preview(run_folder: Path) -> dict | None:
     if not llm_path.exists():
         return None
     raw = json.loads(llm_path.read_text())
+
+    # Multi-account datasets produce a list of contexts; use the first one for preview
+    if isinstance(raw, list):
+        if not raw:
+            return None
+        raw = raw[0]
 
     meta = raw.get("meta", {})
     txs = raw.get("tx", [])

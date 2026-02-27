@@ -47,6 +47,7 @@ function select(id) {
           <span class="ds-records">{{ ds.records }} {{ t('dataset.recordsUnit') }}</span>
         </div>
         <div class="ds-name">{{ ds.name }}</div>
+        <span v-if="ds.accounts > 1" class="ds-multi-account">{{ ds.accounts }} {{ t('dataset.accountsUnit') }}</span>
         <div class="ds-desc">{{ t('dataset.' + ds.id) }}</div>
       </button>
 
@@ -155,6 +156,18 @@ function select(id) {
   color: var(--vt-c-text-light-2);
   margin-bottom: 0.2rem;
   word-break: break-all;
+}
+
+.ds-multi-account {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--brand-accent);
+  background: rgba(0, 180, 160, 0.1);
+  border: 1px solid rgba(0, 180, 160, 0.3);
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+  margin-bottom: 0.25rem;
 }
 
 .ds-desc {
