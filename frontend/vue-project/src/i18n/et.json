@@ -52,10 +52,18 @@
     "run": "Käivita pipeline",
     "reset": "Lähtesta",
     "view": "Vaata",
-    "close": "Sulge"
+    "close": "Sulge",
+    "download": "Laadi alla",
+    "downloadAs": "Laadi alla kui"
   },
   "errors": {
-    "runFailed": "Pipeline käivitamine ebaõnnestus"
+    "runFailed": "Pipeline käivitamine ebaõnnestus",
+    "noProjectionData": "Andmed puuduvad"
+  },
+  "formats": {
+    "csv": "CSV",
+    "json": "JSON",
+    "txt": "TXT"
   },
   "results": {
     "loading": "Pipeline töötab...",
