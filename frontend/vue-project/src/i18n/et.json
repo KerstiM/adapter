@@ -43,7 +43,10 @@
     "forwardTo": "Edasta mudelile",
     "addModel": "Lisa mudel",
     "removeModel": "Eemalda mudel",
-    "noneSelectedHint": "Sihtmudelid pole valitud (valikuline)"
+    "noneSelectedHint": "Sihtmudelid pole valitud (valikuline)",
+    "forwardingTitle": "Edastamine mudelitele",
+    "notAvailable": "Pole veel saadaval",
+    "defaultSelectedHint": "Vaikimisi valitud: {model}"
   },
   "actions": {
     "run": "Käivita pipeline",
@@ -63,6 +66,9 @@
       "PARTIAL_SUCCESS": "Osaline edu",
       "FAIL": "Ebaõnnestus"
     },
+    "summaryTitle": "Tulemuste kokkuvõte",
+    "status": "Staatus",
+    "dataset": "Andmestik",
     "counts": {
       "accounts": "Kontod",
       "transactions": "Tehingud kokku",
