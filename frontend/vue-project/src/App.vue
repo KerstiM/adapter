@@ -1,12 +1,9 @@
 <script setup>
 import { RouterView } from 'vue-router'
 import { useI18n } from '@/composables/useI18n'
+import LanguageToggle from '@/components/LanguageToggle.vue'
 
-const { t, locale, setLocale } = useI18n()
-
-function toggleLocale() {
-  setLocale(locale.value === 'et' ? 'en' : 'et')
-}
+const { t } = useI18n()
 </script>
 
 <template>
@@ -19,9 +16,7 @@ function toggleLocale() {
         </div>
       </div>
       <div class="header-right">
-        <button class="lang-toggle" :title="t('lang.' + (locale === 'et' ? 'en' : 'et'))" @click="toggleLocale">
-          {{ locale === 'et' ? 'EN' : 'ET' }}
-        </button>
+        <LanguageToggle />
         <span class="version-tag">{{ t('header.version') }}</span>
       </div>
     </div>
@@ -74,24 +69,6 @@ function toggleLocale() {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-}
-
-.lang-toggle {
-  padding: 0.2rem 0.5rem;
-  border: 1.5px solid var(--color-border-hover);
-  border-radius: var(--radius-sm);
-  background: var(--color-background);
-  color: var(--brand-primary);
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  letter-spacing: 0.03em;
-}
-
-.lang-toggle:hover {
-  border-color: var(--brand-accent);
-  color: var(--brand-accent);
 }
 
 .version-tag {
