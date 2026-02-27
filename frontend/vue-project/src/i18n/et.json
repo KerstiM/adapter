@@ -93,19 +93,26 @@
       "title": "Probleemid"
     },
     "mlPreview": {
-      "title": "ML projektsiooni eelvaade",
+      "title": "ML projektsioon (kõik read)",
       "totalRows": "rida kokku",
       "showingFirst": "Näidatakse esimesed 5 rida {total}-st",
-      "summary": "ML CSV: {count} rida"
+      "allRows": "Kokku {count} rida",
+      "summary": "ML CSV: {count} rida",
+      "noData": "Andmed puuduvad"
     },
     "llmPreview": {
-      "title": "LLM konteksti eelvaade",
+      "title": "LLM projektsioon (kõik kontekstid)",
       "period": "Periood",
       "income": "Tulud",
       "expenses": "Kulud",
       "netFlow": "Netorahavoog",
       "categories": "Kulukategooriad",
-      "summary": "LLM kontekst: {count} tehingut"
+      "summary": "LLM kontekst: {count} tehingut",
+      "noData": "Andmed puuduvad"
+    },
+    "projectionModal": {
+      "copy": "Kopeeri",
+      "copied": "Kopeeritud!"
     }
   }
 }

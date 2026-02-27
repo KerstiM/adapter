@@ -39,20 +39,15 @@ def _read_report(run_folder: Path) -> dict:
     return {}
 
 
-def _read_ml_preview(run_folder: Path, max_rows: int = 10) -> dict | None:
+def _read_ml_preview(run_folder: Path) -> dict | None:
     csv_path = run_folder / "projections" / "ml_v1.csv"
     if not csv_path.exists():
         return None
     with csv_path.open() as f:
         reader = csv.reader(f)
         headers = next(reader, [])
-        rows = []
-        total = 0
-        for row in reader:
-            total += 1
-            if len(rows) < max_rows:
-                rows.append(row)
-    return {"headers": headers, "rows": rows, "totalRows": total}
+        rows = list(reader)
+    return {"headers": headers, "rows": rows, "totalRows": len(rows)}
 
 
 def _read_llm_preview(run_folder: Path) -> dict | None:
@@ -66,13 +61,13 @@ def _read_llm_preview(run_folder: Path) -> dict | None:
     llm_path = run_folder / "projections" / "llm_context_v1.json"
     if not llm_path.exists():
         return None
-    raw = json.loads(llm_path.read_text())
+    llm_raw = json.loads(llm_path.read_text())
+    raw_contexts = llm_raw if isinstance(llm_raw, list) else [llm_raw]
 
-    # Multi-account datasets produce a list of contexts; use the first one for preview
-    if isinstance(raw, list):
-        if not raw:
-            return None
-        raw = raw[0]
+    # Multi-account datasets produce a list of contexts; use the first one for summary
+    raw = raw_contexts[0] if raw_contexts else None
+    if raw is None:
+        return None
 
     meta = raw.get("meta", {})
     txs = raw.get("tx", [])
@@ -129,6 +124,7 @@ def _read_llm_preview(run_folder: Path) -> dict | None:
             "netFlow": net_flow,
         },
         "topCategories": top_categories,
+        "rawContexts": raw_contexts,
     }
 
 

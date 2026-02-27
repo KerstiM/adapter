@@ -52,6 +52,9 @@ onUnmounted(() => {
           <div class="modal-body">
             <slot />
           </div>
+          <div v-if="$slots.footer" class="modal-footer">
+            <slot name="footer" />
+          </div>
         </div>
       </div>
     </Transition>
@@ -72,7 +75,7 @@ onUnmounted(() => {
 
 .modal-container {
   width: 100%;
-  max-width: 720px;
+  max-width: 90vw;
   max-height: 85vh;
   display: flex;
   flex-direction: column;
@@ -118,6 +121,17 @@ onUnmounted(() => {
   padding: 1.1rem;
   overflow-y: auto;
   flex: 1;
+  min-height: 0;
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.65rem 1.1rem;
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
 }
 
 /* ── Transition ── */
