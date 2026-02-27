@@ -1,0 +1,189 @@
+{
+  "frozen_version": "v1.0.0",
+  "frozen_at": "2026-02-18T13:40:45Z",
+  "spec_lock_sha256": "fbec0d2df798556aa61c113e935d4821ec907bdccdac9d89413b8f3be7ebf84c",
+  "datasets": [
+    {
+      "dataset_id": "D1_public_valid_small",
+      "expected_outcome": "SUCCESS",
+      "golden": {
+        "sv.json": {
+          "sha256": "d0a7d03d08b360b78b12149d8b75f4eeb78cce10f86f5b03c25b3d234b28d136"
+        },
+        "report.json": {
+          "sha256": "17104d9f25798986faa6b3ddef5bb9ba83f9a0e0287b455fac17f2de30becb2a"
+        },
+        "ml_v1.csv": {
+          "sha256": "a49a7bd83229db56e62aaa990a7f4eba27d3c7bb1ee2e3883408621a74db0227"
+        },
+        "llm_context_v1.json": {
+          "sha256": "9cbb0eece22598b5b58ad847d14ddabeaa062e8f535bd0f5677b84abc8d3beb6"
+        }
+      },
+      "counts": {
+        "accounts_total": 1,
+        "transactions_total": 7,
+        "transactions_emitted_sv": 7,
+        "transactions_dropped": 0,
+        "ml_rows": 7,
+        "llm_contexts": 1
+      }
+    },
+    {
+      "dataset_id": "D2_public_mixed_large",
+      "expected_outcome": "PARTIAL_SUCCESS",
+      "golden": {
+        "sv.json": {
+          "sha256": "c0cbe5ea525abe565fa1e69b8a0a708c156659303a808cb0102ab746b0085e22"
+        },
+        "report.json": {
+          "sha256": "806667bb788697bf309f22215e781cd974ede60657e6bb34d1198ba55e98bab3"
+        },
+        "ml_v1.csv": {
+          "sha256": "df5df41204be853626290240e25d968c4f06692ee71da256dff61facc117f38b"
+        },
+        "llm_context_v1.json": {
+          "sha256": "758a5ee51f4853ef02d7402f2e2bb2b7d78bde77099cff15e84e5da671c39853"
+        }
+      },
+      "counts": {
+        "accounts_total": 1,
+        "transactions_total": 66,
+        "transactions_emitted_sv": 66,
+        "transactions_dropped": 0,
+        "ml_rows": 66,
+        "llm_contexts": 1
+      }
+    },
+    {
+      "dataset_id": "D3_synth_valid_seed42",
+      "expected_outcome": "SUCCESS",
+      "golden": {
+        "sv.json": {
+          "sha256": "3c0d8f7917ca667efb612dd0fd247497d0b615fbd19f854c278bfee99260b2c5"
+        },
+        "report.json": {
+          "sha256": "c092e293fafb8b59e41542147ca8bf06fdaade2497aad5d0a52a367781e9253d"
+        },
+        "ml_v1.csv": {
+          "sha256": "4597c1cdef4d5e0a6543bc4c7834d555b89369ec7cab88fc4f6d072c5c14e9ec"
+        },
+        "llm_context_v1.json": {
+          "sha256": "2f2f8ceff2404a00d2b0e354c757267f721a81b10e5831703b2fa09fe90a931d"
+        }
+      },
+      "counts": {
+        "accounts_total": 2,
+        "transactions_total": 150,
+        "transactions_emitted_sv": 150,
+        "transactions_dropped": 0,
+        "ml_rows": 150,
+        "llm_contexts": 2
+      }
+    },
+    {
+      "dataset_id": "D4_synth_errors_seed42",
+      "expected_outcome": "FAIL",
+      "golden": {
+        "sv.json": {
+          "sha256": "52d987dbf27111f578a257ae0236da8d15d5e62650d688412fff67e7d05b3cc1"
+        },
+        "report.json": {
+          "sha256": "f0abefb21dcca1976141343cb2940e99408d87f9721a131b84176464acec7841"
+        },
+        "ml_v1.csv": {
+          "sha256": "69b2589d692e8fd208e633bc68c9aaa339c21595d1c98285eb0a8dabbff4a99f"
+        },
+        "llm_context_v1.json": {
+          "sha256": "c1959b6e62d6f424eac801398d6890d0faba08ae70ba26c779496399d4eb4ff7"
+        }
+      },
+      "counts": {
+        "accounts_total": 1,
+        "transactions_total": 39,
+        "transactions_emitted_sv": 35,
+        "transactions_dropped": 4,
+        "ml_rows": 35,
+        "llm_contexts": 1
+      }
+    },
+    {
+      "dataset_id": "D5_synth_edges_seed99",
+      "expected_outcome": "PARTIAL_SUCCESS",
+      "golden": {
+        "sv.json": {
+          "sha256": "716171698bb6fad6603b7794c465af873721d04760116aa4b943bf67afc95511"
+        },
+        "report.json": {
+          "sha256": "cc902fdcd953b81e73a7aa8525a2de4b34aac612509e2410ae683c7741467332"
+        },
+        "ml_v1.csv": {
+          "sha256": "99e9c91d09e4a4d9b1979e8fe46369146ec2e43f47b26c433a966d481f23a7c5"
+        },
+        "llm_context_v1.json": {
+          "sha256": "45a8bd63df204ef75fef11409ec31d2cb2b7b673374735cf1f63b09c30e41ec2"
+        }
+      },
+      "counts": {
+        "accounts_total": 1,
+        "transactions_total": 33,
+        "transactions_emitted_sv": 33,
+        "transactions_dropped": 0,
+        "ml_rows": 33,
+        "llm_contexts": 1
+      }
+    },
+    {
+      "dataset_id": "D6_synth_dupes_seed99",
+      "expected_outcome": "PARTIAL_SUCCESS",
+      "golden": {
+        "sv.json": {
+          "sha256": "ecb04d321029f476f6584940f8583821e22e783fd5f09fafcb7c1572abed4e08"
+        },
+        "report.json": {
+          "sha256": "cf1e83cb4937806529b7305a35ead339549acd005da9a81714042e6f5291bed8"
+        },
+        "ml_v1.csv": {
+          "sha256": "49d6a61a24808cad84ce022f017d675ebe5c53220ffb5ca2db0308b5c8bcdec4"
+        },
+        "llm_context_v1.json": {
+          "sha256": "da3bf1075333ddc592e859813aab068dd8c784e117a6d0b3ae4e597e05902a82"
+        }
+      },
+      "counts": {
+        "accounts_total": 1,
+        "transactions_total": 24,
+        "transactions_emitted_sv": 21,
+        "transactions_dropped": 3,
+        "ml_rows": 21,
+        "llm_contexts": 1
+      }
+    },
+    {
+      "dataset_id": "D7_standing_orders_seed77",
+      "expected_outcome": "PARTIAL_SUCCESS",
+      "golden": {
+        "sv.json": {
+          "sha256": "a88ee55c271df65dfb65557b35d544f8f00d68ac706a42ca7271457bc42c7b89"
+        },
+        "report.json": {
+          "sha256": "11a73246554f2ecf4aeb94cf20da52e8d5c93463434a5ef8cf7f0e82f72c63f2"
+        },
+        "ml_v1.csv": {
+          "sha256": "d2a345393ffa209e1342694630ab602221ddb910a24f8f9680f1ab8f629dde1b"
+        },
+        "llm_context_v1.json": {
+          "sha256": "a7f7e6cfec3317b938ece45b94820d6cf3aafbd8a47073048419903b2005c8c3"
+        }
+      },
+      "counts": {
+        "accounts_total": 1,
+        "transactions_total": 4,
+        "transactions_emitted_sv": 4,
+        "transactions_dropped": 0,
+        "ml_rows": 1,
+        "llm_contexts": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+id: R-01_SV_INVARIANTS
+version: "1.0.0"
+
+rules:
+  - id: INV-01_CURRENCY_FORMAT
+    severity: ERROR
+    scope: TRANSACTION
+    when: "not matches(amount.currency, '^[A-Z]{3}$')"
+    action: DROP_RECORD
+    message: "currency invalid."
+
+  - id: INV-02_VALUE_DATE_REQUIRED
+    severity: ERROR
+    scope: TRANSACTION
+    when: "is_null(value_date)"
+    action: DROP_RECORD
+    message: "valueDate missing."
+
+  - id: INV-03_AMOUNT_PARSEABLE
+    severity: ERROR
+    scope: TRANSACTION
+    when: "not is_decimal(amount.raw) or not is_decimal(amount.signed) or not is_decimal(amount.abs)"
+    action: DROP_RECORD
+    message: "amount not parseable."
+
+  - id: INV-04_BOOKING_DATE_OPTIONAL
+    severity: WARN
+    scope: TRANSACTION
+    when: "not is_null(booking_date) and not is_date(booking_date)"
+    action: FLAG_ONLY
+    message: "bookingDate present but invalid."
+
+  - id: INV-05_AMOUNT_SIGN_MATCHES_DIRECTION
+    severity: WARN
+    scope: TRANSACTION
+    when: "not sign_matches(direction, amount.raw)"
+    action: FLAG_ONLY
+    message: "raw amount sign mismatched derived direction; normalized signed amount."
+
+  - id: INV-09_DUPLICATE_RECORD_ID
+    severity: WARN
+    scope: ACCOUNT
+    when: "count(record_id) > 1 within same account_id"
+    action: DROP_RECORD
+    message: "Duplicate record_id within account; keeping first deterministically."
+
+  - id: INV-10_COUNTERPARTY_ALL_NULL
+    severity: WARN
+    scope: TRANSACTION
+    when: "is_null(counterparty.name) and is_null(counterparty.iban)"
+    action: FLAG_ONLY
+    message: "counterparty present but all fields null."

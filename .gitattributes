@@ -1,0 +1,7 @@
+# Keep text files stable across OS (avoid CRLF/LF hash drift)
+*.json text eol=lf
+*.csv  text eol=lf
+*.md   text eol=lf
+*.yaml text eol=lf
+*.yml  text eol=lf
+*.py   text eol=lf

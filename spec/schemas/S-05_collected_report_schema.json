@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "S-05_collected_report_schema.json",
+  "version": "1.0.0",
+  "title": "CollectedReport",
+  "version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+
+  "required": [
+    "report_schema_version",
+    "run",
+    "outcome",
+    "summary",
+    "run_flags",
+    "issues",
+    "dropped_details"
+  ],
+
+  "properties": {
+    "report_schema_version": { "type": "string", "const": "1.0.0" },
+
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "created_at_utc",
+        "profile_id",
+        "dataset_id",
+        "input_dir",
+        "adapter_version",
+        "sv_schema_version",
+        "mapping_version",
+        "ruleset_version"
+      ],
+      "properties": {
+        "run_id": { "type": "string", "minLength": 1 },
+        "created_at_utc": { "type": "string", "format": "date-time", "pattern": "Z$" },
+
+        "profile_id": { "type": "string", "minLength": 1 },
+        "dataset_id": { "type": "string", "minLength": 1 },
+        "input_dir": { "type": "string", "minLength": 1 },
+
+        "adapter_version": { "type": "string", "minLength": 1 },
+        "sv_schema_version": { "type": "string", "minLength": 1 },
+        "mapping_version": { "type": "string", "minLength": 1 },
+        "ruleset_version": { "type": "string", "minLength": 1 },
+
+        "input_hash": { "type": "string", "minLength": 8 }
+      }
+    },
+
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "stop_reason"],
+      "properties": {
+        "status": { "type": "string", "enum": ["SUCCESS", "PARTIAL_SUCCESS", "FAIL"] },
+        "stop_reason": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["counts", "by_stage", "by_severity"],
+      "properties": {
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "accounts_total",
+            "transactions_total",
+            "transactions_emitted_sv",
+            "transactions_dropped",
+            "ml_rows",
+            "llm_contexts"
+          ],
+          "properties": {
+            "accounts_total": { "type": "integer", "minimum": 0 },
+            "transactions_total": { "type": "integer", "minimum": 0 },
+            "transactions_emitted_sv": { "type": "integer", "minimum": 0 },
+            "transactions_dropped": { "type": "integer", "minimum": 0 },
+            "ml_rows": { "type": "integer", "minimum": 0 },
+            "llm_contexts": { "type": "integer", "minimum": 0 }
+          }
+        },
+
+        "by_stage": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["stage", "errors", "warnings", "infos"],
+            "properties": {
+              "stage": {
+                "type": "string",
+                "enum": [
+                  "READ_INPUT",
+                  "STANDARDIZE_TO_SV",
+                  "VALIDATE_SCHEMA",
+                  "CHECK_INVARIANTS",
+                  "PROJECT_ML",
+                  "PROJECT_LLM",
+                  "WRITE_OUTPUTS"
+                ]
+              },
+              "errors": { "type": "integer", "minimum": 0 },
+              "warnings": { "type": "integer", "minimum": 0 },
+              "infos": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+
+        "by_severity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["CRITICAL", "ERROR", "WARN", "INFO"],
+          "properties": {
+            "CRITICAL": { "type": "integer", "minimum": 0 },
+            "ERROR": { "type": "integer", "minimum": 0 },
+            "WARN": { "type": "integer", "minimum": 0 },
+            "INFO": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+
+    "run_flags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "severity", "message"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "severity": { "type": "string", "enum": ["CRITICAL", "ERROR", "WARN", "INFO"] },
+          "message": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "severity", "stage", "message"],
+        "properties": {
+          "code": { "type": "string", "minLength": 1 },
+          "severity": { "type": "string", "enum": ["CRITICAL", "ERROR", "WARN", "INFO"] },
+          "stage": {
+            "type": "string",
+            "enum": [
+              "READ_INPUT",
+              "STANDARDIZE_TO_SV",
+              "VALIDATE_SCHEMA",
+              "CHECK_INVARIANTS",
+              "PROJECT_ML",
+              "PROJECT_LLM",
+              "WRITE_OUTPUTS"
+            ]
+          },
+          "message": { "type": "string", "minLength": 1 },
+
+          "refs": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "account_id": { "type": ["string", "null"] },
+              "record_id": { "type": ["string", "null"] },
+              "field_path": { "type": ["string", "null"] },
+              "source_lineage": { "type": ["string", "null"] }
+            }
+          }
+        }
+      }
+    },
+
+    "dropped_details": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_file", "input_path", "drop_reason"],
+        "properties": {
+          "source_file": { "type": ["string", "null"] },
+          "input_path": { "type": ["string", "null"] },
+          "transaction_id": { "type": ["string", "null"] },
+          "record_id": { "type": ["string", "null"] },
+          "drop_reason": { "type": "string", "minLength": 1 },
+          "status": { "type": ["string", "null"], "enum": ["BOOKED", "PENDING", "INFORMATION", null] }
+        }
+      }
+    }
+  }
+}
