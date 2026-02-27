@@ -3,7 +3,8 @@ import et from '@/i18n/et.json'
 import en from '@/i18n/en.json'
 
 const messages = { et, en }
-const locale = ref('et')
+const saved = typeof localStorage !== 'undefined' && localStorage.getItem('preferredLocale')
+const locale = ref(saved && messages[saved] ? saved : 'et')
 
 export function useI18n() {
   /**
@@ -29,6 +30,7 @@ export function useI18n() {
     if (messages[l]) {
       locale.value = l
       document.documentElement.lang = l
+      try { localStorage.setItem('preferredLocale', l) } catch {}
     }
   }
 
