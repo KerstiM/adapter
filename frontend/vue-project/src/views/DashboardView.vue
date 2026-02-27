@@ -7,6 +7,7 @@ import FlowStepper from '@/components/FlowStepper.vue'
 import ProjectionModal from '@/components/ProjectionModal.vue'
 import { runPipeline } from '@/services/api'
 import { useI18n } from '@/composables/useI18n'
+import { downloadFile, MIME, sanitise } from '@/utils/downloadFile'
 
 const { t } = useI18n()
 
@@ -74,6 +75,55 @@ const llmContextJson = computed(() => {
   if (raw) return JSON.stringify(raw, null, 2)
   return JSON.stringify(result.value.llmPreview, null, 2)
 })
+
+const downloadFormat = ref('default')
+
+const hasProjectionData = computed(() => {
+  if (activeProjectionKind.value === 'ml') {
+    return !!(result.value?.mlPreview?.rows?.length)
+  }
+  if (activeProjectionKind.value === 'llm') {
+    return !!(result.value?.llmPreview)
+  }
+  return false
+})
+
+function buildMlCsv() {
+  if (!result.value?.mlPreview) return ''
+  const { headers, rows } = result.value.mlPreview
+  return [headers.join(','), ...rows.map(r => r.join(','))].join('\n')
+}
+
+function buildFilename(kind, ext) {
+  const dataset = sanitise(selectedDataset.value || result.value?.datasetName)
+  const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19)
+  const base = dataset || ts
+  const suffix = dataset ? `_${ts}` : ''
+  return `${kind}_projection_${base}${suffix}.${ext}`
+}
+
+function handleDownload() {
+  const kind = activeProjectionKind.value
+  if (!kind || !hasProjectionData.value) return
+
+  let fmt = downloadFormat.value
+  if (fmt === 'default') {
+    fmt = kind === 'ml' ? 'csv' : 'json'
+  }
+
+  let content = ''
+  if (kind === 'ml') {
+    content = buildMlCsv()
+  } else {
+    content = llmContextJson.value
+  }
+  if (!content) return
+
+  const ext = fmt === 'default' ? (kind === 'ml' ? 'csv' : 'json') : fmt
+  const mime = MIME[ext] || MIME.txt
+  const filename = buildFilename(kind, ext)
+  downloadFile(content, filename, mime)
+}
 
 const copyFeedback = ref('')
 
@@ -179,9 +229,36 @@ async function handleCopy() {
         <p v-else class="no-data-msg">{{ t('results.llmPreview.noData') }}</p>
       </template>
 
-      <!-- Footer: copy button -->
+      <!-- Footer: download + copy -->
       <template #footer>
         <span v-if="copyFeedback" class="copy-feedback">{{ copyFeedback }}</span>
+
+        <div class="download-group">
+          <select v-model="downloadFormat" class="download-format-select">
+            <template v-if="activeProjectionKind === 'ml'">
+              <option value="default">CSV</option>
+              <option value="txt">TXT</option>
+            </template>
+            <template v-if="activeProjectionKind === 'llm'">
+              <option value="default">JSON</option>
+              <option value="txt">TXT</option>
+            </template>
+          </select>
+          <button
+            class="btn btn-outline btn-sm"
+            :disabled="!hasProjectionData"
+            :title="!hasProjectionData ? t('errors.noProjectionData') : t('actions.download')"
+            @click="handleDownload"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            {{ t('actions.download') }}
+          </button>
+        </div>
+
         <button class="btn btn-outline btn-sm" @click="handleCopy">
           {{ t('projectionModal.copy') }}
         </button>
@@ -306,5 +383,26 @@ async function handleCopy() {
   font-size: 0.78rem;
   color: var(--brand-accent-dark);
   font-weight: 600;
+}
+
+.download-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.download-format-select {
+  padding: 0.22rem 0.4rem;
+  font-size: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-background);
+  color: var(--color-heading);
+  cursor: pointer;
+}
+
+.download-group .btn svg {
+  vertical-align: -2px;
+  margin-right: 0.2rem;
 }
 </style>

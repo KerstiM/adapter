@@ -52,10 +52,18 @@
     "run": "Run pipeline",
     "reset": "Reset",
     "view": "View",
-    "close": "Close"
+    "close": "Close",
+    "download": "Download",
+    "downloadAs": "Download as"
   },
   "errors": {
-    "runFailed": "Pipeline execution failed"
+    "runFailed": "Pipeline execution failed",
+    "noProjectionData": "No data available"
+  },
+  "formats": {
+    "csv": "CSV",
+    "json": "JSON",
+    "txt": "TXT"
   },
   "results": {
     "loading": "Pipeline running...",
