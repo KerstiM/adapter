@@ -3,7 +3,6 @@ import { ref, computed } from 'vue'
 import DatasetSelector from '@/components/DatasetSelector.vue'
 import ModelSelector from '@/components/ModelSelector.vue'
 import ResultsPanel from '@/components/ResultsPanel.vue'
-import FlowStepper from '@/components/FlowStepper.vue'
 import ProjectionModal from '@/components/ProjectionModal.vue'
 import { runPipeline } from '@/services/api'
 import { useI18n } from '@/composables/useI18n'
@@ -17,12 +16,6 @@ const loading = ref(false)
 const result = ref(null)
 const elapsedMs = ref(0)
 const error = ref('')
-
-const activeStep = computed(() => {
-  if (!selectedDataset.value) return 1
-  if (!result.value) return 2
-  return 3
-})
 
 const canRun = () => selectedDataset.value && !loading.value
 
@@ -106,22 +99,21 @@ function handleDownload() {
   const kind = activeProjectionKind.value
   if (!kind || !hasProjectionData.value) return
 
-  let fmt = downloadFormat.value
-  if (fmt === 'default') {
-    fmt = kind === 'ml' ? 'csv' : 'json'
-  }
+  const fmt =
+      downloadFormat.value === 'default'
+          ? (kind === 'ml'
+              ? 'csv'
+              : 'json')
+          : downloadFormat.value
 
-  let content = ''
-  if (kind === 'ml') {
-    content = buildMlCsv()
-  } else {
-    content = llmContextJson.value
-  }
+  const content = kind === 'ml'
+      ? buildMlCsv()
+      : llmContextJson.value
+
   if (!content) return
 
-  const ext = fmt === 'default' ? (kind === 'ml' ? 'csv' : 'json') : fmt
-  const mime = MIME[ext] || MIME.txt
-  const filename = buildFilename(kind, ext)
+  const mime = MIME[fmt] ?? MIME.txt
+  const filename = buildFilename(kind, fmt)
   downloadFile(content, filename, mime)
 }
 
@@ -148,8 +140,6 @@ async function handleCopy() {
 
 <template>
   <div class="dashboard-wrap">
-    <FlowStepper :active-step="activeStep" />
-
     <div class="dashboard">
       <!-- Left column: Data selection + Model selection -->
       <aside class="config-panel">

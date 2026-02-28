@@ -4,9 +4,11 @@ import { useI18n } from '@/composables/useI18n'
 const { t } = useI18n()
 
 const MODEL_CATALOG = [
-  { id: 'anthropic_claude35_sonnet', label: 'Anthropic Claude 3.5 Sonnet' },
-  { id: 'openai_gpt4o', label: 'OpenAI GPT-4o' },
-  { id: 'google_gemini15_pro', label: 'Google Gemini 1.5 Pro' },
+  { id: 'llm_llama_local', label: 'Meta Llama 3.1 8B Instruct' },
+  { id: 'llm_mistral_local', label: 'Mistral 7B Instruct v0.3' },
+  { id: 'llm_qwen_local', label: 'Qwen2.5 7B Instruct' },
+  { id: 'ml_xgboost_local', label: 'XGBoost (treenitud kohalikul andmestikul)' },
+  { id: 'ml_catboost_local', label: 'CatBoost (treenitud kohalikul andmestikul)' },
 ]
 
 defineProps({
@@ -44,8 +46,6 @@ const defaultModel = MODEL_CATALOG[0]
         {{ defaultModel.label }}
       </span>
     </div>
-
-    <p class="default-hint">{{ t('models.defaultSelectedHint', { model: defaultModel.label }) }}</p>
 
     <!-- Other models listed as disabled -->
     <div class="other-models">
@@ -140,12 +140,6 @@ const defaultModel = MODEL_CATALOG[0]
 .chip-disabled {
   background: rgba(0, 49, 84, 0.05);
   opacity: 0.5;
-}
-
-.default-hint {
-  font-size: 0.75rem;
-  color: var(--vt-c-text-light-2);
-  margin-bottom: 0.5rem;
 }
 
 .other-models {
