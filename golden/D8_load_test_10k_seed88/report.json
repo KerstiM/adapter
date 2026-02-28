@@ -5,7 +5,7 @@
     "status": "SUCCESS",
     "stop_reason": "all validations passed"
   },
-  "report_schema_version": "1.0.0",
+  "report_schema_version": "1.1.0",
   "run": {
     "adapter_version": "0.1.0",
     "created_at_utc": "2000-01-01T00:00:00Z",
@@ -13,7 +13,7 @@
     "input_dir": "datasets/D8_load_test_10k_seed88",
     "mapping_version": "1.0.0",
     "profile_id": "default",
-    "ruleset_version": "1.0.0",
+    "ruleset_version": "1.1.0",
     "run_id": "GOLDEN_D8_load_test_10k_seed88",
     "sv_schema_version": "1.0.0"
   },

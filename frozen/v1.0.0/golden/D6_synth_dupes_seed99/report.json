@@ -27,7 +27,7 @@
     "status": "PARTIAL_SUCCESS",
     "stop_reason": "warnings present"
   },
-  "report_schema_version": "1.0.0",
+  "report_schema_version": "1.1.0",
   "run": {
     "adapter_version": "0.1.0",
     "created_at_utc": "2000-01-01T00:00:00Z",
@@ -35,7 +35,7 @@
     "input_dir": "datasets/D6_synth_dupes_seed99",
     "mapping_version": "1.0.0",
     "profile_id": "default",
-    "ruleset_version": "1.0.0",
+    "ruleset_version": "1.1.0",
     "run_id": "GOLDEN_D6_synth_dupes_seed99",
     "sv_schema_version": "1.0.0"
   },

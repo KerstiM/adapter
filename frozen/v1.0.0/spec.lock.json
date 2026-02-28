@@ -25,8 +25,8 @@
       "id": "R-01",
       "kind": "ruleset",
       "path": "spec/rulesets/R-01_sv_invariants.yaml",
-      "sha256": "1bb8a2b503fea7333cb2a7461232ec9937825a1bff66b269794af6647f1e99fb",
-      "version": "1.0.0"
+      "sha256": "69cf689dca516c868582efd17b4a32627b954e2ecb0bb335c279b68321a34282",
+      "version": "1.1.0"
     },
     {
       "id": "S-00A",
@@ -74,8 +74,8 @@
       "id": "S-05",
       "kind": "schema",
       "path": "spec/schemas/S-05_collected_report_schema.json",
-      "sha256": "cc02e46b446ad556c4d50b92c683fb84e7977606ab0ac974772062d90b91b3d4",
-      "version": "1.0.0"
+      "sha256": "6be409577113a232a19c7fa28f3158e34f28f7fab1798357d40bccb3421b65dd",
+      "version": "1.1.0"
     }
   ],
   "lock_version": "1.0.0",

@@ -57,7 +57,7 @@
     "status": "FAIL",
     "stop_reason": "error drop ratio 0.1026 exceeds threshold 0.05"
   },
-  "report_schema_version": "1.0.0",
+  "report_schema_version": "1.1.0",
   "run": {
     "adapter_version": "0.1.0",
     "created_at_utc": "2000-01-01T00:00:00Z",
@@ -65,7 +65,7 @@
     "input_dir": "datasets/D4_synth_errors_seed42",
     "mapping_version": "1.0.0",
     "profile_id": "default",
-    "ruleset_version": "1.0.0",
+    "ruleset_version": "1.1.0",
     "run_id": "GOLDEN_D4_synth_errors_seed42",
     "sv_schema_version": "1.0.0"
   },

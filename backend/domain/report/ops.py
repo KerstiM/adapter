@@ -120,7 +120,7 @@ def build_report(
     Pure function — takes pre-resolved scalars, no Path/I/O.
     """
     return {
-        "report_schema_version": "1.0.0",
+        "report_schema_version": "1.1.0",
         "run": {
             "run_id": run_id,
             "created_at_utc": created_at_utc,
@@ -130,7 +130,7 @@ def build_report(
             "adapter_version": ADAPTER_VERSION,
             "sv_schema_version": "1.0.0",
             "mapping_version": "1.0.0",
-            "ruleset_version": "1.0.0",
+            "ruleset_version": "1.1.0",
         },
         "outcome": {
             "status": outcome,

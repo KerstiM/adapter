@@ -5,7 +5,7 @@
       "created_at_utc": "2000-01-01T00:00:00Z",
       "currency": "EUR",
       "iban": "DE43321819600133890838",
-      "run_id": "golden_D3_synth_valid_seed42"
+      "run_id": "GOLDEN_D3_synth_valid_seed42"
     },
     "tx": [
       {
@@ -16,16 +16,6 @@
         "dir": "IN",
         "id": "6f82e8192151c52d",
         "r": "Refund order D9K9TR74",
-        "s": "BOOKED"
-      },
-      {
-        "a": "-542.22",
-        "c": "EUR",
-        "cp": "Olivia Kask",
-        "d": "2024-01-06",
-        "dir": "OUT",
-        "id": "c8ec468e97f41d36",
-        "r": "Freelance payment ODS1EEUR",
         "s": "BOOKED"
       },
       {
@@ -69,26 +59,6 @@
         "s": "BOOKED"
       },
       {
-        "a": "-8603.82",
-        "c": "EUR",
-        "cp": "Elena Paju",
-        "d": "2024-01-18",
-        "dir": "OUT",
-        "id": "3203bf7524c977c7",
-        "r": "Subscription renewal",
-        "s": "BOOKED"
-      },
-      {
-        "a": "560.06",
-        "c": "EUR",
-        "cp": "Laura Mueller",
-        "d": "2024-01-21",
-        "dir": "IN",
-        "id": "226c3e9cb7a6957c",
-        "r": "Transfer to savings",
-        "s": "BOOKED"
-      },
-      {
         "a": "8520.13",
         "c": "EUR",
         "cp": "Viktor Mueller",
@@ -97,16 +67,6 @@
         "id": "4f6f961e34a60ea2",
         "r": "Service fee",
         "s": "PENDING"
-      },
-      {
-        "a": "-4390.28",
-        "c": "EUR",
-        "cp": "Liisa Rossi",
-        "d": "2024-01-30",
-        "dir": "OUT",
-        "id": "69f7c96395a3c928",
-        "r": "Donation to charity",
-        "s": "BOOKED"
       },
       {
         "a": "8513.57",
@@ -149,16 +109,6 @@
         "s": "BOOKED"
       },
       {
-        "a": "1842.17",
-        "c": "EUR",
-        "cp": "Katrin Tamm",
-        "d": "2024-02-04",
-        "dir": "IN",
-        "id": "468d98ed0c8799cb",
-        "r": "Rent payment February",
-        "s": "PENDING"
-      },
-      {
         "a": "8496.01",
         "c": "EUR",
         "cp": "Ingrid Tamm",
@@ -176,16 +126,6 @@
         "dir": "OUT",
         "id": "23a5b9897445c30d",
         "r": "Donation to charity",
-        "s": "BOOKED"
-      },
-      {
-        "a": "2545.92",
-        "c": "EUR",
-        "cp": "Andres Mets",
-        "d": "2024-02-20",
-        "dir": "IN",
-        "id": "79e203b91964de36",
-        "r": "Refund order NJY1O2RN",
         "s": "BOOKED"
       },
       {
@@ -247,16 +187,6 @@
         "id": "0a8741de5d843f29",
         "r": "Online purchase N961J88Q",
         "s": "PENDING"
-      },
-      {
-        "a": "6620.56",
-        "c": "EUR",
-        "cp": "Felix Mets",
-        "d": "2024-03-05",
-        "dir": "IN",
-        "id": "de2a530545a55aaf",
-        "r": "Salary March",
-        "s": "BOOKED"
       },
       {
         "a": "9487.92",
@@ -379,16 +309,6 @@
         "s": "BOOKED"
       },
       {
-        "a": "4604.23",
-        "c": "EUR",
-        "cp": "Katrin Saar",
-        "d": "2024-03-20",
-        "dir": "IN",
-        "id": "7d5e18fb23bc877f",
-        "r": "Online purchase 1M3O55IX",
-        "s": "BOOKED"
-      },
-      {
         "a": "-4843.02",
         "c": "EUR",
         "cp": "Liisa Nilsson",
@@ -439,16 +359,6 @@
         "s": "BOOKED"
       },
       {
-        "a": "-8282.68",
-        "c": "EUR",
-        "cp": "Peeter Dubois",
-        "d": "2024-04-08",
-        "dir": "OUT",
-        "id": "6094ba9589740f8f",
-        "r": "Insurance premium Q2",
-        "s": "BOOKED"
-      },
-      {
         "a": "7429.06",
         "c": "EUR",
         "cp": "Clara Mueller",
@@ -457,16 +367,6 @@
         "id": "fabc531dda113f47",
         "r": "Rent payment April",
         "s": "BOOKED"
-      },
-      {
-        "a": "2423.91",
-        "c": "EUR",
-        "cp": "Laura Oja",
-        "d": "2024-04-10",
-        "dir": "IN",
-        "id": "5ca7e17b3d1e7a2b",
-        "r": "Service fee",
-        "s": "PENDING"
       },
       {
         "a": "-1252.58",
@@ -579,16 +479,6 @@
         "s": "BOOKED"
       },
       {
-        "a": "-5085.89",
-        "c": "EUR",
-        "cp": "Clara Lepp",
-        "d": "2024-04-28",
-        "dir": "OUT",
-        "id": "7ad126fda0d999ca",
-        "r": "Transfer to savings",
-        "s": "PENDING"
-      },
-      {
         "a": "2479.32",
         "c": "EUR",
         "cp": "Andres Smith",
@@ -596,16 +486,6 @@
         "dir": "IN",
         "id": "f6bef119a15d30f7",
         "r": "Freelance payment LRDIHSA7",
-        "s": "BOOKED"
-      },
-      {
-        "a": "-8563.22",
-        "c": "EUR",
-        "cp": "Liisa Saar",
-        "d": "2024-04-30",
-        "dir": "OUT",
-        "id": "55d8b4ddd81d2911",
-        "r": "Transfer to savings",
         "s": "BOOKED"
       },
       {
@@ -646,26 +526,6 @@
         "dir": "OUT",
         "id": "c3337a3151378dc4",
         "r": "Utility bill May",
-        "s": "BOOKED"
-      },
-      {
-        "a": "-1560.8",
-        "c": "EUR",
-        "cp": "Peeter Lepp",
-        "d": "2024-05-07",
-        "dir": "OUT",
-        "id": "3d03c2c1a0712b76",
-        "r": "Invoice SP7BM41Q",
-        "s": "BOOKED"
-      },
-      {
-        "a": "-7066.55",
-        "c": "EUR",
-        "cp": "Markus Rossi",
-        "d": "2024-05-08",
-        "dir": "OUT",
-        "id": "447a6fa4b4cf9192",
-        "r": "Insurance premium Q2",
         "s": "BOOKED"
       },
       {
@@ -719,26 +579,6 @@
         "s": "BOOKED"
       },
       {
-        "a": "-1878.7",
-        "c": "EUR",
-        "cp": "Anna Saar",
-        "d": "2024-05-19",
-        "dir": "OUT",
-        "id": "bc370c568c3715b9",
-        "r": "Insurance premium Q2",
-        "s": "BOOKED"
-      },
-      {
-        "a": "3958.68",
-        "c": "EUR",
-        "cp": "Andres Tamm",
-        "d": "2024-05-21",
-        "dir": "IN",
-        "id": "3f3340b37d38a34e",
-        "r": "Subscription renewal",
-        "s": "BOOKED"
-      },
-      {
         "a": "-8615.05",
         "c": "EUR",
         "cp": "Laura Rossi",
@@ -765,16 +605,6 @@
         "d": "2024-05-25",
         "dir": "OUT",
         "id": "609c3064140c2b22",
-        "r": "Transfer to savings",
-        "s": "BOOKED"
-      },
-      {
-        "a": "6878",
-        "c": "EUR",
-        "cp": "Henrik Paju",
-        "d": "2024-05-26",
-        "dir": "IN",
-        "id": "2adda0f8523d8306",
         "r": "Transfer to savings",
         "s": "BOOKED"
       },
@@ -919,16 +749,6 @@
         "s": "PENDING"
       },
       {
-        "a": "-6569.65",
-        "c": "EUR",
-        "cp": "Marie Berg",
-        "d": "2024-06-23",
-        "dir": "OUT",
-        "id": "fc9358d3d0235f31",
-        "r": "Loan repayment June",
-        "s": "PENDING"
-      },
-      {
         "a": "5211.62",
         "c": "EUR",
         "cp": "Carlos Paju",
@@ -947,16 +767,6 @@
         "id": "81f12703d237eff0",
         "r": "Invoice T0861TAA",
         "s": "PENDING"
-      },
-      {
-        "a": "-2263.73",
-        "c": "EUR",
-        "cp": "Liisa Kuusk",
-        "d": "2024-06-27",
-        "dir": "OUT",
-        "id": "b6badc6a1d584439",
-        "r": "Loan repayment June",
-        "s": "BOOKED"
       },
       {
         "a": "-791.11",
@@ -1149,16 +959,6 @@
         "s": "BOOKED"
       },
       {
-        "a": "3609.9",
-        "c": "EUR",
-        "cp": "Felix Oja",
-        "d": "2024-08-27",
-        "dir": "IN",
-        "id": "d47fa1090bcd47bc",
-        "r": "Service fee",
-        "s": "BOOKED"
-      },
-      {
         "a": "-9710.8",
         "c": "EUR",
         "cp": "Anna Lepp",
@@ -1166,26 +966,6 @@
         "dir": "OUT",
         "id": "f23f68c325ced7bc",
         "r": "Service fee",
-        "s": "BOOKED"
-      },
-      {
-        "a": "-676.47",
-        "c": "EUR",
-        "cp": "Ingrid Dubois",
-        "d": "2024-09-03",
-        "dir": "OUT",
-        "id": "3a953291b29d8ece",
-        "r": "Rent payment September",
-        "s": "BOOKED"
-      },
-      {
-        "a": "-5776.93",
-        "c": "EUR",
-        "cp": "Clara Berg",
-        "d": "2024-09-04",
-        "dir": "OUT",
-        "id": "5a6c370fe962fc96",
-        "r": "Salary September",
         "s": "BOOKED"
       },
       {
@@ -1197,26 +977,6 @@
         "id": "719e4836ba949178",
         "r": "Online purchase 9BXF445C",
         "s": "PENDING"
-      },
-      {
-        "a": "5018.86",
-        "c": "EUR",
-        "cp": "Katrin Kuusk",
-        "d": "2024-09-06",
-        "dir": "IN",
-        "id": "e1c1dd708935be97",
-        "r": "Donation to charity",
-        "s": "BOOKED"
-      },
-      {
-        "a": "-8265.31",
-        "c": "EUR",
-        "cp": "Stefan Lepp",
-        "d": "2024-09-15",
-        "dir": "OUT",
-        "id": "3327fd535b92d1b2",
-        "r": "Grocery store purchase",
-        "s": "BOOKED"
       },
       {
         "a": "-8253.28",
@@ -1309,16 +1069,6 @@
         "s": "BOOKED"
       },
       {
-        "a": "9793.74",
-        "c": "EUR",
-        "cp": "Tomas Kowalski",
-        "d": "2024-10-22",
-        "dir": "IN",
-        "id": "cccd3d10da303665",
-        "r": "Donation to charity",
-        "s": "BOOKED"
-      },
-      {
         "a": "-8328.55",
         "c": "EUR",
         "cp": "Tomas Dubois",
@@ -1399,36 +1149,6 @@
         "s": "BOOKED"
       },
       {
-        "a": "-9335.26",
-        "c": "EUR",
-        "cp": "Elena Nilsson",
-        "d": "2024-12-02",
-        "dir": "OUT",
-        "id": "a1ff5958b08ff25c",
-        "r": "Subscription renewal",
-        "s": "BOOKED"
-      },
-      {
-        "a": "-9391.8",
-        "c": "EUR",
-        "cp": "Jan Dubois",
-        "d": "2024-12-03",
-        "dir": "OUT",
-        "id": "0f231e5f8816266a",
-        "r": "Grocery store purchase",
-        "s": "BOOKED"
-      },
-      {
-        "a": "-1899.5",
-        "c": "EUR",
-        "cp": "Viktor Paju",
-        "d": "2024-12-03",
-        "dir": "OUT",
-        "id": "225b5ce2d2d022e4",
-        "r": "Loan repayment December",
-        "s": "BOOKED"
-      },
-      {
         "a": "1195.31",
         "c": "EUR",
         "cp": "Clara Saar",
@@ -1479,26 +1199,6 @@
         "s": "PENDING"
       },
       {
-        "a": "3051.87",
-        "c": "EUR",
-        "cp": "Henrik Tamm",
-        "d": "2024-12-21",
-        "dir": "IN",
-        "id": "fe8178ac4c4f79dc",
-        "r": "Donation to charity",
-        "s": "PENDING"
-      },
-      {
-        "a": "-3157.19",
-        "c": "EUR",
-        "cp": "Anna Tamm",
-        "d": "2024-12-23",
-        "dir": "OUT",
-        "id": "85b8017ad1ca5f5e",
-        "r": "Loan repayment December",
-        "s": "BOOKED"
-      },
-      {
         "a": "-5508.83",
         "c": "EUR",
         "cp": "Markus Oja",
@@ -1516,8 +1216,309 @@
       "created_at_utc": "2000-01-01T00:00:00Z",
       "currency": "EUR",
       "iban": "EE402654235116155940",
-      "run_id": "golden_D3_synth_valid_seed42"
+      "run_id": "GOLDEN_D3_synth_valid_seed42"
     },
-    "tx": []
+    "tx": [
+      {
+        "a": "-542.22",
+        "c": "EUR",
+        "cp": "Olivia Kask",
+        "d": "2024-01-06",
+        "dir": "OUT",
+        "id": "bec2fdebafcf8abb",
+        "r": "Freelance payment ODS1EEUR",
+        "s": "BOOKED"
+      },
+      {
+        "a": "-8603.82",
+        "c": "EUR",
+        "cp": "Elena Paju",
+        "d": "2024-01-18",
+        "dir": "OUT",
+        "id": "31088444197d1c8e",
+        "r": "Subscription renewal",
+        "s": "BOOKED"
+      },
+      {
+        "a": "560.06",
+        "c": "EUR",
+        "cp": "Laura Mueller",
+        "d": "2024-01-21",
+        "dir": "IN",
+        "id": "f642a84849c0efb9",
+        "r": "Transfer to savings",
+        "s": "BOOKED"
+      },
+      {
+        "a": "-4390.28",
+        "c": "EUR",
+        "cp": "Liisa Rossi",
+        "d": "2024-01-30",
+        "dir": "OUT",
+        "id": "628b53402525096f",
+        "r": "Donation to charity",
+        "s": "BOOKED"
+      },
+      {
+        "a": "1842.17",
+        "c": "EUR",
+        "cp": "Katrin Tamm",
+        "d": "2024-02-04",
+        "dir": "IN",
+        "id": "0db7e0f8d96ac957",
+        "r": "Rent payment February",
+        "s": "PENDING"
+      },
+      {
+        "a": "2545.92",
+        "c": "EUR",
+        "cp": "Andres Mets",
+        "d": "2024-02-20",
+        "dir": "IN",
+        "id": "8b4c9ebd83e6a0d6",
+        "r": "Refund order NJY1O2RN",
+        "s": "BOOKED"
+      },
+      {
+        "a": "6620.56",
+        "c": "EUR",
+        "cp": "Felix Mets",
+        "d": "2024-03-05",
+        "dir": "IN",
+        "id": "4ff3e9533d2b155a",
+        "r": "Salary March",
+        "s": "BOOKED"
+      },
+      {
+        "a": "4604.23",
+        "c": "EUR",
+        "cp": "Katrin Saar",
+        "d": "2024-03-20",
+        "dir": "IN",
+        "id": "9a0b6370757435c2",
+        "r": "Online purchase 1M3O55IX",
+        "s": "BOOKED"
+      },
+      {
+        "a": "-8282.68",
+        "c": "EUR",
+        "cp": "Peeter Dubois",
+        "d": "2024-04-08",
+        "dir": "OUT",
+        "id": "a49bd320004e76b5",
+        "r": "Insurance premium Q2",
+        "s": "BOOKED"
+      },
+      {
+        "a": "2423.91",
+        "c": "EUR",
+        "cp": "Laura Oja",
+        "d": "2024-04-10",
+        "dir": "IN",
+        "id": "b7c80d6592c049ac",
+        "r": "Service fee",
+        "s": "PENDING"
+      },
+      {
+        "a": "-5085.89",
+        "c": "EUR",
+        "cp": "Clara Lepp",
+        "d": "2024-04-28",
+        "dir": "OUT",
+        "id": "9fd2b42a11c33c4c",
+        "r": "Transfer to savings",
+        "s": "PENDING"
+      },
+      {
+        "a": "-8563.22",
+        "c": "EUR",
+        "cp": "Liisa Saar",
+        "d": "2024-04-30",
+        "dir": "OUT",
+        "id": "652ad82561bca712",
+        "r": "Transfer to savings",
+        "s": "BOOKED"
+      },
+      {
+        "a": "-1560.8",
+        "c": "EUR",
+        "cp": "Peeter Lepp",
+        "d": "2024-05-07",
+        "dir": "OUT",
+        "id": "6636507cf0e54955",
+        "r": "Invoice SP7BM41Q",
+        "s": "BOOKED"
+      },
+      {
+        "a": "-7066.55",
+        "c": "EUR",
+        "cp": "Markus Rossi",
+        "d": "2024-05-08",
+        "dir": "OUT",
+        "id": "ce959eeb70d5b5fc",
+        "r": "Insurance premium Q2",
+        "s": "BOOKED"
+      },
+      {
+        "a": "-1878.7",
+        "c": "EUR",
+        "cp": "Anna Saar",
+        "d": "2024-05-19",
+        "dir": "OUT",
+        "id": "51367cd8cc55bac7",
+        "r": "Insurance premium Q2",
+        "s": "BOOKED"
+      },
+      {
+        "a": "3958.68",
+        "c": "EUR",
+        "cp": "Andres Tamm",
+        "d": "2024-05-21",
+        "dir": "IN",
+        "id": "2f76c49abc76fffb",
+        "r": "Subscription renewal",
+        "s": "BOOKED"
+      },
+      {
+        "a": "6878",
+        "c": "EUR",
+        "cp": "Henrik Paju",
+        "d": "2024-05-26",
+        "dir": "IN",
+        "id": "e115d7163cd4ea95",
+        "r": "Transfer to savings",
+        "s": "BOOKED"
+      },
+      {
+        "a": "-6569.65",
+        "c": "EUR",
+        "cp": "Marie Berg",
+        "d": "2024-06-23",
+        "dir": "OUT",
+        "id": "473687c6044b8978",
+        "r": "Loan repayment June",
+        "s": "PENDING"
+      },
+      {
+        "a": "-2263.73",
+        "c": "EUR",
+        "cp": "Liisa Kuusk",
+        "d": "2024-06-27",
+        "dir": "OUT",
+        "id": "e3e8e3c5c76d2602",
+        "r": "Loan repayment June",
+        "s": "BOOKED"
+      },
+      {
+        "a": "3609.9",
+        "c": "EUR",
+        "cp": "Felix Oja",
+        "d": "2024-08-27",
+        "dir": "IN",
+        "id": "2a3261b0727fb346",
+        "r": "Service fee",
+        "s": "BOOKED"
+      },
+      {
+        "a": "-676.47",
+        "c": "EUR",
+        "cp": "Ingrid Dubois",
+        "d": "2024-09-03",
+        "dir": "OUT",
+        "id": "e7d7f74cf8c37533",
+        "r": "Rent payment September",
+        "s": "BOOKED"
+      },
+      {
+        "a": "-5776.93",
+        "c": "EUR",
+        "cp": "Clara Berg",
+        "d": "2024-09-04",
+        "dir": "OUT",
+        "id": "ee4ae481eb4bca31",
+        "r": "Salary September",
+        "s": "BOOKED"
+      },
+      {
+        "a": "5018.86",
+        "c": "EUR",
+        "cp": "Katrin Kuusk",
+        "d": "2024-09-06",
+        "dir": "IN",
+        "id": "fe2e714a634d0651",
+        "r": "Donation to charity",
+        "s": "BOOKED"
+      },
+      {
+        "a": "-8265.31",
+        "c": "EUR",
+        "cp": "Stefan Lepp",
+        "d": "2024-09-15",
+        "dir": "OUT",
+        "id": "3a9fbd371e0a43eb",
+        "r": "Grocery store purchase",
+        "s": "BOOKED"
+      },
+      {
+        "a": "9793.74",
+        "c": "EUR",
+        "cp": "Tomas Kowalski",
+        "d": "2024-10-22",
+        "dir": "IN",
+        "id": "10cf094c1e92c745",
+        "r": "Donation to charity",
+        "s": "BOOKED"
+      },
+      {
+        "a": "-9335.26",
+        "c": "EUR",
+        "cp": "Elena Nilsson",
+        "d": "2024-12-02",
+        "dir": "OUT",
+        "id": "cf92cbdf26686d8f",
+        "r": "Subscription renewal",
+        "s": "BOOKED"
+      },
+      {
+        "a": "-1899.5",
+        "c": "EUR",
+        "cp": "Viktor Paju",
+        "d": "2024-12-03",
+        "dir": "OUT",
+        "id": "55ced2ef3aa67f57",
+        "r": "Loan repayment December",
+        "s": "BOOKED"
+      },
+      {
+        "a": "-9391.8",
+        "c": "EUR",
+        "cp": "Jan Dubois",
+        "d": "2024-12-03",
+        "dir": "OUT",
+        "id": "c856b1f40ebb08d6",
+        "r": "Grocery store purchase",
+        "s": "BOOKED"
+      },
+      {
+        "a": "3051.87",
+        "c": "EUR",
+        "cp": "Henrik Tamm",
+        "d": "2024-12-21",
+        "dir": "IN",
+        "id": "e75874824b67745f",
+        "r": "Donation to charity",
+        "s": "PENDING"
+      },
+      {
+        "a": "-3157.19",
+        "c": "EUR",
+        "cp": "Anna Tamm",
+        "d": "2024-12-23",
+        "dir": "OUT",
+        "id": "d9d578432326cf5d",
+        "r": "Loan repayment December",
+        "s": "BOOKED"
+      }
+    ]
   }
 ]
