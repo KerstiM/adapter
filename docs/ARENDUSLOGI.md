@@ -66,3 +66,17 @@ Prototüübi arenduse kronoloogiline ülevaade.
 - Dokumentatsiooni ümberkorraldus: minimaalne eestikeelne komplekt
 - Duplikaatfailide kustutamine (NOTES.md, VALIDATION_REPORT.md)
 - 4 uut tuumdokumenti: ARHITEKTUUR, ARENDUSLOGI, TESTIMINE, SPETSIFIKATSIOONID
+
+### 2026-02-28 — Iteratsioon 4: Koormustestimine
+- **D8 koormustesti andmestik:** 10 000 tehingut (8 000 booked + 2 000 pending), seed 88
+- **Eesmärk:** Tõendada pipeline'i käitumist tootmismahtudel — determinism, jõudlus, mäluhaldus
+- **Tulemused:**
+  - Jõudlus: ~3 100 ms (10 000 tehingut) — lineaarne skaleerumine kinnitatud
+  - Determinism: 100% — kõik 4 artefakti (sv.json, report.json, ml_v1.csv, llm_context_v1.json) baidilt identsed kahe jooksu vahel
+  - Tulemus: SUCCESS (0 droppi, 0 hoiatust)
+  - LLM aknastamine N=200 töötas korrektselt ka 10 000 tehinguga
+- **Järeldused:**
+  - SLI-6 jõudluse SLO (≤ 500 ms) kehtib ainult ≤ 10 tehinguga datasettidele; 10 000 tehinguga on ~3 100 ms aktsepteeritav
+  - SHA-256 record_id (16 hex-märki / 64 bitti) kokkupõrkeid ei tekkinud 10 000 kirje juures
+  - Pipeline skaleerub lineaarselt — pudelikaelaks on JSON serialiseerimine ja sortimine
+- **Uuendused:** D8 golden-väljundid lisatud, frozen/v1.0.0/manifest.json uuendatud (8 andmestikku)

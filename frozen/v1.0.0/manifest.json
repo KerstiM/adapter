@@ -184,6 +184,32 @@
         "ml_rows": 1,
         "llm_contexts": 1
       }
+    },
+    {
+      "dataset_id": "D8_load_test_10k_seed88",
+      "expected_outcome": "SUCCESS",
+      "golden": {
+        "sv.json": {
+          "sha256": "ddf812eef7bea78582c52c42c5081a79cf384b8f9eea1a9169210d6018c3087e"
+        },
+        "report.json": {
+          "sha256": "2f844c6333e565d8f706ba627ce4dd96242070101c72f41e83d3e7cb59ec654b"
+        },
+        "ml_v1.csv": {
+          "sha256": "382e4b706ae6b4c105ec8d8efeaec7a92913837108ff4ab6883da18893f3859a"
+        },
+        "llm_context_v1.json": {
+          "sha256": "d30f53279f1b5689fb8366efe44bf0b6d7e6df7950f2af1ad847854164b425bb"
+        }
+      },
+      "counts": {
+        "accounts_total": 1,
+        "transactions_total": 10000,
+        "transactions_emitted_sv": 10000,
+        "transactions_dropped": 0,
+        "ml_rows": 10000,
+        "llm_contexts": 1
+      }
     }
   ]
 }
