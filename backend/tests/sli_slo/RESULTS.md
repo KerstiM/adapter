@@ -171,9 +171,9 @@ Kaardistamisetapi (STANDARDIZE_TO_SV) langetused — nt puuduv `valueDate` — s
 |------|-------------|
 | `sv_schema_version` | `"1.0.0"` |
 | `mapping_version` | `"1.0.0"` |
-| `ruleset_version` | `"1.0.0"` |
+| `ruleset_version` | `"1.1.0"` |
 | `adapter_version` | `"0.1.0"` |
-| `report_schema_version` | `"1.0.0"` |
+| `report_schema_version` | `"1.1.0"` |
 
 ### Tulemus
 

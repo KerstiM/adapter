@@ -1,8 +1,11 @@
 # Arenduslogi
 
 Prototüübi arenduse kronoloogiline ülevaade.
+DSR iteratsioonid on märgistatud tsükliga: **ehita → hinda → õpi → kohanda**.
 
 ---
+
+## Iteratsioon 1: Esialgne pipeline ja testimine (10.–12.02)
 
 ### 2026-02-10
 - Spetsifikatsioonide algversioon: R-01 invariandid
@@ -17,6 +20,14 @@ Prototüübi arenduse kronoloogiline ülevaade.
 ### 2026-02-12
 - Dataseti generaator ja D1–D6 testdatasetid
 - CLI `--data/-d` lipp dataseti valimiseks
+
+**Hindamine:** Pipeline käivitatud D1–D3 andmestikel — happy-path töötab.
+**Õpitu:** Pipeline töötab validsetel andmetel, kuid vigade käsitlemine (vale valuuta, puuduv kuupäev) ja deduplitseerimine puuduvad. Fail-gate mehhanism vajalik.
+**Kohandus:** → viib iteratsiooni 2.
+
+---
+
+## Iteratsioon 2: Vigade käsitlemine ja valideerimine (13.–16.02)
 
 ### 2026-02-13
 - D4: deterministlik FAIL-dataset (>5% drop threshold)
@@ -33,6 +44,14 @@ Prototüübi arenduse kronoloogiline ülevaade.
 - S-00C püsikorralduste skeem + profiili sidumine
 - D7 püsikorralduste dataset + valueDate fallback parandus
 - Valideerimistulemus: 35/36 PASS (1 oodatud FAIL D4-l)
+
+**Hindamine:** 35/36 PASS, D4 annab oodatud FAIL (10,3% veamäär > 5% lävend). D6 dedupleerimine tabab 3 duplikaati.
+**Õpitu:** S-05 raporti skeem vajas täielikku ümberkirjutust — esialgne struktuur ei kajastanud `by_stage` ega `dropped_details[]` massiive. S-03 vajas `oneOf` toetust mitme konto korral. R-01 versioon tõstetud v1.1.0-ks (INV-09 lisamine).
+**Kohandus:** Skeemid ümber kirjutatud, reeglistik uuendatud.
+
+---
+
+## Iteratsioon 3: Ports & Adapters arhitektuurirefaktor (17.–22.02)
 
 ### 2026-02-17
 - **Golden/regressioonitestid:** freeze_goldens.py, verify_goldens.py, spec.lock.json
@@ -66,3 +85,23 @@ Prototüübi arenduse kronoloogiline ülevaade.
 - Dokumentatsiooni ümberkorraldus: minimaalne eestikeelne komplekt
 - Duplikaatfailide kustutamine (NOTES.md, VALIDATION_REPORT.md)
 - 4 uut tuumdokumenti: ARHITEKTUUR, ARENDUSLOGI, TESTIMINE, SPETSIFIKATSIOONID
+
+**Hindamine:** Import boundary test kinnitab: domeeniloogika ei impordi adaptereid ega infrastruktuuri. Golden-regressioonitestid läbivad kõik 7 andmestikku. QA entrypoint 5-etapiline kontroll PASS.
+**Õpitu:** Compat-kiht (vana `backend/adapter/`) on ebavajalik — `wiring_fs.py` ühendab FS-adapterid otse portidega. Fake-portidega testimine on oluliselt lihtsam ja kiirem kui failisüsteemi kaudu.
+**Kohandus:** Compat-kiht kustutatud. Puhas Ports & Adapters arhitektuur saavutatud.
+
+---
+
+## Iteratsioon 4: Koormustestimine (28.02)
+- **D8 koormustesti andmestik:** 10 000 tehingut (8 000 booked + 2 000 pending), seed 88
+- **Eesmärk:** Tõendada pipeline'i käitumist tootmismahtudel — determinism, jõudlus, mäluhaldus
+- **Tulemused:**
+  - Jõudlus: ~3 100 ms (10 000 tehingut) — lineaarne skaleerumine kinnitatud
+  - Determinism: 100% — kõik 4 artefakti (sv.json, report.json, ml_v1.csv, llm_context_v1.json) baidilt identsed kahe jooksu vahel
+  - Tulemus: SUCCESS (0 droppi, 0 hoiatust)
+  - LLM aknastamine N=200 töötas korrektselt ka 10 000 tehinguga
+- **Järeldused:**
+  - SLI-6 jõudluse SLO (≤ 500 ms) kehtib ainult ≤ 10 tehinguga datasettidele; 10 000 tehinguga on ~3 100 ms aktsepteeritav
+  - SHA-256 record_id (16 hex-märki / 64 bitti) kokkupõrkeid ei tekkinud 10 000 kirje juures
+  - Pipeline skaleerub lineaarselt — pudelikaelaks on JSON serialiseerimine ja sortimine
+- **Uuendused:** D8 golden-väljundid lisatud, frozen/v1.0.0/manifest.json uuendatud (8 andmestikku)

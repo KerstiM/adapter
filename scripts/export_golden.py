@@ -71,7 +71,7 @@ def export_golden(
         print(f"  SKIP  {ds_name}: golden/{ds_name}/ already exists (use --overwrite)")
         return False
 
-    run_id = f"golden_{ds_name}"
+    run_id = f"GOLDEN_{ds_name}"
     created_at_utc = GOLDEN_CREATED_AT
 
     with tempfile.TemporaryDirectory() as tmp:

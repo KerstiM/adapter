@@ -93,7 +93,7 @@ def compare_dataset(
             "error": f"golden/{ds_name}/ does not exist",
         }
 
-    run_id = f"golden_{ds_name}"
+    run_id = f"GOLDEN_{ds_name}"
     created_at_utc = GOLDEN_CREATED_AT
 
     with tempfile.TemporaryDirectory() as tmp:

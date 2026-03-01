@@ -54,6 +54,7 @@ EXPECTED_OUTCOME_FALLBACK = {
     "D5_synth_edges_seed99":     "PARTIAL_SUCCESS",
     "D6_synth_dupes_seed99":     "PARTIAL_SUCCESS",
     "D7_standing_orders_seed77": "PARTIAL_SUCCESS",
+    "D8_load_test_10k_seed88":   "SUCCESS",
 }
 
 

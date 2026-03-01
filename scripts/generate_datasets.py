@@ -705,6 +705,40 @@ def generate_d6(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
     }
 
 
+def generate_d8(gen: DatasetGenerator, start_date: date, end_date: date, n: int | None) -> dict:
+    """D8_load_test_10k_seed88: load test with 10 000 transactions.
+
+    Tests that the pipeline handles production-scale volumes correctly:
+    determinism is preserved, performance remains acceptable,
+    and no memory or ordering issues emerge at scale.
+    """
+    n_booked = n or 8000
+    n_pending = max(2000, n_booked // 4)
+    acct = gen.generate_account(country="DE", name="D8 Load Test Account")
+
+    booked, pending = gen.generate_transactions_batch(
+        acct["iban"], n_booked, n_pending, start_date, end_date,
+        match_sign=True,
+    )
+
+    return {
+        "name": "D8_load_test_10k_seed88",
+        "description": "Load test with 10 000 transactions (8 000 booked + 2 000 pending). "
+                        "Tests pipeline behaviour at production-scale volumes: determinism, "
+                        "performance, memory handling, and sort stability. "
+                        "All transactions are valid — expected outcome is SUCCESS.",
+        "expected_outcome": "SUCCESS",
+        "accounts": _build_accounts_json([acct]),
+        "transactions": _build_transactions_json(acct["iban"], booked, pending),
+        "meta": {
+            "n_booked": len(booked),
+            "n_pending": len(pending),
+            "expected_dropped": 0,
+            "variations": [],
+        },
+    }
+
+
 # ---------------------------------------------------------------------------
 # Quality gates
 # ---------------------------------------------------------------------------
@@ -901,6 +935,7 @@ DATASET_GENERATORS = {
     "D4": (generate_d4, 42),
     "D5": (generate_d5, 99),
     "D6": (generate_d6, 99),
+    "D8": (generate_d8, 88),
 }
 
 
