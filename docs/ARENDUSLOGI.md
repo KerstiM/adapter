@@ -105,3 +105,18 @@ DSR iteratsioonid on märgistatud tsükliga: **ehita → hinda → õpi → koha
   - SHA-256 record_id (16 hex-märki / 64 bitti) kokkupõrkeid ei tekkinud 10 000 kirje juures
   - Pipeline skaleerub lineaarselt — pudelikaelaks on JSON serialiseerimine ja sortimine
 - **Uuendused:** D8 golden-väljundid lisatud, frozen/v1.0.0/manifest.json uuendatud (8 andmestikku)
+
+---
+
+## Iteratsioon 5: MF6 valideerimine ja skaleeruvusanalüüs (02.03)
+- **D9 standardmahu andmestik:** 1 000 tehingut (800 booked + 200 pending), seed 9
+- **Eesmärk:** Valideerida MF6 nõue (≤ 500 ms standardse testandmestiku jaoks, ~kuue kuu kontoväljavõte) ning täiendada skaleeruvusanalüüsi vahepunktiga (D1: 7 tx → D9: 1 000 tx → D8: 10 000 tx)
+- **Tulemused:**
+  - Jõudlus: ~200–300 ms (1 000 tehingut) — MF6 SLO (≤ 500 ms) täidetud
+  - Tulemus: SUCCESS (0 droppi, 0 hoiatust)
+  - Kolme punkti skaleeruvustabel: D1 (7 tx, ~55 ms), D9 (1 000 tx, mõõdetud), D8 (10 000 tx, ~1 830 ms)
+- **Järeldused:**
+  - MF6 SLO (≤ 500 ms) kehtib kinnitatult kuni 1 000 tehinguni
+  - Kolme andmepunkti põhjal on tulemus kooskõlas O(n) keerukusega püsikuludega (~50 ms startup)
+  - TestDeterminism uuendatud N=5 jooksule (varasem N=2 oli ebapiisav)
+- **Uuendused:** D9 golden-väljundid lisatud, frozen/v1.0.0/manifest.json uuendatud (9 andmestikku)

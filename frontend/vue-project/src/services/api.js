@@ -15,6 +15,7 @@ const DATASETS = [
   { id: 'D6', name: 'D6_synth_dupes_seed99', records: 24 },
   { id: 'D7', name: 'D7_standing_orders_seed77', records: 4 },
   { id: 'D8', name: 'D8_load_test_10k_seed88', records: 10000 },
+  { id: 'D9', name: 'D9_synth_perf_seed9', records: 1000 },
 ]
 
 const MODELS = [
