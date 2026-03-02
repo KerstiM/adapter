@@ -478,22 +478,34 @@ class TestHappyPathPipeline:
 
 class TestDeterminism:
     def test_same_input_same_output(self, tmp_path: Path) -> None:
-        """Running pipeline twice with same run_id produces identical output."""
+        """Running pipeline five times with same run_id produces identical output."""
         out1 = tmp_path / "run1"
         out2 = tmp_path / "run2"
+        out3 = tmp_path / "run3"
+        out4 = tmp_path / "run4"
+        out5 = tmp_path / "run5"
 
         ts = "2026-01-01T00:00:00Z"
         run_pipeline_fs(DATA_D1, out1, SPEC_DIR, run_id="determinism-test", created_at_utc=ts)
         run_pipeline_fs(DATA_D1, out2, SPEC_DIR, run_id="determinism-test", created_at_utc=ts)
+        run_pipeline_fs(DATA_D1, out3, SPEC_DIR, run_id="determinism-test", created_at_utc=ts)
+        run_pipeline_fs(DATA_D1, out4, SPEC_DIR, run_id="determinism-test", created_at_utc=ts)
+        run_pipeline_fs(DATA_D1, out5, SPEC_DIR, run_id="determinism-test", created_at_utc=ts)
 
         # Find the run folders
         folder1 = list(out1.iterdir())[0]
         folder2 = list(out2.iterdir())[0]
+        folder3 = list(out3.iterdir())[0]
+        folder4 = list(out4.iterdir())[0]
+        folder5 = list(out5.iterdir())[0]
 
         for relpath in ("sv.json", "report.json", "projections/ml_v1.csv", "projections/llm_context_v1.json"):
             content1 = (folder1 / relpath).read_text(encoding="utf-8")
             content2 = (folder2 / relpath).read_text(encoding="utf-8")
-            assert content1 == content2, f"{relpath} differs between runs"
+            content3 = (folder3 / relpath).read_text(encoding="utf-8")
+            content4 = (folder4 / relpath).read_text(encoding="utf-8")
+            content5 = (folder5 / relpath).read_text(encoding="utf-8")
+            assert content1 == content2 == content3 == content4 == content5, f"{relpath} differs between runs"
 
 
 # ---------------------------------------------------------------------------
