@@ -19,6 +19,7 @@
     "D5": "Äärejuhud (edge cases)",
     "D6": "Duplikaatidega",
     "D7": "Püsikorraldused",
+    "D8": "Suur andmemaht",
     "CUSTOM": "Sinu oma andmed"
   },
   "model": {

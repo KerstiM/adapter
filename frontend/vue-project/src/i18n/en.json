@@ -19,6 +19,7 @@
     "D5": "Edge cases",
     "D6": "With duplicates",
     "D7": "Standing orders",
+    "D8": "Large dataset",
     "CUSTOM": "Your own data"
   },
   "model": {
