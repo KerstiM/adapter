@@ -37,6 +37,9 @@ const defaultModel = MODEL_CATALOG[0]
       <span class="status-badge">{{ t('models.notAvailable') }}</span>
     </div>
 
+    <!-- Hint (match DatasetSelector hint style) -->
+    <p class="selector-hint">{{ t('model.hint') }}</p>
+
     <!-- Default selected model (read-only) -->
     <div class="chips-area">
       <span class="chip chip-selected">
@@ -65,6 +68,12 @@ const defaultModel = MODEL_CATALOG[0]
   margin-bottom: 1.5rem;
 }
 
+.selector-hint {
+  font-size: 0.82rem;
+  color: var(--vt-c-text-light-2);
+  margin: -0.25rem 0 0.75rem;
+ }
+
 .unavailable-block {
   background: var(--color-background-mute);
   border: 1.5px dashed var(--color-border);
@@ -72,6 +81,12 @@ const defaultModel = MODEL_CATALOG[0]
   padding: 1rem 1.1rem;
   opacity: 0.7;
   cursor: not-allowed;
+  transition: border-color var(--transition-fast);
+}
+
+/* Hover: emphasise forwarding card with dashed border */
+.unavailable-block:hover {
+  border-color: var(--brand-accent);
 }
 
 .unavailable-header {

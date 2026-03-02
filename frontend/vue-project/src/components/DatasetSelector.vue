@@ -34,23 +34,6 @@ function select(id) {
     <p class="selector-hint">{{ t('dataset.hint') }}</p>
 
     <div class="dataset-grid">
-      <button
-        v-for="ds in datasets"
-        :key="ds.id"
-        class="dataset-card card"
-        :class="{ active: modelValue === ds.id, disabled }"
-        :disabled="disabled"
-        @click="select(ds.id)"
-      >
-        <div class="ds-header">
-          <span class="ds-id">{{ ds.id }}</span>
-          <span class="ds-records">{{ ds.records }} {{ t('dataset.recordsUnit') }}</span>
-        </div>
-        <div class="ds-name">{{ ds.name }}</div>
-        <span v-if="ds.accounts > 1" class="ds-multi-account">{{ ds.accounts }} {{ t('dataset.accountsUnit') }}</span>
-        <div class="ds-desc">{{ t('dataset.' + ds.id) }}</div>
-      </button>
-
       <!-- Custom data card (not yet available) -->
       <button
         class="dataset-card card custom-card custom-unavailable"
@@ -71,6 +54,23 @@ function select(id) {
           <strong>{{ t('data.allowedFormatsTitle') }}</strong>
         </div>
         <div class="ds-formats">{{ t('data.allowedFormatsBody') }}</div>
+      </button>
+
+      <button
+        v-for="ds in datasets"
+        :key="ds.id"
+        class="dataset-card card"
+        :class="{ active: modelValue === ds.id, disabled }"
+        :disabled="disabled"
+        @click="select(ds.id)"
+      >
+        <div class="ds-header">
+          <span class="ds-id">{{ ds.id }}</span>
+          <span class="ds-records">{{ ds.records }} {{ t('dataset.recordsUnit') }}</span>
+        </div>
+        <div class="ds-name">{{ ds.name }}</div>
+        <span v-if="ds.accounts > 1" class="ds-multi-account">{{ ds.accounts }} {{ t('dataset.accountsUnit') }}</span>
+        <div class="ds-desc">{{ t('dataset.' + ds.id) }}</div>
       </button>
     </div>
   </div>
