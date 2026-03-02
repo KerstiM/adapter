@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "account_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "created_at_utc": "2000-01-01T00:00:00Z",
+    "currency": "EUR",
+    "iban": "DE89370400440532013000",
+    "run_id": "GOLDEN_D7_standing_orders_seed77"
+  },
+  "tx": [
+    {
+      "a": "1200",
+      "c": "EUR",
+      "cp": "Anna Schmidt",
+      "d": "2025-01-15",
+      "dir": "IN",
+      "id": "64542527bf78471a",
+      "r": "Salary January",
+      "s": "BOOKED"
+    }
+  ]
+}

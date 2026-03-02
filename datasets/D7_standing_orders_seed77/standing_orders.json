@@ -1,0 +1,70 @@
+{
+  "account": {
+    "iban": "DE89370400440532013000"
+  },
+  "transactions": {
+    "information": [
+      {
+        "creditorName": "Stadtwerke Berlin",
+        "creditorAccount": {
+          "iban": "DE44500105175407324931"
+        },
+        "transactionAmount": {
+          "currency": "EUR",
+          "amount": "85.00"
+        },
+        "remittanceInformationUnstructured": "Electricity monthly",
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "nextExecutionDate": "2025-02-01",
+        "additionalInformationStructured": {
+          "standingOrderDetails": {
+            "startDate": "2024-01-01",
+            "frequency": "Monthly",
+            "dayOfExecution": "01"
+          }
+        }
+      },
+      {
+        "creditorName": "Vonovia SE",
+        "creditorAccount": {
+          "iban": "DE02120300000000202051"
+        },
+        "transactionAmount": {
+          "currency": "EUR",
+          "amount": "750.00"
+        },
+        "remittanceInformationUnstructured": "Rent February 2025",
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "valueDate": "2025-02-01",
+        "nextExecutionDate": "2025-03-01",
+        "additionalInformationStructured": {
+          "standingOrderDetails": {
+            "startDate": "2023-06-01",
+            "frequency": "Monthly",
+            "dayOfExecution": "01"
+          }
+        }
+      },
+      {
+        "creditorName": "Allianz Versicherung",
+        "creditorAccount": {
+          "iban": "DE13200800000040164155"
+        },
+        "transactionAmount": {
+          "currency": "EUR",
+          "amount": "120.50"
+        },
+        "remittanceInformationUnstructured": "Insurance premium Q1",
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "nextExecutionDate": "2025-04-01",
+        "additionalInformationStructured": {
+          "standingOrderDetails": {
+            "startDate": "2022-04-01",
+            "frequency": "Quarterly",
+            "dayOfExecution": "01"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "header": {
+    "subtitle": "Standardiseerimiskiht",
+    "version": "prototüüp v1.0"
+  },
+  "lang": {
+    "et": "Eesti",
+    "en": "English"
+  },
+  "dataset": {
+    "title": "Andmestik",
+    "hint": "Vali dataset, millega pipeline käivitada",
+    "recordsUnit": "tehingut",
+    "accountsUnit": "kontot",
+    "D1": "Avalik, validne, väike",
+    "D2": "Avalik, segatud, suur",
+    "D3": "Sünteetiline, validne",
+    "D4": "Sünteetiline, vigadega",
+    "D5": "Äärejuhud (edge cases)",
+    "D6": "Duplikaatidega",
+    "D7": "Püsikorraldused",
+    "D8": "Suur andmemaht",
+    "CUSTOM": "Sinu oma andmed"
+  },
+  "model": {
+    "title": "Sihtmudelid",
+    "hint": "Vali mudelid, kuhu pipeline väljund edastada"
+  },
+  "flow": {
+    "dataSelection": "Andmete valik",
+    "modelSelection": "Mudeli valik",
+    "runPipeline": "Tulemused",
+    "results": "Tulemused",
+    "projections": "Projektsioonid"
+  },
+  "data": {
+    "chooseDataset": "Vali andmestik",
+    "chooseYourData": "Vali oma andmeallikad",
+    "allowedFormatsTitle": "Lubatud formaadid",
+    "allowedFormatsBody": "JSON (Berlin Group PSD2 AIS) – accounts.json + transactions.json. Skeemi detailid: docs/SPETSIFIKATSIOONID.md.",
+    "notAvailable": "Pole veel saadaval"
+  },
+  "models": {
+    "forwardTo": "Edasta mudelile",
+    "addModel": "Lisa mudel",
+    "removeModel": "Eemalda mudel",
+    "noneSelectedHint": "Sihtmudelid pole valitud (valikuline)",
+    "forwardingTitle": "Edastamine mudelitele",
+    "notAvailable": "Pole veel saadaval",
+    "defaultSelectedHint": "Vaikimisi valitud: {model}"
+  },
+  "actions": {
+    "run": "Käivita pipeline",
+    "reset": "Lähtesta",
+    "view": "Vaata",
+    "close": "Sulge",
+    "download": "Laadi alla",
+    "downloadAs": "Laadi alla kui"
+  },
+  "errors": {
+    "runFailed": "Pipeline käivitamine ebaõnnestus",
+    "noProjectionData": "Andmed puuduvad"
+  },
+  "formats": {
+    "csv": "CSV",
+    "json": "JSON",
+    "txt": "TXT"
+  },
+  "results": {
+    "loading": "Pipeline töötab...",
+    "empty": "Vali andmestik ja käivita pipeline, et näha tulemusi",
+    "elapsed": "Pipeline töötlemise aeg",
+    "outcome": {
+      "SUCCESS": "Edukas",
+      "PARTIAL_SUCCESS": "Osaline edu",
+      "FAIL": "Ebaõnnestus"
+    },
+    "summaryTitle": "Tulemuste kokkuvõte",
+    "status": "Staatus",
+    "dataset": "Andmestik",
+    "counts": {
+      "accounts": "Kontod",
+      "transactions": "Tehingud kokku",
+      "emitted": "SV-sse emiteeritud",
+      "dropped": "Eemaldatud",
+      "mlRows": "ML read",
+      "llmContexts": "LLM kontekstid"
+    },
+    "stages": {
+      "title": "Pipeline etapid",
+      "READ_INPUT": "Sisendi lugemine",
+      "STANDARDIZE_TO_SV": "SV standardiseerimine",
+      "VALIDATE_SCHEMA": "Skeemi valideerimine",
+      "CHECK_INVARIANTS": "Invariantide kontroll",
+      "PROJECT_ML": "ML projektsioon",
+      "PROJECT_LLM": "LLM kontekst",
+      "WRITE_OUTPUTS": "Väljundite kirjutamine",
+      "errors": "viga",
+      "warnings": "hoiatus"
+    },
+    "issues": {
+      "title": "Probleemid"
+    },
+    "mlPreview": {
+      "title": "ML projektsioon (kõik read)",
+      "totalRows": "rida kokku",
+      "showingFirst": "Näidatakse esimesed 5 rida {total}-st",
+      "allRows": "Kokku {count} rida",
+      "summary": "ML CSV: {count} rida",
+      "noData": "Andmed puuduvad"
+    },
+    "llmPreview": {
+      "title": "LLM projektsioon (kõik kontekstid)",
+      "period": "Periood",
+      "income": "Tulud",
+      "expenses": "Kulud",
+      "netFlow": "Netorahavoog",
+      "categories": "Kulukategooriad",
+      "summary": "LLM kontekst: {count} tehingut",
+      "noData": "Andmed puuduvad"
+    },
+    "projectionModal": {
+      "copy": "Kopeeri",
+      "copied": "Kopeeritud!"
+    }
+  }
+}

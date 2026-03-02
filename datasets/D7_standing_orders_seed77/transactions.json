@@ -1,0 +1,24 @@
+{
+  "account": {
+    "iban": "DE89370400440532013000"
+  },
+  "transactions": {
+    "booked": [
+      {
+        "transactionId": "TX-D7-B001",
+        "bookingDate": "2025-01-15",
+        "valueDate": "2025-01-15",
+        "debtorName": "Anna Schmidt",
+        "debtorAccount": {
+          "iban": "DE27100777770209299700"
+        },
+        "transactionAmount": {
+          "amount": "1200.00",
+          "currency": "EUR"
+        },
+        "remittanceInformationUnstructured": "Salary January"
+      }
+    ],
+    "pending": []
+  }
+}

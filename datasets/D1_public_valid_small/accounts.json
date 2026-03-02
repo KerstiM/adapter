@@ -1,0 +1,12 @@
+{
+  "accounts": [
+    {
+      "cashAccountType": "CACC",
+      "currency": "EUR",
+      "iban": "DE14177763170669074391",
+      "name": "D1 Smoke Test Account",
+      "product": "Current Account",
+      "resourceId": "cd613e30-d8f1-4adf-91b7-584a2265b1f5"
+    }
+  ]
+}

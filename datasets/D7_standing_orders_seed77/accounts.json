@@ -1,0 +1,12 @@
+{
+  "accounts": [
+    {
+      "cashAccountType": "CACC",
+      "currency": "EUR",
+      "iban": "DE89370400440532013000",
+      "name": "D7 Standing Orders Test Account",
+      "product": "Current Account",
+      "resourceId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    }
+  ]
+}
