@@ -627,3 +627,472 @@ class TestD4FailGate:
         summary, _ = d4_output
         counts = summary["counts"]
         assert counts["transactions_total"] == counts["transactions_emitted_sv"] + counts["transactions_dropped"]
+
+
+# ---------------------------------------------------------------------------
+# D2 — Mixed large dataset with INV-05 WARNs → PARTIAL_SUCCESS
+# ---------------------------------------------------------------------------
+
+DATA_D2 = DATASETS_DIR / "D2_public_mixed_large"
+
+
+class TestD2MixedLarge:
+    """Tests for D2 dataset: 50 booked + 16 pending, INV-05 sign WARNs, no drops."""
+
+    @pytest.fixture()
+    def d2_output(self, tmp_path: Path) -> tuple[dict, Path]:
+        summary = run_pipeline_fs(
+            data_dir=DATA_D2,
+            output_dir=tmp_path,
+            spec_dir=SPEC_DIR,
+            run_id="d2-mixed-test",
+            created_at_utc=FIXED_TS,
+        )
+        return summary, Path(summary["run_folder"])
+
+    def test_d2_outcome_partial_success(self, d2_output: tuple) -> None:
+        """D2 has INV-05 WARNs but no ERROR drops → PARTIAL_SUCCESS."""
+        summary, _ = d2_output
+        assert summary["outcome"] == "PARTIAL_SUCCESS"
+
+    def test_d2_transaction_counts(self, d2_output: tuple) -> None:
+        """D2: 50 booked + 16 pending = 66 total, all emitted."""
+        summary, _ = d2_output
+        counts = summary["counts"]
+        assert counts["accounts_total"] == 1
+        assert counts["transactions_total"] == 66
+        assert counts["transactions_emitted_sv"] == 66
+        assert counts["transactions_dropped"] == 0
+
+    def test_d2_inv05_warns_present(self, d2_output: tuple) -> None:
+        """D2 should have INV-05 WARN flags from sign mismatches."""
+        _, run_folder = d2_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        inv05_count = sum(
+            1 for tx in sv["transactions"]
+            for flag in tx.get("flags", [])
+            if flag["id"].startswith("INV-05")
+        )
+        assert inv05_count >= 1
+
+    def test_d2_report_warn_count(self, d2_output: tuple) -> None:
+        """D2 report should reflect WARN count from INV-05."""
+        _, run_folder = d2_output
+        with open(run_folder / "report.json", encoding="utf-8") as f:
+            report = json.load(f)
+        assert report["summary"]["by_severity"]["WARN"] >= 1
+
+    def test_d2_no_drops(self, d2_output: tuple) -> None:
+        """D2 has no ERROR-level issues → no drops."""
+        summary, _ = d2_output
+        assert len(summary["dropped_details"]) == 0
+
+    def test_d2_ml_csv_row_count(self, d2_output: tuple) -> None:
+        """ML CSV should have 66 rows (all BOOKED+PENDING)."""
+        _, run_folder = d2_output
+        with open(run_folder / "projections" / "ml_v1.csv", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        assert len(rows) == 66
+
+    def test_d2_ml_csv_sorted(self, d2_output: tuple) -> None:
+        """ML CSV must be sorted by (account_id, value_date, record_id)."""
+        _, run_folder = d2_output
+        with open(run_folder / "projections" / "ml_v1.csv", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        sort_keys = [(r["account_id"], r["value_date"], r["record_id"]) for r in rows]
+        assert sort_keys == sorted(sort_keys)
+
+    def test_d2_total_invariant(self, d2_output: tuple) -> None:
+        """total == emitted + dropped."""
+        summary, _ = d2_output
+        counts = summary["counts"]
+        assert counts["transactions_total"] == counts["transactions_emitted_sv"] + counts["transactions_dropped"]
+
+
+# ---------------------------------------------------------------------------
+# D3 — Multi-account dataset with 2 transaction files → SUCCESS
+# ---------------------------------------------------------------------------
+
+DATA_D3 = DATASETS_DIR / "D3_synth_valid_seed42"
+
+
+class TestD3MultiAccount:
+    """Tests for D3: 2 accounts, 2 transaction files, 125 booked + 25 pending, SUCCESS."""
+
+    @pytest.fixture()
+    def d3_output(self, tmp_path: Path) -> tuple[dict, Path]:
+        summary = run_pipeline_fs(
+            data_dir=DATA_D3,
+            output_dir=tmp_path,
+            spec_dir=SPEC_DIR,
+            run_id="d3-multi-acct-test",
+            created_at_utc=FIXED_TS,
+        )
+        return summary, Path(summary["run_folder"])
+
+    def test_d3_outcome_success(self, d3_output: tuple) -> None:
+        """D3 has valid data, no errors → SUCCESS."""
+        summary, _ = d3_output
+        assert summary["outcome"] == "SUCCESS"
+
+    def test_d3_account_count(self, d3_output: tuple) -> None:
+        """D3 has 2 accounts."""
+        summary, _ = d3_output
+        assert summary["counts"]["accounts_total"] == 2
+
+    def test_d3_transaction_counts(self, d3_output: tuple) -> None:
+        """D3: 125 booked + 25 pending = 150 total, all emitted."""
+        summary, _ = d3_output
+        counts = summary["counts"]
+        assert counts["transactions_total"] == 150
+        assert counts["transactions_emitted_sv"] == 150
+        assert counts["transactions_dropped"] == 0
+
+    def test_d3_sv_has_two_accounts(self, d3_output: tuple) -> None:
+        """SV bundle should list 2 accounts."""
+        _, run_folder = d3_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        assert len(sv["accounts"]) == 2
+
+    def test_d3_sv_account_ibans(self, d3_output: tuple) -> None:
+        """SV accounts should include DE and EE IBANs."""
+        _, run_folder = d3_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        ibans = {a["iban"] for a in sv["accounts"]}
+        assert "DE43321819600133890838" in ibans
+        assert "EE402654235116155940" in ibans
+
+    def test_d3_sv_transactions_from_both_accounts(self, d3_output: tuple) -> None:
+        """SV transactions should reference both accounts."""
+        _, run_folder = d3_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        account_ids = {tx["account_id"] for tx in sv["transactions"]}
+        assert len(account_ids) == 2
+
+    def test_d3_llm_contexts_per_account(self, d3_output: tuple) -> None:
+        """LLM output should have contexts for both accounts."""
+        _, run_folder = d3_output
+        with open(run_folder / "projections" / "llm_context_v1.json", encoding="utf-8") as f:
+            ctx = json.load(f)
+        if isinstance(ctx, list):
+            assert len(ctx) == 2
+        else:
+            # Single dict with meta.account_id — check it's a list
+            assert False, "Expected list of 2 LLM contexts for multi-account dataset"
+
+    def test_d3_ml_csv_row_count(self, d3_output: tuple) -> None:
+        """ML CSV should have 150 rows."""
+        _, run_folder = d3_output
+        with open(run_folder / "projections" / "ml_v1.csv", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        assert len(rows) == 150
+
+    def test_d3_no_drops(self, d3_output: tuple) -> None:
+        """D3 has no dropped transactions."""
+        summary, _ = d3_output
+        assert len(summary["dropped_details"]) == 0
+
+    def test_d3_total_invariant(self, d3_output: tuple) -> None:
+        """total == emitted + dropped."""
+        summary, _ = d3_output
+        counts = summary["counts"]
+        assert counts["transactions_total"] == counts["transactions_emitted_sv"] + counts["transactions_dropped"]
+
+
+# ---------------------------------------------------------------------------
+# D5 — Edge cases dataset → PARTIAL_SUCCESS
+# ---------------------------------------------------------------------------
+
+DATA_D5 = DATASETS_DIR / "D5_synth_edges_seed99"
+
+
+class TestD5EdgeCases:
+    """Tests for D5: edge cases — zero/large/integer amounts, INV-10 WARN, long remittance."""
+
+    @pytest.fixture()
+    def d5_output(self, tmp_path: Path) -> tuple[dict, Path]:
+        summary = run_pipeline_fs(
+            data_dir=DATA_D5,
+            output_dir=tmp_path,
+            spec_dir=SPEC_DIR,
+            run_id="d5-edges-test",
+            created_at_utc=FIXED_TS,
+        )
+        return summary, Path(summary["run_folder"])
+
+    def test_d5_outcome_partial_success(self, d5_output: tuple) -> None:
+        """D5 has WARN-level flags (INV-10 etc.) → PARTIAL_SUCCESS."""
+        summary, _ = d5_output
+        assert summary["outcome"] == "PARTIAL_SUCCESS"
+
+    def test_d5_transaction_counts(self, d5_output: tuple) -> None:
+        """D5: 28 booked + 5 pending = 33, all emitted."""
+        summary, _ = d5_output
+        counts = summary["counts"]
+        assert counts["transactions_total"] == 33
+        assert counts["transactions_emitted_sv"] == 33
+        assert counts["transactions_dropped"] == 0
+
+    def test_d5_no_drops(self, d5_output: tuple) -> None:
+        """D5 edge cases are all valid — no drops expected."""
+        summary, _ = d5_output
+        assert len(summary["dropped_details"]) == 0
+
+    def test_d5_inv10_warn_present(self, d5_output: tuple) -> None:
+        """D5 has a no-counterparty transaction → INV-10 WARN."""
+        _, run_folder = d5_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        inv10_flags = [
+            flag for tx in sv["transactions"]
+            for flag in tx.get("flags", [])
+            if flag["id"].startswith("INV-10")
+        ]
+        assert len(inv10_flags) >= 1
+
+    def test_d5_zero_amount_handled(self, d5_output: tuple) -> None:
+        """Zero amount transaction should be emitted without errors."""
+        _, run_folder = d5_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        zero_txs = [tx for tx in sv["transactions"] if tx["amount"]["abs"] == "0.00" or tx["amount"]["abs"] == "0"]
+        assert len(zero_txs) >= 1
+
+    def test_d5_large_amount_handled(self, d5_output: tuple) -> None:
+        """Large amount (9999999.999) should be emitted correctly."""
+        _, run_folder = d5_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        large_txs = [tx for tx in sv["transactions"] if float(tx["amount"]["abs"]) > 1_000_000]
+        assert len(large_txs) >= 1
+
+    def test_d5_llm_remittance_truncation(self, d5_output: tuple) -> None:
+        """Long remittance (307 chars) should be truncated to 160 in LLM projection."""
+        _, run_folder = d5_output
+        with open(run_folder / "projections" / "llm_context_v1.json", encoding="utf-8") as f:
+            ctx = json.load(f)
+        contexts = [ctx] if isinstance(ctx, dict) and "tx" in ctx else ctx
+        for c in contexts:
+            for tx in c["tx"]:
+                if tx.get("r") is not None:
+                    assert len(tx["r"]) <= 160
+
+    def test_d5_total_invariant(self, d5_output: tuple) -> None:
+        """total == emitted + dropped."""
+        summary, _ = d5_output
+        counts = summary["counts"]
+        assert counts["transactions_total"] == counts["transactions_emitted_sv"] + counts["transactions_dropped"]
+
+
+# ---------------------------------------------------------------------------
+# D7 — Standing orders / INFORMATION transactions
+# ---------------------------------------------------------------------------
+
+DATA_D7 = DATASETS_DIR / "D7_standing_orders_seed77"
+
+
+class TestD7StandingOrders:
+    """Tests for D7: 1 booked + 3 INFORMATION from standing_orders.json."""
+
+    @pytest.fixture()
+    def d7_output(self, tmp_path: Path) -> tuple[dict, Path]:
+        summary = run_pipeline_fs(
+            data_dir=DATA_D7,
+            output_dir=tmp_path,
+            spec_dir=SPEC_DIR,
+            run_id="d7-standing-orders-test",
+            created_at_utc=FIXED_TS,
+        )
+        return summary, Path(summary["run_folder"])
+
+    def test_d7_outcome_not_fail(self, d7_output: tuple) -> None:
+        """D7 has valid data → SUCCESS or PARTIAL_SUCCESS."""
+        summary, _ = d7_output
+        assert summary["outcome"] in ("SUCCESS", "PARTIAL_SUCCESS")
+
+    def test_d7_transaction_counts(self, d7_output: tuple) -> None:
+        """D7: 1 booked + 3 information = 4 total, all emitted."""
+        summary, _ = d7_output
+        counts = summary["counts"]
+        assert counts["accounts_total"] == 1
+        assert counts["transactions_total"] == 4
+        assert counts["transactions_emitted_sv"] == 4
+        assert counts["transactions_dropped"] == 0
+
+    def test_d7_information_transactions_in_sv(self, d7_output: tuple) -> None:
+        """SV should contain 3 INFORMATION status transactions."""
+        _, run_folder = d7_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        info_txs = [tx for tx in sv["transactions"] if tx["status"] == "INFORMATION"]
+        assert len(info_txs) == 3
+
+    def test_d7_value_date_fallback_from_next_execution_date(self, d7_output: tuple) -> None:
+        """INFORMATION txs without valueDate should fallback to nextExecutionDate."""
+        _, run_folder = d7_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        info_txs = [tx for tx in sv["transactions"] if tx["status"] == "INFORMATION"]
+        for tx in info_txs:
+            assert tx["value_date"] is not None, f"INFORMATION tx missing value_date: {tx['record_id']}"
+
+    def test_d7_stadtwerke_value_date_fallback(self, d7_output: tuple) -> None:
+        """Stadtwerke Berlin (no valueDate) → value_date = nextExecutionDate = 2025-02-01."""
+        _, run_folder = d7_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        stadtwerke = [tx for tx in sv["transactions"] if tx.get("counterparty", {}).get("name") == "Stadtwerke Berlin"]
+        assert len(stadtwerke) == 1
+        assert stadtwerke[0]["value_date"] == "2025-02-01"
+
+    def test_d7_vonovia_value_date_preferred(self, d7_output: tuple) -> None:
+        """Vonovia SE (has valueDate=2025-02-01) → value_date = 2025-02-01 (preferred over nextExecDate)."""
+        _, run_folder = d7_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        vonovia = [tx for tx in sv["transactions"] if tx.get("counterparty", {}).get("name") == "Vonovia SE"]
+        assert len(vonovia) == 1
+        assert vonovia[0]["value_date"] == "2025-02-01"
+
+    def test_d7_allianz_value_date_fallback(self, d7_output: tuple) -> None:
+        """Allianz (no valueDate) → value_date = nextExecutionDate = 2025-04-01."""
+        _, run_folder = d7_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        allianz = [tx for tx in sv["transactions"] if tx.get("counterparty", {}).get("name") == "Allianz Versicherung"]
+        assert len(allianz) == 1
+        assert allianz[0]["value_date"] == "2025-04-01"
+
+    def test_d7_information_excluded_from_ml(self, d7_output: tuple) -> None:
+        """INFORMATION txs should NOT appear in ML projection (only BOOKED+PENDING)."""
+        _, run_folder = d7_output
+        with open(run_folder / "projections" / "ml_v1.csv", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        assert len(rows) == 1  # Only the 1 booked tx
+        assert rows[0]["status"] == "BOOKED"
+
+    def test_d7_information_excluded_from_llm(self, d7_output: tuple) -> None:
+        """INFORMATION txs should NOT appear in LLM projection."""
+        _, run_folder = d7_output
+        with open(run_folder / "projections" / "llm_context_v1.json", encoding="utf-8") as f:
+            ctx = json.load(f)
+        contexts = [ctx] if isinstance(ctx, dict) and "tx" in ctx else ctx
+        for c in contexts:
+            for tx in c["tx"]:
+                assert tx["s"] != "INFORMATION"
+
+    def test_d7_total_invariant(self, d7_output: tuple) -> None:
+        """total == emitted + dropped."""
+        summary, _ = d7_output
+        counts = summary["counts"]
+        assert counts["transactions_total"] == counts["transactions_emitted_sv"] + counts["transactions_dropped"]
+
+
+# ---------------------------------------------------------------------------
+# D8 — Load test with 10 000 transactions → SUCCESS + performance
+# ---------------------------------------------------------------------------
+
+DATA_D8 = DATASETS_DIR / "D8_load_test_10k_seed88"
+
+_D8_PERFORMANCE_SLO_MS = 10_000  # 10 seconds for 10k transactions
+
+
+class TestD8LoadTest:
+    """Tests for D8: 8000 booked + 2000 pending = 10000 total, SUCCESS, performance SLO."""
+
+    @pytest.fixture(scope="class")
+    def d8_output(self, tmp_path_factory) -> tuple[dict, Path, float]:
+        """Run pipeline on D8 once per class and measure elapsed time."""
+        import time
+        tmp_path = tmp_path_factory.mktemp("d8")
+        t0 = time.perf_counter()
+        summary = run_pipeline_fs(
+            data_dir=DATA_D8,
+            output_dir=tmp_path,
+            spec_dir=SPEC_DIR,
+            run_id="d8-load-test",
+            created_at_utc=FIXED_TS,
+        )
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+        return summary, Path(summary["run_folder"]), elapsed_ms
+
+    def test_d8_outcome_success(self, d8_output: tuple) -> None:
+        """D8 has all valid data → SUCCESS."""
+        summary, _, _ = d8_output
+        assert summary["outcome"] == "SUCCESS"
+
+    def test_d8_transaction_counts(self, d8_output: tuple) -> None:
+        """D8: 8000 booked + 2000 pending = 10000 total, all emitted."""
+        summary, _, _ = d8_output
+        counts = summary["counts"]
+        assert counts["accounts_total"] == 1
+        assert counts["transactions_total"] == 10_000
+        assert counts["transactions_emitted_sv"] == 10_000
+        assert counts["transactions_dropped"] == 0
+
+    def test_d8_no_drops(self, d8_output: tuple) -> None:
+        """D8 has no dropped transactions."""
+        summary, _, _ = d8_output
+        assert len(summary["dropped_details"]) == 0
+
+    def test_d8_performance_within_slo(self, d8_output: tuple) -> None:
+        """Pipeline with 10k transactions must finish within 10 seconds."""
+        _, _, elapsed_ms = d8_output
+        assert elapsed_ms <= _D8_PERFORMANCE_SLO_MS, (
+            f"Pipeline took {elapsed_ms:.1f} ms for 10k txs — exceeds SLO of {_D8_PERFORMANCE_SLO_MS} ms"
+        )
+
+    def test_d8_sv_transaction_count(self, d8_output: tuple) -> None:
+        """SV bundle should contain 10000 transactions."""
+        _, run_folder, _ = d8_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        assert len(sv["transactions"]) == 10_000
+
+    def test_d8_ml_csv_row_count(self, d8_output: tuple) -> None:
+        """ML CSV should have 10000 rows (all BOOKED+PENDING)."""
+        _, run_folder, _ = d8_output
+        with open(run_folder / "projections" / "ml_v1.csv", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        assert len(rows) == 10_000
+
+    def test_d8_ml_csv_sorted(self, d8_output: tuple) -> None:
+        """ML CSV must be sorted by (account_id, value_date, record_id)."""
+        _, run_folder, _ = d8_output
+        with open(run_folder / "projections" / "ml_v1.csv", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        sort_keys = [(r["account_id"], r["value_date"], r["record_id"]) for r in rows]
+        assert sort_keys == sorted(sort_keys)
+
+    def test_d8_ml_csv_row_id_sequential(self, d8_output: tuple) -> None:
+        """ML row_ids must be sequential 1..10000."""
+        _, run_folder, _ = d8_output
+        with open(run_folder / "projections" / "ml_v1.csv", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        row_ids = [int(r["row_id"]) for r in rows]
+        assert row_ids == list(range(1, 10_001))
+
+    def test_d8_no_duplicate_record_ids(self, d8_output: tuple) -> None:
+        """SV should have no duplicate record_ids among 10k transactions."""
+        _, run_folder, _ = d8_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        record_ids = [tx["record_id"] for tx in sv["transactions"]]
+        assert len(record_ids) == len(set(record_ids)), "D8 SV contains duplicate record_ids"
+
+    def test_d8_total_invariant(self, d8_output: tuple) -> None:
+        """total == emitted + dropped."""
+        summary, _, _ = d8_output
+        counts = summary["counts"]
+        assert counts["transactions_total"] == counts["transactions_emitted_sv"] + counts["transactions_dropped"]
+
+    def test_d8_report_no_errors(self, d8_output: tuple) -> None:
+        """D8 should have zero ERROR severity issues."""
+        _, run_folder, _ = d8_output
+        with open(run_folder / "report.json", encoding="utf-8") as f:
+            report = json.load(f)
+        assert report["summary"]["by_severity"]["ERROR"] == 0
