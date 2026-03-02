@@ -118,10 +118,10 @@
       "categories": "Kulukategooriad",
       "summary": "LLM kontekst: {count} tehingut",
       "noData": "Andmed puuduvad"
-    },
-    "projectionModal": {
-      "copy": "Kopeeri",
-      "copied": "Kopeeritud!"
     }
+  },
+  "projectionModal": {
+    "copy": "Kopeeri",
+    "copied": "Kopeeritud!"
   }
 }
