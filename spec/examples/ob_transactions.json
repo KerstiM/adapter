@@ -1,0 +1,120 @@
+{
+  "account": {
+    "iban": "string",
+    "maskedPan": "string",
+    "currency": "string",
+    "cashAccountType": "string"
+  },
+  "balances": [
+    {
+      "balanceAmount": {
+        "currency": "string",
+        "amount": "string"
+      },
+      "balanceType": "closingBooked",
+      "creditLimitIncluded": true,
+      "referenceDate": "2026-05-04"
+    }
+  ],
+  "transactions": {
+    "_links": {
+      "account": {
+        "href": "string"
+      },
+      "next": {
+        "href": "string"
+      },
+      "previous": {
+        "href": "string"
+      }
+    },
+    "booked": [
+      {
+        "transactionAmount": {
+          "currency": "string",
+          "amount": "string"
+        },
+        "transactionId": "string",
+        "endToEndId": "string",
+        "batchIndicator": true,
+        "batchNumberOfTransactions": 42,
+        "mandateId": "string",
+        "bookingDate": "2026-05-04",
+        "valueDate": "2026-05-04",
+        "currencyExchange": [
+          {
+            "sourceCurrency": "string",
+            "exchangeRate": "string",
+            "unitCurrency": "string",
+            "targetCurrency": "string",
+            "quotationDate": "2026-05-04"
+          }
+        ],
+        "creditorName": "string",
+        "creditorAccount": {
+          "iban": "string",
+          "maskedPan": "string",
+          "currency": "string",
+          "cashAccountType": "string"
+        },
+        "creditorAgent": "string",
+        "debtorName": "string",
+        "debtorAccount": {
+          "iban": "string",
+          "maskedPan": "string",
+          "currency": "string",
+          "cashAccountType": "string"
+        },
+        "debtorAgent": "string",
+        "remittanceInformationUnstructured": "string",
+        "_extras": {
+          "counterpartyAndRemittanceInformationUnstructured": "string"
+        }
+      }
+    ],
+    "pending": [
+      {
+        "transactionAmount": {
+          "currency": "string",
+          "amount": "string"
+        },
+        "transactionId": "string",
+        "endToEndId": "string",
+        "batchIndicator": true,
+        "batchNumberOfTransactions": 42,
+        "mandateId": "string",
+        "bookingDate": "2026-05-04",
+        "valueDate": "2026-05-04",
+        "currencyExchange": [
+          {
+            "sourceCurrency": "string",
+            "exchangeRate": "string",
+            "unitCurrency": "string",
+            "targetCurrency": "string",
+            "quotationDate": "2026-05-04"
+          }
+        ],
+        "creditorName": "string",
+        "creditorAccount": {
+          "iban": "string",
+          "maskedPan": "string",
+          "currency": "string",
+          "cashAccountType": "string"
+        },
+        "creditorAgent": "string",
+        "debtorName": "string",
+        "debtorAccount": {
+          "iban": "string",
+          "maskedPan": "string",
+          "currency": "string",
+          "cashAccountType": "string"
+        },
+        "debtorAgent": "string",
+        "remittanceInformationUnstructured": "string",
+        "_extras": {
+          "counterpartyAndRemittanceInformationUnstructured": "string"
+        }
+      }
+    ]
+  }
+}

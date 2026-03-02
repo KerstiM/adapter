@@ -1,0 +1,12 @@
+{
+  "accounts": [
+    {
+      "cashAccountType": "CACC",
+      "currency": "EUR",
+      "iban": "DE20805723129276562421",
+      "name": "D8 Load Test Account",
+      "product": "Current Account",
+      "resourceId": "5532e8ba-3083-449e-b945-e4b665c1d4b4"
+    }
+  ]
+}
