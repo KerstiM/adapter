@@ -16,6 +16,7 @@ Output structure per run:
 """
 import csv
 import json
+import time
 from pathlib import Path
 
 import jsonschema
@@ -627,3 +628,42 @@ class TestD4FailGate:
         summary, _ = d4_output
         counts = summary["counts"]
         assert counts["transactions_total"] == counts["transactions_emitted_sv"] + counts["transactions_dropped"]
+
+
+# ---------------------------------------------------------------------------
+# Skaleeruvuse ajamõõtmised — päris andmestikud, päris I/O
+# ---------------------------------------------------------------------------
+
+class TestScalingTiming:
+    """Skaleeruvuse ajamõõtmised päris andmestikel (run_pipeline_fs, päris I/O).
+
+    Ei kontrolli SLO-t — eesmärk on skaleeruvuse tõendamine kolme punktiga.
+    Käivita koos -s lipuga, et näha tulemusi:
+        python -m pytest tests/tests.py::TestScalingTiming -v -s
+    """
+
+    @pytest.mark.parametrize("dataset,label", [
+        ("D1_public_valid_small",   "D1 (7 tx)"),
+        ("D3_synth_valid_seed42",   "D3 (150 tx)"),
+        ("D9_synth_perf_seed9",     "D9 (1 000 tx)"),
+        ("D8_load_test_10k_seed88", "D8 (10 000 tx)"),
+    ])
+    def test_pipeline_timing(self, tmp_path: Path, dataset: str, label: str) -> None:
+        """Mõõdab pipeline'i täielikku töötlusaega päris andmestikul.
+
+        Tulemused on nähtavad pytest -s lipuga.
+        """
+        data_dir = DATASETS_DIR / dataset
+
+        t0 = time.perf_counter()
+        summary = run_pipeline_fs(
+            data_dir=data_dir,
+            output_dir=tmp_path,
+            spec_dir=SPEC_DIR,
+        )
+        elapsed_ms = (time.perf_counter() - t0) * 1000
+
+        tx_count = summary["counts"]["transactions_total"]
+        throughput = tx_count / elapsed_ms if elapsed_ms > 0 else 0
+
+        print(f"\n[TIMING] {label}: {tx_count} tx | {elapsed_ms:.1f} ms | {throughput:.3f} tx/ms")

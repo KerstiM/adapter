@@ -197,7 +197,7 @@ Pipeline jookseb täielikult mälus, failisüsteemi ei puudutata. Testivad äril
 Kellaadapterina süstitakse `FixedClock` (fikseeritud ajatempel + run_id).
 Väljund kirjutatakse `tmp_path` kausta (pytest fixture). Testivad end-to-end voo: sisend → SV → ML/LLM → koondraport → skeemivalideerimine.
 
-**Determinismitest** (`TestDeterminism`) käivitab pipeline kaks korda sama fikseeritud kellaga ja kontrollib, et kõik väljundfailid on identsed.
+**Determinismitest** (`TestDeterminism`) käivitab pipeline viis korda sama fikseeritud kellaga ja kontrollib, et kõik väljundfailid on identsed.
 
 **Arhitektuuritestid** tagavad kihistuse: `test_import_boundaries.py` skaneerib `domain/` importe AST-ga.
 

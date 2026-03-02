@@ -1,6 +1,5 @@
 {
   "frozen_version": "v1.0.0",
-  "frozen_at": "2026-02-18T13:40:45Z",
   "spec_lock_sha256": "4114b0079d21116aea04b7c2f989f8a0e88791255aab80f9836c25842c1f30f2",
   "datasets": [
     {
@@ -10,23 +9,15 @@
         "sv.json": {
           "sha256": "99e208c3782953beab7767cdbef73498031a0fa87bd0b83e7a1d7b841f663d92"
         },
-        "report.json": {
-          "sha256": "aa7777b875b6adbabc16d2c5adcb7772b2fa66d6127888a2ba16a76623ab137e"
-        },
         "ml_v1.csv": {
           "sha256": "a49a7bd83229db56e62aaa990a7f4eba27d3c7bb1ee2e3883408621a74db0227"
         },
         "llm_context_v1.json": {
           "sha256": "9cbb0eece22598b5b58ad847d14ddabeaa062e8f535bd0f5677b84abc8d3beb6"
+        },
+        "report.json": {
+          "sha256": "aa7777b875b6adbabc16d2c5adcb7772b2fa66d6127888a2ba16a76623ab137e"
         }
-      },
-      "counts": {
-        "accounts_total": 1,
-        "transactions_total": 7,
-        "transactions_emitted_sv": 7,
-        "transactions_dropped": 0,
-        "ml_rows": 7,
-        "llm_contexts": 1
       }
     },
     {
@@ -36,23 +27,15 @@
         "sv.json": {
           "sha256": "003677dd0e92d29462e0258104bd46505a6b3b595f1452a3334567888e07e1dd"
         },
-        "report.json": {
-          "sha256": "4d9de822f91f288f5dba7319c112132b6dc1ad1dd29f64726e4b04c40428712e"
-        },
         "ml_v1.csv": {
           "sha256": "df5df41204be853626290240e25d968c4f06692ee71da256dff61facc117f38b"
         },
         "llm_context_v1.json": {
           "sha256": "758a5ee51f4853ef02d7402f2e2bb2b7d78bde77099cff15e84e5da671c39853"
+        },
+        "report.json": {
+          "sha256": "4d9de822f91f288f5dba7319c112132b6dc1ad1dd29f64726e4b04c40428712e"
         }
-      },
-      "counts": {
-        "accounts_total": 1,
-        "transactions_total": 66,
-        "transactions_emitted_sv": 66,
-        "transactions_dropped": 0,
-        "ml_rows": 66,
-        "llm_contexts": 1
       }
     },
     {
@@ -62,49 +45,33 @@
         "sv.json": {
           "sha256": "69ded157c35e888e4794010b0fa9b9ab526fc8739fa8bccd0bed8fe8616d32eb"
         },
-        "report.json": {
-          "sha256": "3248a5c259a4141eae7625e294f686f799e0afac8cd936f2d98c9e2d5207cc1b"
-        },
         "ml_v1.csv": {
-          "sha256": "4597c1cdef4d5e0a6543bc4c7834d555b89369ec7cab88fc4f6d072c5c14e9ec"
+          "sha256": "2a21c8bf7927ad115efabd13887c175d74657787d5c8f2cb86fd82a507bf4f73"
         },
         "llm_context_v1.json": {
           "sha256": "2f2f8ceff2404a00d2b0e354c757267f721a81b10e5831703b2fa09fe90a931d"
+        },
+        "report.json": {
+          "sha256": "3248a5c259a4141eae7625e294f686f799e0afac8cd936f2d98c9e2d5207cc1b"
         }
-      },
-      "counts": {
-        "accounts_total": 2,
-        "transactions_total": 150,
-        "transactions_emitted_sv": 150,
-        "transactions_dropped": 0,
-        "ml_rows": 150,
-        "llm_contexts": 2
       }
     },
     {
       "dataset_id": "D4_synth_errors_seed42",
-      "expected_outcome": "FAIL",
+      "expected_outcome": "FAILED",
       "golden": {
         "sv.json": {
           "sha256": "56a7917cd03a9059a865a5fa76b59ba4bcd8987be7297aec8b38dd22fa4de187"
-        },
-        "report.json": {
-          "sha256": "dc0828e25a79658a29506c5921ef08ad41b75f5b031c40242acd6427ff996838"
         },
         "ml_v1.csv": {
           "sha256": "69b2589d692e8fd208e633bc68c9aaa339c21595d1c98285eb0a8dabbff4a99f"
         },
         "llm_context_v1.json": {
           "sha256": "c1959b6e62d6f424eac801398d6890d0faba08ae70ba26c779496399d4eb4ff7"
+        },
+        "report.json": {
+          "sha256": "dc0828e25a79658a29506c5921ef08ad41b75f5b031c40242acd6427ff996838"
         }
-      },
-      "counts": {
-        "accounts_total": 1,
-        "transactions_total": 39,
-        "transactions_emitted_sv": 35,
-        "transactions_dropped": 4,
-        "ml_rows": 35,
-        "llm_contexts": 1
       }
     },
     {
@@ -114,23 +81,15 @@
         "sv.json": {
           "sha256": "60db3657ef1dbe86480e3aac542d87d88d19ef93799cc3b8ec95142078a7764c"
         },
-        "report.json": {
-          "sha256": "cac496a8c8735a3fdb57ad148d331e4a7eb0f5577bf30cf6844e1c9af537b678"
-        },
         "ml_v1.csv": {
           "sha256": "99e9c91d09e4a4d9b1979e8fe46369146ec2e43f47b26c433a966d481f23a7c5"
         },
         "llm_context_v1.json": {
           "sha256": "45a8bd63df204ef75fef11409ec31d2cb2b7b673374735cf1f63b09c30e41ec2"
+        },
+        "report.json": {
+          "sha256": "cac496a8c8735a3fdb57ad148d331e4a7eb0f5577bf30cf6844e1c9af537b678"
         }
-      },
-      "counts": {
-        "accounts_total": 1,
-        "transactions_total": 33,
-        "transactions_emitted_sv": 33,
-        "transactions_dropped": 0,
-        "ml_rows": 33,
-        "llm_contexts": 1
       }
     },
     {
@@ -140,23 +99,15 @@
         "sv.json": {
           "sha256": "5ab12a668e1f357469eaa11fa3831a3c42a7274f9ea832ececde61b6403ba600"
         },
-        "report.json": {
-          "sha256": "e3af290618df2385d2b1082f07063e27d86195250666e2a94f625ccb66d32516"
-        },
         "ml_v1.csv": {
           "sha256": "49d6a61a24808cad84ce022f017d675ebe5c53220ffb5ca2db0308b5c8bcdec4"
         },
         "llm_context_v1.json": {
           "sha256": "da3bf1075333ddc592e859813aab068dd8c784e117a6d0b3ae4e597e05902a82"
+        },
+        "report.json": {
+          "sha256": "e3af290618df2385d2b1082f07063e27d86195250666e2a94f625ccb66d32516"
         }
-      },
-      "counts": {
-        "accounts_total": 1,
-        "transactions_total": 24,
-        "transactions_emitted_sv": 21,
-        "transactions_dropped": 3,
-        "ml_rows": 21,
-        "llm_contexts": 1
       }
     },
     {
@@ -166,23 +117,15 @@
         "sv.json": {
           "sha256": "1c292684afb0db412976d65f4487f5fc63d70fb5259834cbc141ced984ad596b"
         },
-        "report.json": {
-          "sha256": "c09de74013f0cc0aa16e66044c5e72eb5d88a535b360a41a0688f55910cf44e8"
-        },
         "ml_v1.csv": {
           "sha256": "d2a345393ffa209e1342694630ab602221ddb910a24f8f9680f1ab8f629dde1b"
         },
         "llm_context_v1.json": {
           "sha256": "a7f7e6cfec3317b938ece45b94820d6cf3aafbd8a47073048419903b2005c8c3"
+        },
+        "report.json": {
+          "sha256": "c09de74013f0cc0aa16e66044c5e72eb5d88a535b360a41a0688f55910cf44e8"
         }
-      },
-      "counts": {
-        "accounts_total": 1,
-        "transactions_total": 4,
-        "transactions_emitted_sv": 4,
-        "transactions_dropped": 0,
-        "ml_rows": 1,
-        "llm_contexts": 1
       }
     },
     {
@@ -192,23 +135,33 @@
         "sv.json": {
           "sha256": "23a9c45f73b3dc2477d2ffb4b2aadf227809041008ace29890dc62acbf70efd9"
         },
-        "report.json": {
-          "sha256": "2f9e52f6b23fc724f841ed784e5774df78fa5661f3a9a236d470b2b311401812"
-        },
         "ml_v1.csv": {
-          "sha256": "382e4b706ae6b4c105ec8d8efeaec7a92913837108ff4ab6883da18893f3859a"
+          "sha256": "b31b8d9c27ce3c2b3fba4fcf4bee7fc0f9a237a57c2698fa7049dfe2b1bb254a"
         },
         "llm_context_v1.json": {
           "sha256": "d30f53279f1b5689fb8366efe44bf0b6d7e6df7950f2af1ad847854164b425bb"
+        },
+        "report.json": {
+          "sha256": "2f9e52f6b23fc724f841ed784e5774df78fa5661f3a9a236d470b2b311401812"
         }
-      },
-      "counts": {
-        "accounts_total": 1,
-        "transactions_total": 10000,
-        "transactions_emitted_sv": 10000,
-        "transactions_dropped": 0,
-        "ml_rows": 10000,
-        "llm_contexts": 1
+      }
+    },
+    {
+      "dataset_id": "D9_synth_perf_seed9",
+      "expected_outcome": "SUCCESS",
+      "golden": {
+        "sv.json": {
+          "sha256": "9733caad193caba0f937fd91d79c5ae73fbdd9be2f02ad573615dd205508600f"
+        },
+        "ml_v1.csv": {
+          "sha256": "18c9c92e8465607e2b7520eecbdc3e52cb6f966c1b84b8c78ce470cd0f4e519f"
+        },
+        "llm_context_v1.json": {
+          "sha256": "7e24e3be9ae729bcc0e238f5e6a2d59063bb37e5b64eb73a8d3608a3675b3662"
+        },
+        "report.json": {
+          "sha256": "c373fb9daa0e55b1ebc6ccc10c26aee92e029ccddef20f27ca2373e6348b0f66"
+        }
       }
     }
   ]

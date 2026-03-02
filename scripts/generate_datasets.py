@@ -739,6 +739,43 @@ def generate_d8(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
     }
 
 
+def generate_d9(gen: DatasetGenerator, start_date: date, end_date: date, n: int | None) -> dict:
+    """D9_synth_perf_seed9: standard-scale performance dataset (~1 000 transactions).
+
+    Represents a realistic 6-month bank statement for an active account
+    (~5.5 transactions/day). Used to validate MF6 (≤ 500 ms for the standard
+    test dataset) and to provide a third scaling data point between D3 (150 tx)
+    and D8 (10 000 tx).
+    All transactions are valid — expected outcome is SUCCESS.
+    """
+    n_booked = n or 800
+    n_pending = max(200, n_booked // 4)
+    acct = gen.generate_account(country="EE", name="D9 Standard Scale Account")
+
+    booked, pending = gen.generate_transactions_batch(
+        acct["iban"], n_booked, n_pending, start_date, end_date,
+        match_sign=True,
+    )
+
+    return {
+        "name": "D9_synth_perf_seed9",
+        "description": "Standard-scale performance dataset with ~1 000 transactions "
+                        "(800 booked + 200 pending). Represents a realistic 6-month bank "
+                        "statement (~5.5 tx/day). Validates MF6 (≤ 500 ms) and provides a "
+                        "scaling data point between D3 (150 tx) and D8 (10 000 tx). "
+                        "All transactions are valid — expected outcome is SUCCESS.",
+        "expected_outcome": "SUCCESS",
+        "accounts": _build_accounts_json([acct]),
+        "transactions": _build_transactions_json(acct["iban"], booked, pending),
+        "meta": {
+            "n_booked": len(booked),
+            "n_pending": len(pending),
+            "expected_dropped": 0,
+            "variations": [],
+        },
+    }
+
+
 # ---------------------------------------------------------------------------
 # Quality gates
 # ---------------------------------------------------------------------------
@@ -936,6 +973,7 @@ DATASET_GENERATORS = {
     "D5": (generate_d5, 99),
     "D6": (generate_d6, 99),
     "D8": (generate_d8, 88),
+    "D9": (generate_d9, 9),
 }
 
 
