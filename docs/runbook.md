@@ -61,7 +61,7 @@ python scripts\validate_artifacts.py
 Valitud datasetid (prefix match):
 
 ```bat
-python scripts\validate_artifacts.py --dataset D1 D2 D3 D4 D5 D6 D7
+python scripts\validate_artifacts.py --dataset D1 D2 D3 D4 D5 D6 D7 D8 D9
 ```
 
 Märkus: validaator jooksutab adapterit **ajutisse kausta** (ei jäta artefakte sinu `backend/out/` alla). Selle eesmärk on kontrollida, kas toodetud artefaktid valideeruvad skeemide vastu.
