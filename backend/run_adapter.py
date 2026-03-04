@@ -63,7 +63,8 @@ def main() -> None:
                         help="Dataset name (e.g. D1, D4) or path. "
                              "Default: D1_public_valid_small")
     parser.add_argument("--out", "-o", default=None,
-                        help="Output directory. Default: <repo>/.backend/out/")
+                        help="Output directory (relative to repo root unless "
+                             "absolute). Default: .backend/out/")
     args = parser.parse_args()
 
     if args.data:
@@ -71,7 +72,12 @@ def main() -> None:
     else:
         data_dir = _resolve_data_dir("D1_public_valid_small")
 
-    output_dir = Path(args.out) if args.out else ROOT / ".backend" / "out"
+    if args.out:
+        out_path = Path(args.out)
+        # Resolve relative --out paths against repo root, not CWD
+        output_dir = out_path if out_path.is_absolute() else ROOT / out_path
+    else:
+        output_dir = ROOT / ".backend" / "out"
 
     print(f"Dataset:    {data_dir}")
     print(f"Output to:  {output_dir}")
