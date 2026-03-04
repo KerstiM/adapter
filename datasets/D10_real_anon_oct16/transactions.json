@@ -557,7 +557,7 @@
           "amount": "210.00",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "Ulekanne rupsilt",
+        "remittanceInformationUnstructured": "Ulekanne matilt",
         "debtorName": "Kersti Pärn",
         "debtorAccount": {
           "iban": "EE567700771005284961"
@@ -571,7 +571,7 @@
           "amount": "210.00",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "Rupsilt",
+        "remittanceInformationUnstructured": "Matilt",
         "creditorName": "Jaanus Kuusk",
         "creditorAccount": {
           "iban": "EE787700771009617382"
@@ -611,7 +611,7 @@
           "amount": "30.00",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "Rupsilt",
+        "remittanceInformationUnstructured": "Matilt",
         "creditorName": "Jaanus Kuusk",
         "creditorAccount": {
           "iban": "EE787700771009617382"
@@ -733,7 +733,7 @@
           "amount": "10.00",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "Ulekanne Leegi tagasi",
+        "remittanceInformationUnstructured": "Ulekanne Liina tagasi",
         "debtorName": "Kersti Pärn",
         "debtorAccount": {
           "iban": "EE237700771008163749"
@@ -1133,7 +1133,7 @@
           "amount": "5.00",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "uuriks",
+        "remittanceInformationUnstructured": "matilt",
         "creditorName": "Jaanus Kuusk",
         "creditorAccount": {
           "iban": "EE787700771009617382"
@@ -1213,8 +1213,8 @@
           "amount": "9.00",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "(..6291) 2016-11-25 16:16 Pelgulinna Synnitusmaj  Tallinn  10614 ESTEST",
-        "creditorName": "Pelgulinna Synnitusmaj"
+        "remittanceInformationUnstructured": "(..6291) 2016-11-25 16:16 Pelgulinna Huvikool  Tallinn  10614 ESTEST",
+        "creditorName": "Pelgulinna Huvikool"
       },
       {
         "transactionId": "50172205",
