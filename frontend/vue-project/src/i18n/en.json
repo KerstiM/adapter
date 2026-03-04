@@ -20,6 +20,8 @@
     "D6": "With duplicates",
     "D7": "Standing orders",
     "D8": "Large dataset",
+    "D9": "Synthetic, performance",
+    "D10": "Real, anonymised",
     "CUSTOM": "Your own data"
   },
   "model": {
