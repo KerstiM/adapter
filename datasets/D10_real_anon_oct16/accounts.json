@@ -1,0 +1,12 @@
+{
+  "accounts": [
+    {
+      "cashAccountType": "CACC",
+      "currency": "EUR",
+      "iban": "EE387700771001292847",
+      "name": "D10 Anonymised Real Account",
+      "product": "Current Account",
+      "resourceId": "b7a3c1d0-4e2f-4890-abcd-1234567890ab"
+    }
+  ]
+}
