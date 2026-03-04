@@ -2,19 +2,19 @@
   "dropped_details": [],
   "issues": [],
   "outcome": {
-    "status": "SUCCESS",
-    "stop_reason": "all validations passed"
+    "status": "PARTIAL_SUCCESS",
+    "stop_reason": "warnings present"
   },
   "report_schema_version": "1.1.0",
   "run": {
     "adapter_version": "0.1.0",
     "created_at_utc": "2000-01-01T00:00:00Z",
-    "dataset_id": "D9_synth_perf_seed9",
-    "input_dir": "datasets/D9_synth_perf_seed9",
+    "dataset_id": "D10_real_anon_oct16",
+    "input_dir": "datasets/D10_real_anon_oct16",
     "mapping_version": "1.0.0",
     "profile_id": "default",
     "ruleset_version": "1.1.0",
-    "run_id": "GOLDEN_D9_synth_perf_seed9",
+    "run_id": "GOLDEN_D10_real_anon_oct16",
     "sv_schema_version": "1.0.0"
   },
   "run_flags": [],
@@ -23,7 +23,7 @@
       "CRITICAL": 0,
       "ERROR": 0,
       "INFO": 0,
-      "WARN": 0
+      "WARN": 77
     },
     "by_stage": [
       {
@@ -48,7 +48,7 @@
         "errors": 0,
         "infos": 0,
         "stage": "CHECK_INVARIANTS",
-        "warnings": 0
+        "warnings": 77
       },
       {
         "errors": 0,
@@ -72,10 +72,10 @@
     "counts": {
       "accounts_total": 1,
       "llm_contexts": 1,
-      "ml_rows": 1000,
+      "ml_rows": 101,
       "transactions_dropped": 0,
-      "transactions_emitted_sv": 1000,
-      "transactions_total": 1000
+      "transactions_emitted_sv": 101,
+      "transactions_total": 101
     }
   }
 }
