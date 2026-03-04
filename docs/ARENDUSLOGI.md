@@ -120,3 +120,27 @@ DSR iteratsioonid on märgistatud tsükliga: **ehita → hinda → õpi → koha
   - Kolme andmepunkti põhjal on tulemus kooskõlas O(n) keerukusega püsikuludega (~50 ms startup)
   - TestDeterminism uuendatud N=5 jooksule (varasem N=2 oli ebapiisav)
 - **Uuendused:** D9 golden-väljundid lisatud, frozen/v1.0.0/manifest.json uuendatud (9 andmestikku)
+
+---
+
+## Iteratsioon 6: Reaalne anonümiseeritud andmestik (04.03)
+- **D10 reaalne anonümiseeritud andmestik:** 90 tehingut (okt–nov 2016), parsitud pangaväljavõttest
+- **Eesmärk:** Valideerida pipeline'i käitumist pärisandmetega; tõendada, et süsteem töötab ka väljaspool sünteetilisi datasette (UK2 auditeeritav kvaliteeditõendus)
+- **Anonümiseerimine:**
+  - Isikute nimed asendatud väljamõeldud nimedega (4 isikut)
+  - Isiklikud IBANid asendatud (11 unikaalset kontot)
+  - Kaardi viimased 4 numbrit muudetud (2 kaarti)
+  - Aadressid anonümiseeritud (KÜ nimed, tänavanimed)
+  - Remittance-tekstid puhastatud identifitseerivatest viidetest
+  - Ettevõtete nimed ja avalikud IBANid jäetud muutmata (avalik info)
+- **Huvitavad äärjuhud:**
+  - Duplikaat-transactionId 47210131 (ATM väljavõte + teenustasu — erinev sisu, sama ID)
+  - `creditorName: "nan"` (pandas NaN→string artefakt)
+  - Teaduslik notatsioon `remittanceInformationStructured`-is (Excel/pandas artefakt)
+  - Kõik summad positiivsed (Berlin Group konventsioon)
+- **Tulemused:**
+  - Pipeline tulemus: PARTIAL_SUCCESS (oodatud — pärisandmetes tekivad WARN-lipud)
+  - 101 väljundrida (90 booked + 11 tuletatud)
+  - Determinism: 100% — kõik 4 artefakti baidilt identsed
+  - Kõik skeemid valideeruvad
+- **Uuendused:** D10 golden-väljundid lisatud, frozen/v1.0.0/manifest.json uuendatud (10 andmestikku)

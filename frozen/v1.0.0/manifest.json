@@ -3,6 +3,24 @@
   "spec_lock_sha256": "4114b0079d21116aea04b7c2f989f8a0e88791255aab80f9836c25842c1f30f2",
   "datasets": [
     {
+      "dataset_id": "D10_real_anon_oct16",
+      "expected_outcome": "PARTIAL_SUCCESS",
+      "golden": {
+        "sv.json": {
+          "sha256": "f4819a960d127cf3652820535be06f0d82f4ae610c2cf01f1f7e4d8e9c7ea9c4"
+        },
+        "ml_v1.csv": {
+          "sha256": "560f09ed10585bc32187dd65bf2e3a9537c46e4b322f6f010df4e731d1cbbc42"
+        },
+        "llm_context_v1.json": {
+          "sha256": "d1e4365cbba268e48aefc87a0d73c1055d807c33bdb829f7025ad0c0485ca222"
+        },
+        "report.json": {
+          "sha256": "fb5be1a1d7def76f852822a841cf6983eb4df5d2e3acd5d238f522b8c0ee32f4"
+        }
+      }
+    },
+    {
       "dataset_id": "D1_public_valid_small",
       "expected_outcome": "SUCCESS",
       "golden": {
@@ -46,7 +64,7 @@
           "sha256": "69ded157c35e888e4794010b0fa9b9ab526fc8739fa8bccd0bed8fe8616d32eb"
         },
         "ml_v1.csv": {
-          "sha256": "2a21c8bf7927ad115efabd13887c175d74657787d5c8f2cb86fd82a507bf4f73"
+          "sha256": "4597c1cdef4d5e0a6543bc4c7834d555b89369ec7cab88fc4f6d072c5c14e9ec"
         },
         "llm_context_v1.json": {
           "sha256": "2f2f8ceff2404a00d2b0e354c757267f721a81b10e5831703b2fa09fe90a931d"
@@ -58,7 +76,7 @@
     },
     {
       "dataset_id": "D4_synth_errors_seed42",
-      "expected_outcome": "FAIL",
+      "expected_outcome": "FAILED",
       "golden": {
         "sv.json": {
           "sha256": "56a7917cd03a9059a865a5fa76b59ba4bcd8987be7297aec8b38dd22fa4de187"
@@ -136,7 +154,7 @@
           "sha256": "23a9c45f73b3dc2477d2ffb4b2aadf227809041008ace29890dc62acbf70efd9"
         },
         "ml_v1.csv": {
-          "sha256": "b31b8d9c27ce3c2b3fba4fcf4bee7fc0f9a237a57c2698fa7049dfe2b1bb254a"
+          "sha256": "382e4b706ae6b4c105ec8d8efeaec7a92913837108ff4ab6883da18893f3859a"
         },
         "llm_context_v1.json": {
           "sha256": "d30f53279f1b5689fb8366efe44bf0b6d7e6df7950f2af1ad847854164b425bb"
@@ -151,16 +169,16 @@
       "expected_outcome": "SUCCESS",
       "golden": {
         "sv.json": {
-          "sha256": "9733caad193caba0f937fd91d79c5ae73fbdd9be2f02ad573615dd205508600f"
+          "sha256": "01b9723ce2a35e06ed5434d23a20c544033f0d162ff194c50f70546d13672c22"
         },
         "ml_v1.csv": {
           "sha256": "18c9c92e8465607e2b7520eecbdc3e52cb6f966c1b84b8c78ce470cd0f4e519f"
         },
         "llm_context_v1.json": {
-          "sha256": "7e24e3be9ae729bcc0e238f5e6a2d59063bb37e5b64eb73a8d3608a3675b3662"
+          "sha256": "a9a128ce28e2648b845361faf376f104b4f9b997eda0e1b0f67bbde4e7f7f140"
         },
         "report.json": {
-          "sha256": "c373fb9daa0e55b1ebc6ccc10c26aee92e029ccddef20f27ca2373e6348b0f66"
+          "sha256": "438801845ab5aeb952532eceaa8d12a13b827a1dac06478962fe331abc686505"
         }
       }
     }
