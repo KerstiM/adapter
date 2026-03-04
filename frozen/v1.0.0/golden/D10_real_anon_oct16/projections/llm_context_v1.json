@@ -1,0 +1,1021 @@
+{
+  "meta": {
+    "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+    "created_at_utc": "2000-01-01T00:00:00Z",
+    "currency": "EUR",
+    "iban": "EE617700771003845912",
+    "run_id": "GOLDEN_D10_real_anon_oct16"
+  },
+  "tx": [
+    {
+      "a": "-6.6",
+      "c": "EUR",
+      "cp": "Toits City",
+      "d": "2016-10-01",
+      "dir": "OUT",
+      "id": "e4272b3737efbdbf",
+      "r": "(..3847) 2016-09-29 09:41 Toits City   Tallinn  10145 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-2.25",
+      "c": "EUR",
+      "cp": "Tornimae Rimi",
+      "d": "2016-10-01",
+      "dir": "OUT",
+      "id": "eea9a46e3e1ec0f8",
+      "r": "(..3847) 2016-09-29 10:18 Tornimae Rimi   Tallinn  10145 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-3.3",
+      "c": "EUR",
+      "cp": "Raamatukogu kohvik",
+      "d": "2016-10-02",
+      "dir": "OUT",
+      "id": "1fac17aa96009f4a",
+      "r": "(..3847) 2016-09-30 12:04 Raamatukogu kohvik   Tallinn  12618 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-1.41",
+      "c": "EUR",
+      "cp": "Laagri Maksimarketi ap",
+      "d": "2016-10-02",
+      "dir": "OUT",
+      "id": "4615552ed7ff208a",
+      "r": "(..6291) 2016-10-01 10:46 Laagri Maksimarketi ap  Harjumaa  76401 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-6.93",
+      "c": "EUR",
+      "cp": "Laagri Maksimarket",
+      "d": "2016-10-02",
+      "dir": "OUT",
+      "id": "88f0960e738ec316",
+      "r": "(..6291) 2016-10-01 10:42 Laagri Maksimarket   Saue vald  76401 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "200",
+      "c": "EUR",
+      "cp": "Jaanus Kuusk",
+      "d": "2016-10-03",
+      "dir": "IN",
+      "id": "309520c85de28e77",
+      "r": "raha",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-59.22",
+      "c": "EUR",
+      "cp": "Maksekeskus AS",
+      "d": "2016-10-04",
+      "dir": "OUT",
+      "id": "8bca81a20a05c9e7",
+      "r": "Selver AS, selver.ee, 2113000584123 (1093432)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-9.44",
+      "c": "EUR",
+      "cp": "Torupilli Selver",
+      "d": "2016-10-05",
+      "dir": "OUT",
+      "id": "186fd08dee093015",
+      "r": "(..3847) 2016-10-03 15:44 Torupilli Selver   Tallinn  10126 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-2.8",
+      "c": "EUR",
+      "cp": "Raamatukogu kohvik",
+      "d": "2016-10-06",
+      "dir": "OUT",
+      "id": "6a030e2518bfc823",
+      "r": "(..3847) 2016-10-04 16:14 Raamatukogu kohvik   Tallinn  12618 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "2.99",
+      "c": "EUR",
+      "cp": "Maksekeskus AS",
+      "d": "2016-10-06",
+      "dir": "IN",
+      "id": "a63b2539047d0dbc",
+      "r": "Refund/Payment 1093432 (selver.ee, ref. 2113000584123)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-4.3",
+      "c": "EUR",
+      "cp": "Raamatukogu kohvik",
+      "d": "2016-10-06",
+      "dir": "OUT",
+      "id": "d11f941710e62244",
+      "r": "(..3847) 2016-10-04 12:27 Raamatukogu kohvik   Tallinn  12618 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-2.25",
+      "c": "EUR",
+      "cp": "Statoil Kristiine",
+      "d": "2016-10-07",
+      "dir": "OUT",
+      "id": "b134b295cd06c926",
+      "r": "(..3847) 2016-10-06 22:08 Statoil Kristiine   Tallinn  10613 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-6.85",
+      "c": "EUR",
+      "cp": "R-Kiosk 257 Sole Nest",
+      "d": "2016-10-07",
+      "dir": "OUT",
+      "id": "b3bc38666e173a76",
+      "r": "(..3847) 2016-10-05 17:29 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-2.9",
+      "c": "EUR",
+      "cp": "R-Kiosk 257 Sole Nest",
+      "d": "2016-10-08",
+      "dir": "OUT",
+      "id": "3f7e0e5027782794",
+      "r": "(..3847) 2016-10-06 18:07 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-30",
+      "c": "EUR",
+      "cp": "Pelgulinna huvikool",
+      "d": "2016-10-09",
+      "dir": "OUT",
+      "id": "ad8926da56d1f807",
+      "r": "(..3847) 2016-10-08 15:54 Pelgulinna huvikool  Tallinn  10614 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-3.3",
+      "c": "EUR",
+      "cp": "Staap",
+      "d": "2016-10-10",
+      "dir": "OUT",
+      "id": "1fb692fd9e787902",
+      "r": "(..3847) 2016-10-09 18:03 Staap   Tallinn  13425 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-9.5",
+      "c": "EUR",
+      "cp": "R-Kiosk 257 Sole Nest",
+      "d": "2016-10-10",
+      "dir": "OUT",
+      "id": "d4777901c8871a92",
+      "r": "(..3847) 2016-10-08 17:26 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-4.5",
+      "c": "EUR",
+      "cp": "Staap",
+      "d": "2016-10-11",
+      "dir": "OUT",
+      "id": "04e4d75363a54e6d",
+      "r": "(..3847) 2016-10-10 19:32 Staap   Tallinn  13425 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-22.5",
+      "c": "EUR",
+      "cp": "Pelgulinna huvikool",
+      "d": "2016-10-12",
+      "dir": "OUT",
+      "id": "1a9e02a7806aafbc",
+      "r": "(..3847) 2016-10-11 13:43 Pelgulinna huvikool  Tallinn  10614 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-22.89",
+      "c": "EUR",
+      "cp": "Kristiine Prisma isete",
+      "d": "2016-10-13",
+      "dir": "OUT",
+      "id": "7b7e8a8e4b12c487",
+      "r": "(..3847) 2016-10-11 13:19 Kristiine Prisma isete  Tallinn  10615 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-11.76",
+      "c": "EUR",
+      "cp": "Laagri Rimi apteek",
+      "d": "2016-10-14",
+      "dir": "OUT",
+      "id": "9e35b2d8a0c9e980",
+      "r": "(..6291) 2016-10-13 15:21 Laagri Rimi apteek   Laagri  76401 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "50",
+      "c": "EUR",
+      "cp": "Kersti Pärn",
+      "d": "2016-10-14",
+      "dir": "IN",
+      "id": "ef800ba4719070bb",
+      "r": "Ulekanne",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-20.19",
+      "c": "EUR",
+      "cp": "BUS & TOG MOBILBILLET",
+      "d": "2016-10-15",
+      "dir": "OUT",
+      "id": "8ad883ebe30fb8a8",
+      "r": "(..3847) 2016-10-14 21:21 BUS & TOG MOBILBILLET TELEGADE 2 TAASTRUP 2630 DNK (150 DKK)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-1",
+      "c": "EUR",
+      "cp": "nan",
+      "d": "2016-10-17",
+      "dir": "OUT",
+      "id": "216c30c3021e7d28",
+      "r": "Sularaha valjamakse tasu: (..3847) 2016-10-14 18:43 DANSKE BANK  416075  KOBENHAVN NV  2400 DNKDNK (300 DKK)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-5.85",
+      "c": "EUR",
+      "cp": "220 Energia OU",
+      "d": "2016-10-17",
+      "dir": "OUT",
+      "id": "294cbf1395d14df6",
+      "r": "Arve nr: 121716034",
+      "s": "BOOKED"
+    },
+    {
+      "a": "50",
+      "c": "EUR",
+      "cp": "Kersti Pärn",
+      "d": "2016-10-17",
+      "dir": "IN",
+      "id": "30fe6eddfaa39320",
+      "r": "Ulekanne kommud",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-56.15",
+      "c": "EUR",
+      "cp": "Kase tn. 15 KU",
+      "d": "2016-10-17",
+      "dir": "OUT",
+      "id": "d58cd579898178a6",
+      "r": "Tamme 42-12 September",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-40.4",
+      "c": "EUR",
+      "cp": "DANSKE BANK",
+      "d": "2016-10-17",
+      "dir": "OUT",
+      "id": "d9322c75472c2921",
+      "r": "(..3847) 2016-10-14 18:43 DANSKE BANK  416075  KOBENHAVN NV  2400 DNKDNK (300 DKK)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "160",
+      "c": "EUR",
+      "cp": "TALLINNA LINNAKANTSELEI",
+      "d": "2016-10-20",
+      "dir": "IN",
+      "id": "16c851ecf31a1994",
+      "r": "Kutusetoetus Tallinna linnalt",
+      "s": "BOOKED"
+    },
+    {
+      "a": "65",
+      "c": "EUR",
+      "cp": "Kersti Pärn",
+      "d": "2016-10-20",
+      "dir": "IN",
+      "id": "78d9509d111c00b0",
+      "r": "Ulekanne",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-160",
+      "c": "EUR",
+      "cp": "Kersti Pärn",
+      "d": "2016-10-20",
+      "dir": "OUT",
+      "id": "78dd1fc1eab028dd",
+      "r": "TLN 160",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-38.95",
+      "c": "EUR",
+      "cp": "Elisa Eesti AS",
+      "d": "2016-10-20",
+      "dir": "OUT",
+      "id": "d702c36a38748add",
+      "r": "81501010",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-40",
+      "c": "EUR",
+      "cp": "MARIKA Kivi",
+      "d": "2016-10-21",
+      "dir": "OUT",
+      "id": "10ac87d2f10118ed",
+      "r": "Kampsun",
+      "s": "BOOKED"
+    },
+    {
+      "a": "40",
+      "c": "EUR",
+      "cp": "Kersti Pärn",
+      "d": "2016-10-21",
+      "dir": "IN",
+      "id": "1b05cf7498bc050c",
+      "r": "Ulekanne",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-40.17",
+      "c": "EUR",
+      "cp": "Maksekeskus AS",
+      "d": "2016-10-21",
+      "dir": "OUT",
+      "id": "32f56f44883864e3",
+      "r": "Selver AS, selver.ee, 2113000632839 (1185082)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-4.9",
+      "c": "EUR",
+      "cp": "Taxify 16.10.20 1054",
+      "d": "2016-10-21",
+      "dir": "OUT",
+      "id": "3dae591293c4e4a4",
+      "r": "(..6291) 2016-10-20 13:08 Taxify 16.10.20 1054 Tammsaare tee 47 Viimsi 74008 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-4.1",
+      "c": "EUR",
+      "cp": "Taxify 16.10.20 1307",
+      "d": "2016-10-21",
+      "dir": "OUT",
+      "id": "44de2d14293c3c5e",
+      "r": "(..6291) 2016-10-20 15:26 Taxify 16.10.20 1307 Tammsaare tee 47 Viimsi 74008 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "16",
+      "c": "EUR",
+      "cp": "Kersti Pärn",
+      "d": "2016-10-21",
+      "dir": "IN",
+      "id": "8b23561559142706",
+      "r": "Ulekanne",
+      "s": "BOOKED"
+    },
+    {
+      "a": "40",
+      "c": "EUR",
+      "cp": "Kersti Pärn",
+      "d": "2016-10-23",
+      "dir": "IN",
+      "id": "3c3039abdc93f0f9",
+      "r": "Ulekanne",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-450",
+      "c": "EUR",
+      "cp": "Jaanus Kuusk",
+      "d": "2016-10-24",
+      "dir": "OUT",
+      "id": "14f67d6126f859b1",
+      "r": "ulekanne",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-4.14",
+      "c": "EUR",
+      "cp": "Ylikooli Apteegi YA Kr",
+      "d": "2016-10-24",
+      "dir": "OUT",
+      "id": "29aadc386f7a1c03",
+      "r": "(..6291) 2016-10-23 18:03 Ylikooli Apteegi YA Kr  Tallinn  10615 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "475",
+      "c": "EUR",
+      "cp": "Kersti Pärn",
+      "d": "2016-10-24",
+      "dir": "IN",
+      "id": "35526d218e97620c",
+      "r": "Ulekanne 2",
+      "s": "BOOKED"
+    },
+    {
+      "a": "210",
+      "c": "EUR",
+      "cp": "Kersti Pärn",
+      "d": "2016-10-24",
+      "dir": "IN",
+      "id": "aac2a95f2dd9ae32",
+      "r": "Ulekanne matilt",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-210",
+      "c": "EUR",
+      "cp": "Jaanus Kuusk",
+      "d": "2016-10-24",
+      "dir": "OUT",
+      "id": "d15a0ab674b42031",
+      "r": "Matilt",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-4.6",
+      "c": "EUR",
+      "cp": "Kristiine Kaubanduskes",
+      "d": "2016-10-24",
+      "dir": "OUT",
+      "id": "dcf2fa9ac6a2843c",
+      "r": "(..6291) 2016-10-23 17:49 Kristiine Kaubanduskes  Tallinn  10615 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-5.6",
+      "c": "EUR",
+      "cp": "Knopka Kristiine kesk",
+      "d": "2016-10-24",
+      "dir": "OUT",
+      "id": "ec015c636a7996fe",
+      "r": "(..6291) 2016-10-23 17:59 Knopka Kristiine kesk  Tallinn  10615 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-23.18",
+      "c": "EUR",
+      "cp": "Ylikooli Apteegi YA Kr",
+      "d": "2016-10-25",
+      "dir": "OUT",
+      "id": "abcc8f45cad14ccc",
+      "r": "(..6291) 2016-10-24 14:48 Ylikooli Apteegi YA Kr  Tallinn  10615 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-30",
+      "c": "EUR",
+      "cp": "Jaanus Kuusk",
+      "d": "2016-10-26",
+      "dir": "OUT",
+      "id": "329bfbab407eabbf",
+      "r": "Matilt",
+      "s": "BOOKED"
+    },
+    {
+      "a": "2.51",
+      "c": "EUR",
+      "cp": "Maksekeskus AS",
+      "d": "2016-10-26",
+      "dir": "IN",
+      "id": "416db3424df7de4a",
+      "r": "Refund/Payment 1185082 (selver.ee, ref. 2113000632839)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-40.42",
+      "c": "EUR",
+      "cp": "Maksekeskus AS",
+      "d": "2016-10-27",
+      "dir": "OUT",
+      "id": "347a2fc1065511fc",
+      "r": "Selver AS, selver.ee, 2113000649424 (1201030)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "15",
+      "c": "EUR",
+      "cp": "Kersti Pärn",
+      "d": "2016-10-27",
+      "dir": "IN",
+      "id": "8789bc86857bf3de",
+      "r": "Ulekanne",
+      "s": "BOOKED"
+    },
+    {
+      "a": "40",
+      "c": "EUR",
+      "cp": "Kersti Pärn",
+      "d": "2016-10-27",
+      "dir": "IN",
+      "id": "d8fce85a144efd59",
+      "r": "Ulekanne",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-3.7",
+      "c": "EUR",
+      "cp": "Taxify 16.10.27 1536",
+      "d": "2016-10-28",
+      "dir": "OUT",
+      "id": "5a92a725645ab8b9",
+      "r": "(..6291) 2016-10-27 17:50 Taxify 16.10.27 1536 Tammsaare tee 47 Viimsi 74008 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "200",
+      "c": "EUR",
+      "cp": "Jaanus Kuusk",
+      "d": "2016-10-28",
+      "dir": "IN",
+      "id": "a57a79a290ea9628",
+      "r": "raha",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-4.4",
+      "c": "EUR",
+      "cp": "Taxify 16.10.28 1047",
+      "d": "2016-10-29",
+      "dir": "OUT",
+      "id": "2cbdfd7d2928bb68",
+      "r": "(..6291) 2016-10-28 13:03 Taxify 16.10.28 1047 Tammsaare tee 47 Viimsi 74008 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-10",
+      "c": "EUR",
+      "cp": "Epp Saare",
+      "d": "2016-10-30",
+      "dir": "OUT",
+      "id": "ffbe1ac148563191",
+      "r": "ulekanne",
+      "s": "BOOKED"
+    },
+    {
+      "a": "0.22",
+      "c": "EUR",
+      "cp": "Maksekeskus AS",
+      "d": "2016-10-31",
+      "dir": "IN",
+      "id": "f8f06d89b0157ad8",
+      "r": "Refund/Payment 1201030 (selver.ee, ref. 2113000649424)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-46.04",
+      "c": "EUR",
+      "cp": "Maksekeskus AS",
+      "d": "2016-11-02",
+      "dir": "OUT",
+      "id": "0dc471d308670754",
+      "r": "Selver AS, selver.ee, 2113000667338 (1220238)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "10",
+      "c": "EUR",
+      "cp": "Kersti Pärn",
+      "d": "2016-11-02",
+      "dir": "IN",
+      "id": "74f7ff1de6dd4ced",
+      "r": "Ulekanne Liina tagasi",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-5.5",
+      "c": "EUR",
+      "cp": "Happy Socks",
+      "d": "2016-11-03",
+      "dir": "OUT",
+      "id": "207ba1b61abe82aa",
+      "r": "(..6291) 2016-11-02 19:15 Happy Socks   Tallinn  10615 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-3.9",
+      "c": "EUR",
+      "cp": "Sokisahtel",
+      "d": "2016-11-03",
+      "dir": "OUT",
+      "id": "437a184cb274ad9c",
+      "r": "(..6291) 2016-11-02 19:12 Sokisahtel   Tallinn  10116 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-75",
+      "c": "EUR",
+      "cp": "Kersti Pärn",
+      "d": "2016-11-03",
+      "dir": "OUT",
+      "id": "af0a9a02a790def5",
+      "r": "Oppelaen",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-15.95",
+      "c": "EUR",
+      "cp": "Mosaic Kristiine",
+      "d": "2016-11-03",
+      "dir": "OUT",
+      "id": "c71eb9461193999f",
+      "r": "(..6291) 2016-11-02 19:25 Mosaic Kristiine   Tallinn  10615 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "3.38",
+      "c": "EUR",
+      "cp": "Maksekeskus AS",
+      "d": "2016-11-04",
+      "dir": "IN",
+      "id": "a0e855af883cd995",
+      "r": "Refund/Payment 1220238 (selver.ee, ref. 2113000667338)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-35.17",
+      "c": "EUR",
+      "cp": "403 H&M Kristiine",
+      "d": "2016-11-05",
+      "dir": "OUT",
+      "id": "01fdd74488947e8d",
+      "r": "(..6291) 2016-11-04 20:58 403 H&M Kristiine   Tallinn  10615 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "450",
+      "c": "EUR",
+      "cp": "Kersti Pärn",
+      "d": "2016-11-05",
+      "dir": "IN",
+      "id": "2a23285c6567b969",
+      "r": "Ulekanne madrats",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-12.5",
+      "c": "EUR",
+      "cp": "Mooblimaja",
+      "d": "2016-11-06",
+      "dir": "OUT",
+      "id": "8ed01c65b1a73baf",
+      "r": "(..6291) 2016-11-05 12:22 Mooblimaja   Tallinn  10611 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-7.98",
+      "c": "EUR",
+      "cp": "Jysk Linnenn Furniture",
+      "d": "2016-11-06",
+      "dir": "OUT",
+      "id": "f19048a3f2d9d0f5",
+      "r": "(..6291) 2016-11-04 20:41 Jysk Linnenn Furniture  Tallinn  10615 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-385.6",
+      "c": "EUR",
+      "cp": "Mooblimaja",
+      "d": "2016-11-06",
+      "dir": "OUT",
+      "id": "fa31ded078d154fd",
+      "r": "(..6291) 2016-11-05 12:15 Mooblimaja   Tallinn  10611 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-40",
+      "c": "EUR",
+      "cp": "AS Starman",
+      "d": "2016-11-08",
+      "dir": "OUT",
+      "id": "4badddc7d48a95e4",
+      "r": "A-28650768",
+      "s": "BOOKED"
+    },
+    {
+      "a": "500",
+      "c": "EUR",
+      "cp": "Jaanus Kuusk",
+      "d": "2016-11-08",
+      "dir": "IN",
+      "id": "6223888008060412",
+      "r": "raha",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-130",
+      "c": "EUR",
+      "cp": "KU Lepa tee 8",
+      "d": "2016-11-08",
+      "dir": "OUT",
+      "id": "9d0b1dee8b17536b",
+      "r": "11206 Jaanus Kuusk",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-8",
+      "c": "EUR",
+      "cp": "220 Energia OU",
+      "d": "2016-11-08",
+      "dir": "OUT",
+      "id": "b4c8c8db4e1e64ad",
+      "r": "Arve nr: 121741865",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-3.8",
+      "c": "EUR",
+      "cp": "Taxify 16.11.08 0923",
+      "d": "2016-11-09",
+      "dir": "OUT",
+      "id": "52b604c07c65826a",
+      "r": "(..6291) 2016-11-08 10:35 Taxify 16.11.08 0923 Tammsaare tee 47 Viimsi 74008 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-13",
+      "c": "EUR",
+      "cp": "Eesti Energia AS",
+      "d": "2016-11-09",
+      "dir": "OUT",
+      "id": "757a09b925af1bb2",
+      "r": "Arve nr 642352775672",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-5.8",
+      "c": "EUR",
+      "cp": "Taxify 16.11.08 0803",
+      "d": "2016-11-09",
+      "dir": "OUT",
+      "id": "e6c88b29a6680e59",
+      "r": "(..6291) 2016-11-08 09:20 Taxify 16.11.08 0803 Tammsaare tee 47 Viimsi 74008 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-16.29",
+      "c": "EUR",
+      "cp": "Maxima X T205",
+      "d": "2016-11-11",
+      "dir": "OUT",
+      "id": "1c2c9234760fa7cd",
+      "r": "(..6291) 2016-11-10 12:09 Maxima X T205   Tallinn  11312 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-5.9",
+      "c": "EUR",
+      "cp": "Sesoon kohvik",
+      "d": "2016-11-12",
+      "dir": "OUT",
+      "id": "04c831e726bcbe2c",
+      "r": "(..6291) 2016-11-11 22:23 Sesoon kohvik   Tallinn  10414 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-41.6",
+      "c": "EUR",
+      "cp": "Maksekeskus AS",
+      "d": "2016-11-12",
+      "dir": "OUT",
+      "id": "35fe05452c11c866",
+      "r": "Selver AS, selver.ee, 2113000700648 (1257213)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-12.7",
+      "c": "EUR",
+      "cp": "Kristiine Kaubanduskes",
+      "d": "2016-11-13",
+      "dir": "OUT",
+      "id": "f12af74d9446ada5",
+      "r": "(..6291) 2016-11-12 12:48 Kristiine Kaubanduskes  Tallinn  10615 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "5.38",
+      "c": "EUR",
+      "cp": "Maksekeskus AS",
+      "d": "2016-11-14",
+      "dir": "IN",
+      "id": "2f07ba36281c96d9",
+      "r": "Refund/Payment 1257213 (selver.ee, ref. 2113000700648)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-3.5",
+      "c": "EUR",
+      "cp": "Kehrwieder",
+      "d": "2016-11-15",
+      "dir": "OUT",
+      "id": "94d7a169e6b02b20",
+      "r": "(..6291) 2016-11-14 20:33 Kehrwieder   Tallinn  10146 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-6.1",
+      "c": "EUR",
+      "cp": "Antalya restoran",
+      "d": "2016-11-16",
+      "dir": "OUT",
+      "id": "27792db3ad235146",
+      "r": "(..6291) 2016-11-15 13:26 Antalya restoran   Tallinn  11315 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-36",
+      "c": "EUR",
+      "cp": "Mooblimaja",
+      "d": "2016-11-17",
+      "dir": "OUT",
+      "id": "5df5dad4e213f04a",
+      "r": "(..6291) 2016-11-16 13:38 Mooblimaja   Tallinn  10611 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-18.9",
+      "c": "EUR",
+      "cp": "Sky Mobile Kristiine",
+      "d": "2016-11-17",
+      "dir": "OUT",
+      "id": "d9fdd1a7ea7228e4",
+      "r": "(..6291) 2016-11-16 12:25 Sky Mobile Kristiine   Tallinn  10615 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-6",
+      "c": "EUR",
+      "cp": "Kristiine postkontor",
+      "d": "2016-11-20",
+      "dir": "OUT",
+      "id": "496c546abe4742ff",
+      "r": "(..6291) 2016-11-19 14:11 Kristiine postkontor   Tallinn  10701 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-41.52",
+      "c": "EUR",
+      "cp": "Maksekeskus AS",
+      "d": "2016-11-20",
+      "dir": "OUT",
+      "id": "ed69435330262da8",
+      "r": "Selver AS, selver.ee, 2113000727317 (1284342)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-6.1",
+      "c": "EUR",
+      "cp": "Taxify 16.11.20 1455",
+      "d": "2016-11-21",
+      "dir": "OUT",
+      "id": "1ad04e8f1c613d2e",
+      "r": "(..6291) 2016-11-20 16:19 Taxify 16.11.20 1455 Tammsaare tee 47 Viimsi 74008 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-5.3",
+      "c": "EUR",
+      "cp": "Taxify 16.11.19 1305",
+      "d": "2016-11-21",
+      "dir": "OUT",
+      "id": "581341da2249056e",
+      "r": "(..6291) 2016-11-19 14:22 Taxify 16.11.19 1305 Tammsaare tee 47 Viimsi 74008 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-5",
+      "c": "EUR",
+      "cp": "Jaanus Kuusk",
+      "d": "2016-11-21",
+      "dir": "OUT",
+      "id": "74e40786c2f09f82",
+      "r": "matilt",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-20.14",
+      "c": "EUR",
+      "cp": "Kristiine Prisma isete",
+      "d": "2016-11-22",
+      "dir": "OUT",
+      "id": "1b13247545d812b0",
+      "r": "(..6291) 2016-11-21 12:47 Kristiine Prisma isete  Tallinn  10615 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-38.95",
+      "c": "EUR",
+      "cp": "Elisa Eesti AS",
+      "d": "2016-11-22",
+      "dir": "OUT",
+      "id": "a7db82bbc885e9c4",
+      "r": "81501010",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-10",
+      "c": "EUR",
+      "cp": "Epp Saare",
+      "d": "2016-11-22",
+      "dir": "OUT",
+      "id": "be9efb868ffff815",
+      "r": "RAHA",
+      "s": "BOOKED"
+    },
+    {
+      "a": "4.81",
+      "c": "EUR",
+      "cp": "Maksekeskus AS",
+      "d": "2016-11-23",
+      "dir": "IN",
+      "id": "2fcc0278942fd2c5",
+      "r": "Refund/Payment 1284342 (selver.ee, ref. 2113000727317)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-12.72",
+      "c": "EUR",
+      "cp": "ALI*aliexpress.com",
+      "d": "2016-11-24",
+      "dir": "OUT",
+      "id": "dc26db06b55b95cc",
+      "r": "(..6291) 2016-11-22 16:11 ALI*aliexpress.com No.699, Wangshang Road HANGZHOU 310099 CHN (13.4 USD)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-9",
+      "c": "EUR",
+      "cp": "Pelgulinna Huvikool",
+      "d": "2016-11-26",
+      "dir": "OUT",
+      "id": "33645af9ee39a35c",
+      "r": "(..6291) 2016-11-25 16:16 Pelgulinna Huvikool  Tallinn  10614 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-15",
+      "c": "EUR",
+      "cp": "Epp Saare",
+      "d": "2016-11-26",
+      "dir": "OUT",
+      "id": "5d470600c854755a",
+      "r": "Kino!",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-42.03",
+      "c": "EUR",
+      "cp": "Maksekeskus AS",
+      "d": "2016-11-29",
+      "dir": "OUT",
+      "id": "fd3c46dd45686e1f",
+      "r": "Selver AS, selver.ee, 2113000756922 (1316602)",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-3.5",
+      "c": "EUR",
+      "cp": "Antalya restoran",
+      "d": "2016-11-30",
+      "dir": "OUT",
+      "id": "03fae4217366205f",
+      "r": "(..6291) 2016-11-29 12:57 Antalya restoran   Tallinn  11315 ESTEST",
+      "s": "BOOKED"
+    },
+    {
+      "a": "200",
+      "c": "EUR",
+      "cp": "Jaanus Kuusk",
+      "d": "2016-11-30",
+      "dir": "IN",
+      "id": "30a4d1b9b088a75f",
+      "r": "raha",
+      "s": "BOOKED"
+    },
+    {
+      "a": "0.01",
+      "c": "EUR",
+      "cp": "Maksekeskus AS",
+      "d": "2016-11-30",
+      "dir": "IN",
+      "id": "a95d9bac14dd8a2e",
+      "r": "Refund/Payment 1316602 (selver.ee, ref. 2113000756922)",
+      "s": "BOOKED"
+    }
+  ]
+}
