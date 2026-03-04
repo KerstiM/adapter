@@ -178,8 +178,8 @@
           "amount": "30.00",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "(..7821) 2016-10-08 15:54 Pelgulinna synnitusmaj  Tallinn  10614 ESTEST",
-        "creditorName": "Pelgulinna synnitusmaj"
+        "remittanceInformationUnstructured": "(..7821) 2016-10-08 15:54 Pelgulinna huvikool  Tallinn  10614 ESTEST",
+        "creditorName": "Pelgulinna huvikool"
       },
       {
         "transactionId": "46605079",
@@ -222,8 +222,8 @@
           "amount": "22.50",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "(..7821) 2016-10-11 13:43 Pelgulinna synnitusmaj  Tallinn  10614 ESTEST",
-        "creditorName": "Pelgulinna synnitusmaj"
+        "remittanceInformationUnstructured": "(..7821) 2016-10-11 13:43 Pelgulinna huvikool  Tallinn  10614 ESTEST",
+        "creditorName": "Pelgulinna huvikool"
       },
       {
         "transactionId": "46931806",
@@ -374,7 +374,7 @@
           "amount": "160.00",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "Sunnitoetus Tallinna linnalt",
+        "remittanceInformationUnstructured": "Kutusetoetus Tallinna linnalt",
         "remittanceInformationStructured": "5265000203560006",
         "debtorName": "TALLINNA LINNAKANTSELEI",
         "debtorAccount": {
@@ -557,7 +557,7 @@
           "amount": "210.00",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "Ulekanne rupsilt",
+        "remittanceInformationUnstructured": "Ulekanne matilt",
         "debtorName": "Liina Rebane",
         "debtorAccount": {
           "iban": "EE747700771002938471"
@@ -571,7 +571,7 @@
           "amount": "210.00",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "Rupsilt",
+        "remittanceInformationUnstructured": "Matilt",
         "creditorName": "Marten Koppel",
         "creditorAccount": {
           "iban": "EE827700771008461293"
@@ -611,7 +611,7 @@
           "amount": "30.00",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "Rupsilt",
+        "remittanceInformationUnstructured": "Matilt",
         "creditorName": "Marten Koppel",
         "creditorAccount": {
           "iban": "EE827700771008461293"
@@ -733,7 +733,7 @@
           "amount": "10.00",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "Ulekanne Leegi tagasi",
+        "remittanceInformationUnstructured": "Ulekanne Liina tagasi",
         "debtorName": "Liina Rebane",
         "debtorAccount": {
           "iban": "EE617700771007293845"
@@ -1133,7 +1133,7 @@
           "amount": "5.00",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "uuriks",
+        "remittanceInformationUnstructured": "matilt",
         "creditorName": "Marten Koppel",
         "creditorAccount": {
           "iban": "EE827700771008461293"
@@ -1213,8 +1213,8 @@
           "amount": "9.00",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "(..4536) 2016-11-25 16:16 Pelgulinna Synnitusmaj  Tallinn  10614 ESTEST",
-        "creditorName": "Pelgulinna Synnitusmaj"
+        "remittanceInformationUnstructured": "(..4536) 2016-11-25 16:16 Pelgulinna Huvikool  Tallinn  10614 ESTEST",
+        "creditorName": "Pelgulinna Huvikool"
       },
       {
         "transactionId": "50172205",
