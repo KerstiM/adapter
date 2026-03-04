@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/S-00_berlin_transactions.schema.json",
+  "version": "1.0.0",
+  "title": "Berlin Group AIS - Read Transaction List (minimal subset + download-only)",
+  "version": "1.0.0",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/ReportResponse"
+    },
+    {
+      "$ref": "#/$defs/DownloadOnlyResponse"
+    }
+  ],
+  "$defs": {
+    "Iban": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}[0-9A-Z]{13,32}$"
+    },
+    "IsoDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "Amount": {
+      "type": "object",
+      "required": [
+        "currency",
+        "amount"
+      ],
+      "properties": {
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^-?\\d+(\\.\\d{1,3})?$"
+        }
+      },
+      "additionalProperties": true
+    },
+    "Tx": {
+      "type": "object",
+      "required": [
+        "transactionAmount",
+        "valueDate"
+      ],
+      "properties": {
+        "transactionId": {
+          "type": "string"
+        },
+        "creditorName": {
+          "type": "string"
+        },
+        "creditorAccount": {
+          "type": "object",
+          "properties": {
+            "iban": {
+              "$ref": "#/$defs/Iban"
+            }
+          },
+          "additionalProperties": true
+        },
+        "debtorName": {
+          "type": "string"
+        },
+        "debtorAccount": {
+          "type": "object",
+          "properties": {
+            "iban": {
+              "$ref": "#/$defs/Iban"
+            }
+          },
+          "additionalProperties": true
+        },
+        "transactionAmount": {
+          "$ref": "#/$defs/Amount"
+        },
+        "bookingDate": {
+          "$ref": "#/$defs/IsoDate"
+        },
+        "valueDate": {
+          "$ref": "#/$defs/IsoDate"
+        },
+        "remittanceInformationUnstructured": {
+          "type": "string"
+        },
+        "bankTransactionCode": {
+          "type": "string"
+        },
+        "additionalInformationStructured": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ReportResponse": {
+      "type": "object",
+      "required": [
+        "account",
+        "transactions"
+      ],
+      "properties": {
+        "account": {
+          "type": "object",
+          "required": ["iban"],
+          "properties": {
+            "iban": {
+              "$ref": "#/$defs/Iban"
+            }
+          },
+          "additionalProperties": true
+        },
+        "transactions": {
+          "type": "object",
+          "properties": {
+            "booked": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Tx"
+              }
+            },
+            "pending": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Tx"
+              }
+            },
+            "information": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Tx"
+              }
+            },
+            "_links": {
+              "type": "object"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "DownloadOnlyResponse": {
+      "type": "object",
+      "required": [
+        "_links"
+      ],
+      "properties": {
+        "_links": {
+          "type": "object",
+          "required": [
+            "download"
+          ],
+          "properties": {
+            "download": {
+              "type": "object",
+              "required": [
+                "href"
+              ],
+              "properties": {
+                "href": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

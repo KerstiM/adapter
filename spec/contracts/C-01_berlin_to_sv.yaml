@@ -1,0 +1,93 @@
+id: C-01_BERLIN_TO_SV
+version: "1.0.0"
+
+inputs:
+  accounts_file: "accounts.json"
+  reports:
+    - "transactions.json"
+  optional_reports:
+    - "standing_orders.json"
+
+account_resolution:
+  match_by_iban:
+    accounts_path: "$.accounts[*]"
+    account_id_field: "resourceId"
+    iban_field: "iban"
+    report_account_iban_path: "$.account.iban"
+
+flatten:
+  BOOKED: "$.transactions.booked[*]"
+  PENDING: "$.transactions.pending[*]"
+  INFORMATION: "$.transactions.information[*]"
+
+map:
+  transaction_id: "$.transactionId"
+  booking_date: "$.bookingDate"
+  value_date: "coalesce($.valueDate, $.nextExecutionDate)"  # nextExecutionDate used for INFORMATION/standing-order items only
+  currency: "$.transactionAmount.currency"
+  amount_raw: "$.transactionAmount.amount"
+  remittance: "$.remittanceInformationUnstructured"
+
+  creditor_name: "$.creditorName"
+  creditor_iban: "$.creditorAccount.iban"
+  debtor_name: "$.debtorName"
+  debtor_iban: "$.debtorAccount.iban"
+
+derive:
+  direction: >
+    if exists(debtor_name) then "IN"
+    else if exists(creditor_name) then "OUT"
+    else if starts_with(amount_raw, "-") then "OUT" else "IN"
+
+  counterparty: >
+    if direction == "OUT" then {role:"CREDITOR", name: creditor_name, iban: creditor_iban}
+    else if direction == "IN" then {role:"DEBTOR", name: debtor_name, iban: debtor_iban}
+    else {role:"UNKNOWN", name:null, iban:null}
+
+  amount_abs: "abs_str(amount_raw)"
+
+  amount_signed: >
+    if direction == "OUT" then ensure_negative(amount_abs)
+    else ensure_positive(amount_abs)
+
+  flags_extra: >
+    if not sign_matches(direction, amount_raw) then [{id:"INV-05_AMOUNT_SIGN_MATCHES_DIRECTION", severity:"WARN", message:"raw amount sign mismatched derived direction; normalized signed amount."}]
+    else []
+
+  record_id: "hash_sha256(account_id, status, booking_date, value_date, amount_signed, currency, counterparty.name, remittance, transaction_id)"
+
+output:
+  account:
+    account_id: "@account_id"
+    iban: "@report_account_iban"
+    currency: "@accounts[account_id].currency"
+    name: "@accounts[account_id].name"
+
+  transaction:
+    record_id: "@derive(record_id)"
+    transaction_id: "@map(transaction_id)"
+    account_id: "@account_id"
+    status: "@status"
+    booking_date: "@map(booking_date)"
+    value_date: "@map(value_date)"
+    amount:
+      currency: "@map(currency)"
+      raw: "@map(amount_raw)"
+      signed: "@derive(amount_signed)"
+      abs: "@derive(amount_abs)"
+    direction: "@derive(direction)"
+    counterparty: "@derive(counterparty)"
+    remittance: "@map(remittance)"
+    flags: "@derive(flags_extra)"
+    source:
+      input_file: "@input_file"
+      input_path: "@json_path"
+
+download_only_handling:
+  note: "Not used in current datasets. Retained for future Berlin AIS download-only responses."
+  when: "exists($._links.download.href)"
+  action: "SKIP_FILE_AND_FLAG_RUN"
+  run_flag:
+    id: "RUN_DOWNLOAD_ONLY"
+    severity: "WARN"
+    message: "transaction report delivered as download link; not expanded in prototype."

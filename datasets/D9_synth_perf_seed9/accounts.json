@@ -1,0 +1,12 @@
+{
+  "accounts": [
+    {
+      "cashAccountType": "CACC",
+      "currency": "EUR",
+      "iban": "EE220587915890627622",
+      "name": "D9 Standard Scale Account",
+      "product": "Current Account",
+      "resourceId": "4462ebfc-5f91-4ef0-9cfb-ac6e7687a66e"
+    }
+  ]
+}

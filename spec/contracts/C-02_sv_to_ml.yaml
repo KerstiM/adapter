@@ -1,0 +1,39 @@
+id: C-02_SV_TO_ML
+version: "1.0.0"
+
+filter:
+  include_status: ["BOOKED", "PENDING"]
+
+sort:
+  keys: ["account_id", "value_date", "record_id"]
+
+output:
+  format: CSV
+  file: "out/ml_projection.csv"
+  columns:
+    - row_id
+    - account_id
+    - record_id
+    - status
+    - booking_date
+    - value_date
+    - direction
+    - currency
+    - signed_amount
+    - abs_amount
+    - counterparty_name
+    - remittance
+
+map:
+  row_id: "row_number()"
+  account_id: "$.account_id"
+  record_id: "$.record_id"
+  status: "$.status"
+  booking_date: "$.booking_date"
+  value_date: "$.value_date"
+  direction: "$.direction"
+  currency: "$.amount.currency"
+  signed_amount: "$.amount.signed"
+  abs_amount: "$.amount.abs"
+  counterparty_name: "$.counterparty.name"
+  remittance: "$.remittance"

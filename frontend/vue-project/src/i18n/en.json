@@ -1,0 +1,127 @@
+{
+  "header": {
+    "subtitle": "Standardisation Layer",
+    "version": "prototype v1.0"
+  },
+  "lang": {
+    "et": "Eesti",
+    "en": "English"
+  },
+  "dataset": {
+    "title": "Dataset",
+    "hint": "Select a dataset to run the pipeline",
+    "recordsUnit": "transactions",
+    "accountsUnit": "accounts",
+    "D1": "Public, valid, small",
+    "D2": "Public, mixed, large",
+    "D3": "Synthetic, valid",
+    "D4": "Synthetic, with errors",
+    "D5": "Edge cases",
+    "D6": "With duplicates",
+    "D7": "Standing orders",
+    "D8": "Large dataset",
+    "CUSTOM": "Your own data"
+  },
+  "model": {
+    "title": "Destination models",
+    "hint": "Select models to forward pipeline output to"
+  },
+  "flow": {
+    "dataSelection": "Data selection",
+    "modelSelection": "Model selection",
+    "runPipeline": "Results",
+    "results": "Results",
+    "projections": "Projections"
+  },
+  "data": {
+    "chooseDataset": "Choose dataset",
+    "chooseYourData": "Choose your data sources",
+    "allowedFormatsTitle": "Allowed formats",
+    "allowedFormatsBody": "JSON (Berlin Group PSD2 AIS) – accounts.json + transactions.json. See docs/SPETSIFIKATSIOONID.md for schema details.",
+    "notAvailable": "Not yet available"
+  },
+  "models": {
+    "forwardTo": "Forward to",
+    "addModel": "Add model",
+    "removeModel": "Remove model",
+    "noneSelectedHint": "No destination models selected (optional)",
+    "forwardingTitle": "Forwarding to models",
+    "notAvailable": "Not available yet",
+    "defaultSelectedHint": "Default selected: {model}"
+  },
+  "actions": {
+    "run": "Run pipeline",
+    "reset": "Reset",
+    "view": "View",
+    "close": "Close",
+    "download": "Download",
+    "downloadAs": "Download as"
+  },
+  "errors": {
+    "runFailed": "Pipeline execution failed",
+    "noProjectionData": "No data available"
+  },
+  "formats": {
+    "csv": "CSV",
+    "json": "JSON",
+    "txt": "TXT"
+  },
+  "results": {
+    "loading": "Pipeline running...",
+    "empty": "Select a dataset and run the pipeline to see results",
+    "elapsed": "Pipeline processing time",
+    "outcome": {
+      "SUCCESS": "Success",
+      "PARTIAL_SUCCESS": "Partial success",
+      "FAIL": "Failed"
+    },
+    "summaryTitle": "Results summary",
+    "status": "Status",
+    "dataset": "Dataset",
+    "counts": {
+      "accounts": "Accounts",
+      "transactions": "Total transactions",
+      "emitted": "Emitted to SV",
+      "dropped": "Dropped",
+      "mlRows": "ML rows",
+      "llmContexts": "LLM contexts"
+    },
+    "stages": {
+      "title": "Pipeline stages",
+      "READ_INPUT": "Read input",
+      "STANDARDIZE_TO_SV": "Standardise to SV",
+      "VALIDATE_SCHEMA": "Validate schema",
+      "CHECK_INVARIANTS": "Check invariants",
+      "PROJECT_ML": "ML projection",
+      "PROJECT_LLM": "LLM context",
+      "WRITE_OUTPUTS": "Write outputs",
+      "errors": "error(s)",
+      "warnings": "warning(s)"
+    },
+    "issues": {
+      "title": "Issues"
+    },
+    "mlPreview": {
+      "title": "ML projection (all rows)",
+      "totalRows": "rows total",
+      "showingFirst": "Showing first 5 rows of {total}",
+      "allRows": "Total {count} rows",
+      "summary": "ML CSV: {count} rows",
+      "noData": "No data available"
+    },
+    "llmPreview": {
+      "title": "LLM projection (all contexts)",
+      "period": "Period",
+      "income": "Income",
+      "expenses": "Expenses",
+      "netFlow": "Net cash flow",
+      "categories": "Spending categories",
+      "summary": "LLM context: {count} transactions",
+      "noData": "No data available"
+    }
+  },
+  "projectionModal": {
+    "copy": "Copy",
+    "copied": "Copied!"
+  }
+}
