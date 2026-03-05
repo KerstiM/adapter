@@ -63,6 +63,19 @@ export async function runPipeline(datasetId, modelId) {
     status: s.errors > 0 ? 'ERROR' : s.warnings > 0 ? 'WARN' : 'OK',
   }))
 
+  // Group issues by (code, severity, message) and add count
+  const rawIssues = backendResult.issues || []
+  const issueMap = new Map()
+  for (const issue of rawIssues) {
+    const key = `${issue.severity}|${issue.code}|${issue.message}`
+    if (issueMap.has(key)) {
+      issueMap.get(key).count += 1
+    } else {
+      issueMap.set(key, { ...issue, count: 1 })
+    }
+  }
+  const groupedIssues = [...issueMap.values()]
+
   const result = {
     outcome: backendResult.outcome,
     stopReason: backendResult.stop_reason,
@@ -78,7 +91,7 @@ export async function runPipeline(datasetId, modelId) {
       INFO: bySeverity.INFO || 0,
     },
     stageLog,
-    issues: backendResult.issues || [],
+    issues: groupedIssues,
     mlPreview: data.mlPreview,
     llmPreview: data.llmPreview,
   }

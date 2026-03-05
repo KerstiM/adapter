@@ -161,7 +161,7 @@ function stageLabel(stage) {
           </span>
           <span class="issue-code">{{ issue.code }}</span>
           <span class="issue-msg">{{ issue.message }}</span>
-          <span v-if="issue.count" class="issue-count">&times;{{ issue.count }}</span>
+          <span v-if="issue.count > 1" class="issue-count">&times;{{ issue.count }}</span>
         </div>
       </div>
     </div>
