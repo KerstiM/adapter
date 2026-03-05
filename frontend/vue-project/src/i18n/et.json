@@ -3,6 +3,26 @@
     "subtitle": "Standardiseerimiskiht",
     "version": "prototüüp v1.0"
   },
+  "nav": {
+    "dashboard": "Töölaud",
+    "docs": "Dokumentatsioon"
+  },
+  "docs": {
+    "coreTitle": "Põhidokumendid",
+    "datasetsTitle": "Andmestikud",
+    "specs": {
+      "title": "Spetsifikatsioonid",
+      "subtitle": "Skeemid · Lepingud · Reeglistikud"
+    },
+    "arch": {
+      "title": "Arhitektuur",
+      "subtitle": "Töötlusvoog · Sõltuvused · Failipuu"
+    },
+    "runbook": {
+      "title": "Käivitamine",
+      "subtitle": "Käivitamine · Artefaktid · CLI"
+    }
+  },
   "lang": {
     "et": "Eesti",
     "en": "English"
@@ -55,6 +75,8 @@
   "actions": {
     "run": "Käivita töötlusvoog",
     "runAll": "Jooksuta kõik andmestikud",
+    "runAllLine1": "Jooksuta kõik",
+    "runAllLine2": "andmestikud",
     "reset": "Lähtesta",
     "view": "Vaata",
     "close": "Sulge",
