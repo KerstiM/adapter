@@ -22,43 +22,41 @@ const defaultModel = MODEL_CATALOG[0]
 </script>
 
 <template>
-  <div class="selector-group unavailable-block">
-    <div class="unavailable-header">
-      <h3 class="selector-title">
-        <span class="selector-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-            <path d="M2 17l10 5 10-5" />
-            <path d="M2 12l10 5 10-5" />
-          </svg>
-        </span>
-        {{ t('models.forwardingTitle') }}
-      </h3>
+  <div class="selector-group">
+    <h3 class="selector-title">
+      <span class="selector-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5z" />
+          <path d="M2 17l10 5 10-5" />
+          <path d="M2 12l10 5 10-5" />
+        </svg>
+      </span>
+      {{ t('models.forwardingTitle') }}
       <span class="status-badge">{{ t('models.notAvailable') }}</span>
-    </div>
-
-    <!-- Hint (match DatasetSelector hint style) -->
+    </h3>
     <p class="selector-hint">{{ t('model.hint') }}</p>
 
-    <!-- Default selected model (read-only) -->
-    <div class="chips-area">
-      <span class="chip chip-selected">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
-        {{ defaultModel.label }}
-      </span>
-    </div>
+    <div class="unavailable-block">
+      <!-- Default selected model (read-only) -->
+      <div class="chips-area">
+        <span class="chip chip-selected">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          {{ defaultModel.label }}
+        </span>
+      </div>
 
-    <!-- Other models listed as disabled -->
-    <div class="other-models">
-      <span
-        v-for="m in MODEL_CATALOG.slice(1)"
-        :key="m.id"
-        class="chip chip-disabled"
-      >
-        {{ m.label }}
-      </span>
+      <!-- Other models listed as disabled -->
+      <div class="other-models">
+        <span
+          v-for="m in MODEL_CATALOG.slice(1)"
+          :key="m.id"
+          class="chip chip-disabled"
+        >
+          {{ m.label }}
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -68,34 +66,6 @@ const defaultModel = MODEL_CATALOG[0]
   margin-bottom: 1.5rem;
 }
 
-.selector-hint {
-  font-size: 0.82rem;
-  color: var(--vt-c-text-light-2);
-  margin: -0.25rem 0 0.75rem;
- }
-
-.unavailable-block {
-  background: var(--color-background-mute);
-  border: 1.5px dashed var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 1rem 1.1rem;
-  opacity: 0.7;
-  cursor: not-allowed;
-  transition: border-color var(--transition-fast);
-}
-
-/* Hover: emphasise forwarding card with dashed border */
-.unavailable-block:hover {
-  border-color: var(--brand-accent);
-}
-
-.unavailable-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.65rem;
-}
-
 .selector-title {
   display: flex;
   align-items: center;
@@ -103,7 +73,7 @@ const defaultModel = MODEL_CATALOG[0]
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--color-heading);
-  margin: 0;
+  margin-bottom: 0.25rem;
 }
 
 .selector-icon {
@@ -121,6 +91,27 @@ const defaultModel = MODEL_CATALOG[0]
   background: var(--color-border-hover);
   color: var(--vt-c-text-light-2);
   white-space: nowrap;
+  margin-left: auto;
+}
+
+.selector-hint {
+  font-size: 0.82rem;
+  color: var(--vt-c-text-light-2);
+  margin-bottom: 0.75rem;
+}
+
+.unavailable-block {
+  background: var(--color-background-mute);
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  opacity: 0.7;
+  cursor: not-allowed;
+  transition: border-color var(--transition-fast);
+}
+
+.unavailable-block:hover {
+  border-color: var(--brand-accent);
 }
 
 .chips-area {

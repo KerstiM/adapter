@@ -145,6 +145,8 @@ async function handleCopy() {
       <aside class="config-panel">
         <DatasetSelector v-model="selectedDataset" :disabled="loading" />
 
+        <div class="section-gap"></div>
+
         <ModelSelector v-model="selectedModels" :disabled="loading" />
 
         <div class="actions">
@@ -261,7 +263,7 @@ async function handleCopy() {
 .dashboard {
   display: grid;
   grid-template-columns: 540px 1fr;
-  gap: 1.5rem;
+  gap: 2.5rem;
   align-items: start;
   min-height: calc(100vh - 120px);
 }
@@ -295,6 +297,10 @@ async function handleCopy() {
   border-radius: var(--radius-sm);
   color: var(--brand-error);
   font-size: 0.85rem;
+}
+
+.section-gap {
+  height: 0.75rem;
 }
 
 .results-panel {
