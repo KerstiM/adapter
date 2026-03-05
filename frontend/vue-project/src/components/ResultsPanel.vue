@@ -45,6 +45,19 @@ function stageLabel(stage) {
 </script>
 
 <template>
+  <h3 class="results-section-title">
+    <span class="results-section-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <polyline points="14,2 14,8 20,8" />
+        <line x1="16" y1="13" x2="8" y2="13" />
+        <line x1="16" y1="17" x2="8" y2="17" />
+      </svg>
+    </span>
+    {{ t('results.summaryTitle') }}
+  </h3>
+  <p class="results-section-hint">{{ t('results.empty') }}</p>
+
   <!-- Loading state -->
   <div v-if="loading" class="loading-panel card">
     <div class="spinner"></div>
@@ -61,7 +74,6 @@ function stageLabel(stage) {
         <line x1="16" y1="17" x2="8" y2="17" />
       </svg>
     </div>
-    <p>{{ t('results.empty') }}</p>
   </div>
 
   <!-- Results -->
@@ -176,6 +188,28 @@ function stageLabel(stage) {
 </template>
 
 <style scoped>
+/* ── Results section header ── */
+.results-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-heading);
+  margin-bottom: 0.25rem;
+}
+
+.results-section-icon {
+  display: flex;
+  color: var(--brand-accent);
+}
+
+.results-section-hint {
+  font-size: 0.82rem;
+  color: var(--vt-c-text-light-2);
+  margin-bottom: 0.75rem;
+}
+
 /* ── Loading ── */
 .loading-panel {
   display: flex;
