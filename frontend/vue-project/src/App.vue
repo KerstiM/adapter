@@ -39,6 +39,9 @@ const { t } = useI18n()
 
 <style scoped>
 .app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   border-bottom: 1px solid var(--color-border);
   background: var(--color-background);
   margin-bottom: 1.25rem;

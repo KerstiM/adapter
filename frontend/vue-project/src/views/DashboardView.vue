@@ -222,14 +222,16 @@ async function handleCopy() {
     <div class="dashboard">
       <!-- Left column: selection + actions -->
       <aside class="config-panel">
-        <DatasetSelector
-          v-model="selectedDatasets"
-          :disabled="loading"
-        />
+        <div class="config-scroll">
+          <DatasetSelector
+            v-model="selectedDatasets"
+            :disabled="loading"
+          />
 
-        <div class="section-gap"></div>
+          <div class="section-gap"></div>
 
-        <ModelSelector v-model="selectedModels" :disabled="loading" />
+          <ModelSelector v-model="selectedModels" :disabled="loading" />
+        </div>
 
         <div class="actions">
           <button
@@ -382,13 +384,26 @@ async function handleCopy() {
 
 .config-panel {
   position: sticky;
-  top: 1rem;
+  top: 5rem; /* header (~3.75rem) + header margin-bottom (1.25rem) */
+  height: calc(100vh - 5rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.config-scroll {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .actions {
+  flex-shrink: 0;
   display: flex;
   gap: 0.6rem;
-  margin-top: 0.25rem;
+  padding: 0.6rem 0 0.75rem;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-background);
 }
 
 .actions .btn {
@@ -402,13 +417,12 @@ async function handleCopy() {
   line-height: 1.2;
 }
 
-.btn-two-line span:first-child {
-  font-size: 0.85em;
+.btn-two-line span {
+  font-weight: 600;
 }
 
 .btn-two-line span:last-child {
-  font-size: 0.78em;
-  opacity: 0.85;
+  opacity: 0.75;
 }
 
 .error-box {
