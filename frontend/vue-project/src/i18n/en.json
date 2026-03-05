@@ -3,6 +3,26 @@
     "subtitle": "Standardisation Layer",
     "version": "prototype v1.0"
   },
+  "nav": {
+    "dashboard": "Dashboard",
+    "docs": "Documentation"
+  },
+  "docs": {
+    "coreTitle": "Core docs",
+    "datasetsTitle": "Datasets",
+    "specs": {
+      "title": "Specifications",
+      "subtitle": "Schemas · Contracts · Rule sets"
+    },
+    "arch": {
+      "title": "Architecture",
+      "subtitle": "Pipeline · Dependencies · File tree"
+    },
+    "runbook": {
+      "title": "Runbook",
+      "subtitle": "Running · Artefacts · CLI"
+    }
+  },
   "lang": {
     "et": "Eesti",
     "en": "English"
@@ -55,6 +75,8 @@
   "actions": {
     "run": "Run pipeline",
     "runAll": "Run all datasets",
+    "runAllLine1": "Run all",
+    "runAllLine2": "datasets",
     "reset": "Reset",
     "view": "View",
     "close": "Close",

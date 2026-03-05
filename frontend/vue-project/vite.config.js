@@ -19,5 +19,9 @@ export default defineConfig({
     proxy: {
       '/api': 'http://localhost:5000',
     },
+    fs: {
+      // Allow ?raw imports from docs/ and datasets/ outside the vue-project root
+      allow: ['../../../..'],
+    },
   },
 })

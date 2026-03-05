@@ -250,7 +250,7 @@ async function handleCopy() {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0">
               <polygon points="5,3 19,12 5,21" />
             </svg>
-            {{ t('actions.runAll') }}
+            <span class="btn-two-line"><span>{{ t('actions.runAllLine1') }}</span><span>{{ t('actions.runAllLine2') }}</span></span>
           </button>
           <button
             class="btn btn-outline"
@@ -391,8 +391,24 @@ async function handleCopy() {
   margin-top: 0.25rem;
 }
 
-.run-btn {
+.actions .btn {
   flex: 1;
+}
+
+.btn-two-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.2;
+}
+
+.btn-two-line span:first-child {
+  font-size: 0.85em;
+}
+
+.btn-two-line span:last-child {
+  font-size: 0.78em;
+  opacity: 0.85;
 }
 
 .error-box {
