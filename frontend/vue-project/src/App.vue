@@ -1,13 +1,26 @@
 <script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
 import { RouterView, RouterLink } from 'vue-router'
 import { useI18n } from '@/composables/useI18n'
 import LanguageToggle from '@/components/LanguageToggle.vue'
 
 const { t } = useI18n()
+
+// JS fallback for browsers without scroll-driven animations
+const isScrolled = ref(false)
+let scrollHandler
+onMounted(() => {
+  if (CSS.supports('animation-timeline', 'scroll()')) return
+  scrollHandler = () => { isScrolled.value = window.scrollY > 0 }
+  window.addEventListener('scroll', scrollHandler, { passive: true })
+})
+onUnmounted(() => {
+  if (scrollHandler) window.removeEventListener('scroll', scrollHandler)
+})
 </script>
 
 <template>
-  <header class="app-header">
+  <header class="app-header" :class="{ 'is-scrolled': isScrolled }">
     <div class="header-inner">
       <div class="header-left">
         <RouterLink to="/" class="brand">
@@ -34,7 +47,9 @@ const { t } = useI18n()
     </div>
   </header>
 
-  <RouterView />
+  <div class="app-body">
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>
@@ -42,14 +57,51 @@ const { t } = useI18n()
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid var(--color-border);
   background: var(--color-background);
-  margin-bottom: 1.25rem;
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.app-body {
+  max-width: 1440px;
+  margin: 1.25rem auto 0;
+  padding: 0 1.5rem;
+}
+
+/* Scrolled state: JS adds .is-scrolled class */
+.app-header.is-scrolled {
+  border-bottom-color: var(--color-border);
+  box-shadow: 0 2px 12px rgba(0, 49, 84, 0.1);
+}
+
+/* Scroll-driven animation as progressive enhancement */
+@supports (animation-timeline: scroll()) {
+  .app-header {
+    animation: header-scrolled-shadow linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0px 4px;
+    /* Reset transition since animation handles it */
+    transition: none;
+  }
+
+  @keyframes header-scrolled-shadow {
+    from {
+      border-bottom-color: transparent;
+      box-shadow: none;
+    }
+    to {
+      border-bottom-color: var(--color-border);
+      box-shadow: 0 2px 12px rgba(0, 49, 84, 0.1);
+    }
+  }
 }
 
 .header-inner {
-  /* No max-width — matches #app width (1440px from main.css) */
-  padding: 0.75rem 0;
+  /* Horizontal padding aligns content with app-body (1.5rem) */
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
