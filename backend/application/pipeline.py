@@ -286,6 +286,19 @@ def run_pipeline(
     )
 
     stage2_warnings = len(mapping_drops)
+    for md in mapping_drops:
+        issues.append({
+            "code": "C-01_MAPPING_DROP",
+            "severity": "WARN",
+            "stage": "STANDARDIZE_TO_SV",
+            "message": md.get("drop_reason", "mapping drop"),
+            "refs": {
+                "account_id": None,
+                "record_id": None,
+                "field_path": md.get("input_path"),
+                "source_lineage": md.get("source_file", ""),
+            },
+        })
     stage_log["STANDARDIZE_TO_SV"] = {
         "status": "OK" if stage2_warnings == 0 else "WARN",
         "errors": 0,
@@ -314,6 +327,7 @@ def run_pipeline(
     sv_bundle["transactions"] = deduped_txs
 
     # Count flags from invariants (on valid + dropped + dedupe-dropped txs)
+    # and promote them into the issues list so the frontend can display details
     inv_warnings = 0
     inv_errors = 0
     for tx in deduped_txs + dropped_txs + dedupe_drops:
@@ -322,6 +336,18 @@ def run_pipeline(
                 inv_warnings += 1
             elif flag["severity"] == "ERROR":
                 inv_errors += 1
+            issues.append({
+                "code": flag["id"],
+                "severity": flag["severity"],
+                "stage": "CHECK_INVARIANTS",
+                "message": flag["message"],
+                "refs": {
+                    "account_id": tx.get("account_id"),
+                    "record_id": tx.get("record_id"),
+                    "field_path": None,
+                    "source_lineage": tx.get("source", {}).get("input_file", ""),
+                },
+            })
 
     stage_log["CHECK_INVARIANTS"] = {
         "status": "OK" if inv_errors == 0 and inv_warnings == 0 else ("ERROR" if inv_errors > 0 else "WARN"),
