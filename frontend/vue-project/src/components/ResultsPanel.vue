@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from '@/composables/useI18n'
+import RunResultDetails from './RunResultDetails.vue'
 
 const { t } = useI18n()
 
@@ -10,7 +11,15 @@ const props = defineProps({
   runProgress: { type: Object, default: () => ({ done: 0, total: 0 }) },
 })
 
-const emit = defineEmits(['open-dataset-detail'])
+const emit = defineEmits(['open-dataset-detail', 'open-projection'])
+
+const isSingleMode = computed(() => props.batchResult?.selectedDatasetIds.length === 1)
+
+const singleDatasetResult = computed(() => {
+  if (!isSingleMode.value || !props.batchResult) return null
+  const id = props.batchResult.selectedDatasetIds[0]
+  return props.batchResult.datasetResults[id] ?? null
+})
 
 const overallBadge = computed(() => {
   if (!props.batchResult) return ''
@@ -81,7 +90,20 @@ function formatMs(ms) {
     </div>
   </div>
 
-  <!-- Batch results -->
+  <!-- Single dataset: inline detail (no modal) -->
+  <template v-else-if="isSingleMode">
+    <div v-if="singleDatasetResult?.status === 'RUNNING'" class="loading-panel card">
+      <div class="spinner"></div>
+      <p>{{ t('results.loading') }}</p>
+    </div>
+    <RunResultDetails
+      v-else-if="singleDatasetResult"
+      :dataset-result="singleDatasetResult"
+      @open-projection="emit('open-projection', $event)"
+    />
+  </template>
+
+  <!-- Multi-dataset: batch overview + cards -->
   <template v-else>
     <!-- Overview card -->
     <div class="batch-overview card">

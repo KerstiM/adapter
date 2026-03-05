@@ -10,7 +10,7 @@ const props = defineProps({
   disabled: { type: Boolean, default: false },
 })
 
-const emit = defineEmits(['update:modelValue', 'run-all'])
+const emit = defineEmits(['update:modelValue'])
 
 function toggle(id) {
   if (props.disabled) return
@@ -18,11 +18,6 @@ function toggle(id) {
     ? props.modelValue.filter(x => x !== id)
     : [...props.modelValue, id]
   emit('update:modelValue', next)
-}
-
-function handleRunAll() {
-  if (props.disabled) return
-  emit('run-all')
 }
 </script>
 
@@ -88,17 +83,6 @@ function handleRunAll() {
       </button>
     </div>
 
-    <!-- Run all button -->
-    <button
-      class="btn btn-outline run-all-btn"
-      :disabled="disabled"
-      @click="handleRunAll"
-    >
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0">
-        <polygon points="5,3 19,12 5,21" />
-      </svg>
-      {{ t('dataset.runAll') }}
-    </button>
   </div>
 </template>
 
@@ -278,14 +262,4 @@ function handleRunAll() {
   line-height: 1.4;
 }
 
-/* Run all button */
-.run-all-btn {
-  width: 100%;
-  margin-top: 0.6rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  font-size: 0.84rem;
-}
 </style>

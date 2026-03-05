@@ -146,7 +146,18 @@ const projectionModalTitle = computed(() => {
   return ''
 })
 
-const projectionSourceResult = computed(() => activeDetailResult.value?.result ?? null)
+const projectionSourceResult = computed(() => {
+  // Multi-mode: projection opened from within the detail modal
+  if (activeDetailDatasetId.value && batchResult.value) {
+    return batchResult.value.datasetResults[activeDetailDatasetId.value]?.result ?? null
+  }
+  // Single-mode: projection opened inline (no detail modal)
+  if (batchResult.value?.selectedDatasetIds.length === 1) {
+    const id = batchResult.value.selectedDatasetIds[0]
+    return batchResult.value.datasetResults[id]?.result ?? null
+  }
+  return null
+})
 
 const llmContextJson = computed(() => {
   const r = projectionSourceResult.value
@@ -214,7 +225,6 @@ async function handleCopy() {
         <DatasetSelector
           v-model="selectedDatasets"
           :disabled="loading"
-          @run-all="handleRunAll"
         />
 
         <div class="section-gap"></div>
@@ -235,6 +245,16 @@ async function handleCopy() {
           <button
             class="btn btn-outline"
             :disabled="loading"
+            @click="handleRunAll"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0">
+              <polygon points="5,3 19,12 5,21" />
+            </svg>
+            {{ t('actions.runAll') }}
+          </button>
+          <button
+            class="btn btn-outline"
+            :disabled="loading"
             @click="handleReset"
           >
             {{ t('actions.reset') }}
@@ -251,6 +271,7 @@ async function handleCopy() {
           :loading="loading"
           :run-progress="runProgress"
           @open-dataset-detail="handleOpenDatasetDetail"
+          @open-projection="handleOpenProjection"
         />
       </main>
     </div>
