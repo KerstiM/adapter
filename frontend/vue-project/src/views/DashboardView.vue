@@ -260,7 +260,7 @@ async function handleCopy() {
 <style scoped>
 .dashboard {
   display: grid;
-  grid-template-columns: 380px 1fr;
+  grid-template-columns: 540px 1fr;
   gap: 1.5rem;
   align-items: start;
   min-height: calc(100vh - 120px);

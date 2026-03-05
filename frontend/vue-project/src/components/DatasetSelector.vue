@@ -104,8 +104,14 @@ function select(id) {
 
 .dataset-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.6rem;
+}
+
+@media (max-width: 900px) {
+  .dataset-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
 }
 
 .dataset-card {
