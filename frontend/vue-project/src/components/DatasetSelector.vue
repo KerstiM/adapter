@@ -6,16 +6,23 @@ const { t } = useI18n()
 const datasets = getDatasets()
 
 const props = defineProps({
-  modelValue: { type: String, default: '' },
+  modelValue: { type: Array, default: () => [] },
   disabled: { type: Boolean, default: false },
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'run-all'])
 
-function select(id) {
-  if (!props.disabled) {
-    emit('update:modelValue', id)
-  }
+function toggle(id) {
+  if (props.disabled) return
+  const next = props.modelValue.includes(id)
+    ? props.modelValue.filter(x => x !== id)
+    : [...props.modelValue, id]
+  emit('update:modelValue', next)
+}
+
+function handleRunAll() {
+  if (props.disabled) return
+  emit('run-all')
 }
 </script>
 
@@ -60,19 +67,38 @@ function select(id) {
         v-for="ds in datasets"
         :key="ds.id"
         class="dataset-card card"
-        :class="{ active: modelValue === ds.id, disabled }"
+        :class="{ active: modelValue.includes(ds.id), disabled }"
         :disabled="disabled"
-        @click="select(ds.id)"
+        @click="toggle(ds.id)"
       >
         <div class="ds-header">
           <span class="ds-id">{{ ds.id }}</span>
+          <span class="ds-check" :class="{ checked: modelValue.includes(ds.id) }">
+            <svg v-if="modelValue.includes(ds.id)" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="20,6 9,17 4,12" />
+            </svg>
+          </span>
+        </div>
+        <div class="ds-meta">
           <span class="ds-records">{{ ds.records }} {{ t('dataset.recordsUnit') }}</span>
+          <span v-if="ds.accounts > 1" class="ds-multi-account">{{ ds.accounts }} {{ t('dataset.accountsUnit') }}</span>
         </div>
         <div class="ds-name">{{ ds.name }}</div>
-        <span v-if="ds.accounts > 1" class="ds-multi-account">{{ ds.accounts }} {{ t('dataset.accountsUnit') }}</span>
         <div class="ds-desc">{{ t('dataset.' + ds.id) }}</div>
       </button>
     </div>
+
+    <!-- Run all button -->
+    <button
+      class="btn btn-outline run-all-btn"
+      :disabled="disabled"
+      @click="handleRunAll"
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0">
+        <polygon points="5,3 19,12 5,21" />
+      </svg>
+      {{ t('dataset.runAll') }}
+    </button>
   </div>
 </template>
 
@@ -142,13 +168,39 @@ function select(id) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.2rem;
 }
 
 .ds-id {
   font-weight: 700;
   font-size: 0.95rem;
   color: var(--brand-primary);
+}
+
+.ds-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-background);
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+  color: var(--brand-accent);
+}
+
+.ds-check.checked {
+  border-color: var(--brand-accent);
+  background: rgba(0, 180, 160, 0.15);
+}
+
+.ds-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.2rem;
 }
 
 .ds-records {
@@ -173,7 +225,6 @@ function select(id) {
   border: 1px solid rgba(0, 180, 160, 0.3);
   border-radius: 999px;
   padding: 0.1rem 0.45rem;
-  margin-bottom: 0.25rem;
 }
 
 .ds-desc {
@@ -225,5 +276,16 @@ function select(id) {
   color: var(--vt-c-text-light-2);
   margin-top: 0.25rem;
   line-height: 1.4;
+}
+
+/* Run all button */
+.run-all-btn {
+  width: 100%;
+  margin-top: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.84rem;
 }
 </style>

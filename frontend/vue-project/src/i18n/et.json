@@ -9,7 +9,8 @@
   },
   "dataset": {
     "title": "Andmestik",
-    "hint": "Vali dataset, millega pipeline käivitada",
+    "hint": "Vali üks või mitu datasetti, millega pipeline käivitada",
+    "runAll": "Jooksuta kõik datasetid",
     "recordsUnit": "tehingut",
     "accountsUnit": "kontot",
     "D1": "Avalik, validne, väike",
@@ -70,7 +71,14 @@
   },
   "results": {
     "loading": "Pipeline töötab...",
-    "empty": "Vali andmestik ja käivita pipeline, et näha tulemusi",
+    "runningShort": "Jookseb",
+    "progress": "{done}/{total} valmis",
+    "empty": "Vali datasetid ja käivita pipeline, et näha tulemusi",
+    "batch": {
+      "title": "Jooksutatud datasetid",
+      "overall": "Koondtulemus",
+      "openDetail": "Ava tulemused"
+    },
     "elapsed": "Pipeline töötlemise aeg",
     "outcome": {
       "SUCCESS": "Edukas",

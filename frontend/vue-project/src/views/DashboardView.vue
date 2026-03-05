@@ -4,49 +4,133 @@ import DatasetSelector from '@/components/DatasetSelector.vue'
 import ModelSelector from '@/components/ModelSelector.vue'
 import ResultsPanel from '@/components/ResultsPanel.vue'
 import ProjectionModal from '@/components/ProjectionModal.vue'
-import { runPipeline } from '@/services/api'
+import RunResultDetails from '@/components/RunResultDetails.vue'
+import { getDatasets, runPipeline } from '@/services/api'
 import { useI18n } from '@/composables/useI18n'
 import { downloadFile, MIME, sanitise } from '@/utils/downloadFile'
 
 const { t } = useI18n()
 
-const selectedDataset = ref('')
+const allDatasets = getDatasets()
+
+// ── Selection state ──
+const selectedDatasets = ref([])
 const selectedModels = ref(['anthropic_claude35_sonnet'])
+
+// ── Run state ──
 const loading = ref(false)
-const result = ref(null)
-const elapsedMs = ref(0)
 const error = ref('')
+const batchResult = ref(null)
+const runProgress = ref({ done: 0, total: 0 })
 
-const canRun = () => selectedDataset.value && !loading.value
+const canRun = computed(() => selectedDatasets.value.length > 0 && !loading.value)
 
-async function handleRun() {
-  if (!canRun()) return
+// ── Batch run (sequential) ──
+async function handleBatchRun() {
+  if (!canRun.value) return
+
+  // Sort IDs by numeric suffix for stable order: D1, D2, ..., D10
+  const ids = [...selectedDatasets.value].sort((a, b) => {
+    const n = (s) => parseInt(s.replace(/\D/g, ''), 10) || 0
+    return n(a) - n(b)
+  })
 
   loading.value = true
-  result.value = null
   error.value = ''
-  elapsedMs.value = 0
+  runProgress.value = { done: 0, total: ids.length }
 
-  try {
-    const response = await runPipeline(selectedDataset.value, selectedModels.value)
-    result.value = response.result
-    elapsedMs.value = response.elapsed_ms
-  } catch (e) {
-    error.value = e.message || t('errors.runFailed')
-  } finally {
-    loading.value = false
+  // Initialise all as RUNNING so cards appear immediately
+  const datasetResults = {}
+  for (const id of ids) {
+    datasetResults[id] = { datasetId: id, status: 'RUNNING', durationMs: null, result: null, error: null }
   }
+  batchResult.value = {
+    startedAt: new Date().toISOString(),
+    finishedAt: null,
+    selectedDatasetIds: ids,
+    overallStatus: 'RUNNING',
+    datasetResults,
+  }
+
+  for (const id of ids) {
+    try {
+      const t0 = Date.now()
+      const response = await runPipeline(id, selectedModels.value)
+      batchResult.value.datasetResults[id] = {
+        datasetId: id,
+        status: response.result.outcome,
+        durationMs: Date.now() - t0,
+        result: response.result,
+        error: null,
+      }
+    } catch (e) {
+      batchResult.value.datasetResults[id] = {
+        datasetId: id,
+        status: 'FAIL',
+        durationMs: null,
+        result: null,
+        error: e.message || t('errors.runFailed'),
+      }
+    }
+    runProgress.value.done++
+  }
+
+  // Compute overall status
+  const statuses = ids.map(id => batchResult.value.datasetResults[id].status)
+  const hasOk = statuses.some(s => s === 'SUCCESS' || s === 'PARTIAL_SUCCESS')
+  const hasFail = statuses.some(s => s === 'FAIL' || s === 'ERROR')
+  batchResult.value.overallStatus = hasOk && hasFail ? 'PARTIAL_SUCCESS' : hasOk ? 'SUCCESS' : 'FAIL'
+  batchResult.value.finishedAt = new Date().toISOString()
+
+  loading.value = false
+}
+
+// "Run all datasets" — select all then run
+function handleRunAll() {
+  if (loading.value) return
+  selectedDatasets.value = allDatasets.map(d => d.id)
+  handleBatchRun()
 }
 
 function handleReset() {
-  selectedDataset.value = ''
+  selectedDatasets.value = []
   selectedModels.value = ['anthropic_claude35_sonnet']
-  result.value = null
-  elapsedMs.value = 0
+  batchResult.value = null
+  runProgress.value = { done: 0, total: 0 }
   error.value = ''
+  activeDetailDatasetId.value = null
+  activeProjectionKind.value = null
 }
 
+// ── Dataset detail modal ──
+const activeDetailDatasetId = ref(null)
+
+const activeDetailResult = computed(() =>
+  activeDetailDatasetId.value && batchResult.value
+    ? batchResult.value.datasetResults[activeDetailDatasetId.value] ?? null
+    : null
+)
+
+function handleOpenDatasetDetail({ datasetId }) {
+  activeDetailDatasetId.value = datasetId
+}
+
+function handleCloseDatasetDetail() {
+  activeDetailDatasetId.value = null
+  activeProjectionKind.value = null
+}
+
+const detailModalTitle = computed(() => {
+  if (!activeDetailDatasetId.value) return ''
+  const dr = activeDetailResult.value
+  const name = dr?.result?.datasetName || activeDetailDatasetId.value
+  return `${activeDetailDatasetId.value} — ${name}`
+})
+
+// ── Projection modal (opens on top of detail modal) ──
 const activeProjectionKind = ref(null)
+const downloadFormat = ref('default')
+const copyFeedback = ref('')
 
 function handleOpenProjection({ kind }) {
   activeProjectionKind.value = kind
@@ -62,33 +146,34 @@ const projectionModalTitle = computed(() => {
   return ''
 })
 
-const llmContextJson = computed(() => {
-  if (!result.value?.llmPreview) return ''
-  const raw = result.value.llmPreview.rawContexts
-  if (raw) return JSON.stringify(raw, null, 2)
-  return JSON.stringify(result.value.llmPreview, null, 2)
-})
+const projectionSourceResult = computed(() => activeDetailResult.value?.result ?? null)
 
-const downloadFormat = ref('default')
+const llmContextJson = computed(() => {
+  const r = projectionSourceResult.value
+  if (!r?.llmPreview) return ''
+  const raw = r.llmPreview.rawContexts
+  return JSON.stringify(raw ?? r.llmPreview, null, 2)
+})
 
 const hasProjectionData = computed(() => {
   if (activeProjectionKind.value === 'ml') {
-    return !!(result.value?.mlPreview?.rows?.length)
+    return !!(projectionSourceResult.value?.mlPreview?.rows?.length)
   }
   if (activeProjectionKind.value === 'llm') {
-    return !!(result.value?.llmPreview)
+    return !!(projectionSourceResult.value?.llmPreview)
   }
   return false
 })
 
 function buildMlCsv() {
-  if (!result.value?.mlPreview) return ''
-  const { headers, rows } = result.value.mlPreview
-  return [headers.join(','), ...rows.map(r => r.join(','))].join('\n')
+  const r = projectionSourceResult.value
+  if (!r?.mlPreview) return ''
+  const { headers, rows } = r.mlPreview
+  return [headers.join(','), ...rows.map(row => row.join(','))].join('\n')
 }
 
 function buildFilename(kind, ext) {
-  const dataset = sanitise(selectedDataset.value || result.value?.datasetName)
+  const dataset = sanitise(activeDetailDatasetId.value || projectionSourceResult.value?.datasetName)
   const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19)
   const base = dataset || ts
   const suffix = dataset ? `_${ts}` : ''
@@ -98,31 +183,16 @@ function buildFilename(kind, ext) {
 function handleDownload() {
   const kind = activeProjectionKind.value
   if (!kind || !hasProjectionData.value) return
-
-  const fmt =
-      downloadFormat.value === 'default'
-          ? (kind === 'ml'
-              ? 'csv'
-              : 'json')
-          : downloadFormat.value
-
-  const content = kind === 'ml'
-      ? buildMlCsv()
-      : llmContextJson.value
-
+  const fmt = downloadFormat.value === 'default' ? (kind === 'ml' ? 'csv' : 'json') : downloadFormat.value
+  const content = kind === 'ml' ? buildMlCsv() : llmContextJson.value
   if (!content) return
-
-  const mime = MIME[fmt] ?? MIME.txt
-  const filename = buildFilename(kind, fmt)
-  downloadFile(content, filename, mime)
+  downloadFile(content, buildFilename(kind, fmt), MIME[fmt] ?? MIME.txt)
 }
-
-const copyFeedback = ref('')
 
 async function handleCopy() {
   let text = ''
-  if (activeProjectionKind.value === 'ml' && result.value?.mlPreview) {
-    const { headers, rows } = result.value.mlPreview
+  if (activeProjectionKind.value === 'ml' && projectionSourceResult.value?.mlPreview) {
+    const { headers, rows } = projectionSourceResult.value.mlPreview
     text = [headers.join(','), ...rows.map(r => r.join(','))].join('\n')
   } else if (activeProjectionKind.value === 'llm') {
     text = llmContextJson.value
@@ -132,18 +202,20 @@ async function handleCopy() {
     await navigator.clipboard.writeText(text)
     copyFeedback.value = t('projectionModal.copied')
     setTimeout(() => { copyFeedback.value = '' }, 2000)
-  } catch {
-    /* clipboard not available */
-  }
+  } catch { /* clipboard not available */ }
 }
 </script>
 
 <template>
   <div class="dashboard-wrap">
     <div class="dashboard">
-      <!-- Left column: Data selection + Model selection -->
+      <!-- Left column: selection + actions -->
       <aside class="config-panel">
-        <DatasetSelector v-model="selectedDataset" :disabled="loading" />
+        <DatasetSelector
+          v-model="selectedDatasets"
+          :disabled="loading"
+          @run-all="handleRunAll"
+        />
 
         <div class="section-gap"></div>
 
@@ -152,8 +224,8 @@ async function handleCopy() {
         <div class="actions">
           <button
             class="btn btn-accent run-btn"
-            :disabled="!canRun()"
-            @click="handleRun"
+            :disabled="!canRun"
+            @click="handleBatchRun"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <polygon points="5,3 19,12 5,21" />
@@ -169,53 +241,66 @@ async function handleCopy() {
           </button>
         </div>
 
-        <div v-if="error" class="error-box">
-          {{ error }}
-        </div>
+        <div v-if="error" class="error-box">{{ error }}</div>
       </aside>
 
-      <!-- Right column: Results + Projections -->
+      <!-- Right column: results -->
       <main class="results-panel">
         <ResultsPanel
-          :result="result"
-          :elapsed-ms="elapsedMs"
+          :batch-result="batchResult"
           :loading="loading"
-          @open-projection="handleOpenProjection"
+          :run-progress="runProgress"
+          @open-dataset-detail="handleOpenDatasetDetail"
         />
       </main>
     </div>
 
-    <!-- Projection modal -->
+    <!-- ── Dataset detail modal (z-index 1100) ── -->
+    <ProjectionModal
+      :open="activeDetailDatasetId !== null"
+      :title="detailModalTitle"
+      :z-index="1100"
+      @close="handleCloseDatasetDetail"
+    >
+      <RunResultDetails
+        v-if="activeDetailResult"
+        :dataset-result="activeDetailResult"
+        @open-projection="handleOpenProjection"
+      />
+    </ProjectionModal>
+
+    <!-- ── Projection modal (z-index 1200, on top of detail) ── -->
     <ProjectionModal
       :open="activeProjectionKind !== null"
       :title="projectionModalTitle"
+      :z-index="1200"
       @close="handleCloseProjection"
     >
       <!-- ML: full table -->
       <template v-if="activeProjectionKind === 'ml'">
-        <template v-if="result?.mlPreview && result.mlPreview.rows.length > 0">
+        <template v-if="projectionSourceResult?.mlPreview && projectionSourceResult.mlPreview.rows.length > 0">
           <div class="modal-table-wrap">
             <table class="preview-table">
               <thead>
                 <tr>
-                  <th v-for="h in result.mlPreview.headers" :key="h">{{ h }}</th>
+                  <th v-for="h in projectionSourceResult.mlPreview.headers" :key="h">{{ h }}</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(row, i) in result.mlPreview.rows" :key="i">
+                <tr v-for="(row, i) in projectionSourceResult.mlPreview.rows" :key="i">
                   <td v-for="(cell, j) in row" :key="j">{{ cell }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <p class="preview-note">{{ t('results.mlPreview.allRows', { count: result.mlPreview.totalRows }) }}</p>
+          <p class="preview-note">{{ t('results.mlPreview.allRows', { count: projectionSourceResult.mlPreview.totalRows }) }}</p>
         </template>
         <p v-else class="no-data-msg">{{ t('results.mlPreview.noData') }}</p>
       </template>
 
       <!-- LLM: full JSON -->
       <template v-if="activeProjectionKind === 'llm'">
-        <template v-if="result?.llmPreview">
+        <template v-if="projectionSourceResult?.llmPreview">
           <pre class="llm-json">{{ llmContextJson }}</pre>
         </template>
         <p v-else class="no-data-msg">{{ t('results.llmPreview.noData') }}</p>
@@ -400,5 +485,10 @@ async function handleCopy() {
 .download-group .btn svg {
   vertical-align: -2px;
   margin-right: 0.2rem;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.65rem;
+  font-size: 0.78rem;
 }
 </style>

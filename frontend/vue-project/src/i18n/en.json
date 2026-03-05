@@ -9,7 +9,8 @@
   },
   "dataset": {
     "title": "Dataset",
-    "hint": "Select a dataset to run the pipeline",
+    "hint": "Select one or more datasets to run the pipeline",
+    "runAll": "Run all datasets",
     "recordsUnit": "transactions",
     "accountsUnit": "accounts",
     "D1": "Public, valid, small",
@@ -70,7 +71,14 @@
   },
   "results": {
     "loading": "Pipeline running...",
-    "empty": "Select a dataset and run the pipeline to see results",
+    "runningShort": "Running",
+    "progress": "{done}/{total} done",
+    "empty": "Select datasets and run the pipeline to see results",
+    "batch": {
+      "title": "Datasets run",
+      "overall": "Overall result",
+      "openDetail": "View results"
+    },
     "elapsed": "Pipeline processing time",
     "outcome": {
       "SUCCESS": "Success",

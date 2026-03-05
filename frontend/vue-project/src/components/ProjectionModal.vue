@@ -4,6 +4,7 @@ import { onMounted, onUnmounted, watch } from 'vue'
 const props = defineProps({
   open: { type: Boolean, default: false },
   title: { type: String, default: '' },
+  zIndex: { type: Number, default: 1000 },
 })
 
 const emit = defineEmits(['close'])
@@ -17,11 +18,7 @@ function onKeydown(e) {
 watch(
   () => props.open,
   (isOpen) => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
+    document.body.style.overflow = isOpen ? 'hidden' : ''
   },
 )
 
@@ -38,7 +35,7 @@ onUnmounted(() => {
 <template>
   <Teleport to="body">
     <Transition name="modal">
-      <div v-if="open" class="modal-overlay" @click.self="emit('close')">
+      <div v-if="open" class="modal-overlay" :style="{ zIndex: zIndex }" @click.self="emit('close')">
         <div class="modal-container card" role="dialog" aria-modal="true">
           <div class="modal-header">
             <h3 class="modal-title">{{ title }}</h3>
@@ -65,7 +62,7 @@ onUnmounted(() => {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  /* z-index is set via :style binding from zIndex prop */
   display: flex;
   align-items: center;
   justify-content: center;
