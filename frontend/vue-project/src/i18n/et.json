@@ -53,7 +53,8 @@
     "defaultSelectedHint": "Vaikimisi valitud: {model}"
   },
   "actions": {
-    "run": "Käivita pipeline",
+    "run": "Käivita töötlusvoog",
+    "runAll": "Jooksuta kõik andmestikud",
     "reset": "Lähtesta",
     "view": "Vaata",
     "close": "Sulge",

@@ -54,6 +54,7 @@
   },
   "actions": {
     "run": "Run pipeline",
+    "runAll": "Run all datasets",
     "reset": "Reset",
     "view": "View",
     "close": "Close",
