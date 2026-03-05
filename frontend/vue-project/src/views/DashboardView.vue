@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import DatasetSelector from '@/components/DatasetSelector.vue'
 import ModelSelector from '@/components/ModelSelector.vue'
 import ResultsPanel from '@/components/ResultsPanel.vue'
@@ -12,6 +12,18 @@ import { downloadFile, MIME, sanitise } from '@/utils/downloadFile'
 const { t } = useI18n()
 
 const allDatasets = getDatasets()
+
+// ── Scroll shadow state ──
+const configScrollEl = ref(null)
+const actionsScrolled = ref(false)
+
+onMounted(() => {
+  const el = configScrollEl.value
+  if (!el) return
+  const onScroll = () => { actionsScrolled.value = el.scrollTop > 0 }
+  el.addEventListener('scroll', onScroll, { passive: true })
+  onUnmounted(() => el.removeEventListener('scroll', onScroll))
+})
 
 // ── Selection state ──
 const selectedDatasets = ref([])
@@ -222,7 +234,7 @@ async function handleCopy() {
     <div class="dashboard">
       <!-- Left column: selection + actions -->
       <aside class="config-panel">
-        <div class="config-scroll">
+        <div class="config-scroll" ref="configScrollEl">
           <DatasetSelector
             v-model="selectedDatasets"
             :disabled="loading"
@@ -233,7 +245,7 @@ async function handleCopy() {
           <ModelSelector v-model="selectedModels" :disabled="loading" />
         </div>
 
-        <div class="actions">
+        <div class="actions" :class="{ 'actions--scrolled': actionsScrolled }">
           <button
             class="btn btn-accent run-btn"
             :disabled="!canRun"
@@ -384,8 +396,8 @@ async function handleCopy() {
 
 .config-panel {
   position: sticky;
-  top: 5rem; /* header (~3.75rem) + header margin-bottom (1.25rem) */
-  height: calc(100vh - 5rem);
+  top: 3.75rem; /* sticky header height */
+  height: calc(100vh - 3.75rem);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -404,6 +416,12 @@ async function handleCopy() {
   padding: 0.6rem 0 0.75rem;
   border-top: 1px solid var(--color-border);
   background: var(--color-background);
+  box-shadow: none;
+  transition: box-shadow var(--transition-fast);
+}
+
+.actions--scrolled {
+  box-shadow: 0 -4px 12px rgba(0, 49, 84, 0.08);
 }
 
 .actions .btn {
