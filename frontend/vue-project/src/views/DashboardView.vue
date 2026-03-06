@@ -13,16 +13,19 @@ const { t } = useI18n()
 
 const allDatasets = getDatasets()
 
-// ── Scroll shadow state ──
-const configScrollEl = ref(null)
-const actionsScrolled = ref(false)
-
+// ── Footer shadow: show only when content exists below viewport ──
+const hasContentBelow = ref(false)
+function updateFooterShadow() {
+  hasContentBelow.value = window.scrollY + window.innerHeight < document.documentElement.scrollHeight - 1
+}
 onMounted(() => {
-  const el = configScrollEl.value
-  if (!el) return
-  const onScroll = () => { actionsScrolled.value = el.scrollTop > 0 }
-  el.addEventListener('scroll', onScroll, { passive: true })
-  onUnmounted(() => el.removeEventListener('scroll', onScroll))
+  updateFooterShadow()
+  window.addEventListener('scroll', updateFooterShadow, { passive: true })
+  window.addEventListener('resize', updateFooterShadow, { passive: true })
+})
+onUnmounted(() => {
+  window.removeEventListener('scroll', updateFooterShadow)
+  window.removeEventListener('resize', updateFooterShadow)
 })
 
 // ── Selection state ──
@@ -232,20 +235,35 @@ async function handleCopy() {
 <template>
   <div class="dashboard-wrap">
     <div class="dashboard">
-      <!-- Left column: selection + actions -->
+      <!-- Left column: selection -->
       <aside class="config-panel">
-        <div class="config-scroll" ref="configScrollEl">
-          <DatasetSelector
-            v-model="selectedDatasets"
-            :disabled="loading"
-          />
+        <DatasetSelector
+          v-model="selectedDatasets"
+          :disabled="loading"
+        />
 
-          <div class="section-gap"></div>
+        <div class="section-gap"></div>
 
-          <ModelSelector v-model="selectedModels" :disabled="loading" />
-        </div>
+        <ModelSelector v-model="selectedModels" :disabled="loading" />
+      </aside>
 
-        <div class="actions" :class="{ 'actions--scrolled': actionsScrolled }">
+      <!-- Right column: results -->
+      <main class="results-panel">
+        <ResultsPanel
+          :batch-result="batchResult"
+          :loading="loading"
+          :run-progress="runProgress"
+          @open-dataset-detail="handleOpenDatasetDetail"
+          @open-projection="handleOpenProjection"
+        />
+      </main>
+    </div>
+
+    <!-- Fixed action footer -->
+    <footer class="actions-footer" :class="{ 'actions-footer--shadow': hasContentBelow }">
+      <div class="actions-inner">
+        <div v-if="error" class="error-box">{{ error }}</div>
+        <div class="actions-buttons">
           <button
             class="btn btn-accent run-btn"
             :disabled="!canRun"
@@ -274,21 +292,8 @@ async function handleCopy() {
             {{ t('actions.reset') }}
           </button>
         </div>
-
-        <div v-if="error" class="error-box">{{ error }}</div>
-      </aside>
-
-      <!-- Right column: results -->
-      <main class="results-panel">
-        <ResultsPanel
-          :batch-result="batchResult"
-          :loading="loading"
-          :run-progress="runProgress"
-          @open-dataset-detail="handleOpenDatasetDetail"
-          @open-projection="handleOpenProjection"
-        />
-      </main>
-    </div>
+      </div>
+    </footer>
 
     <!-- ── Dataset detail modal (z-index 1100) ── -->
     <ProjectionModal
@@ -380,12 +385,15 @@ async function handleCopy() {
 </template>
 
 <style scoped>
+.dashboard-wrap {
+  padding-bottom: 5rem;
+}
+
 .dashboard {
   display: grid;
   grid-template-columns: 540px 1fr;
   gap: 2.5rem;
   align-items: start;
-  min-height: calc(100vh - 120px);
 }
 
 @media (max-width: 900px) {
@@ -395,36 +403,37 @@ async function handleCopy() {
 }
 
 .config-panel {
-  position: sticky;
-  top: 3.75rem; /* sticky header height */
-  height: calc(100vh - 3.75rem);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
-.config-scroll {
-  flex: 1;
-  overflow-y: auto;
-  min-height: 0;
-}
-
-.actions {
-  flex-shrink: 0;
-  display: flex;
-  gap: 0.6rem;
-  padding: 0.6rem 0 0.75rem;
-  border-top: 1px solid var(--color-border);
+.actions-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
   background: var(--color-background);
   box-shadow: none;
   transition: box-shadow var(--transition-fast);
+  padding: 0.6rem 1.5rem 0.75rem;
 }
 
-.actions--scrolled {
+.actions-footer--shadow {
   box-shadow: 0 -4px 12px rgba(0, 49, 84, 0.08);
 }
 
-.actions .btn {
+.actions-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.actions-buttons {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.actions-buttons .btn {
   flex: 1;
 }
 

@@ -10,7 +10,6 @@ const { t } = useI18n()
 const isScrolled = ref(false)
 let scrollHandler
 onMounted(() => {
-  if (CSS.supports('animation-timeline', 'scroll()')) return
   scrollHandler = () => { isScrolled.value = window.scrollY > 0 }
   window.addEventListener('scroll', scrollHandler, { passive: true })
 })
@@ -75,27 +74,6 @@ onUnmounted(() => {
   box-shadow: 0 2px 12px rgba(0, 49, 84, 0.1);
 }
 
-/* Scroll-driven animation as progressive enhancement */
-@supports (animation-timeline: scroll()) {
-  .app-header {
-    animation: header-scrolled-shadow linear both;
-    animation-timeline: scroll(root);
-    animation-range: 0px 4px;
-    /* Reset transition since animation handles it */
-    transition: none;
-  }
-
-  @keyframes header-scrolled-shadow {
-    from {
-      border-bottom-color: transparent;
-      box-shadow: none;
-    }
-    to {
-      border-bottom-color: var(--color-border);
-      box-shadow: 0 2px 12px rgba(0, 49, 84, 0.1);
-    }
-  }
-}
 
 .header-inner {
   /* Horizontal padding aligns content with app-body (1.5rem) */
