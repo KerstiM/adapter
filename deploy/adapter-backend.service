@@ -1,0 +1,16 @@
+[Unit]
+Description=Adapter Python Backend API
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/adapter
+ExecStart=/var/www/adapter/venv/bin/python -m backend.entrypoints.api
+Restart=on-failure
+RestartSec=5
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
