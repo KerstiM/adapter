@@ -14,6 +14,7 @@ contracts:
   C-01: "spec/contracts/C-01_berlin_to_sv.yaml"
   C-02: "spec/contracts/C-02_sv_to_ml.yaml"
   C-03: "spec/contracts/C-03_sv_to_llm.yaml"
+  C-04: "spec/contracts/C-04_model_formatters.yaml"
 
 rulesets:
   R-01: "spec/rulesets/R-01_sv_invariants.yaml"

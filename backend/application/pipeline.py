@@ -25,6 +25,7 @@ from domain.mapping.c01_raw_to_sv import (
 )
 from domain.projections.c02_sv_to_ml import project_ml as _project_ml
 from domain.projections.c03_sv_to_llm import project_llm as _project_llm
+from domain.projections.model_formatters import format_for_model as _format_for_model
 from domain.report.ops import (
     build_dropped_details as _build_dropped_details,
     build_report as _build_report,
@@ -378,6 +379,42 @@ def run_pipeline(
     }
 
     # ================================================================
+    # Stage 5c: FORMAT_FOR_MODEL — optional model-specific formatting
+    # ================================================================
+    target_models = profile.get("target_models", {})
+    model_ml_outputs: dict[str, dict] = {}
+    model_llm_outputs: dict[str, list[dict]] = {}
+
+    c04 = profile.get("contracts", {}).get("C-04", {})
+    llm_preamble = target_models.get("llm_preamble", "")
+
+    for ml_model_id in target_models.get("ml", []):
+        ml_model_config = c04.get("ml_models", {}).get(ml_model_id)
+        if ml_model_config:
+            result = _format_for_model(
+                ml_rows, sv_bundle, ml_model_id, ml_model_config, "ml",
+            )
+            suffix = ml_model_config.get("output_suffix", ml_model_id)
+            model_ml_outputs[suffix] = result
+
+    for llm_model_id in target_models.get("llm", []):
+        llm_model_config = c04.get("llm_models", {}).get(llm_model_id)
+        if llm_model_config:
+            result = _format_for_model(
+                llm_contexts, sv_bundle, llm_model_id, llm_model_config, "llm",
+                preamble=llm_preamble,
+            )
+            suffix = llm_model_config.get("output_suffix", llm_model_id)
+            model_llm_outputs[suffix] = result
+
+    fmt_errors = 0
+    stage_log["FORMAT_FOR_MODEL"] = {
+        "status": "OK",
+        "errors": fmt_errors,
+        "warnings": 0,
+    }
+
+    # ================================================================
     # Stage 6: WRITE_OUTPUTS — persist via OutputPort
     # ================================================================
     out.write_sv(sv_bundle)
@@ -385,6 +422,12 @@ def run_pipeline(
 
     llm_output = llm_contexts[0] if len(llm_contexts) == 1 else llm_contexts
     out.write_llm(llm_output)
+
+    for suffix, ml_model_data in model_ml_outputs.items():
+        out.write_ml_model(ml_model_data, suffix)
+
+    for suffix, llm_model_data in model_llm_outputs.items():
+        out.write_llm_model(llm_model_data, suffix)
 
     # Count flag severities across all transactions for report
     all_dropped_for_severity = dropped_txs + dedupe_drops
@@ -422,7 +465,8 @@ def run_pipeline(
     # Convert stage_log dict to S-05 compliant array
     stage_order = [
         "READ_INPUT", "STANDARDIZE_TO_SV", "VALIDATE_SCHEMA",
-        "CHECK_INVARIANTS", "PROJECT_ML", "PROJECT_LLM", "WRITE_OUTPUTS",
+        "CHECK_INVARIANTS", "PROJECT_ML", "PROJECT_LLM",
+        "FORMAT_FOR_MODEL", "WRITE_OUTPUTS",
     ]
     stage_log_array: list[dict] = []
     for stage_name in stage_order:

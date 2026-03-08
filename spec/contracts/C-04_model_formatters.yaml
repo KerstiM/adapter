@@ -1,0 +1,42 @@
+id: C-04_MODEL_FORMATTERS
+version: "1.0.0"
+
+llm_models:
+  llama3.1-8b-instruct:
+    family: llama3
+    template_tokens:
+      bos: "<|begin_of_text|>"
+      system_start: "<|start_header_id|>system<|end_header_id|>\n\n"
+      system_end: "<|eot_id|>"
+      user_start: "<|start_header_id|>user<|end_header_id|>\n\n"
+      user_end: "<|eot_id|>"
+      assistant_start: "<|start_header_id|>assistant<|end_header_id|>\n\n"
+    output_suffix: "llama3"
+
+  mistral-7b-instruct-v0.3:
+    family: mistral
+    template_tokens:
+      bos: "<s>"
+      inst_start: "[INST] "
+      inst_end: " [/INST]"
+    output_suffix: "mistral"
+
+  qwen2.5-7b-instruct:
+    family: chatml
+    template_tokens:
+      im_start: "<|im_start|>"
+      im_end: "<|im_end|>"
+    output_suffix: "qwen"
+
+ml_models:
+  xgboost:
+    encoding: label
+    drop_string_columns: true
+    output_suffix: "xgboost"
+    categorical_fields: ["status", "direction", "currency"]
+
+  catboost:
+    encoding: native
+    drop_string_columns: false
+    output_suffix: "catboost"
+    categorical_fields: ["status", "direction", "currency", "counterparty_name"]

@@ -102,6 +102,7 @@
                   "CHECK_INVARIANTS",
                   "PROJECT_ML",
                   "PROJECT_LLM",
+                  "FORMAT_FOR_MODEL",
                   "WRITE_OUTPUTS"
                 ]
               },
