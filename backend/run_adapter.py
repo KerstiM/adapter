@@ -65,6 +65,18 @@ def main() -> None:
     parser.add_argument("--out", "-o", default=None,
                         help="Output directory (relative to repo root unless "
                              "absolute). Default: .backend/out/")
+    parser.add_argument("--target-llm", nargs="*", default=None,
+                        metavar="MODEL",
+                        help="LLM model(s) to generate projections for. "
+                             "Options: llama3.1-8b-instruct, "
+                             "mistral-7b-instruct-v0.3, qwen2.5-7b-instruct")
+    parser.add_argument("--target-ml", nargs="*", default=None,
+                        metavar="MODEL",
+                        help="ML model(s) to generate projections for. "
+                             "Options: xgboost, catboost")
+    parser.add_argument("--llm-preamble", default=None,
+                        help="System preamble for LLM projections. "
+                             "Overrides profile setting.")
     args = parser.parse_args()
 
     if args.data:
@@ -79,11 +91,30 @@ def main() -> None:
     else:
         output_dir = ROOT / ".backend" / "out"
 
+    # Build target_models override from CLI flags
+    target_models_override = None
+    if args.target_llm is not None or args.target_ml is not None or args.llm_preamble is not None:
+        target_models_override = {}
+        if args.target_llm is not None:
+            target_models_override["llm"] = args.target_llm
+        if args.target_ml is not None:
+            target_models_override["ml"] = args.target_ml
+        if args.llm_preamble is not None:
+            target_models_override["llm_preamble"] = args.llm_preamble
+
     print(f"Dataset:    {data_dir}")
     print(f"Output to:  {output_dir}")
+    if target_models_override:
+        if target_models_override.get("llm"):
+            print(f"Target LLM: {', '.join(target_models_override['llm'])}")
+        if target_models_override.get("ml"):
+            print(f"Target ML:  {', '.join(target_models_override['ml'])}")
     print()
 
-    summary = run_pipeline_fs(data_dir, output_dir, spec_dir=ROOT / "spec")
+    summary = run_pipeline_fs(
+        data_dir, output_dir, spec_dir=ROOT / "spec",
+        target_models_override=target_models_override,
+    )
 
     print(f"Outcome:    {summary['outcome']}")
     print(f"stop_reason: {summary.get('stop_reason', '?')}")
