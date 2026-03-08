@@ -17,6 +17,13 @@ CLI entrypoint on [`backend/run_adapter.py`](backend/run_adapter.py:1).
     - *prefix match* loogikat (nt `D6` sobitub `D6_...`), kus `D1` ei sobitu `D10_...` (underscore fence).
 - `--out` / `-o`: väljundi juurkaust (suhteline repo juure suhtes).
   - Kui jätad andmata, kasutatakse vaikimisi `<repo>/.backend/out/`.
+- `--target-llm MODEL [MODEL ...]`: LLM mudel(id), millele genereerida projektsioonid.
+  - Valikud: `llama3.1-8b-instruct`, `mistral-7b-instruct-v0.3`, `qwen2.5-7b-instruct`
+- `--target-ml MODEL [MODEL ...]`: ML mudel(id), millele genereerida projektsioonid.
+  - Valikud: `xgboost`, `catboost`
+- `--llm-preamble TEXT`: LLM süsteemne preamble (ülekirjutab profiili seadistuse).
+
+CLI mudeli-argumendid ülekirjutavad profiili `target_models` sektsiooni. Kui mudeleid ei vali, genereeritakse ainult baas-projektsioonid (`ml_v1.csv`, `llm_context_v1.json`).
 
 ## 1) Käivita ühe dataset'i peal (artefaktid jäävad alles)
 
@@ -36,6 +43,42 @@ python backend/run_adapter.py --data datasets/D6_synth_dupes_seed99 --out backen
 
 ```bat
 python backend\run_adapter.py --data D6 --out backend\out
+```
+
+## 1a) Käivita konkreetsete mudelitega
+
+### Üks LLM ja üks ML mudel
+
+```bash
+python backend/run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --target-ml xgboost
+```
+
+### Mitu mudelit korraga
+
+```bash
+python backend/run_adapter.py --data D1 \
+  --target-llm llama3.1-8b-instruct mistral-7b-instruct-v0.3 qwen2.5-7b-instruct \
+  --target-ml xgboost catboost
+```
+
+### Kohandatud LLM preamble
+
+```bash
+python backend/run_adapter.py --data D1 \
+  --target-llm llama3.1-8b-instruct \
+  --llm-preamble "Analüüsi pangatehinguid ja tuvasta anomaaliad."
+```
+
+### PowerShell
+
+```powershell
+python backend/run_adapter.py --data D1 --target-llm llama3.1-8b-instruct mistral-7b-instruct-v0.3 --target-ml xgboost catboost
+```
+
+### cmd.exe
+
+```bat
+python backend\run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --target-ml xgboost
 ```
 
 ## 2) Käivita kõigi dataset'ide peal (artefaktid jäävad alles)
@@ -89,8 +132,13 @@ backend/out/
     sv.json
     report.json
     projections/
-      ml_v1.csv
-      llm_context_v1.json
+      ml_v1.csv                    # baas-ML projektsioon (alati)
+      llm_context_v1.json          # baas-LLM kontekst (alati)
+      ml_xgboost.csv               # XGBoost-spetsiifiline (kui --target-ml xgboost)
+      ml_catboost.csv              # CatBoost-spetsiifiline (kui --target-ml catboost)
+      llm_llama3.txt               # Llama 3 prompt (kui --target-llm llama3.1-8b-instruct)
+      llm_mistral.txt              # Mistral prompt (kui --target-llm mistral-7b-instruct-v0.3)
+      llm_qwen.txt                 # Qwen prompt (kui --target-llm qwen2.5-7b-instruct)
 ```
 
 CLI prindib alati:
@@ -98,3 +146,26 @@ CLI prindib alati:
 - `Outcome:` (SUCCESS / PARTIAL_SUCCESS / FAIL)
 - `stop_reason:` (miks selline outcome)
 - `Run folder:` (täpne kaust, kuhu artefaktid kirjutati)
+- `Target LLM:` / `Target ML:` (kui mudelid on valitud)
+
+## 5) API kaudu mudeli valimine
+
+API server (`python -m entrypoints.api`) toetab mudeli valikut `POST /api/run` päringus:
+
+```bash
+curl -X POST http://localhost:5000/api/run \
+  -H "Content-Type: application/json" \
+  -d '{
+    "datasetId": "D1",
+    "targetLlm": ["llama3.1-8b-instruct", "mistral-7b-instruct-v0.3"],
+    "targetMl": ["xgboost"],
+    "llmPreamble": "Analüüsi pangatehinguid."
+  }'
+```
+
+Toetatud väljad:
+- `targetLlm` — string või string[] — LLM mudeli ID-d
+- `targetMl` — string või string[] — ML mudeli ID-d
+- `llmPreamble` — string — LLM süsteemne preamble
+
+Kui mudeli väljad puuduvad, kasutatakse profiili vaikeseadistust (või genereeritakse ainult baas-projektsioonid).
