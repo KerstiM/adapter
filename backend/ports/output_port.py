@@ -62,3 +62,19 @@ class OutputPort(Protocol):
         deterministic key ordering.
         """
         ...
+
+    def write_ml_model(self, output: dict[str, Any], model_suffix: str) -> None:
+        """Persist a model-specific ML projection artefact.
+
+        Written to ``projections/ml_v1_{model_suffix}.json``.
+        Only called when *target_models.ml* is configured in the profile.
+        """
+        ...
+
+    def write_llm_model(self, output: list[dict[str, Any]], model_suffix: str) -> None:
+        """Persist a model-specific LLM projection artefact.
+
+        Written to ``projections/llm_context_v1_{model_suffix}.json``.
+        Only called when *target_models.llm* is configured in the profile.
+        """
+        ...

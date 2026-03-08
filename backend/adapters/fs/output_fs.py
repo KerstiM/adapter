@@ -142,6 +142,22 @@ class FsOutputAdapter:
             f.write(_stable_json(report))
             f.write("\n")
 
+    def write_ml_model(self, output: dict[str, Any], model_suffix: str) -> None:
+        """Write model-specific ML projection to ``projections/ml_v1_{suffix}.json``."""
+        self._require_init()
+        path = self._proj_folder / f"ml_v1_{model_suffix}.json"  # type: ignore[operator]
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(_stable_json(output))
+            f.write("\n")
+
+    def write_llm_model(self, output: list[dict[str, Any]], model_suffix: str) -> None:
+        """Write model-specific LLM projection to ``projections/llm_context_v1_{suffix}.json``."""
+        self._require_init()
+        path = self._proj_folder / f"llm_context_v1_{model_suffix}.json"  # type: ignore[operator]
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(_stable_json(output))
+            f.write("\n")
+
     # ------------------------------------------------------------------
     # Extra helpers (not part of the port but useful for callers)
     # ------------------------------------------------------------------
