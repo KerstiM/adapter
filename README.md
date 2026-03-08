@@ -14,6 +14,18 @@ cd backend && pip install -r requirements.txt
 # Üks dataset (prefix-match: D1 → D1_public_valid_small)
 python backend/run_adapter.py --data D1 --out backend/out
 
+# Konkreetsete mudelitega
+python backend/run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --target-ml xgboost
+
+# Mitu mudelit korraga
+python backend/run_adapter.py --data D1 \
+  --target-llm llama3.1-8b-instruct mistral-7b-instruct-v0.3 qwen2.5-7b-instruct \
+  --target-ml xgboost catboost
+
+# Kohandatud LLM preamble
+python backend/run_adapter.py --data D1 --target-llm llama3.1-8b-instruct \
+  --llm-preamble "Analüüsi pangatehinguid ja tuvasta anomaaliad."
+
 # Kõik datasetid
 for d in datasets/D*; do python backend/run_adapter.py --data "$d" --out backend/out; done
 ```
@@ -21,6 +33,9 @@ for d in datasets/D*; do python backend/run_adapter.py --data "$d" --out backend
 CLI argumendid:
 - `--data / -d` — dataseti nimi (nt `D1`, `D4`) või kaustatee. Vaikimisi: `D1_public_valid_small`.
 - `--out / -o` — väljundi juurkaust. Vaikimisi: `<repo>/.backend/out/`.
+- `--target-llm MODEL [MODEL ...]` — LLM mudel(id), millele genereerida projektsioonid. Valikud: `llama3.1-8b-instruct`, `mistral-7b-instruct-v0.3`, `qwen2.5-7b-instruct`.
+- `--target-ml MODEL [MODEL ...]` — ML mudel(id), millele genereerida projektsioonid. Valikud: `xgboost`, `catboost`.
+- `--llm-preamble TEXT` — LLM süsteemne preamble (ülekirjutab profiili seadistuse).
 
 Väljund tekib jooksu-kausta alla:
 
@@ -29,8 +44,13 @@ Väljund tekib jooksu-kausta alla:
     sv.json                          # kanooniline SVBundle
     report.json                      # koondraport (outcome, issues, counts)
     projections/
-        ml_v1.csv                    # ML projektsioon
-        llm_context_v1.json          # LLM kontekst
+        ml_v1.csv                    # ML baasprojektsioon
+        llm_context_v1.json          # LLM baaskontekst
+        ml_xgboost.csv               # XGBoost-spetsiifiline (kui --target-ml xgboost)
+        ml_catboost.csv              # CatBoost-spetsiifiline (kui --target-ml catboost)
+        llm_llama3.txt               # Llama 3 prompt (kui --target-llm llama3.1-8b-instruct)
+        llm_mistral.txt              # Mistral prompt (kui --target-llm mistral-7b-instruct-v0.3)
+        llm_qwen.txt                 # Qwen prompt (kui --target-llm qwen2.5-7b-instruct)
 ```
 
 Tootmisjooksul on `<timestamp>` päris süsteemiaeg (UTC, ISO 8601) ja `<run_id>` juhuslik UUID4-põhine identifikaator.
@@ -93,6 +113,52 @@ backend/
 `application` → impordib `domain` + `ports`, ei tee I/O-d. `adapters` → teostavad portide liideseid (duck typing).
 
 Täpsem arhitektuurikirjeldus: [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md).
+
+---
+
+## Mudeli valimine (target models)
+
+Pipeline saab genereerida mudeli-spetsiifilisi projektsioone lisaks baas-CSV ja LLM kontekstile.
+Toetatud mudelid on defineeritud lepingus [`spec/contracts/C-04_model_formatters.yaml`](spec/contracts/C-04_model_formatters.yaml).
+
+### Toetatud mudelid
+
+| Tüüp | Mudeli ID | Perekond | Väljundfail |
+|------|-----------|----------|-------------|
+| LLM | `llama3.1-8b-instruct` | Llama 3 | `llm_llama3.txt` |
+| LLM | `mistral-7b-instruct-v0.3` | Mistral | `llm_mistral.txt` |
+| LLM | `qwen2.5-7b-instruct` | ChatML | `llm_qwen.txt` |
+| ML | `xgboost` | XGBoost (numbriline, label-encoded) | `ml_xgboost.csv` |
+| ML | `catboost` | CatBoost (kategoriaalsed stringidena) | `ml_catboost.csv` |
+
+### Valikuviisid (prioriteedijärjekorras)
+
+1. **CLI argumendid** — ülekirjutavad profiili seadistuse:
+   ```bash
+   python backend/run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --target-ml xgboost
+   ```
+
+2. **API päring** — `POST /api/run` kehas:
+   ```json
+   {
+     "datasetId": "D1",
+     "targetLlm": ["llama3.1-8b-instruct", "mistral-7b-instruct-v0.3"],
+     "targetMl": ["xgboost"],
+     "llmPreamble": "Analüüsi pangatehinguid."
+   }
+   ```
+
+3. **Profiili konfiguratsioon** — `spec/profiles/default.yaml`:
+   ```yaml
+   target_models:
+     llm_preamble: "Sa oled finantsanalüüsi assistent."
+     llm: ["llama3.1-8b-instruct"]
+     ml: ["xgboost"]
+   ```
+
+CLI ja API argumendid ülekirjutavad profiili `target_models` sektsiooni (merge-loogika: CLI võtmed asendavad profiili samanimelisi võtmeid).
+
+Kui mudeleid ei ole valitud (ei CLI-s, API-s ega profiilis), genereeritakse ainult baas-projektsioonid (`ml_v1.csv`, `llm_context_v1.json`).
 
 ---
 
