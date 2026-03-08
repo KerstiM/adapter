@@ -164,6 +164,20 @@ class Handler(BaseHTTPRequestHandler):
             body = json.loads(self.rfile.read(length)) if length else {}
             dataset_id = body.get("datasetId", "D1")
 
+            # Optional model targeting from request body
+            target_models_override = None
+            target_llm = body.get("targetLlm")
+            target_ml = body.get("targetMl")
+            llm_preamble = body.get("llmPreamble")
+            if target_llm or target_ml or llm_preamble:
+                target_models_override = {}
+                if target_llm:
+                    target_models_override["llm"] = target_llm if isinstance(target_llm, list) else [target_llm]
+                if target_ml:
+                    target_models_override["ml"] = target_ml if isinstance(target_ml, list) else [target_ml]
+                if llm_preamble:
+                    target_models_override["llm_preamble"] = llm_preamble
+
             data_dir = _resolve_dataset(dataset_id)
             if data_dir is None:
                 self._json_response({"error": f"Dataset '{dataset_id}' not found"}, 404)
@@ -171,7 +185,10 @@ class Handler(BaseHTTPRequestHandler):
 
             t0 = time.perf_counter()
             try:
-                summary = run_pipeline_fs(data_dir, OUTPUT_DIR, spec_dir=SPEC_DIR)
+                summary = run_pipeline_fs(
+                    data_dir, OUTPUT_DIR, spec_dir=SPEC_DIR,
+                    target_models_override=target_models_override,
+                )
             except Exception as exc:
                 elapsed_ms = round((time.perf_counter() - t0) * 1000)
                 traceback.print_exc()
