@@ -152,6 +152,7 @@ def run_pipeline(
     *,
     dataset_id: str = "",
     input_dir: str = "",
+    target_models_override: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Run the full adapter pipeline via ports: RAW -> SV -> ML/LLM projections.
 
@@ -382,6 +383,8 @@ def run_pipeline(
     # Stage 5c: FORMAT_FOR_MODEL — optional model-specific formatting
     # ================================================================
     target_models = profile.get("target_models", {})
+    if target_models_override:
+        target_models = {**target_models, **target_models_override}
     model_ml_outputs: dict[str, dict] = {}
     model_llm_outputs: dict[str, list[dict]] = {}
 
