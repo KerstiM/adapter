@@ -38,6 +38,7 @@ def run_pipeline_fs(
     profile_id: str = "default",
     run_id: str | None = None,
     created_at_utc: str | None = None,
+    target_models_override: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Run the adapter pipeline with filesystem-backed port adapters.
 
@@ -99,6 +100,7 @@ def run_pipeline_fs(
         profile_id=profile_id,
         dataset_id=dataset_id,
         input_dir=input_dir,
+        target_models_override=target_models_override,
     )
 
     # Expose run_folder for filesystem callers (CLI, tests, QA scripts).
