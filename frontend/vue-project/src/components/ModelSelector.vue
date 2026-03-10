@@ -145,6 +145,13 @@ function toggle(id) {
 
     <!-- Production mode: forwarding (not yet available) -->
     <div v-else class="unavailable-block">
+      <button class="add-model-btn" disabled :title="t('models.addModel')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+        {{ t('models.addModel') }}
+      </button>
       <div class="chips-area">
         <span class="chip chip-selected">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
@@ -280,6 +287,7 @@ function toggle(id) {
 }
 
 .unavailable-block {
+  position: relative;
   background: var(--color-background-mute);
   border: 1.5px dashed var(--color-border);
   border-radius: var(--radius-md);
