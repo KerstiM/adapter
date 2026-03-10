@@ -69,6 +69,7 @@
     "removeModel": "Eemalda mudel",
     "noneSelectedHint": "Sihtmudelid pole valitud (valikuline)",
     "forwardingTitle": "Mudelispetsiifilised projektsioonid",
+    "forwardingTitleProduction": "Edastamine mudelitele",
     "notAvailable": "Pole veel saadaval",
     "defaultSelectedHint": "Vaikimisi valitud: {model}",
     "optional": "Valikuline",

@@ -69,6 +69,7 @@
     "removeModel": "Remove model",
     "noneSelectedHint": "No destination models selected (optional)",
     "forwardingTitle": "Model-specific projections",
+    "forwardingTitleProduction": "Forward to models",
     "notAvailable": "Not available yet",
     "defaultSelectedHint": "Default selected: {model}",
     "optional": "Optional",
