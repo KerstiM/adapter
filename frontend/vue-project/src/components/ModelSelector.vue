@@ -83,6 +83,13 @@ function toggle(id) {
 
     <!-- Proto mode: model-specific projections selection -->
     <div v-if="mode === 'proto'" class="model-block" :class="{ 'model-block--disabled': disabled }">
+      <button class="add-model-btn" disabled :title="t('models.addModel')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+        {{ t('models.addModel') }}
+      </button>
       <!-- LLM models -->
       <div class="model-category">
         <span class="category-label">{{ t('models.llmCategory') }}</span>
@@ -237,11 +244,30 @@ function toggle(id) {
 }
 
 .model-block {
+  position: relative;
   background: var(--color-background);
   border: 1.5px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 0.85rem 1rem;
   transition: border-color var(--transition-fast);
+}
+
+.add-model-btn {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.22rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--vt-c-text-light-2);
+  background: var(--color-background-soft);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: not-allowed;
+  opacity: 0.45;
 }
 
 .model-block:hover {
