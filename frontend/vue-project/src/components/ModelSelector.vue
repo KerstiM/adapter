@@ -4,16 +4,16 @@ import { useI18n } from '@/composables/useI18n'
 
 const { t } = useI18n()
 
-const LLM_MODELS = [
-  { id: 'llama3.1-8b-instruct', label: 'Meta Llama 3.1 8B Instruct' },
-  { id: 'mistral-7b-instruct-v0.3', label: 'Mistral 7B Instruct v0.3' },
-  { id: 'qwen2.5-7b-instruct', label: 'Qwen2.5 7B Instruct' },
+const ALL_MODELS = [
+  { id: 'llama3.1-8b-instruct', label: 'Meta Llama 3.1 8B Instruct', cat: 'llm' },
+  { id: 'mistral-7b-instruct-v0.3', label: 'Mistral 7B Instruct v0.3', cat: 'llm' },
+  { id: 'qwen2.5-7b-instruct', label: 'Qwen2.5 7B Instruct', cat: 'llm' },
+  { id: 'xgboost', label: 'XGBoost', cat: 'ml' },
+  { id: 'catboost', label: 'CatBoost', cat: 'ml' },
 ]
 
-const ML_MODELS = [
-  { id: 'xgboost', label: 'XGBoost' },
-  { id: 'catboost', label: 'CatBoost' },
-]
+const LLM_MODELS = ALL_MODELS.filter(m => m.cat === 'llm')
+const ML_MODELS = ALL_MODELS.filter(m => m.cat === 'ml')
 
 const props = defineProps({
   modelValue: { type: Array, default: () => [] },
@@ -53,9 +53,9 @@ function toggle(id) {
           <path d="M2 12l10 5 10-5" />
         </svg>
       </span>
-      {{ t('models.forwardingTitle') }}
-      <span class="status-badge" :class="hasSelection ? 'status-badge--active' : ''">
-        {{ hasSelection ? t('models.active') : t('models.optional') }}
+      {{ mode === 'proto' ? t('models.forwardingTitle') : t('models.forwardingTitleProduction') }}
+      <span class="status-badge" :class="mode === 'proto' && hasSelection ? 'status-badge--active' : ''">
+        {{ mode === 'production' ? t('models.notAvailable') : (hasSelection ? t('models.active') : t('models.optional')) }}
       </span>
       <span class="mode-toggle">
         <button
@@ -137,13 +137,23 @@ function toggle(id) {
     </div>
 
     <!-- Production mode: forwarding (not yet available) -->
-    <div v-else class="model-block model-block--production">
-      <div class="not-available-overlay">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-        </svg>
-        <span>{{ t('models.notAvailable') }}</span>
+    <div v-else class="unavailable-block">
+      <div class="chips-area">
+        <span class="chip chip-selected">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          {{ ALL_MODELS[0].label }}
+        </span>
+      </div>
+      <div class="other-models">
+        <span
+          v-for="m in ALL_MODELS.slice(1)"
+          :key="m.id"
+          class="chip chip-disabled"
+        >
+          {{ m.label }}
+        </span>
       </div>
     </div>
   </div>
@@ -243,20 +253,34 @@ function toggle(id) {
   pointer-events: none;
 }
 
-.model-block--production {
-  opacity: 1;
-  pointer-events: none;
+.unavailable-block {
+  background: var(--color-background-mute);
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  opacity: 0.7;
+  cursor: not-allowed;
+  transition: border-color var(--transition-fast);
 }
 
-.not-available-overlay {
+.unavailable-block:hover {
+  border-color: var(--brand-accent);
+}
+
+.unavailable-block .chips-area {
+  margin-bottom: 0.45rem;
+}
+
+.other-models {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 1.5rem 1rem;
-  color: var(--vt-c-text-light-2);
-  font-size: 0.88rem;
-  font-weight: 500;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.chip-disabled {
+  background: rgba(0, 49, 84, 0.05);
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .model-category {
