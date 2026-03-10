@@ -31,6 +31,13 @@ const elapsedFormatted = computed(() => {
   return `${(ms / 1000).toFixed(2)} s`
 })
 
+const mlModelProjections = computed(() =>
+  (props.datasetResult.result?.modelProjections || []).filter(mp => mp.type === 'ml')
+)
+const llmModelProjections = computed(() =>
+  (props.datasetResult.result?.modelProjections || []).filter(mp => mp.type === 'llm')
+)
+
 function fmt(val) {
   return val != null ? val : '—'
 }
@@ -149,27 +156,44 @@ function stageLabel(stage) {
     <div v-if="result.mlPreview || result.llmPreview" class="section card">
       <h4 class="section-title">{{ t('flow.projections') }}</h4>
       <div class="projection-summaries">
-        <div v-if="result.mlPreview" class="projection-row">
-          <span class="projection-label">{{ t('results.mlPreview.summary', { count: result.mlPreview.totalRows }) }}</span>
-          <button class="btn btn-outline btn-sm" @click="emit('open-projection', { kind: 'ml' })">
-            {{ t('actions.view') }}
-          </button>
+        <!-- ML projections -->
+        <div v-if="result.mlPreview" class="projection-group">
+          <div class="projection-row">
+            <span class="projection-label">{{ t('results.mlPreview.summary', { count: result.mlPreview.totalRows }) }}</span>
+            <div class="projection-buttons">
+              <button class="btn btn-outline btn-sm" @click="emit('open-projection', { kind: 'ml' })">
+                {{ t('actions.viewGeneral') }}
+              </button>
+              <button
+                v-for="mp in mlModelProjections"
+                :key="mp.filename"
+                class="btn btn-outline btn-sm btn-model"
+                @click="emit('open-projection', { kind: 'model-ml', modelSuffix: mp.modelSuffix })"
+              >
+                {{ t('actions.viewModelSpecific', { name: mp.modelSuffix }) }}
+              </button>
+            </div>
+          </div>
         </div>
-        <div v-if="result.llmPreview" class="projection-row">
-          <span class="projection-label">{{ t('results.llmPreview.summary', { count: result.counts.transactions_total }) }}</span>
-          <button class="btn btn-outline btn-sm" @click="emit('open-projection', { kind: 'llm' })">
-            {{ t('actions.view') }}
-          </button>
-        </div>
-        <div v-if="result.modelProjections && result.modelProjections.length > 0" class="model-projections-info">
-          <span class="model-proj-label">{{ t('results.modelProjections.label') }}:</span>
-          <span
-            v-for="mp in result.modelProjections"
-            :key="mp.filename"
-            class="model-proj-chip"
-          >
-            {{ mp.type.toUpperCase() }} / {{ mp.modelSuffix }}
-          </span>
+
+        <!-- LLM projections -->
+        <div v-if="result.llmPreview" class="projection-group">
+          <div class="projection-row">
+            <span class="projection-label">{{ t('results.llmPreview.summary', { count: result.counts.transactions_total }) }}</span>
+            <div class="projection-buttons">
+              <button class="btn btn-outline btn-sm" @click="emit('open-projection', { kind: 'llm' })">
+                {{ t('actions.viewGeneral') }}
+              </button>
+              <button
+                v-for="mp in llmModelProjections"
+                :key="mp.filename"
+                class="btn btn-outline btn-sm btn-model"
+                @click="emit('open-projection', { kind: 'model-llm', modelSuffix: mp.modelSuffix })"
+              >
+                {{ t('actions.viewModelSpecific', { name: mp.modelSuffix }) }}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -409,22 +433,35 @@ function stageLabel(stage) {
   gap: 0.5rem;
 }
 
-.projection-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.45rem 0;
+.projection-group {
+  padding: 0.35rem 0;
   border-bottom: 1px solid var(--color-border);
 }
 
-.projection-row:last-child {
+.projection-group:last-child {
   border-bottom: none;
+}
+
+.projection-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
 }
 
 .projection-label {
   font-size: 0.88rem;
   font-family: 'Fira Code', monospace;
   color: var(--color-heading);
+  padding-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.projection-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  justify-content: flex-end;
 }
 
 .btn-sm {
@@ -432,31 +469,14 @@ function stageLabel(stage) {
   font-size: 0.78rem;
 }
 
-.model-projections-info {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  padding: 0.45rem 0;
-  border-top: 1px solid var(--color-border);
-  margin-top: 0.25rem;
-}
-
-.model-proj-label {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--vt-c-text-light-2);
-}
-
-.model-proj-chip {
-  display: inline-flex;
-  padding: 0.15rem 0.5rem;
-  border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  font-family: 'Fira Code', monospace;
-  background: rgba(0, 137, 122, 0.1);
+.btn-model {
+  background: rgba(0, 137, 122, 0.06);
+  border-color: rgba(0, 137, 122, 0.3);
   color: var(--brand-accent-dark);
-  border: 1px solid rgba(0, 137, 122, 0.25);
+}
+
+.btn-model:hover {
+  background: rgba(0, 137, 122, 0.12);
+  border-color: var(--brand-accent);
 }
 </style>

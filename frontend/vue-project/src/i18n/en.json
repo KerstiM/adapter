@@ -85,6 +85,8 @@
     "runAllLine2": "datasets",
     "reset": "Reset",
     "view": "View",
+    "viewGeneral": "View general",
+    "viewModelSpecific": "View model-specific ({name})",
     "close": "Close",
     "download": "Download",
     "downloadAs": "Download as"
