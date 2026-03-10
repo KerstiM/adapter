@@ -128,6 +128,24 @@ def _read_llm_preview(run_folder: Path) -> dict | None:
     }
 
 
+def _list_model_projections(run_folder: Path) -> list[dict]:
+    """List model-specific projection files generated during the run."""
+    proj_dir = run_folder / "projections"
+    if not proj_dir.exists():
+        return []
+    results = []
+    for f in sorted(proj_dir.iterdir()):
+        name = f.name
+        # Model-specific files follow pattern: ml_v1_{suffix}.json or llm_context_v1_{suffix}.json
+        if name.startswith("ml_v1_") and name.endswith(".json"):
+            suffix = name[len("ml_v1_"):-len(".json")]
+            results.append({"type": "ml", "modelSuffix": suffix, "filename": name})
+        elif name.startswith("llm_context_v1_") and name.endswith(".json"):
+            suffix = name[len("llm_context_v1_"):-len(".json")]
+            results.append({"type": "llm", "modelSuffix": suffix, "filename": name})
+    return results
+
+
 class Handler(BaseHTTPRequestHandler):
     def _cors(self):
         self.send_header("Access-Control-Allow-Origin", "*")
@@ -207,12 +225,16 @@ class Handler(BaseHTTPRequestHandler):
             ml_preview = _read_ml_preview(run_folder)
             llm_preview = _read_llm_preview(run_folder)
 
+            # Detect model-specific projection files
+            model_projections = _list_model_projections(run_folder)
+
             self._json_response({
                 "result": summary,
                 "elapsed_ms": elapsed_ms,
                 "stageLog": stage_log,
                 "mlPreview": ml_preview,
                 "llmPreview": llm_preview,
+                "modelProjections": model_projections,
             })
         else:
             self._json_response({"error": "Not found"}, 404)
