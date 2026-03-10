@@ -85,6 +85,8 @@
     "runAllLine2": "andmestikud",
     "reset": "Lähtesta",
     "view": "Vaata",
+    "viewGeneral": "Vaata üldist",
+    "viewModelSpecific": "Vaata mudelispetsiifilist ({name})",
     "close": "Sulge",
     "download": "Laadi alla",
     "downloadAs": "Laadi alla kui"
