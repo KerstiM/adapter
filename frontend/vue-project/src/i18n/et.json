@@ -76,7 +76,10 @@
     "hintNoModels": "Koostatakse ainult üldised projektsioonid (ML CSV + LLM kontekst). Vali mudelid, et koostada ka mudelispetsiifilised projektsioonid.",
     "hintWithModels": "Lisaks üldistele projektsioonidele koostatakse ka mudelispetsiifilised projektsioonid valitud mudelitele.",
     "llmCategory": "LLM mudelid",
-    "mlCategory": "ML mudelid"
+    "mlCategory": "ML mudelid",
+    "modeProto": "Proto",
+    "modeProduction": "Tootmine",
+    "hintProduction": "Edasta pipeline väljund otse mudelitele. Pole veel saadaval."
   },
   "actions": {
     "run": "Käivita töötlusvoog",
