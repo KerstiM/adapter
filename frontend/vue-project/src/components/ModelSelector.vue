@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from '@/composables/useI18n'
 
 const { t } = useI18n()
@@ -21,6 +21,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue'])
+
+const mode = ref('proto') // 'proto' | 'production'
 
 const hasSelection = computed(() => props.modelValue.length > 0)
 
@@ -55,12 +57,32 @@ function toggle(id) {
       <span class="status-badge" :class="hasSelection ? 'status-badge--active' : ''">
         {{ hasSelection ? t('models.active') : t('models.optional') }}
       </span>
+      <span class="mode-toggle">
+        <button
+          class="toggle-btn"
+          :class="{ 'toggle-btn--active': mode === 'proto' }"
+          @click="mode = 'proto'"
+        >
+          {{ t('models.modeProto') }}
+        </button>
+        <button
+          class="toggle-btn"
+          :class="{ 'toggle-btn--active': mode === 'production' }"
+          @click="mode = 'production'"
+        >
+          {{ t('models.modeProduction') }}
+        </button>
+      </span>
     </h3>
     <p class="selector-hint">
-      {{ hasSelection ? t('models.hintWithModels') : t('models.hintNoModels') }}
+      {{ mode === 'proto'
+        ? (hasSelection ? t('models.hintWithModels') : t('models.hintNoModels'))
+        : t('models.hintProduction')
+      }}
     </p>
 
-    <div class="model-block" :class="{ 'model-block--disabled': disabled }">
+    <!-- Proto mode: model-specific projections selection -->
+    <div v-if="mode === 'proto'" class="model-block" :class="{ 'model-block--disabled': disabled }">
       <!-- LLM models -->
       <div class="model-category">
         <span class="category-label">{{ t('models.llmCategory') }}</span>
@@ -113,6 +135,17 @@ function toggle(id) {
         </div>
       </div>
     </div>
+
+    <!-- Production mode: forwarding (not yet available) -->
+    <div v-else class="model-block model-block--production">
+      <div class="not-available-overlay">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+        <span>{{ t('models.notAvailable') }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -146,12 +179,45 @@ function toggle(id) {
   background: var(--color-border-hover);
   color: var(--vt-c-text-light-2);
   white-space: nowrap;
-  margin-left: auto;
 }
 
 .status-badge--active {
   background: rgba(0, 137, 122, 0.15);
   color: var(--brand-accent-dark);
+}
+
+.mode-toggle {
+  display: inline-flex;
+  margin-left: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.toggle-btn {
+  padding: 0.18rem 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border: none;
+  background: transparent;
+  color: var(--vt-c-text-light-2);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.toggle-btn:not(:last-child) {
+  border-right: 1px solid var(--color-border);
+}
+
+.toggle-btn--active {
+  background: var(--brand-accent);
+  color: #fff;
+}
+
+.toggle-btn:hover:not(.toggle-btn--active) {
+  background: var(--color-background-soft);
 }
 
 .selector-hint {
@@ -161,7 +227,7 @@ function toggle(id) {
 }
 
 .model-block {
-  background: var(--color-background-mute);
+  background: var(--color-background);
   border: 1.5px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 0.85rem 1rem;
@@ -175,6 +241,22 @@ function toggle(id) {
 .model-block--disabled {
   opacity: 0.5;
   pointer-events: none;
+}
+
+.model-block--production {
+  opacity: 1;
+  pointer-events: none;
+}
+
+.not-available-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem 1rem;
+  color: var(--vt-c-text-light-2);
+  font-size: 0.88rem;
+  font-weight: 500;
 }
 
 .model-category {
