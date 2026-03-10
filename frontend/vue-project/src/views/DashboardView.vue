@@ -144,21 +144,34 @@ const detailModalTitle = computed(() => {
 
 // ── Projection modal (opens on top of detail modal) ──
 const activeProjectionKind = ref(null)
+const activeModelSuffix = ref(null)
 const downloadFormat = ref('default')
 const copyFeedback = ref('')
 
-function handleOpenProjection({ kind }) {
+function handleOpenProjection({ kind, modelSuffix }) {
   activeProjectionKind.value = kind
+  activeModelSuffix.value = modelSuffix || null
 }
 
 function handleCloseProjection() {
   activeProjectionKind.value = null
+  activeModelSuffix.value = null
 }
 
 const projectionModalTitle = computed(() => {
   if (activeProjectionKind.value === 'ml') return t('results.mlPreview.title')
   if (activeProjectionKind.value === 'llm') return t('results.llmPreview.title')
+  if (activeProjectionKind.value === 'model-ml') return `${t('results.mlPreview.title')} — ${activeModelSuffix.value}`
+  if (activeProjectionKind.value === 'model-llm') return `${t('results.llmPreview.title')} — ${activeModelSuffix.value}`
   return ''
+})
+
+const activeModelProjectionContent = computed(() => {
+  const r = projectionSourceResult.value
+  if (!r?.modelProjections || !activeModelSuffix.value) return null
+  const kind = activeProjectionKind.value === 'model-ml' ? 'ml' : 'llm'
+  const mp = r.modelProjections.find(p => p.type === kind && p.modelSuffix === activeModelSuffix.value)
+  return mp?.content ?? null
 })
 
 const projectionSourceResult = computed(() => {
@@ -188,6 +201,9 @@ const hasProjectionData = computed(() => {
   if (activeProjectionKind.value === 'llm') {
     return !!(projectionSourceResult.value?.llmPreview)
   }
+  if (activeProjectionKind.value === 'model-ml' || activeProjectionKind.value === 'model-llm') {
+    return !!activeModelProjectionContent.value
+  }
   return false
 })
 
@@ -209,10 +225,17 @@ function buildFilename(kind, ext) {
 function handleDownload() {
   const kind = activeProjectionKind.value
   if (!kind || !hasProjectionData.value) return
+  const isModelSpecific = kind === 'model-ml' || kind === 'model-llm'
   const fmt = downloadFormat.value === 'default' ? (kind === 'ml' ? 'csv' : 'json') : downloadFormat.value
-  const content = kind === 'ml' ? buildMlCsv() : llmContextJson.value
+  let content
+  if (isModelSpecific) {
+    content = JSON.stringify(activeModelProjectionContent.value, null, 2)
+  } else {
+    content = kind === 'ml' ? buildMlCsv() : llmContextJson.value
+  }
   if (!content) return
-  downloadFile(content, buildFilename(kind, fmt), MIME[fmt] ?? MIME.txt)
+  const fileKind = isModelSpecific ? `${kind.replace('model-', '')}_${activeModelSuffix.value}` : kind
+  downloadFile(content, buildFilename(fileKind, fmt), MIME[fmt] ?? MIME.txt)
 }
 
 async function handleCopy() {
@@ -222,6 +245,8 @@ async function handleCopy() {
     text = [headers.join(','), ...rows.map(r => r.join(','))].join('\n')
   } else if (activeProjectionKind.value === 'llm') {
     text = llmContextJson.value
+  } else if ((activeProjectionKind.value === 'model-ml' || activeProjectionKind.value === 'model-llm') && activeModelProjectionContent.value) {
+    text = JSON.stringify(activeModelProjectionContent.value, null, 2)
   }
   if (!text) return
   try {
@@ -316,7 +341,7 @@ async function handleCopy() {
       :z-index="1200"
       @close="handleCloseProjection"
     >
-      <!-- ML: full table -->
+      <!-- ML: full table (general) -->
       <template v-if="activeProjectionKind === 'ml'">
         <template v-if="projectionSourceResult?.mlPreview && projectionSourceResult.mlPreview.rows.length > 0">
           <div class="modal-table-wrap">
@@ -338,10 +363,26 @@ async function handleCopy() {
         <p v-else class="no-data-msg">{{ t('results.mlPreview.noData') }}</p>
       </template>
 
-      <!-- LLM: full JSON -->
+      <!-- LLM: full JSON (general) -->
       <template v-if="activeProjectionKind === 'llm'">
         <template v-if="projectionSourceResult?.llmPreview">
           <pre class="llm-json">{{ llmContextJson }}</pre>
+        </template>
+        <p v-else class="no-data-msg">{{ t('results.llmPreview.noData') }}</p>
+      </template>
+
+      <!-- Model-specific ML projection (JSON) -->
+      <template v-if="activeProjectionKind === 'model-ml'">
+        <template v-if="activeModelProjectionContent">
+          <pre class="llm-json">{{ JSON.stringify(activeModelProjectionContent, null, 2) }}</pre>
+        </template>
+        <p v-else class="no-data-msg">{{ t('results.mlPreview.noData') }}</p>
+      </template>
+
+      <!-- Model-specific LLM projection (JSON) -->
+      <template v-if="activeProjectionKind === 'model-llm'">
+        <template v-if="activeModelProjectionContent">
+          <pre class="llm-json">{{ JSON.stringify(activeModelProjectionContent, null, 2) }}</pre>
         </template>
         <p v-else class="no-data-msg">{{ t('results.llmPreview.noData') }}</p>
       </template>
@@ -356,7 +397,7 @@ async function handleCopy() {
               <option value="default">CSV</option>
               <option value="txt">TXT</option>
             </template>
-            <template v-if="activeProjectionKind === 'llm'">
+            <template v-if="activeProjectionKind === 'llm' || activeProjectionKind === 'model-ml' || activeProjectionKind === 'model-llm'">
               <option value="default">JSON</option>
               <option value="txt">TXT</option>
             </template>
