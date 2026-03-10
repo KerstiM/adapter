@@ -161,6 +161,16 @@ function stageLabel(stage) {
             {{ t('actions.view') }}
           </button>
         </div>
+        <div v-if="result.modelProjections && result.modelProjections.length > 0" class="model-projections-info">
+          <span class="model-proj-label">{{ t('results.modelProjections.label') }}:</span>
+          <span
+            v-for="mp in result.modelProjections"
+            :key="mp.filename"
+            class="model-proj-chip"
+          >
+            {{ mp.type.toUpperCase() }} / {{ mp.modelSuffix }}
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -420,5 +430,33 @@ function stageLabel(stage) {
 .btn-sm {
   padding: 0.25rem 0.65rem;
   font-size: 0.78rem;
+}
+
+.model-projections-info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.45rem 0;
+  border-top: 1px solid var(--color-border);
+  margin-top: 0.25rem;
+}
+
+.model-proj-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--vt-c-text-light-2);
+}
+
+.model-proj-chip {
+  display: inline-flex;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: 'Fira Code', monospace;
+  background: rgba(0, 137, 122, 0.1);
+  color: var(--brand-accent-dark);
+  border: 1px solid rgba(0, 137, 122, 0.25);
 }
 </style>

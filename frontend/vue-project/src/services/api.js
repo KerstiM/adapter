@@ -20,9 +20,11 @@ const DATASETS = [
 ]
 
 const MODELS = [
-  { id: 'openai_gpt4o', label: 'OpenAI GPT-4o' },
-  { id: 'anthropic_claude35_sonnet', label: 'Anthropic Claude 3.5 Sonnet' },
-  { id: 'google_gemini15_pro', label: 'Google Gemini 1.5 Pro' },
+  { id: 'llama3.1-8b-instruct', label: 'Meta Llama 3.1 8B Instruct', type: 'llm' },
+  { id: 'mistral-7b-instruct-v0.3', label: 'Mistral 7B Instruct v0.3', type: 'llm' },
+  { id: 'qwen2.5-7b-instruct', label: 'Qwen2.5 7B Instruct', type: 'llm' },
+  { id: 'xgboost', label: 'XGBoost', type: 'ml' },
+  { id: 'catboost', label: 'CatBoost', type: 'ml' },
 ]
 
 // ── Public API ──
@@ -36,14 +38,33 @@ export function getModels() {
 }
 
 /**
- * Run the adapter pipeline for the given dataset and model.
+ * Split selected model IDs into targetLlm / targetMl arrays for the backend.
+ */
+function buildModelPayload(selectedModelIds) {
+  if (!selectedModelIds || selectedModelIds.length === 0) return {}
+  const llmIds = selectedModelIds.filter((id) =>
+    MODELS.some((m) => m.id === id && m.type === 'llm'),
+  )
+  const mlIds = selectedModelIds.filter((id) =>
+    MODELS.some((m) => m.id === id && m.type === 'ml'),
+  )
+  const payload = {}
+  if (llmIds.length > 0) payload.targetLlm = llmIds
+  if (mlIds.length > 0) payload.targetMl = mlIds
+  return payload
+}
+
+/**
+ * Run the adapter pipeline for the given dataset and optional model selection.
  * Returns { result, elapsed_ms } — all real data from the backend.
  */
-export async function runPipeline(datasetId, modelId) {
+export async function runPipeline(datasetId, selectedModelIds) {
+  const body = { datasetId, ...buildModelPayload(selectedModelIds) }
+
   const res = await fetch('/api/run', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ datasetId }),
+    body: JSON.stringify(body),
   })
 
   if (!res.ok) {
@@ -83,7 +104,7 @@ export async function runPipeline(datasetId, modelId) {
     createdAt: new Date().toISOString(),
     datasetId,
     datasetName: datasetId,
-    modelId,
+    selectedModelIds: selectedModelIds || [],
     counts: backendResult.counts,
     bySeverity: {
       ERROR: bySeverity.ERROR || 0,
@@ -94,6 +115,7 @@ export async function runPipeline(datasetId, modelId) {
     issues: groupedIssues,
     mlPreview: data.mlPreview,
     llmPreview: data.llmPreview,
+    modelProjections: data.modelProjections || [],
   }
 
   return { result, elapsed_ms: data.elapsed_ms }

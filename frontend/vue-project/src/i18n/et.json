@@ -68,9 +68,15 @@
     "addModel": "Lisa mudel",
     "removeModel": "Eemalda mudel",
     "noneSelectedHint": "Sihtmudelid pole valitud (valikuline)",
-    "forwardingTitle": "Edastamine mudelitele",
+    "forwardingTitle": "Mudelispetsiifilised projektsioonid",
     "notAvailable": "Pole veel saadaval",
-    "defaultSelectedHint": "Vaikimisi valitud: {model}"
+    "defaultSelectedHint": "Vaikimisi valitud: {model}",
+    "optional": "Valikuline",
+    "active": "Aktiivne",
+    "hintNoModels": "Koostatakse ainult üldised projektsioonid (ML CSV + LLM kontekst). Vali mudelid, et koostada ka mudelispetsiifilised projektsioonid.",
+    "hintWithModels": "Lisaks üldistele projektsioonidele koostatakse ka mudelispetsiifilised projektsioonid valitud mudelitele.",
+    "llmCategory": "LLM mudelid",
+    "mlCategory": "ML mudelid"
   },
   "actions": {
     "run": "Käivita töötlusvoog",
@@ -127,6 +133,7 @@
       "CHECK_INVARIANTS": "Invariantide kontroll",
       "PROJECT_ML": "ML projektsioon",
       "PROJECT_LLM": "LLM kontekst",
+      "FORMAT_FOR_MODEL": "Mudelispetsiifilised projektsioonid",
       "WRITE_OUTPUTS": "Väljundite kirjutamine",
       "errors": "viga",
       "warnings": "hoiatus"
@@ -141,6 +148,9 @@
       "allRows": "Kokku {count} rida",
       "summary": "ML CSV: {count} rida",
       "noData": "Andmed puuduvad"
+    },
+    "modelProjections": {
+      "label": "Mudelispetsiifilised projektsioonid"
     },
     "llmPreview": {
       "title": "LLM projektsioon (kõik kontekstid)",
