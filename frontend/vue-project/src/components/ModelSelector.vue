@@ -1,24 +1,44 @@
 <script setup>
+import { computed } from 'vue'
 import { useI18n } from '@/composables/useI18n'
 
 const { t } = useI18n()
 
-const MODEL_CATALOG = [
-  { id: 'llm_llama_local', label: 'Meta Llama 3.1 8B Instruct' },
-  { id: 'llm_mistral_local', label: 'Mistral 7B Instruct v0.3' },
-  { id: 'llm_qwen_local', label: 'Qwen2.5 7B Instruct' },
-  { id: 'ml_xgboost_local', label: 'XGBoost (treenitud kohalikul andmestikul)' },
-  { id: 'ml_catboost_local', label: 'CatBoost (treenitud kohalikul andmestikul)' },
+const LLM_MODELS = [
+  { id: 'llama3.1-8b-instruct', label: 'Meta Llama 3.1 8B Instruct' },
+  { id: 'mistral-7b-instruct-v0.3', label: 'Mistral 7B Instruct v0.3' },
+  { id: 'qwen2.5-7b-instruct', label: 'Qwen2.5 7B Instruct' },
 ]
 
-defineProps({
+const ML_MODELS = [
+  { id: 'xgboost', label: 'XGBoost' },
+  { id: 'catboost', label: 'CatBoost' },
+]
+
+const props = defineProps({
   modelValue: { type: Array, default: () => [] },
   disabled: { type: Boolean, default: false },
 })
 
-defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue'])
 
-const defaultModel = MODEL_CATALOG[0]
+const hasSelection = computed(() => props.modelValue.length > 0)
+
+function isSelected(id) {
+  return props.modelValue.includes(id)
+}
+
+function toggle(id) {
+  if (props.disabled) return
+  const current = [...props.modelValue]
+  const idx = current.indexOf(id)
+  if (idx >= 0) {
+    current.splice(idx, 1)
+  } else {
+    current.push(id)
+  }
+  emit('update:modelValue', current)
+}
 </script>
 
 <template>
@@ -32,30 +52,65 @@ const defaultModel = MODEL_CATALOG[0]
         </svg>
       </span>
       {{ t('models.forwardingTitle') }}
-      <span class="status-badge">{{ t('models.notAvailable') }}</span>
+      <span class="status-badge" :class="hasSelection ? 'status-badge--active' : ''">
+        {{ hasSelection ? t('models.active') : t('models.optional') }}
+      </span>
     </h3>
-    <p class="selector-hint">{{ t('model.hint') }}</p>
+    <p class="selector-hint">
+      {{ hasSelection ? t('models.hintWithModels') : t('models.hintNoModels') }}
+    </p>
 
-    <div class="unavailable-block">
-      <!-- Default selected model (read-only) -->
-      <div class="chips-area">
-        <span class="chip chip-selected">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
-          {{ defaultModel.label }}
-        </span>
+    <div class="model-block" :class="{ 'model-block--disabled': disabled }">
+      <!-- LLM models -->
+      <div class="model-category">
+        <span class="category-label">{{ t('models.llmCategory') }}</span>
+        <div class="chips-area">
+          <span
+            v-for="m in LLM_MODELS"
+            :key="m.id"
+            class="chip"
+            :class="{
+              'chip-selected': isSelected(m.id),
+              'chip-idle': !isSelected(m.id),
+            }"
+            role="button"
+            tabindex="0"
+            @click="toggle(m.id)"
+            @keydown.enter="toggle(m.id)"
+            @keydown.space.prevent="toggle(m.id)"
+          >
+            <svg v-if="isSelected(m.id)" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            {{ m.label }}
+          </span>
+        </div>
       </div>
 
-      <!-- Other models listed as disabled -->
-      <div class="other-models">
-        <span
-          v-for="m in MODEL_CATALOG.slice(1)"
-          :key="m.id"
-          class="chip chip-disabled"
-        >
-          {{ m.label }}
-        </span>
+      <!-- ML models -->
+      <div class="model-category">
+        <span class="category-label">{{ t('models.mlCategory') }}</span>
+        <div class="chips-area">
+          <span
+            v-for="m in ML_MODELS"
+            :key="m.id"
+            class="chip"
+            :class="{
+              'chip-selected': isSelected(m.id),
+              'chip-idle': !isSelected(m.id),
+            }"
+            role="button"
+            tabindex="0"
+            @click="toggle(m.id)"
+            @keydown.enter="toggle(m.id)"
+            @keydown.space.prevent="toggle(m.id)"
+          >
+            <svg v-if="isSelected(m.id)" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            {{ m.label }}
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -94,31 +149,56 @@ const defaultModel = MODEL_CATALOG[0]
   margin-left: auto;
 }
 
+.status-badge--active {
+  background: rgba(0, 137, 122, 0.15);
+  color: var(--brand-accent-dark);
+}
+
 .selector-hint {
   font-size: 0.82rem;
   color: var(--vt-c-text-light-2);
   margin-bottom: 0.75rem;
 }
 
-.unavailable-block {
+.model-block {
   background: var(--color-background-mute);
-  border: 1.5px dashed var(--color-border);
+  border: 1.5px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 0.85rem 1rem;
-  opacity: 0.7;
-  cursor: not-allowed;
   transition: border-color var(--transition-fast);
 }
 
-.unavailable-block:hover {
+.model-block:hover {
   border-color: var(--brand-accent);
+}
+
+.model-block--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.model-category {
+  margin-bottom: 0.55rem;
+}
+
+.model-category:last-child {
+  margin-bottom: 0;
+}
+
+.category-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--vt-c-text-light-2);
+  margin-bottom: 0.35rem;
 }
 
 .chips-area {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin-bottom: 0.45rem;
 }
 
 .chip {
@@ -131,6 +211,19 @@ const defaultModel = MODEL_CATALOG[0]
   font-size: 0.82rem;
   font-weight: 500;
   color: var(--color-heading);
+  cursor: pointer;
+  user-select: none;
+  transition: all var(--transition-fast);
+}
+
+.chip:hover {
+  border-color: var(--brand-accent);
+  background: rgba(0, 137, 122, 0.05);
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 1px;
 }
 
 .chip-selected {
@@ -143,14 +236,7 @@ const defaultModel = MODEL_CATALOG[0]
   color: var(--brand-accent);
 }
 
-.chip-disabled {
-  background: rgba(0, 49, 84, 0.05);
-  opacity: 0.5;
-}
-
-.other-models {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
+.chip-idle {
+  background: rgba(0, 49, 84, 0.03);
 }
 </style>

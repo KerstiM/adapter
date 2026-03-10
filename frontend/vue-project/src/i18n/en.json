@@ -68,9 +68,15 @@
     "addModel": "Add model",
     "removeModel": "Remove model",
     "noneSelectedHint": "No destination models selected (optional)",
-    "forwardingTitle": "Forwarding to models",
+    "forwardingTitle": "Model-specific projections",
     "notAvailable": "Not available yet",
-    "defaultSelectedHint": "Default selected: {model}"
+    "defaultSelectedHint": "Default selected: {model}",
+    "optional": "Optional",
+    "active": "Active",
+    "hintNoModels": "Only general projections will be created (ML CSV + LLM context). Select models to also create model-specific projections.",
+    "hintWithModels": "In addition to general projections, model-specific projections will be created for the selected models.",
+    "llmCategory": "LLM models",
+    "mlCategory": "ML models"
   },
   "actions": {
     "run": "Run pipeline",
@@ -127,6 +133,7 @@
       "CHECK_INVARIANTS": "Check invariants",
       "PROJECT_ML": "ML projection",
       "PROJECT_LLM": "LLM context",
+      "FORMAT_FOR_MODEL": "Model-specific projections",
       "WRITE_OUTPUTS": "Write outputs",
       "errors": "error(s)",
       "warnings": "warning(s)"
@@ -141,6 +148,9 @@
       "allRows": "Total {count} rows",
       "summary": "ML CSV: {count} rows",
       "noData": "No data available"
+    },
+    "modelProjections": {
+      "label": "Model-specific projections"
     },
     "llmPreview": {
       "title": "LLM projection (all contexts)",

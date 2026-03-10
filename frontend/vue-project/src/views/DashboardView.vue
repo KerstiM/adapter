@@ -30,7 +30,7 @@ onUnmounted(() => {
 
 // ── Selection state ──
 const selectedDatasets = ref([])
-const selectedModels = ref(['anthropic_claude35_sonnet'])
+const selectedModels = ref([])
 
 // ── Run state ──
 const loading = ref(false)
@@ -109,7 +109,7 @@ function handleRunAll() {
 
 function handleReset() {
   selectedDatasets.value = []
-  selectedModels.value = ['anthropic_claude35_sonnet']
+  selectedModels.value = []
   batchResult.value = null
   runProgress.value = { done: 0, total: 0 }
   error.value = ''
