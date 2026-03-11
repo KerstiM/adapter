@@ -318,7 +318,7 @@ Sammhaaval juhend pipeline tulemuste reprodutseerimiseks. Täpsem LaTeX-versioon
 ### Oodatavad väljundid
 
 - Artefaktid: `backend/out/<ajatempel>_<run_id>/` — `sv.json`, `report.json`, `projections/ml_v1.csv`, `projections/llm_context_v1.json`
-- Raport kuvab `outcome` (SUCCESS / PARTIAL_SUCCESS / FAIL) ja SLI-1 kuni SLI-6 täituvust
+- Raport kuvab `outcome` (SUCCESS / PARTIAL_SUCCESS / FAIL) ja SLI/QC metrikaid (SLI-1..SLI-6 + QC2)
 - Golden-võrdlus: `scripts/qa/verify_goldens.py` kontrollib SHA-256 kontrollsummasid `frozen/v1.0.0/golden/` vastu
 
 ### Tõrkeotsing

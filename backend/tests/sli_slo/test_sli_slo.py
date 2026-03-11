@@ -8,8 +8,12 @@ SLI definitsioonid ja SLO sihtmärgid
 SLI-1  Skeemikatvus          Kõik pipeline'i jooksud toodavad skeemi-vastavaid väljundeid
                               SLO: 100 % kehtiva sisendiga jooksudest emiteerib korrektsed SV, ML, LLM, raporti
 
-SLI-2  Valideerimise läbivus  Sisendi skeemirikkumised püütakse kinni ja kajastatakse raportis
-                              SLO: 100 % rikkumistest ilmub report.dropped_details[] all
+SLI-2  Valideerimise läbivus  Valideeritud kirjete osakaal sisendi suhtes (pass-through)
+                              SLO: ≥ 0.99 puhaste/tootmislaadsete datasettide korral;
+                              vea-/äärejuhtumite datasettidel raporteeritakse kirjeldava metrikana
+
+QC2    Langetuste raporteerimine  Kõik langetused kajastatakse dropped_details[] all (operational control)
+                              SLO: 100 % langetustest ilmub report.dropped_details[] all
 
 SLI-3  Invariantide täituvus  Ärireeglite (R-01) rikkumised klassifitseeritakse ja juhivad tulemust
                               SLO: viga-drop-suhe < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL
@@ -201,12 +205,80 @@ class TestSLI1SchemaCoverage:
 
 
 # ---------------------------------------------------------------------------
-# SLI-2: Valideerimise läbivus
-# SLO: 100 % skeemirikkumistest ilmub report.dropped_details[] all
+# SLI-2: Valideerimise läbivus (validation pass-through ratio)
+# SLO: ≥ 0.99 puhaste datasettide korral; vea-datasettidel kirjeldav metrika
 # ---------------------------------------------------------------------------
 
 class TestSLI2ValidationPassThrough:
-    """SLI-2 — sisendi skeemirikkumised püütakse kinni ja kajastatakse raportis."""
+    """SLI-2 — valideeritud kirjete osakaal sisendi suhtes.
+
+    SLI-2 = passed_validation_total / input_records_total
+    where:
+      input_records_total    = transactions_total  (all raw input tx)
+      passed_validation_total = transactions_emitted_sv (survived mapping + validation + dedup)
+    """
+
+    def test_clean_input_pass_through_ratio_is_one(self) -> None:
+        """Puhas sisend annab SLI-2 = 1.0 (kõik kirjed läbivad valideerimise)."""
+        summary, _ = _run(booked=[_tx()])
+        ratio = summary["metrics"]["sli2"]["validation_pass_through_ratio"]
+        assert ratio == 1.0
+
+    def test_partial_drops_ratio_between_zero_and_one(self) -> None:
+        """Osaliste langetustega peab SLI-2 olema vahemikus (0, 1)."""
+        bad = {
+            "transactionAmount": {"amount": "50.00", "currency": "EUR"},
+            "transactionId": "TX-NO-DATE",
+            "debtorName": "Someone",
+        }
+        good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(4)]
+        summary, _ = _run(booked=good + [bad])
+        ratio = summary["metrics"]["sli2"]["validation_pass_through_ratio"]
+        assert 0 < ratio < 1
+        # 4 good out of 5 total → 0.8
+        assert ratio == round(4 / 5, 4)
+
+    def test_all_dropped_ratio_is_zero(self) -> None:
+        """Kõigi kirjete langetamisel peab SLI-2 olema 0.0."""
+        bad = {
+            "transactionAmount": {"amount": "50.00", "currency": "EUR"},
+            "transactionId": "TX-NO-DATE",
+        }
+        summary, _ = _run(booked=[bad])
+        ratio = summary["metrics"]["sli2"]["validation_pass_through_ratio"]
+        assert ratio == 0.0
+
+    def test_ratio_equals_emitted_over_total(self) -> None:
+        """SLI-2 peab võrduma transactions_emitted_sv / transactions_total."""
+        bad = _tx(currency="xx", transaction_id="BAD")
+        good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(9)]
+        summary, _ = _run(booked=good + [bad])
+        counts = summary["counts"]
+        expected = round(counts["transactions_emitted_sv"] / counts["transactions_total"], 4)
+        assert summary["metrics"]["sli2"]["validation_pass_through_ratio"] == expected
+
+    def test_ratio_consistent_with_dropped_total(self) -> None:
+        """SLI-2 + dropped/total peab andma 1.0 (identity check)."""
+        bad = _tx(currency="xx", transaction_id="BAD")
+        good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(3)]
+        summary, _ = _run(booked=good + [bad])
+        counts = summary["counts"]
+        pass_ratio = summary["metrics"]["sli2"]["validation_pass_through_ratio"]
+        drop_ratio = counts["transactions_dropped"] / counts["transactions_total"]
+        assert abs(pass_ratio + drop_ratio - 1.0) < 1e-9
+
+
+# ---------------------------------------------------------------------------
+# QC2: Langetuste raporteerimine (operational drop-reporting coverage)
+# SLO: 100 % langetustest ilmub report.dropped_details[] all
+# ---------------------------------------------------------------------------
+
+class TestQC2DropReporting:
+    """QC2 — kõik langetused kajastatakse dropped_details[] all (operational control).
+
+    This was previously labeled SLI-2. Renamed to QC2 to restore the original
+    SLI-2 meaning (validation pass-through ratio).
+    """
 
     def test_valid_input_produces_no_issues(self) -> None:
         """Skeemi-kehtiv sisend ei tohi tekitada ühtegi issue't raportis."""
@@ -253,6 +325,21 @@ class TestSLI2ValidationPassThrough:
         summary, _ = _run(booked=[bad])
         assert summary["counts"]["transactions_dropped"] > 0
         assert len(summary["dropped_details"]) > 0
+
+    def test_qc2_all_drops_reported_clean_input(self) -> None:
+        """Puhas sisend → QC2 all_drops_reported == True, ratio == 1.0."""
+        summary, _ = _run(booked=[_tx()])
+        qc2 = summary["metrics"]["qc2"]
+        assert qc2["all_drops_reported"] is True
+        assert qc2["drop_reporting_ratio"] == 1.0
+
+    def test_qc2_all_drops_reported_with_drops(self) -> None:
+        """Langetustega sisend → QC2 all_drops_reported == True (kõik kajastatud)."""
+        bad = _tx(currency="xx", transaction_id="BAD")
+        summary, _ = _run(booked=[_tx(), bad])
+        qc2 = summary["metrics"]["qc2"]
+        assert qc2["all_drops_reported"] is True
+        assert qc2["drop_reporting_ratio"] == 1.0
 
 
 # ---------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "S-05_collected_report_schema.json",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "title": "CollectedReport",
   "type": "object",
   "additionalProperties": false,
@@ -13,11 +13,12 @@
     "summary",
     "run_flags",
     "issues",
-    "dropped_details"
+    "dropped_details",
+    "metrics"
   ],
 
   "properties": {
-    "report_schema_version": { "type": "string", "const": "1.1.0" },
+    "report_schema_version": { "type": "string", "const": "1.2.0" },
 
     "run": {
       "type": "object",
@@ -191,6 +192,39 @@
           "record_id": { "type": ["string", "null"] },
           "drop_reason": { "type": "string", "minLength": 1 },
           "status": { "type": ["string", "null"], "enum": ["BOOKED", "PENDING", "INFORMATION", null] }
+        }
+      }
+    },
+
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sli2", "qc2", "info"],
+      "properties": {
+        "sli2": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["validation_pass_through_ratio"],
+          "properties": {
+            "validation_pass_through_ratio": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "qc2": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["drop_reporting_ratio", "all_drops_reported"],
+          "properties": {
+            "drop_reporting_ratio": { "type": "number", "minimum": 0 },
+            "all_drops_reported": { "type": "boolean" }
+          }
+        },
+        "info": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ml_emission_ratio"],
+          "properties": {
+            "ml_emission_ratio": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
         }
       }
     }

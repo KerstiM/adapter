@@ -1,11 +1,84 @@
 {
   "dropped_details": [],
-  "issues": [],
+  "issues": [
+    {
+      "code": "MAP-01_VALUE_DATE_FALLBACK",
+      "message": "valueDate missing; fell back to nextExecutionDate.",
+      "refs": {
+        "account_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "field_path": null,
+        "record_id": "f0e0cd60ae69217e",
+        "source_lineage": "standing_orders.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "field_path": null,
+        "record_id": "f0e0cd60ae69217e",
+        "source_lineage": "standing_orders.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "field_path": null,
+        "record_id": "b2c1ccbcc917c5ed",
+        "source_lineage": "standing_orders.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "MAP-01_VALUE_DATE_FALLBACK",
+      "message": "valueDate missing; fell back to nextExecutionDate.",
+      "refs": {
+        "account_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "field_path": null,
+        "record_id": "8765bec1179f7993",
+        "source_lineage": "standing_orders.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "field_path": null,
+        "record_id": "8765bec1179f7993",
+        "source_lineage": "standing_orders.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    }
+  ],
+  "metrics": {
+    "info": {
+      "ml_emission_ratio": 0.25
+    },
+    "qc2": {
+      "all_drops_reported": true,
+      "drop_reporting_ratio": 1.0
+    },
+    "sli2": {
+      "validation_pass_through_ratio": 1.0
+    }
+  },
   "outcome": {
     "status": "PARTIAL_SUCCESS",
     "stop_reason": "warnings present"
   },
-  "report_schema_version": "1.1.0",
+  "report_schema_version": "1.2.0",
   "run": {
     "adapter_version": "0.1.0",
     "created_at_utc": "2000-01-01T00:00:00Z",
@@ -60,6 +133,12 @@
         "errors": 0,
         "infos": 0,
         "stage": "PROJECT_LLM",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "FORMAT_FOR_MODEL",
         "warnings": 0
       },
       {

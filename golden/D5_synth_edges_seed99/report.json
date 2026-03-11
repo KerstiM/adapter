@@ -1,11 +1,36 @@
 {
   "dropped_details": [],
-  "issues": [],
+  "issues": [
+    {
+      "code": "INV-10_COUNTERPARTY_ALL_NULL",
+      "message": "counterparty present but all fields null.",
+      "refs": {
+        "account_id": "9974d75b-3338-44fe-a179-0134676b1b69",
+        "field_path": null,
+        "record_id": "a889047227078e49",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    }
+  ],
+  "metrics": {
+    "info": {
+      "ml_emission_ratio": 1.0
+    },
+    "qc2": {
+      "all_drops_reported": true,
+      "drop_reporting_ratio": 1.0
+    },
+    "sli2": {
+      "validation_pass_through_ratio": 1.0
+    }
+  },
   "outcome": {
     "status": "PARTIAL_SUCCESS",
     "stop_reason": "warnings present"
   },
-  "report_schema_version": "1.1.0",
+  "report_schema_version": "1.2.0",
   "run": {
     "adapter_version": "0.1.0",
     "created_at_utc": "2000-01-01T00:00:00Z",
@@ -60,6 +85,12 @@
         "errors": 0,
         "infos": 0,
         "stage": "PROJECT_LLM",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "FORMAT_FOR_MODEL",
         "warnings": 0
       },
       {

@@ -91,7 +91,26 @@ class Summary(TypedDict):
     by_severity: SeverityCounts
 
 
-class CollectedRunReport(TypedDict):
+class SLI2Metrics(TypedDict):
+    validation_pass_through_ratio: float
+
+
+class QC2Metrics(TypedDict):
+    drop_reporting_ratio: float
+    all_drops_reported: bool
+
+
+class InfoMetrics(TypedDict):
+    ml_emission_ratio: float
+
+
+class Metrics(TypedDict):
+    sli2: SLI2Metrics
+    qc2: QC2Metrics
+    info: InfoMetrics
+
+
+class CollectedRunReport(TypedDict, total=False):
     report_schema_version: str
     run: RunMeta
     outcome: Outcome
@@ -99,3 +118,4 @@ class CollectedRunReport(TypedDict):
     run_flags: list[RunFlag]
     issues: list[Issue]
     dropped_details: list[DropDetail]
+    metrics: Metrics

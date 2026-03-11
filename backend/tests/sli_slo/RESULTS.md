@@ -2,8 +2,8 @@
 
 **Testifail:** `backend/tests/sli_slo/test_sli_slo.py`
 **Käivitamine:** `cd backend && python -m pytest tests/sli_slo/test_sli_slo.py -v`
-**Viimane käivitus:** 2026-02-25
-**Tulemus: 41/41 läbisid — 0.22 s**
+**Viimane käivitus:** 2026-03-11
+**Tulemus: 48/48 läbisid — 0.21 s**
 
 ---
 
@@ -12,7 +12,8 @@
 | # | SLI nimi | Kirjeldus | SLO sihtmärk |
 |---|----------|-----------|--------------|
 | SLI-1 | Skeemikatvus | Kõik pipeline'i jooksud toodavad skeemi-vastavaid väljundeid | 100 % |
-| SLI-2 | Valideerimise läbivus | Sisendi rikkumised püütakse kinni ja kajastatakse raportis | 100 % rikkumistest raportis |
+| SLI-2 | Valideerimise läbivus | Valideeritud kirjete osakaal sisendi suhtes (pass-through) | ≥ 0.99 puhaste datasettide korral; vea-datasettidel kirjeldav metrika |
+| QC2 | Langetuste raporteerimine | Kõik langetused kajastatakse dropped_details[] all | 100 % langetustest raportis |
 | SLI-3 | Invariantide täituvus | R-01 reeglid klassifitseerivad rikkumised ja juhivad tulemust | viga-drop-suhe < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL |
 | SLI-4 | Determinism | Sama sisend + sama kell → baidilt identne väljund | 100 % kordused identsed |
 | SLI-5 | Spetsifikatsiooni versioonid | Iga jooks kannab kõiki versiooni metaandmeid | 100 % jooksudest kõik 4 välja olemas |
@@ -49,9 +50,51 @@
 
 ---
 
-## SLI-2 — Valideerimise läbivus
+## SLI-2 — Valideerimise läbivus (validation pass-through ratio)
 
-**SLO:** 100 % sisendi rikkumistest ilmub `report.dropped_details[]` all.
+**SLO:** Puhaste ja tootmislaadsete datasettide korral peab SLI-2 olema ≥ 0.99. Kontrollitud vea- ja äärejuhtumite datasettidel raporteeritakse SLI-2 kirjeldava metrikana, mida ei hinnata sama läve alusel.
+
+**Definitsioon:**
+
+SLI-2 = passed_validation_total / input_records_total
+
+kus:
+- `input_records_total` = `transactions_total` — kõik sisendtehingud, mis pipeline'i jõuavad
+- `passed_validation_total` = `transactions_emitted_sv` — kirjed, mis jäävad alles pärast kaardistamist + valideerimist + deduplikatsiooni
+- `dropped_total` = `transactions_dropped` — kõik eemaldatud kirjed
+- Identiteet: `input_records_total == passed_validation_total + dropped_total`
+
+### Mida testitakse
+
+| Test | Kontrollib |
+|------|-----------|
+| `test_clean_input_pass_through_ratio_is_one` | Puhas sisend → SLI-2 = 1.0 |
+| `test_partial_drops_ratio_between_zero_and_one` | Osalised langetused → 0 < SLI-2 < 1 |
+| `test_all_dropped_ratio_is_zero` | Kõik langetatud → SLI-2 = 0.0 |
+| `test_ratio_equals_emitted_over_total` | SLI-2 == `transactions_emitted_sv / transactions_total` |
+| `test_ratio_consistent_with_dropped_total` | SLI-2 + dropped/total ≈ 1.0 (identity check) |
+
+### Tulemus
+
+```
+5/5 PASSED
+```
+
+**SLO täidetud: JAH**
+
+---
+
+## QC2 — Langetuste raporteerimine (operational drop-reporting coverage)
+
+**SLO:** 100 % langetustest ilmub `report.dropped_details[]` all.
+
+**Definitsioon:**
+
+QC2 = dropped_details_count / dropped_total (peab olema == 1.0)
+QC2 all_drops_reported = (dropped_details_count == dropped_total)
+
+Varem kandis see kontrollifunktsioon SLI-2 nime. Ümber nimetatud QC2-ks,
+et taastada SLI-2 algne tähendus (validation pass-through ratio).
 
 ### Mida testitakse
 
@@ -62,6 +105,8 @@
 | `test_missing_value_date_produces_issue` | Puuduv `valueDate` → kirje `dropped_details[]` all |
 | `test_missing_value_date_drop_reason_contains_valuedate` | Drop reason viitab `valueDate` puudumisele |
 | `test_invalid_transaction_is_captured_in_dropped_details` | Vigane tehing → `transactions_dropped > 0` ja `dropped_details` täidetud |
+| `test_qc2_all_drops_reported_clean_input` | Puhas sisend → `all_drops_reported == True`, `ratio == 1.0` |
+| `test_qc2_all_drops_reported_with_drops` | Langetustega sisend → `all_drops_reported == True` |
 
 ### Märkus rakendamise kohta
 
@@ -70,7 +115,7 @@ Kaardistamisetapi (STANDARDIZE_TO_SV) langetused — nt puuduv `valueDate` — s
 ### Tulemus
 
 ```
-5/5 PASSED
+7/7 PASSED
 ```
 
 **SLO täidetud: JAH**
@@ -173,7 +218,7 @@ Kaardistamisetapi (STANDARDIZE_TO_SV) langetused — nt puuduv `valueDate` — s
 | `mapping_version` | `"1.0.0"` |
 | `ruleset_version` | `"1.1.0"` |
 | `adapter_version` | `"0.1.0"` |
-| `report_schema_version` | `"1.1.0"` |
+| `report_schema_version` | `"1.2.0"` |
 
 ### Tulemus
 
@@ -228,13 +273,14 @@ Testid kasutavad mälupõhiseid fake-porte (failisüsteemi I/O puudub), mis anna
 | SLI | SLO sihtmärk | Testide arv | Tulemus | SLO täidetud |
 |-----|-------------|------------|---------|-------------|
 | SLI-1 Skeemikatvus | 100 % | 10 | 10/10 ✓ | **JAH** |
-| SLI-2 Valideerimise läbivus | 100 % | 5 | 5/5 ✓ | **JAH** |
+| SLI-2 Valideerimise läbivus | ≥ 0.99 (puhas) / kirjeldav (vea-ds) | 5 | 5/5 ✓ | **JAH** |
+| QC2 Langetuste raporteerimine | 100 % | 7 | 7/7 ✓ | **JAH** |
 | SLI-3 Invariantide täituvus | < 5 % → PARTIAL, ≥ 5 % → FAIL | 10 | 10/10 ✓ | **JAH** |
 | SLI-4 Determinism | 100 % | 6 | 6/6 ✓ | **JAH** |
 | SLI-5 Spetsifikatsiooni versioonid | 100 % | 7 | 7/7 ✓ | **JAH** |
 | SLI-6 Jõudlus | ≤ 500 ms | 3 | 3/3 ✓ | **JAH** |
-| **KOKKU** | | **41** | **41/41** | **KÕIK JAH** |
+| **KOKKU** | | **48** | **48/48** | **KÕIK JAH** |
 
 ```
-============================== 41 passed in 0.22s ==============================
+============================== 48 passed in 0.21s ==============================
 ```

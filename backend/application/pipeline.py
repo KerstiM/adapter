@@ -29,6 +29,7 @@ from domain.projections.model_formatters import format_for_model as _format_for_
 from domain.report.ops import (
     build_dropped_details as _build_dropped_details,
     build_report as _build_report,
+    compute_metrics as _compute_metrics,
     count_flags_by_severity as _count_flags_by_severity,
     determine_outcome as _determine_outcome,
 )
@@ -442,6 +443,15 @@ def run_pipeline(
     # Build dropped_details
     all_dropped_details = _build_dropped_details(dropped_txs, dedupe_drops, mapping_drops)
 
+    # Compute derived metrics (SLI-2, QC2, informative)
+    metrics = _compute_metrics(
+        input_records_total=total_raw,
+        passed_validation_total=len(deduped_txs),
+        dropped_total=total_dropped,
+        dropped_details_count=len(all_dropped_details),
+        ml_rows_count=len(ml_rows),
+    )
+
     # Determine outcome using run_policy fail gate from default.yaml
     run_policy = profile.get("run_policy", {}).get("partial_success_policy", {})
     fail_on = run_policy.get("fail_on", {})
@@ -501,6 +511,7 @@ def run_pipeline(
         run_flags=run_flags,
         issues=issues,
         dropped_details=all_dropped_details,
+        metrics=metrics,
     )
     out.write_report(report)
 
@@ -521,4 +532,5 @@ def run_pipeline(
         "run_flags": run_flags,
         "issues": issues,
         "dropped_details": all_dropped_details,
+        "metrics": metrics,
     }

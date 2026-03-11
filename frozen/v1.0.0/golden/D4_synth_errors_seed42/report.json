@@ -41,6 +41,30 @@
       "stage": "READ_INPUT"
     },
     {
+      "code": "C-01_MAPPING_DROP",
+      "message": "valueDate missing and no valid bookingDate for fallback",
+      "refs": {
+        "account_id": null,
+        "field_path": "$.transactions.booked[31]",
+        "record_id": null,
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "STANDARDIZE_TO_SV"
+    },
+    {
+      "code": "C-01_MAPPING_DROP",
+      "message": "transactionAmount missing or unparseable",
+      "refs": {
+        "account_id": null,
+        "field_path": "$.transactions.booked[32]",
+        "record_id": null,
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "STANDARDIZE_TO_SV"
+    },
+    {
       "code": "S-01_VALIDATION",
       "message": "S-01 validation: '' does not match '^[A-Z]{3}$'",
       "refs": {
@@ -51,13 +75,49 @@
       },
       "severity": "ERROR",
       "stage": "VALIDATE_SCHEMA"
+    },
+    {
+      "code": "INV-01_CURRENCY_FORMAT",
+      "message": "currency invalid.",
+      "refs": {
+        "account_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+        "field_path": null,
+        "record_id": "a2c4fba6a86a34b4",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "ERROR",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-01_CURRENCY_FORMAT",
+      "message": "currency invalid.",
+      "refs": {
+        "account_id": "bdd640fb-0667-4ad1-9c80-317fa3b1799d",
+        "field_path": null,
+        "record_id": "94a590983a15289f",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "ERROR",
+      "stage": "CHECK_INVARIANTS"
     }
   ],
+  "metrics": {
+    "info": {
+      "ml_emission_ratio": 0.8974
+    },
+    "qc2": {
+      "all_drops_reported": true,
+      "drop_reporting_ratio": 1.0
+    },
+    "sli2": {
+      "validation_pass_through_ratio": 0.8974
+    }
+  },
   "outcome": {
     "status": "FAIL",
     "stop_reason": "error drop ratio 0.1026 exceeds threshold 0.05"
   },
-  "report_schema_version": "1.1.0",
+  "report_schema_version": "1.2.0",
   "run": {
     "adapter_version": "0.1.0",
     "created_at_utc": "2000-01-01T00:00:00Z",
@@ -112,6 +172,12 @@
         "errors": 0,
         "infos": 0,
         "stage": "PROJECT_LLM",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "FORMAT_FOR_MODEL",
         "warnings": 0
       },
       {
