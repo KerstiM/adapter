@@ -80,7 +80,7 @@
     "mlCategory": "ML mudelid",
     "modeProto": "Proto",
     "modeProduction": "Tootmine",
-    "hintProduction": "Edasta pipeline väljund otse mudelitele. Pole veel saadaval."
+    "hintProduction": "Edasta pipeline väljund otse mudelitele. Koostatakse valitud mudelite projektsioonid."
   },
   "actions": {
     "run": "Käivita töötlusvoog",

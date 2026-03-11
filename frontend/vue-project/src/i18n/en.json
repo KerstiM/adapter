@@ -80,7 +80,7 @@
     "mlCategory": "ML models",
     "modeProto": "Proto",
     "modeProduction": "Production",
-    "hintProduction": "Forward pipeline output directly to models. Not yet available."
+    "hintProduction": "Forward pipeline output directly to models. Model-specific projections are generated from selection."
   },
   "actions": {
     "run": "Run pipeline",
