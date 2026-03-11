@@ -95,6 +95,71 @@ def determine_outcome(
         return "SUCCESS", "all validations passed"
 
 
+def compute_metrics(
+    input_records_total: int,
+    passed_validation_total: int,
+    dropped_total: int,
+    dropped_details_count: int,
+    ml_rows_count: int,
+) -> dict:
+    """Compute derived quality and operational metrics.
+
+    Counter mapping (current codebase → frozen definitions):
+      transactions_total        → input_records_total
+      transactions_emitted_sv   → passed_validation_total  (= len(deduped_txs))
+      transactions_dropped      → dropped_total
+
+    Identity: input_records_total == passed_validation_total + dropped_total
+
+    Returns a dict with three metric groups:
+
+      sli2  — Validation pass-through ratio (official quality metric).
+              = passed_validation_total / input_records_total
+
+      qc2   — Drop-reporting coverage (operational control).
+              = dropped_details_count / dropped_total  (must equal 1.0)
+              All dropped records must appear in dropped_details[].
+              Strict equality: over-reporting is treated as inconsistency.
+
+      info  — ML emission ratio (informative, NOT an SLI).
+              = ml_rows_count / input_records_total
+              End-to-end survival from raw input to ML projection.
+              Always ≤ SLI-2 because ML projection excludes INFORMATION-status
+              records that survive validation.
+    """
+    sli2_ratio = (
+        passed_validation_total / input_records_total
+        if input_records_total > 0
+        else 1.0
+    )
+
+    if dropped_total > 0:
+        qc2_ratio = dropped_details_count / dropped_total
+        qc2_all_reported = dropped_details_count == dropped_total
+    else:
+        qc2_ratio = 1.0
+        qc2_all_reported = True
+
+    ml_emission_ratio = (
+        ml_rows_count / input_records_total
+        if input_records_total > 0
+        else 0.0
+    )
+
+    return {
+        "sli2": {
+            "validation_pass_through_ratio": round(sli2_ratio, 4),
+        },
+        "qc2": {
+            "drop_reporting_ratio": round(qc2_ratio, 4),
+            "all_drops_reported": qc2_all_reported,
+        },
+        "info": {
+            "ml_emission_ratio": round(ml_emission_ratio, 4),
+        },
+    }
+
+
 def build_report(
     run_id: str,
     created_at_utc: str,
@@ -114,13 +179,14 @@ def build_report(
     run_flags: list[dict],
     issues: list[dict],
     dropped_details: list[dict] | None = None,
+    metrics: dict | None = None,
 ) -> dict:
     """Build report.json structure (S-05 compliant).
 
     Pure function — takes pre-resolved scalars, no Path/I/O.
     """
-    return {
-        "report_schema_version": "1.1.0",
+    report = {
+        "report_schema_version": "1.2.0",
         "run": {
             "run_id": run_id,
             "created_at_utc": created_at_utc,
@@ -152,3 +218,6 @@ def build_report(
         "issues": issues,
         "dropped_details": dropped_details or [],
     }
+    if metrics is not None:
+        report["metrics"] = metrics
+    return report

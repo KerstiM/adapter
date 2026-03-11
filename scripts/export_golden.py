@@ -49,7 +49,13 @@ def discover_datasets(
     for d in sorted(datasets_dir.iterdir()):
         if not d.is_dir():
             continue
-        if not (d / "accounts.json").exists() or not (d / "transactions.json").exists():
+        if not (d / "accounts.json").exists():
+            continue
+        tx_files = sorted(
+            p for p in d.glob("transactions*.json")
+            if p.name != "transactions_download.json"
+        )
+        if not tx_files:
             continue
         if only:
             if not any(d.name.upper().startswith(f.upper()) for f in only):

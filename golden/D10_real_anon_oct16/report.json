@@ -1,11 +1,948 @@
 {
   "dropped_details": [],
-  "issues": [],
+  "issues": [
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "e4272b3737efbdbf",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "eea9a46e3e1ec0f8",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "4615552ed7ff208a",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "1fac17aa96009f4a",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "88f0960e738ec316",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "8bca81a20a05c9e7",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "186fd08dee093015",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "d11f941710e62244",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "6a030e2518bfc823",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "b3bc38666e173a76",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "b134b295cd06c926",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "3f7e0e5027782794",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "ad8926da56d1f807",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "1fb692fd9e787902",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "d4777901c8871a92",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "04e4d75363a54e6d",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "1a9e02a7806aafbc",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "7b7e8a8e4b12c487",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "9e35b2d8a0c9e980",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "8ad883ebe30fb8a8",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "294cbf1395d14df6",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "d58cd579898178a6",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "d9322c75472c2921",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "216c30c3021e7d28",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "d702c36a38748add",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "78dd1fc1eab028dd",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "3dae591293c4e4a4",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "44de2d14293c3c5e",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "32f56f44883864e3",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "10ac87d2f10118ed",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "29aadc386f7a1c03",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "dcf2fa9ac6a2843c",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "ec015c636a7996fe",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "14f67d6126f859b1",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "d15a0ab674b42031",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "abcc8f45cad14ccc",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "329bfbab407eabbf",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "347a2fc1065511fc",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "5a92a725645ab8b9",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "2cbdfd7d2928bb68",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "ffbe1ac148563191",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "0dc471d308670754",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "c71eb9461193999f",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "207ba1b61abe82aa",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "437a184cb274ad9c",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "af0a9a02a790def5",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "01fdd74488947e8d",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "fa31ded078d154fd",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "f19048a3f2d9d0f5",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "8ed01c65b1a73baf",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "b4c8c8db4e1e64ad",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "4badddc7d48a95e4",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "9d0b1dee8b17536b",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "e6c88b29a6680e59",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "52b604c07c65826a",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "757a09b925af1bb2",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "1c2c9234760fa7cd",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "04c831e726bcbe2c",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "35fe05452c11c866",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "f12af74d9446ada5",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "94d7a169e6b02b20",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "27792db3ad235146",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "5df5dad4e213f04a",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "d9fdd1a7ea7228e4",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "496c546abe4742ff",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "ed69435330262da8",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "581341da2249056e",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "1ad04e8f1c613d2e",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "74e40786c2f09f82",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "1b13247545d812b0",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "be9efb868ffff815",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "a7db82bbc885e9c4",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "dc26db06b55b95cc",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "33645af9ee39a35c",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "5d470600c854755a",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "fd3c46dd45686e1f",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+        "field_path": null,
+        "record_id": "03fae4217366205f",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    }
+  ],
+  "metrics": {
+    "info": {
+      "ml_emission_ratio": 1.0
+    },
+    "qc2": {
+      "all_drops_reported": true,
+      "drop_reporting_ratio": 1.0
+    },
+    "sli2": {
+      "validation_pass_through_ratio": 1.0
+    }
+  },
   "outcome": {
     "status": "PARTIAL_SUCCESS",
     "stop_reason": "warnings present"
   },
-  "report_schema_version": "1.1.0",
+  "report_schema_version": "1.2.0",
   "run": {
     "adapter_version": "0.1.0",
     "created_at_utc": "2000-01-01T00:00:00Z",
@@ -60,6 +997,12 @@
         "errors": 0,
         "infos": 0,
         "stage": "PROJECT_LLM",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "FORMAT_FOR_MODEL",
         "warnings": 0
       },
       {
