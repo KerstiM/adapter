@@ -199,8 +199,18 @@
     "metrics": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["sli2", "qc2", "sli3", "gate", "info"],
+      "required": ["sli1", "sli2", "qc2", "sli3", "gate", "info"],
       "properties": {
+        "sli1": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["schema_coverage_ratio", "relevant_sv_fields_total", "covered_relevant_sv_fields"],
+          "properties": {
+            "schema_coverage_ratio": { "type": "number", "minimum": 0, "maximum": 1 },
+            "relevant_sv_fields_total": { "type": "integer", "minimum": 0 },
+            "covered_relevant_sv_fields": { "type": "integer", "minimum": 0 }
+          }
+        },
         "sli2": {
           "type": "object",
           "additionalProperties": false,
