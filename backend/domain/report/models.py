@@ -100,6 +100,18 @@ class QC2Metrics(TypedDict):
     all_drops_reported: bool
 
 
+class SLI3Metrics(TypedDict):
+    invariant_compliance_ratio: float
+    invariant_checked_total: int
+    invariant_correct_total: int
+    critical_invariant_violations_total: int
+
+
+class GateMetrics(TypedDict):
+    error_drop_ratio: float
+    error_drops: int
+
+
 class InfoMetrics(TypedDict):
     ml_emission_ratio: float
 
@@ -107,6 +119,8 @@ class InfoMetrics(TypedDict):
 class Metrics(TypedDict):
     sli2: SLI2Metrics
     qc2: QC2Metrics
+    sli3: SLI3Metrics
+    gate: GateMetrics
     info: InfoMetrics
 
 

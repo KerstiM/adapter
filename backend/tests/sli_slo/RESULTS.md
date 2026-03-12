@@ -3,7 +3,7 @@
 **Testifail:** `backend/tests/sli_slo/test_sli_slo.py`
 **Käivitamine:** `cd backend && python -m pytest tests/sli_slo/test_sli_slo.py -v`
 **Viimane käivitus:** 2026-03-11
-**Tulemus: 48/48 läbisid — 0.21 s**
+**Tulemus: 57/57 läbisid — 0.22 s**
 
 ---
 
@@ -14,7 +14,8 @@
 | SLI-1 | Skeemikatvus | Kõik pipeline'i jooksud toodavad skeemi-vastavaid väljundeid | 100 % |
 | SLI-2 | Valideerimise läbivus | Valideeritud kirjete osakaal sisendi suhtes (pass-through) | ≥ 0.99 puhaste datasettide korral; vea-datasettidel kirjeldav metrika |
 | QC2 | Langetuste raporteerimine | Kõik langetused kajastatakse dropped_details[] all | 100 % langetustest raportis |
-| SLI-3 | Invariantide täituvus | R-01 reeglid klassifitseerivad rikkumised ja juhivad tulemust | viga-drop-suhe < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL |
+| SLI-3 | Invariantide täituvus | Invariantide vastavuse suhtarv (invariant compliance ratio) | ≥ 0.999 puhaste datasettide korral; critical == 0 |
+| Gate | Vea-drop poliitika | Operatsiooniline vea-drop lävend (EI ole SLI) | error_drop_ratio < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL |
 | SLI-4 | Determinism | Sama sisend + sama kell → baidilt identne väljund | 100 % kordused identsed |
 | SLI-5 | Spetsifikatsiooni versioonid | Iga jooks kannab kõiki versiooni metaandmeid | 100 % jooksudest kõik 4 välja olemas |
 | SLI-6 | Jõudlus | Pipeline lõpetab eelarve piires (≤ 10 tehingut) | ≤ 500 ms |
@@ -122,40 +123,83 @@ Kaardistamisetapi (STANDARDIZE_TO_SV) langetused — nt puuduv `valueDate` — s
 
 ---
 
-## SLI-3 — Invariantide täituvus
+## SLI-3 — Invariantide täituvus (invariant compliance ratio)
 
-**SLO:** Vigade drop-suhe < 5 % → `PARTIAL_SUCCESS`; ≥ 5 % → `FAIL`. Kõik langetused kajastuvad `dropped_details[]` all.
+**SLO:** ≥ 0.999 puhaste/tootmislaadsete datasettide korral; `critical_invariant_violations_total == 0`.
+
+**Definitsioon:**
+
+SLI-3 = invariant_correct_total / invariant_checked_total
+
+kus:
+- `invariant_checked_total` = kirjed, mis jõuavad Stage 4 (CHECK_INVARIANTS) pärast kaardistamist, enne deduplikatsiooni
+- `invariant_correct_total` = invariant_checked_total − ERROR langetused − INV-09 dedupe langetused − WARN-lipuga kirjed
+- `critical_invariant_violations_total` = kirjed ERROR-taseme invariantrikkumistega (v.a. mapping drops, dedupe, WARN)
 
 ### Mida testitakse
 
 | Test | Kontrollib |
 |------|-----------|
 | `test_inv01_bad_currency_drops_transaction` | INV-01: vale valuutaformaat → tehing langetatakse |
-| `test_inv01_bad_currency_does_not_exceed_fail_gate` | 1/11 ≈ 9 % > 5 % → `FAIL` |
 | `test_inv02_missing_value_date_drops_transaction` | INV-02: puuduv `valueDate` → tehing langetatakse |
 | `test_inv09_duplicate_is_deduplicated` | INV-09: identne tehing → ainult üks säilitatakse SV-s |
 | `test_inv09_duplicate_appears_in_dropped_details` | INV-09 duplikaat kajastub `dropped_details[]` all |
 | `test_inv04_bad_booking_date_keeps_transaction_as_warn` | INV-04: vigane `bookingDate` → WARN, tehing ei langetata |
-| `test_below_5pct_error_rate_is_partial_success` | 1/21 ≈ 4,8 % < 5 % → `PARTIAL_SUCCESS` |
-| `test_at_or_above_5pct_error_rate_is_fail` | 1/10 = 10 % ≥ 5 % → `FAIL` |
-| `test_zero_errors_clean_run_is_success` | Rikkumisteta jooks → `SUCCESS` |
 | `test_dropped_count_matches_dropped_details` | `counts.transactions_dropped == len(dropped_details)` |
+| `test_clean_run_sli3_is_one` | Puhas jooks → SLI-3 = 1.0, critical = 0 |
+| `test_error_drops_reduce_compliance_ratio` | ERROR invariant drop → SLI-3 < 1.0 |
+| `test_warn_flags_reduce_compliance_ratio` | WARN invariant flag → SLI-3 < 1.0 |
+| `test_dedupe_drops_reduce_compliance_ratio` | INV-09 dedupe drops → SLI-3 < 1.0 |
+| `test_invariant_correct_total_non_negative` | invariant_correct_total >= 0 alati |
+| `test_mapping_drops_excluded_from_sli3_denominator` | Mapping drops ei mõjuta SLI-3 nimetajat |
+| `test_dedupe_exact_ratio` | INV-09 dedupe: 3 checked, 1 drop → ratio = 0.6667 |
 
 ### Invariantide klassifikatsioon
 
-| Invariant | Tõsidus | Käitumine |
-|-----------|---------|-----------|
-| INV-01 Valuutaformaat | ERROR | Tehing langetatakse |
-| INV-02 value_date puudub | ERROR | Tehing langetatakse |
-| INV-03 Summa parsitavus | ERROR | Tehing langetatakse |
-| INV-04 booking_date formaat | WARN | Tehingule pannakse lipp, ei langetata |
-| INV-09 Duplikaadid | WARN | Duplikaat langetatakse, esimene säilib |
-| INV-10 Vastaspool kõik null | WARN | Tehingule pannakse lipp, ei langetata |
+| Invariant | Tõsidus | Käitumine | Mõju SLI-3-le |
+|-----------|---------|-----------|---------------|
+| INV-01 Valuutaformaat | ERROR | Tehing langetatakse | Vähendab (critical) |
+| INV-02 value_date puudub | ERROR | Tehing langetatakse | Vähendab (critical) |
+| INV-03 Summa parsitavus | ERROR | Tehing langetatakse | Vähendab (critical) |
+| INV-04 booking_date formaat | WARN | Tehingule pannakse lipp, ei langetata | Vähendab |
+| INV-09 Duplikaadid | WARN | Duplikaat langetatakse, esimene säilib | Vähendab |
+| INV-10 Vastaspool kõik null | WARN | Tehingule pannakse lipp, ei langetata | Vähendab |
 
 ### Tulemus
 
 ```
-10/10 PASSED
+13/13 PASSED
+```
+
+**SLO täidetud: JAH**
+
+---
+
+## Gate — Vea-drop poliitika (operational fail gate — NOT an SLI)
+
+**SLO:** `error_drop_ratio < 5 %` → `PARTIAL_SUCCESS`; `≥ 5 %` → `FAIL`.
+
+**Definitsioon:**
+
+Gate error_drop_ratio = error_drops / input_records_total
+
+Kasutab `count_error_drops()` — sama loogika, mis `determine_outcome()`.
+
+### Mida testitakse
+
+| Test | Kontrollib |
+|------|-----------|
+| `test_gate_error_drop_ratio_in_metrics` | Gate metrikad ilmuvad `metrics.gate` all |
+| `test_below_5pct_error_rate_is_partial_success` | 1/21 ≈ 4,8 % < 5 % → `PARTIAL_SUCCESS` |
+| `test_at_or_above_5pct_error_rate_is_fail` | 1/10 = 10 % ≥ 5 % → `FAIL` |
+| `test_above_5pct_with_bad_currency` | 1/11 ≈ 9 % > 5 % → `FAIL` |
+| `test_zero_errors_clean_run_is_success` | Vigadeta jooks → `SUCCESS`, gate = 0 |
+| `test_gate_metrics_consistent_with_outcome` | Gate metrikad ja determine_outcome() kasutavad sama loendusloogikat |
+
+### Tulemus
+
+```
+6/6 PASSED
 ```
 
 **SLO täidetud: JAH**
@@ -218,7 +262,7 @@ Kaardistamisetapi (STANDARDIZE_TO_SV) langetused — nt puuduv `valueDate` — s
 | `mapping_version` | `"1.0.0"` |
 | `ruleset_version` | `"1.1.0"` |
 | `adapter_version` | `"0.1.0"` |
-| `report_schema_version` | `"1.2.0"` |
+| `report_schema_version` | `"1.3.0"` |
 
 ### Tulemus
 
@@ -244,7 +288,7 @@ Kaardistamisetapi (STANDARDIZE_TO_SV) langetused — nt puuduv `valueDate` — s
 
 ### Mõõdetud tulemused
 
-Testikomplekti kogukestus (41 testi): **0.22 s**
+Testikomplekti kogukestus (57 testi): **0.22 s**
 
 Üksikute jõudlustestide hinnangulised tulemused (in-memory fake pordid):
 
@@ -275,12 +319,13 @@ Testid kasutavad mälupõhiseid fake-porte (failisüsteemi I/O puudub), mis anna
 | SLI-1 Skeemikatvus | 100 % | 10 | 10/10 ✓ | **JAH** |
 | SLI-2 Valideerimise läbivus | ≥ 0.99 (puhas) / kirjeldav (vea-ds) | 5 | 5/5 ✓ | **JAH** |
 | QC2 Langetuste raporteerimine | 100 % | 7 | 7/7 ✓ | **JAH** |
-| SLI-3 Invariantide täituvus | < 5 % → PARTIAL, ≥ 5 % → FAIL | 10 | 10/10 ✓ | **JAH** |
+| SLI-3 Invariantide täituvus | ≥ 0.999 (puhas); critical == 0 | 13 | 13/13 ✓ | **JAH** |
+| Gate Vea-drop poliitika | < 5 % → PARTIAL, ≥ 5 % → FAIL | 6 | 6/6 ✓ | **JAH** |
 | SLI-4 Determinism | 100 % | 6 | 6/6 ✓ | **JAH** |
 | SLI-5 Spetsifikatsiooni versioonid | 100 % | 7 | 7/7 ✓ | **JAH** |
 | SLI-6 Jõudlus | ≤ 500 ms | 3 | 3/3 ✓ | **JAH** |
-| **KOKKU** | | **48** | **48/48** | **KÕIK JAH** |
+| **KOKKU** | | **57** | **57/57** | **KÕIK JAH** |
 
 ```
-============================== 48 passed in 0.21s ==============================
+============================== 57 passed in 0.22s ==============================
 ```

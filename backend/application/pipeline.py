@@ -30,6 +30,7 @@ from domain.report.ops import (
     build_dropped_details as _build_dropped_details,
     build_report as _build_report,
     compute_metrics as _compute_metrics,
+    count_error_drops as _count_error_drops,
     count_flags_by_severity as _count_flags_by_severity,
     determine_outcome as _determine_outcome,
 )
@@ -323,6 +324,11 @@ def run_pipeline(
     # ================================================================
     # Stage 4: CHECK_INVARIANTS — R-01 (field-level rules)
     # ================================================================
+
+    # SLI-3 denominator: records entering invariant checking after mapping,
+    # before dedupe.  Excludes mapping drops (Stage 2).
+    invariant_checked_total = len(sv_bundle.get("transactions", []))
+
     valid_txs, dropped_txs = _check_invariants(sv_bundle)
 
     # Stage 4b: Deduplicate by (account_id, record_id) — INV-09
@@ -443,21 +449,60 @@ def run_pipeline(
     # Build dropped_details
     all_dropped_details = _build_dropped_details(dropped_txs, dedupe_drops, mapping_drops)
 
-    # Compute derived metrics (SLI-2, QC2, informative)
+    # ----------------------------------------------------------------
+    # SLI-3 invariant compliance counters
+    # ----------------------------------------------------------------
+    # critical_invariant_violations_total = records with ERROR-level invariant
+    # violations only.  Excludes mapping drops, dedupe drops, WARN-only records.
+    critical_invariant_violations_total = len(dropped_txs)
+
+    # Count kept records that have WARN-level invariant flags (INV-04/05/10).
+    # These are non-compliant for SLI-3 even though they were not dropped.
+    # Only count WARN-level invariant flags (INV-04/05/10); ERROR-level
+    # invariants already caused drops and are counted via len(dropped_txs).
+    warn_flagged_kept = sum(
+        1 for tx in deduped_txs
+        if any(
+            f["id"].startswith("INV-") and f.get("severity") == "WARN"
+            for f in tx.get("flags", [])
+        )
+    )
+
+    # invariant_correct_total = invariant_checked_total
+    #     − ERROR invariant drops (dropped_txs)
+    #     − INV-09 dedupe drops (dedupe_drops)
+    #     − kept records with WARN invariant flags
+    invariant_correct_total = (
+        invariant_checked_total
+        - len(dropped_txs)
+        - len(dedupe_drops)
+        - warn_flagged_kept
+    )
+
+    # ----------------------------------------------------------------
+    # Gate: error-drop count (uses same logic as determine_outcome)
+    # ----------------------------------------------------------------
+    run_policy = profile.get("run_policy", {}).get("partial_success_policy", {})
+    fail_on = run_policy.get("fail_on", {})
+    fail_severity = fail_on.get("any_severity", "ERROR")
+    fail_ratio = fail_on.get("ratio_over_records", 0.05)
+
+    error_drops = _count_error_drops(dropped_txs, mapping_drops, fail_severity)
+
+    # Compute derived metrics (SLI-2, QC2, SLI-3, gate, informative)
     metrics = _compute_metrics(
         input_records_total=total_raw,
         passed_validation_total=len(deduped_txs),
         dropped_total=total_dropped,
         dropped_details_count=len(all_dropped_details),
         ml_rows_count=len(ml_rows),
+        invariant_checked_total=invariant_checked_total,
+        invariant_correct_total=invariant_correct_total,
+        critical_invariant_violations_total=critical_invariant_violations_total,
+        error_drops=error_drops,
     )
 
-    # Determine outcome using run_policy fail gate from default.yaml
-    run_policy = profile.get("run_policy", {}).get("partial_success_policy", {})
-    fail_on = run_policy.get("fail_on", {})
-    fail_severity = fail_on.get("any_severity", "ERROR")
-    fail_ratio = fail_on.get("ratio_over_records", 0.05)
-
+    # Determine outcome using run_policy gate from default.yaml
     outcome, stop_reason = _determine_outcome(
         by_severity=by_severity,
         issues=issues,
