@@ -471,6 +471,11 @@
     }
   ],
   "metrics": {
+    "sli1": {
+      "covered_relevant_sv_fields": 17,
+      "relevant_sv_fields_total": 17,
+      "schema_coverage_ratio": 1.0
+    },
     "gate": {
       "error_drop_ratio": 0.0,
       "error_drops": 0

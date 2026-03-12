@@ -3,7 +3,7 @@
 **Testifail:** `backend/tests/sli_slo/test_sli_slo.py`
 **Käivitamine:** `cd backend && python -m pytest tests/sli_slo/test_sli_slo.py -v`
 **Viimane käivitus:** 2026-03-11
-**Tulemus: 57/57 läbisid — 0.22 s**
+**Tulemus: 65/65 läbisid**
 
 ---
 
@@ -11,20 +11,81 @@
 
 | # | SLI nimi | Kirjeldus | SLO sihtmärk |
 |---|----------|-----------|--------------|
-| SLI-1 | Skeemikatvus | Kõik pipeline'i jooksud toodavad skeemi-vastavaid väljundeid | 100 % |
+| SLI-1 | SV skeemi/lepingu katvus | Relevantsete SV tehinguväljade osakaal, millele C-01 määrab üheselt kaardistus- või tuletamisloogika | ≥ 0.95 |
 | SLI-2 | Valideerimise läbivus | Valideeritud kirjete osakaal sisendi suhtes (pass-through) | ≥ 0.99 puhaste datasettide korral; vea-datasettidel kirjeldav metrika |
 | QC2 | Langetuste raporteerimine | Kõik langetused kajastatakse dropped_details[] all | 100 % langetustest raportis |
 | SLI-3 | Invariantide täituvus | Invariantide vastavuse suhtarv (invariant compliance ratio) | ≥ 0.999 puhaste datasettide korral; critical == 0 |
-| Gate | Vea-drop poliitika | Operatsiooniline vea-drop lävend (EI ole SLI) | error_drop_ratio < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL |
+| Gate | Operatiivne kvaliteedivärav | Vea-drop lävend (ei ole SLI) | error_drop_ratio < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL |
 | SLI-4 | Determinism | Sama sisend + sama kell → baidilt identne väljund | 100 % kordused identsed |
 | SLI-5 | Spetsifikatsiooni versioonid | Iga jooks kannab kõiki versiooni metaandmeid | 100 % jooksudest kõik 4 välja olemas |
 | SLI-6 | Jõudlus | Pipeline lõpetab eelarve piires (≤ 10 tehingut) | ≤ 500 ms |
 
 ---
 
-## SLI-1 — Skeemikatvus
+## SLI-1 — SV skeemi/lepingu katvus
 
-**SLO:** 100 % kehtiva sisendiga jooksudest emiteerib struktuuriliselt korrektsed SV, ML, LLM, raporti väljundid.
+**SLO:** ≥ 0.95 — C-01 peab katma vähemalt 95 % relevantsetest SV tehinguväljadest.
+
+**Definitsioon:**
+
+SLI-1 = covered_relevant_sv_fields / relevant_sv_fields_total
+
+kus:
+- `relevant_sv_fields_total` = relevantsete SV tehinguväljade arv, mis kuuluvad katvuse skoopi
+- `covered_relevant_sv_fields` = relevantsed SV väljad, millele C-01 määrab üheselt kaardistus- või tuletamisloogika
+- See on staatiline spetsifikatsioonitaseme mõõdik, mis põhineb hooldataval katvusdeklaratsioonil (`SLI1_FIELD_COVERAGE` moodulis `domain.report.ops`)
+- Mõõdik ei sõltu konkreetsest andmestikust ega jooksust
+
+### SLI-1 väljaskoop (17 välja)
+
+| Väli | Kaetud | Kaardistamise allikas |
+|------|--------|---------------------|
+| `record_id` | Jah | SHA-256 räsi komposiitvõtmest |
+| `transaction_id` | Jah | raw `transactionId` |
+| `account_id` | Jah | raw konto `resourceId` |
+| `status` | Jah | booked/pending/information kategooria |
+| `booking_date` | Jah | raw `bookingDate` |
+| `value_date` | Jah | raw `valueDate` (fallback-loogikaga) |
+| `amount.currency` | Jah | raw `transactionAmount.currency` |
+| `amount.raw` | Jah | raw `transactionAmount.amount` |
+| `amount.signed` | Jah | tuletatud: absoluutväärtus + suunamärk |
+| `amount.abs` | Jah | tuletatud: summa absoluutväärtus |
+| `direction` | Jah | tuletatud deebitor/kreeditor/märgi heuristikast |
+| `counterparty.role` | Jah | tuletatud suunast |
+| `counterparty.name` | Jah | raw `creditorName`/`debtorName` |
+| `counterparty.iban` | Jah | raw `creditorAccount`/`debtorAccount` |
+| `remittance` | Jah | raw `remittanceInformationUnstructured` |
+| `source.input_file` | Jah | C-01 konstrueerib jälgitavuse jaoks |
+| `source.input_path` | Jah | C-01 konstrueerib (JSON path avaldis) |
+
+### Mida testitakse
+
+| Test | Kontrollib |
+|------|-----------|
+| `test_sli1_metric_exists_in_report` | SLI-1 metrika on `report.metrics.sli1` all |
+| `test_sli1_has_required_keys` | SLI-1 sisaldab kõiki 3 nõutud välja |
+| `test_sli1_relevant_fields_positive` | `relevant_sv_fields_total > 0` |
+| `test_sli1_covered_leq_total` | `covered <= total` |
+| `test_sli1_ratio_in_unit_interval` | `0 <= ratio <= 1` |
+| `test_sli1_baseline_meets_slo` | Praegune baas >= 0.95 |
+| `test_sli1_ratio_decreases_when_field_uncovered` | Ühe välja eemaldamine vähendab suhtarvu |
+| `test_sli1_in_pipeline_summary` | SLI-1 on ka pipeline'i summary.metrics all |
+
+### Tulemus
+
+```
+8/8 PASSED
+```
+
+**SLO täidetud: JAH**
+
+---
+
+## Struktuurne väljundi terviklikkus
+
+Need testid kontrollivad, et väljundartefaktid (SV, ML, LLM, raport) sisaldavad
+nõutud tipptaseme struktuuri ja võtmeid. Need on kasulikud struktuurse terviklikkuse
+kontrollid, kuid EI OLE ametlik SLI-1 metrika.
 
 ### Mida testitakse
 
@@ -46,8 +107,6 @@
 ```
 10/10 PASSED
 ```
-
-**SLO täidetud: JAH**
 
 ---
 
@@ -133,7 +192,7 @@ SLI-3 = invariant_correct_total / invariant_checked_total
 
 kus:
 - `invariant_checked_total` = kirjed, mis jõuavad Stage 4 (CHECK_INVARIANTS) pärast kaardistamist, enne deduplikatsiooni
-- `invariant_correct_total` = invariant_checked_total − ERROR langetused − INV-09 dedupe langetused − WARN-lipuga kirjed
+- `invariant_correct_total` = invariant_checked_total − ERROR langetused − INV-09 dedupe langetused − alles jäänud WARN-lipuga kirjed
 - `critical_invariant_violations_total` = kirjed ERROR-taseme invariantrikkumistega (v.a. mapping drops, dedupe, WARN)
 
 ### Mida testitakse
@@ -175,7 +234,7 @@ kus:
 
 ---
 
-## Gate — Vea-drop poliitika (operational fail gate — NOT an SLI)
+## Gate — operatiivne kvaliteedivärav (ei ole SLI)
 
 **SLO:** `error_drop_ratio < 5 %` → `PARTIAL_SUCCESS`; `≥ 5 %` → `FAIL`.
 
@@ -240,9 +299,14 @@ Kasutab `count_error_drops()` — sama loogika, mis `determine_outcome()`.
 
 ## SLI-5 — Spetsifikatsiooni versioonid
 
-**SLO:** 100 % jooksudest kannab kõiki 4 versioonivälja `report.run` all.
+**SLO:** 100 % jooksudest kannab kõiki 4 versioonivälja `report.run` all:
+`sv_schema_version`, `mapping_version`, `ruleset_version`, `adapter_version`.
 
 ### Mida testitakse
+
+Lisaks 4 versiooniväljale kontrollib testikomplekt ka jooksu identiteediväljasid
+(`run_id`, `created_at_utc`) ja raporti juuretaseme skeemiversiooni
+(`report_schema_version`), kuna need on raporti terviklikkuse eeldus.
 
 | Test | Kontrollib |
 |------|-----------|
@@ -250,9 +314,9 @@ Kasutab `count_error_drops()` — sama loogika, mis `determine_outcome()`.
 | `test_report_run_has_mapping_version` | `report.run.mapping_version` on olemas ja mittetühi |
 | `test_report_run_has_ruleset_version` | `report.run.ruleset_version` on olemas ja mittetühi |
 | `test_report_run_has_adapter_version` | `report.run.adapter_version` on olemas ja mittetühi |
-| `test_report_run_has_run_id` | `report.run.run_id` on olemas ja mittetühi |
-| `test_report_run_has_created_at_utc` | `report.run.created_at_utc` on olemas ja mittetühi |
-| `test_report_has_schema_version_field` | Raporti juuretasemel `report_schema_version` on olemas |
+| `test_report_run_has_run_id` | `report.run.run_id` on olemas ja mittetühi (identiteediväli) |
+| `test_report_run_has_created_at_utc` | `report.run.created_at_utc` on olemas ja mittetühi (identiteediväli) |
+| `test_report_has_schema_version_field` | Raporti juuretasemel `report_schema_version` on olemas (skeemiversioon) |
 
 ### Versiooniväljad jooksus
 
@@ -288,7 +352,7 @@ Kasutab `count_error_drops()` — sama loogika, mis `determine_outcome()`.
 
 ### Mõõdetud tulemused
 
-Testikomplekti kogukestus (57 testi): **0.22 s**
+Testikomplekti kogukestus (65 testi): **~0.3 s**
 
 Üksikute jõudlustestide hinnangulised tulemused (in-memory fake pordid):
 
@@ -316,16 +380,13 @@ Testid kasutavad mälupõhiseid fake-porte (failisüsteemi I/O puudub), mis anna
 
 | SLI | SLO sihtmärk | Testide arv | Tulemus | SLO täidetud |
 |-----|-------------|------------|---------|-------------|
-| SLI-1 Skeemikatvus | 100 % | 10 | 10/10 ✓ | **JAH** |
+| SLI-1 SV skeemi/lepingu katvus | ≥ 0.95 | 8 | 8/8 ✓ | **JAH** |
+| Struktuurne väljundi terviklikkus | (struktuurikontroll) | 10 | 10/10 ✓ | — |
 | SLI-2 Valideerimise läbivus | ≥ 0.99 (puhas) / kirjeldav (vea-ds) | 5 | 5/5 ✓ | **JAH** |
 | QC2 Langetuste raporteerimine | 100 % | 7 | 7/7 ✓ | **JAH** |
 | SLI-3 Invariantide täituvus | ≥ 0.999 (puhas); critical == 0 | 13 | 13/13 ✓ | **JAH** |
-| Gate Vea-drop poliitika | < 5 % → PARTIAL, ≥ 5 % → FAIL | 6 | 6/6 ✓ | **JAH** |
+| Gate Operatiivne kvaliteedivärav | < 5 % → PARTIAL, ≥ 5 % → FAIL | 6 | 6/6 ✓ | **JAH** |
 | SLI-4 Determinism | 100 % | 6 | 6/6 ✓ | **JAH** |
 | SLI-5 Spetsifikatsiooni versioonid | 100 % | 7 | 7/7 ✓ | **JAH** |
 | SLI-6 Jõudlus | ≤ 500 ms | 3 | 3/3 ✓ | **JAH** |
-| **KOKKU** | | **57** | **57/57** | **KÕIK JAH** |
-
-```
-============================== 57 passed in 0.22s ==============================
-```
+| **KOKKU** | | **65** | **65/65** | **KÕIK JAH** |

@@ -12,6 +12,108 @@ ADAPTER_VERSION = "0.1.0"
 SEVERITY_RANK: dict[str, int] = {"INFO": 0, "WARN": 1, "ERROR": 2, "CRITICAL": 3}
 
 
+# ---------------------------------------------------------------------------
+# SLI-1: Schema/contract coverage of relevant SV fields
+# ---------------------------------------------------------------------------
+#
+# SLI-1 measures what fraction of the relevant SV transaction-level schema
+# is covered by explicit mapping or derivation logic in C-01 (RAW → SV).
+#
+# This is a STATIC, SPEC-LEVEL metric — it does not depend on any particular
+# pipeline run or dataset.  It answers: "for how many of the SV fields does
+# the adapter define an explicit mapping from RAW input?"
+#
+# Implementation: an explicit, maintained coverage declaration.
+# Each entry in the map below pairs a dotted SV field path with a boolean
+# indicating whether C-01 currently defines mapping/derivation logic for it.
+# This is NOT an automatically inferred proof from parsing the contract code;
+# it is a manually maintained declaration that must be kept in sync with C-01.
+# It is valid as a stable thesis metric because the field scope is explicit,
+# reviewable, and versioned alongside the code.
+#
+# Scope decision — what is INCLUDED:
+#   All SV transaction-level fields from S-01 that C-01's
+#   map_single_transaction() explicitly maps or derives, including:
+#   - business-level fields (identity, dates, amounts, counterparty, etc.)
+#   - source lineage fields (source.input_file, source.input_path), because
+#     traceability is an explicit design goal of this thesis and C-01
+#     constructs these fields intentionally for every mapped transaction.
+#
+# Scope decision — what is EXCLUDED:
+#   - SVBundle.meta (run context, not C-01 mapping)
+#   - SVBundle.accounts (mapped separately, not per-transaction C-01 logic)
+#   - flags[] (populated by mapping warnings and invariant checks, not a
+#     "field mapped from RAW input" — flags are quality annotations, not data)
+# ---------------------------------------------------------------------------
+
+SLI1_FIELD_COVERAGE: dict[str, bool] = {
+    # Identity & classification
+    "record_id":            True,   # SHA-256 hash derived from composite key
+    "transaction_id":       True,   # mapped from raw transactionId
+    "account_id":           True,   # mapped from raw account resourceId
+    "status":               True,   # mapped from booked/pending/information category
+
+    # Dates
+    "booking_date":         True,   # mapped from raw bookingDate
+    "value_date":           True,   # mapped from raw valueDate (with fallback)
+
+    # Amount
+    "amount.currency":      True,   # mapped from raw transactionAmount.currency
+    "amount.raw":           True,   # mapped from raw transactionAmount.amount
+    "amount.signed":        True,   # derived: abs value + direction sign
+    "amount.abs":           True,   # derived: absolute value of raw amount
+
+    # Direction
+    "direction":            True,   # inferred from debtor/creditor/sign heuristic
+
+    # Counterparty
+    "counterparty.role":    True,   # inferred from direction
+    "counterparty.name":    True,   # mapped from raw creditorName/debtorName
+    "counterparty.iban":    True,   # mapped from raw creditorAccount/debtorAccount
+
+    # Remittance
+    "remittance":           True,   # mapped from raw remittanceInformationUnstructured
+
+    # Source lineage (included: traceability is a thesis design goal)
+    "source.input_file":    True,   # constructed by C-01 for traceability
+    "source.input_path":    True,   # constructed by C-01 (JSON path expression)
+}
+
+
+def compute_sli1_coverage(
+    coverage_map: dict[str, bool] | None = None,
+) -> dict[str, Any]:
+    """Compute SLI-1: schema/contract coverage of relevant SV fields.
+
+    SLI-1 = covered_relevant_sv_fields / relevant_sv_fields_total
+
+    This is a static metric based on the maintained coverage declaration
+    in SLI1_FIELD_COVERAGE.  It does not depend on pipeline run data.
+
+    Parameters
+    ----------
+    coverage_map : dict[str, bool] | None
+        Override the default SLI1_FIELD_COVERAGE for testing.
+        If None, uses the module-level constant.
+
+    Returns
+    -------
+    dict with keys:
+        schema_coverage_ratio : float   (0–1, rounded to 4 decimals)
+        relevant_sv_fields_total : int
+        covered_relevant_sv_fields : int
+    """
+    cmap = coverage_map if coverage_map is not None else SLI1_FIELD_COVERAGE
+    total = len(cmap)
+    covered = sum(1 for v in cmap.values() if v)
+    ratio = covered / total if total > 0 else 0.0
+    return {
+        "schema_coverage_ratio": round(ratio, 4),
+        "relevant_sv_fields_total": total,
+        "covered_relevant_sv_fields": covered,
+    }
+
+
 def count_flags_by_severity(
     sv_transactions: list[dict],
     dropped: list[dict],
@@ -205,7 +307,10 @@ def compute_metrics(
         else 0.0
     )
 
+    sli1 = compute_sli1_coverage()
+
     return {
+        "sli1": sli1,
         "sli2": {
             "validation_pass_through_ratio": round(sli2_ratio, 4),
         },

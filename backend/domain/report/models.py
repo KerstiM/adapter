@@ -91,6 +91,12 @@ class Summary(TypedDict):
     by_severity: SeverityCounts
 
 
+class SLI1Metrics(TypedDict):
+    schema_coverage_ratio: float
+    relevant_sv_fields_total: int
+    covered_relevant_sv_fields: int
+
+
 class SLI2Metrics(TypedDict):
     validation_pass_through_ratio: float
 
@@ -117,6 +123,7 @@ class InfoMetrics(TypedDict):
 
 
 class Metrics(TypedDict):
+    sli1: SLI1Metrics
     sli2: SLI2Metrics
     qc2: QC2Metrics
     sli3: SLI3Metrics

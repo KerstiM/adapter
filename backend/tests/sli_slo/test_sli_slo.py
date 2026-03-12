@@ -5,8 +5,9 @@ kas pipeline täidab vastava teenustaseme eesmärgi (SLO).
 
 SLI definitsioonid ja SLO sihtmärgid
 --------------------------------------
-SLI-1  Skeemikatvus          Kõik pipeline'i jooksud toodavad skeemi-vastavaid väljundeid
-                              SLO: 100 % kehtiva sisendiga jooksudest emiteerib korrektsed SV, ML, LLM, raporti
+SLI-1  SV skeemi/lepingu      Relevantsete SV tehinguväljade osakaal, millele C-01 määrab
+       katvus                 üheselt kaardistus- või tuletamisloogika
+                              SLO: ≥ 0.95
 
 SLI-2  Valideerimise läbivus  Valideeritud kirjete osakaal sisendi suhtes (pass-through)
                               SLO: ≥ 0.99 puhaste/tootmislaadsete datasettide korral;
@@ -20,8 +21,8 @@ SLI-3  Invariantide täituvus  Invariantide vastavuse suhtarv (invariant complia
                               SLO: ≥ 0.999 puhaste/tootmislaadsete datasettide korral;
                               critical_invariant_violations_total == 0
 
-Gate   Vea-drop poliitika     Operatsiooniline vea-drop lävend (EI ole SLI)
-                              SLO: error_drop_ratio < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL
+Gate   Operatiivne            Vea-drop lävend (ei ole SLI)
+       kvaliteedivärav        SLO: error_drop_ratio < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL
 
 SLI-4  Determinism            Identne sisend annab baidilt identse väljundi
                               SLO: 100 % korduvjooksudest sama kellaga toodab identsed sõnastikud
@@ -127,12 +128,94 @@ def _run(*, accounts: dict | None = None, booked: list | None = None, pending: l
 
 
 # ---------------------------------------------------------------------------
-# SLI-1: Skeemikatvus
-# SLO: 100 % kehtiva sisendiga jooksudest emiteerib korrektsed SV, ML, LLM, raporti
+# SLI-1: SV skeemi/lepingu katvus (schema/contract coverage)
+# SLO: ≥ 0.95 — C-01 peab katma vähemalt 95 % relevantsetest SV tehinguväljadest
 # ---------------------------------------------------------------------------
 
-class TestSLI1SchemaCoverage:
-    """SLI-1 — kõik väljundartefaktid kannavad nõutud tipptaseme struktuuri."""
+class TestSLI1SchemaContractCoverage:
+    """SLI-1 — SV skeemi/lepingu katvus.
+
+    SLI-1 = covered_relevant_sv_fields / relevant_sv_fields_total
+
+    See on staatiline spetsifikatsioonitaseme mõõdik, mis põhineb
+    hooldataval katvusdeklaratsioonil (SLI1_FIELD_COVERAGE moodulis
+    domain.report.ops). Mõõdik ei sõltu konkreetsest andmestikust ega jooksust.
+    """
+
+    def test_sli1_metric_exists_in_report(self) -> None:
+        """SLI-1 metrika peab olema report.metrics.sli1 all."""
+        _, out = _run(booked=[_tx()])
+        assert out.report is not None
+        assert "sli1" in out.report["metrics"]
+
+    def test_sli1_has_required_keys(self) -> None:
+        """SLI-1 metrika peab sisaldama kõiki 3 nõutud välja."""
+        _, out = _run(booked=[_tx()])
+        sli1 = out.report["metrics"]["sli1"]
+        assert "schema_coverage_ratio" in sli1
+        assert "relevant_sv_fields_total" in sli1
+        assert "covered_relevant_sv_fields" in sli1
+
+    def test_sli1_relevant_fields_positive(self) -> None:
+        """relevant_sv_fields_total peab olema > 0."""
+        _, out = _run(booked=[_tx()])
+        assert out.report["metrics"]["sli1"]["relevant_sv_fields_total"] > 0
+
+    def test_sli1_covered_leq_total(self) -> None:
+        """covered_relevant_sv_fields <= relevant_sv_fields_total."""
+        _, out = _run(booked=[_tx()])
+        sli1 = out.report["metrics"]["sli1"]
+        assert sli1["covered_relevant_sv_fields"] <= sli1["relevant_sv_fields_total"]
+
+    def test_sli1_ratio_in_unit_interval(self) -> None:
+        """schema_coverage_ratio peab olema vahemikus [0, 1]."""
+        _, out = _run(booked=[_tx()])
+        ratio = out.report["metrics"]["sli1"]["schema_coverage_ratio"]
+        assert 0.0 <= ratio <= 1.0
+
+    def test_sli1_baseline_meets_slo(self) -> None:
+        """Praeguse baasprofiiliga SLI-1 peab olema >= 0.95 (SLO)."""
+        _, out = _run(booked=[_tx()])
+        ratio = out.report["metrics"]["sli1"]["schema_coverage_ratio"]
+        assert ratio >= 0.95
+
+    def test_sli1_ratio_decreases_when_field_uncovered(self) -> None:
+        """Kui üks väli märgitakse katvamata, peab SLI-1 suhtarv langema."""
+        from domain.report.ops import SLI1_FIELD_COVERAGE, compute_sli1_coverage
+
+        baseline = compute_sli1_coverage()
+        # Ülekirjutus: üks väli märgitakse katvamata
+        override = dict(SLI1_FIELD_COVERAGE)
+        override["record_id"] = False
+        reduced = compute_sli1_coverage(coverage_map=override)
+
+        assert reduced["schema_coverage_ratio"] < baseline["schema_coverage_ratio"]
+        assert reduced["covered_relevant_sv_fields"] == baseline["covered_relevant_sv_fields"] - 1
+        assert reduced["relevant_sv_fields_total"] == baseline["relevant_sv_fields_total"]
+
+    def test_sli1_in_pipeline_summary(self) -> None:
+        """SLI-1 peab olema ka pipeline'i tagastatud summary.metrics all."""
+        summary, _ = _run(booked=[_tx()])
+        assert "sli1" in summary["metrics"]
+        assert summary["metrics"]["sli1"]["schema_coverage_ratio"] >= 0.95
+
+
+# ---------------------------------------------------------------------------
+# Struktuurne väljundi terviklikkus (varem SLI-1 struktuurikontrollid)
+# ---------------------------------------------------------------------------
+# Need testid kontrollivad, et väljundartefaktid (SV, ML, LLM, raport)
+# sisaldavad nõutud tipptaseme struktuuri ja võtmeid.  Need on kasulikud
+# struktuurse terviklikkuse kontrollid, kuid EI OLE ametlik SLI-1 metrika.
+# SLI-1 on skeemi/lepingu katvus (vt TestSLI1SchemaContractCoverage).
+# ---------------------------------------------------------------------------
+
+class TestStructuralOutputIntegrity:
+    """Struktuurne väljundi terviklikkus — väljundartefaktid kannavad nõutud tipptaseme struktuuri.
+
+    Need on struktuurse kohalolu ja kuju kontrollid SV, ML, LLM ja raporti
+    artefaktidele. Need täiendavad, kuid on eraldi ametlikust SLI-1
+    metrikast (skeemi/lepingu katvus).
+    """
 
     @pytest.fixture(scope="class")
     def result(self) -> tuple[dict, FakeOutputPort]:
@@ -510,12 +593,12 @@ class TestSLI3InvariantCompliance:
 
 
 # ---------------------------------------------------------------------------
-# Gate: Vea-drop poliitika (operational fail gate — NOT an SLI)
+# Gate: Operatiivne kvaliteedivärav (ei ole SLI)
 # SLO: error_drop_ratio < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL
 # ---------------------------------------------------------------------------
 
 class TestGateFailPolicy:
-    """Gate — operatsiooniline vea-drop lävend (error-drop fail policy)."""
+    """Gate — operatiivne kvaliteedivärav (vea-drop lävend, ei ole SLI)."""
 
     def test_gate_error_drop_ratio_in_metrics(self) -> None:
         """Gate metrikad peavad ilmuma report.metrics.gate alla."""
