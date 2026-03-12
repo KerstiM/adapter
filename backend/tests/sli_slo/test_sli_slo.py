@@ -15,8 +15,13 @@ SLI-2  Valideerimise läbivus  Valideeritud kirjete osakaal sisendi suhtes (pass
 QC2    Langetuste raporteerimine  Kõik langetused kajastatakse dropped_details[] all (operational control)
                               SLO: 100 % langetustest ilmub report.dropped_details[] all
 
-SLI-3  Invariantide täituvus  Ärireeglite (R-01) rikkumised klassifitseeritakse ja juhivad tulemust
-                              SLO: viga-drop-suhe < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL
+SLI-3  Invariantide täituvus  Invariantide vastavuse suhtarv (invariant compliance ratio)
+                              = invariant_correct_total / invariant_checked_total
+                              SLO: ≥ 0.999 puhaste/tootmislaadsete datasettide korral;
+                              critical_invariant_violations_total == 0
+
+Gate   Vea-drop poliitika     Operatsiooniline vea-drop lävend (EI ole SLI)
+                              SLO: error_drop_ratio < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL
 
 SLI-4  Determinism            Identne sisend annab baidilt identse väljundi
                               SLO: 100 % korduvjooksudest sama kellaga toodab identsed sõnastikud
@@ -343,26 +348,21 @@ class TestQC2DropReporting:
 
 
 # ---------------------------------------------------------------------------
-# SLI-3: Invariantide täituvus
-# SLO: viga-drop-suhe < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL
+# SLI-3: Invariantide täituvus (invariant compliance ratio)
+# SLO: ≥ 0.999 puhaste datasettide korral; critical == 0
 # ---------------------------------------------------------------------------
 
 class TestSLI3InvariantCompliance:
-    """SLI-3 — R-01 invariantreeglid klassifitseerivad rikkumised ja juhivad tulemust."""
+    """SLI-3 — invariantide vastavuse suhtarv (invariant compliance ratio).
+
+    SLI-3 = invariant_correct_total / invariant_checked_total
+    """
 
     def test_inv01_bad_currency_drops_transaction(self) -> None:
         """INV-01: vale valuutaformaadiga tehing peab langetatama (ERROR)."""
         bad = _tx(currency="xx")  # väiketähed — ei vasta [A-Z]{3}
         summary, _ = _run(booked=[_tx(), bad])
         assert summary["counts"]["transactions_dropped"] >= 1
-
-    def test_inv01_bad_currency_does_not_exceed_fail_gate(self) -> None:
-        """INV-01: 1 vigane tehing 11-st on ~9 % → FAIL (viga-drop-suhe > 5 %)."""
-        bad = _tx(currency="xx", transaction_id="BAD")
-        good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(10)]
-        # 1 vigane / 11 kokku ≈ 9 % > 5 % → FAIL
-        summary, _ = _run(booked=good + [bad])
-        assert summary["outcome"] == "FAIL"
 
     def test_inv02_missing_value_date_drops_transaction(self) -> None:
         """INV-02: puuduv valueDate peab põhjustama tehingu langetamise."""
@@ -376,11 +376,9 @@ class TestSLI3InvariantCompliance:
 
     def test_inv09_duplicate_is_deduplicated(self) -> None:
         """INV-09: identsed tehingud peavad olema deduplitseeritud; üks säilitatakse."""
-        # Kaks tehingut, mis saavad sama record_id räsi (sama summa/kuupäev/suund)
         dup = _tx(amount="77.77", value_date="2025-09-09", booking_date="2025-09-09",
                   debtor_name="DupSender", transaction_id="DUP")
         summary, out = _run(booked=[dup, dup])
-        # SV-sse peab jääma ainult üks
         assert out.sv is not None
         assert len(out.sv["transactions"]) == 1
 
@@ -394,7 +392,6 @@ class TestSLI3InvariantCompliance:
 
     def test_inv04_bad_booking_date_keeps_transaction_as_warn(self) -> None:
         """INV-04: vigane bookingDate on WARN — tehingut ei tohi langetada."""
-        # Ehita tehing käsitsi vigase bookingDate-ga
         t = {
             "transactionAmount": {"amount": "30.00", "currency": "EUR"},
             "valueDate": "2025-07-01",
@@ -406,6 +403,129 @@ class TestSLI3InvariantCompliance:
         summary, _ = _run(booked=[t])
         assert summary["counts"]["transactions_dropped"] == 0
         assert summary["counts"]["transactions_emitted_sv"] == 1
+
+    def test_dropped_count_matches_dropped_details(self) -> None:
+        """summary.counts.transactions_dropped peab võrduma len(dropped_details)."""
+        bad = _tx(currency="xx", transaction_id="BAD-CUR")
+        summary, _ = _run(booked=[_tx(), bad])
+        assert summary["counts"]["transactions_dropped"] == len(summary["dropped_details"])
+
+    def test_clean_run_sli3_is_one(self) -> None:
+        """Puhas jooks: SLI-3 invariant compliance ratio == 1.0, critical == 0."""
+        good = [_tx(transaction_id=f"T{i}", amount=str(10 + i)) for i in range(5)]
+        summary, _ = _run(booked=good)
+        sli3 = summary["metrics"]["sli3"]
+        assert sli3["invariant_compliance_ratio"] == 1.0
+        assert sli3["invariant_checked_total"] == 5
+        assert sli3["invariant_correct_total"] == 5
+        assert sli3["critical_invariant_violations_total"] == 0
+
+    def test_error_drops_reduce_compliance_ratio(self) -> None:
+        """ERROR invariant drop vähendab SLI-3 suhtarvu."""
+        bad = _tx(currency="xx", transaction_id="BAD")
+        good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(9)]
+        summary, _ = _run(booked=good + [bad])
+        sli3 = summary["metrics"]["sli3"]
+        # 10 checked, 1 ERROR drop → 9 correct → ratio = 0.9
+        assert sli3["invariant_checked_total"] == 10
+        assert sli3["critical_invariant_violations_total"] == 1
+        assert sli3["invariant_compliance_ratio"] == 0.9
+
+    def test_warn_flags_reduce_compliance_ratio(self) -> None:
+        """WARN invariant flag (INV-04) vähendab SLI-3 suhtarvu, kuigi tehing jääb alles."""
+        warn_tx = {
+            "transactionAmount": {"amount": "30.00", "currency": "EUR"},
+            "valueDate": "2025-07-01",
+            "bookingDate": "not-a-date",
+            "debtorName": "WarnSender",
+            "debtorAccount": {"iban": "NL91ABNA0417164300"},
+            "transactionId": "TX-WARN",
+        }
+        good = _tx(transaction_id="G1", amount="10.00")
+        summary, _ = _run(booked=[good, warn_tx])
+        sli3 = summary["metrics"]["sli3"]
+        # 2 checked, 1 WARN flagged → 1 correct → ratio = 0.5
+        assert sli3["invariant_checked_total"] == 2
+        assert sli3["invariant_correct_total"] == 1
+        assert sli3["invariant_compliance_ratio"] == 0.5
+        assert sli3["critical_invariant_violations_total"] == 0
+
+    def test_dedupe_drops_reduce_compliance_ratio(self) -> None:
+        """INV-09 dedupe drops vähendavad SLI-3 suhtarvu."""
+        dup = _tx(amount="77.77", value_date="2025-09-09", booking_date="2025-09-09",
+                  debtor_name="DupSender", transaction_id="DUP")
+        good = _tx(transaction_id="G1", amount="10.00")
+        summary, _ = _run(booked=[good, dup, dup])
+        sli3 = summary["metrics"]["sli3"]
+        # 3 checked, 1 dedupe drop → 2 correct → ratio ≈ 0.6667
+        assert sli3["invariant_checked_total"] == 3
+        assert sli3["invariant_correct_total"] == 2
+        assert sli3["critical_invariant_violations_total"] == 0
+
+    def test_invariant_correct_total_non_negative(self) -> None:
+        """invariant_correct_total ei tohi kunagi olla negatiivne."""
+        # All records are bad → invariant_correct_total == 0
+        bad1 = _tx(currency="xx", transaction_id="BAD1", amount="10.00")
+        bad2 = _tx(currency="yy", transaction_id="BAD2", amount="20.00")
+        summary, _ = _run(booked=[bad1, bad2])
+        sli3 = summary["metrics"]["sli3"]
+        assert sli3["invariant_correct_total"] >= 0
+        assert sli3["invariant_correct_total"] == 0
+        assert sli3["invariant_compliance_ratio"] == 0.0
+
+    def test_mapping_drops_excluded_from_sli3_denominator(self) -> None:
+        """Mapping drops (Stage 2) ei tohi mõjutada SLI-3 nimetajat.
+
+        A record that fails mapping (missing transactionAmount) never reaches
+        Stage 4 invariant checking, so invariant_checked_total must not include it.
+        """
+        good = _tx(transaction_id="G1", amount="10.00")
+        # Missing transactionAmount → mapping drop in Stage 2
+        mapping_drop = {
+            "transactionId": "MAP-DROP",
+            "valueDate": "2025-06-01",
+            "debtorName": "Ghost",
+            # no transactionAmount → fails mapping
+        }
+        summary, _ = _run(booked=[good, mapping_drop])
+        sli3 = summary["metrics"]["sli3"]
+        # Only the good record reaches Stage 4
+        assert sli3["invariant_checked_total"] == 1
+        assert sli3["invariant_correct_total"] == 1
+        assert sli3["invariant_compliance_ratio"] == 1.0
+        # But the mapping drop still shows up in overall report counts
+        assert summary["counts"]["transactions_dropped"] >= 1
+
+    def test_dedupe_exact_ratio(self) -> None:
+        """INV-09 dedupe: 3 checked, 1 dedupe drop → ratio = 0.6667."""
+        dup = _tx(amount="77.77", value_date="2025-09-09", booking_date="2025-09-09",
+                  debtor_name="DupSender", transaction_id="DUP")
+        good = _tx(transaction_id="G1", amount="10.00")
+        summary, _ = _run(booked=[good, dup, dup])
+        sli3 = summary["metrics"]["sli3"]
+        assert sli3["invariant_checked_total"] == 3
+        assert sli3["invariant_correct_total"] == 2
+        assert sli3["invariant_compliance_ratio"] == 0.6667
+        assert sli3["critical_invariant_violations_total"] == 0
+
+
+# ---------------------------------------------------------------------------
+# Gate: Vea-drop poliitika (operational fail gate — NOT an SLI)
+# SLO: error_drop_ratio < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL
+# ---------------------------------------------------------------------------
+
+class TestGateFailPolicy:
+    """Gate — operatsiooniline vea-drop lävend (error-drop fail policy)."""
+
+    def test_gate_error_drop_ratio_in_metrics(self) -> None:
+        """Gate metrikad peavad ilmuma report.metrics.gate alla."""
+        bad = _tx(currency="xx", transaction_id="BAD")
+        good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(9)]
+        summary, _ = _run(booked=good + [bad])
+        gate = summary["metrics"]["gate"]
+        assert "error_drop_ratio" in gate
+        assert "error_drops" in gate
+        assert gate["error_drops"] == 1
 
     def test_below_5pct_error_rate_is_partial_success(self) -> None:
         """Vigade suhe alla 5 % peab andma PARTIAL_SUCCESS, mitte FAIL."""
@@ -423,17 +543,47 @@ class TestSLI3InvariantCompliance:
         summary, _ = _run(booked=good + [bad])
         assert summary["outcome"] == "FAIL"
 
+    def test_above_5pct_with_bad_currency(self) -> None:
+        """INV-01: 1 vigane tehing 11-st on ~9 % → FAIL (gate error_drop_ratio > 5 %)."""
+        bad = _tx(currency="xx", transaction_id="BAD")
+        good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(10)]
+        # 1 vigane / 11 kokku ≈ 9 % > 5 % → FAIL
+        summary, _ = _run(booked=good + [bad])
+        assert summary["outcome"] == "FAIL"
+
     def test_zero_errors_clean_run_is_success(self) -> None:
-        """Jooks ilma invariantide rikkumisteta peab andma SUCCESS."""
+        """Jooks ilma vigadeta peab andma SUCCESS."""
         good = [_tx(transaction_id=f"T{i}", amount=str(10 + i)) for i in range(5)]
         summary, _ = _run(booked=good)
         assert summary["outcome"] == "SUCCESS"
+        gate = summary["metrics"]["gate"]
+        assert gate["error_drop_ratio"] == 0.0
+        assert gate["error_drops"] == 0
 
-    def test_dropped_count_matches_dropped_details(self) -> None:
-        """summary.counts.transactions_dropped peab võrduma len(dropped_details)."""
-        bad = _tx(currency="xx", transaction_id="BAD-CUR")
-        summary, _ = _run(booked=[_tx(), bad])
-        assert summary["counts"]["transactions_dropped"] == len(summary["dropped_details"])
+    def test_gate_metrics_consistent_with_outcome(self) -> None:
+        """Gate metrikad ja determine_outcome() kasutavad sama loendusloogikat.
+
+        Both use count_error_drops().  This test verifies that:
+        - gate.error_drops matches the count implied by the outcome
+        - gate.error_drop_ratio == error_drops / input_records_total
+        """
+        # Mix: 1 ERROR invariant drop + 1 mapping drop (no transactionAmount)
+        bad_inv = _tx(currency="xx", transaction_id="BAD-INV", amount="10.00")
+        mapping_drop = {
+            "transactionId": "MAP-DROP",
+            "valueDate": "2025-06-01",
+            "debtorName": "Ghost",
+        }
+        good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(8)]
+        summary, _ = _run(booked=good + [bad_inv, mapping_drop])
+        gate = summary["metrics"]["gate"]
+        total_raw = summary["counts"]["transactions_total"]
+        # 2 error drops (1 invariant ERROR + 1 mapping drop) out of 10 total = 20%
+        assert gate["error_drops"] == 2
+        assert gate["error_drop_ratio"] == round(2 / total_raw, 4)
+        # 20% > 5% → must be FAIL
+        assert summary["outcome"] == "FAIL"
+        assert gate["error_drop_ratio"] > 0.05
 
 
 # ---------------------------------------------------------------------------
