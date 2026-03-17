@@ -12,8 +12,8 @@
 | # | SLI nimi | Definitsioon | Mõõtetase | SLO sihtmärk |
 |---|----------|-------------|-----------|--------------|
 | SLI-1 | Skeemikatvus | covered_priority_fields / all_priority_fields | Spetsifikatsioon | ≥ 0.95 |
-| SLI-2 | Valideerimise läbivus | passed_validation_total / input_records_total | Jooksupõhine | ≥ 0.99 (puhas sisend) |
-| SLI-3 | Invariantide täituvus | invariant_correct_total / invariant_checked_total | Jooksupõhine | ≥ 0.999; critical == 0 |
+| SLI-2 | Valideerimise läbivus (standardiseeritud vaheesitusse jõudmise määr) | passed_validation_total / input_records_total | Jooksupõhine | ≥ 0.99 (puhas sisend) |
+| SLI-3 | Invariantide täituvus (mapping drops ei kuulu nimetajasse) | invariant_correct_total / invariant_checked_total | Jooksupõhine | ≥ 0.999; critical == 0 |
 | SLI-4 | Determinism | identsete väljunditega jooksud / kõik kordusjooksud (N=5) | Mitme jooksu võrdlus | 100 % |
 | SLI-5 | Auditijälje täielikkus | olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad | Jooksupõhine | 100 % |
 | SLI-6 | Referentsjõudlus | mediaanne töötlusaeg referentsandmestikul (1 proovijooks + 3 mõõdetud) | Eraldi mõõtmine | Informatiivne referentsmõõtmine |
@@ -126,11 +126,13 @@ kontrollid, kuid EI OLE ametlik SLI-1 metrika.
 
 **Definitsioon:**
 
+SLI-2 mõõdab töötlusse võetud sisendtehingute osakaalu, mis jääb pärast kaardistust, invariantide kontrolli ja deduplikatsiooni standardiseeritud vaheesitusse alles.
+
 SLI-2 = passed_validation_total / input_records_total
 
 kus:
 - `input_records_total` = `transactions_total` — kõik sisendtehingud, mis pipeline'i jõuavad
-- `passed_validation_total` = `transactions_emitted_sv` — kirjed, mis jäävad alles pärast kaardistamist + valideerimist + deduplikatsiooni
+- `passed_validation_total` = `transactions_emitted_sv` — kirjed, mis jäävad pärast kaardistust, invariantide kontrolli ja deduplikatsiooni standardiseeritud vaheesitusse alles
 - `dropped_total` = `transactions_dropped` — kõik eemaldatud kirjed
 - Identiteet: `input_records_total == passed_validation_total + dropped_total`
 
@@ -196,8 +198,11 @@ Nulljuhtum (dropped_total == 0): QC2 = 1.0, all_drops_reported = True.
 SLI-3 = invariant_correct_total / invariant_checked_total
 
 kus:
-- `invariant_checked_total` = kirjed, mis jõuavad Stage 4 (CHECK_INVARIANTS) pärast kaardistamist, enne deduplikatsiooni
-- `invariant_correct_total` = invariant_checked_total − ERROR langetused − INV-09 dedupe langetused − alles jäänud WARN-lipuga kirjed
+- `invariant_checked_total` (nimetaja) = kirjed, mis jõuavad Stage 4 (CHECK_INVARIANTS) pärast kaardistust, enne deduplikatsiooni. Mapping drops (Stage 2 ebaõnnestumised) **ei kuulu nimetajasse**, sest need kirjed ei jõua kunagi invariantide kontrollini.
+- `invariant_correct_total` (lugeja) = invariant_checked_total väheneb järgmiste komponentide võrra:
+  - ERROR-taseme invariantrikkumistega langetatud kirjed,
+  - deduplikatsioonis (INV-09) eemaldatud kirjed,
+  - WARN-lipuga alles jäävad kirjed (nt INV-04, INV-05, INV-10).
 - `critical_invariant_violations_total` = kirjed ERROR-taseme invariantrikkumistega (v.a. mapping drops, dedupe, WARN)
 
 ### Mida testitakse
