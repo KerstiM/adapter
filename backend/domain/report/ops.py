@@ -13,37 +13,36 @@ SEVERITY_RANK: dict[str, int] = {"INFO": 0, "WARN": 1, "ERROR": 2, "CRITICAL": 3
 
 
 # ---------------------------------------------------------------------------
-# SLI-1: Schema/contract coverage of relevant SV fields
+# SLI-1: Skeemikatvus — prioriteetsete SV väljade katvus
 # ---------------------------------------------------------------------------
 #
-# SLI-1 measures what fraction of the relevant SV transaction-level schema
-# is covered by explicit mapping or derivation logic in C-01 (RAW → SV).
+# SLI-1 = covered_priority_fields / all_priority_fields
 #
-# This is a STATIC, SPEC-LEVEL metric — it does not depend on any particular
-# pipeline run or dataset.  It answers: "for how many of the SV fields does
-# the adapter define an explicit mapping from RAW input?"
+# SLI-1 on spetsifikatsioonitaseme näitaja. See mõõdab, kui suurele osale
+# standardiseeritud vaheesituse (SV) prioriteetsetest väljadest on määratud
+# üheselt tõlgendatav täitmis- või tuletamisloogika.
 #
-# Implementation: an explicit, maintained coverage declaration.
-# Each entry in the map below pairs a dotted SV field path with a boolean
-# indicating whether C-01 currently defines mapping/derivation logic for it.
-# This is NOT an automatically inferred proof from parsing the contract code;
-# it is a manually maintained declaration that must be kept in sync with C-01.
-# It is valid as a stable thesis metric because the field scope is explicit,
-# reviewable, and versioned alongside the code.
+# See näitaja ei sõltu konkreetsest andmestikust ega jooksust.
 #
-# Scope decision — what is INCLUDED:
-#   All SV transaction-level fields from S-01 that C-01's
-#   map_single_transaction() explicitly maps or derives, including:
-#   - business-level fields (identity, dates, amounts, counterparty, etc.)
-#   - source lineage fields (source.input_file, source.input_path), because
-#     traceability is an explicit design goal of this thesis and C-01
-#     constructs these fields intentionally for every mapped transaction.
+# Teostus: eksplitsiitne, käsitsi hooldatav katvusdeklaratsioon.
+# Iga kirje allolevas sõnastikus seob SV väljatee (dotted path)
+# tõeväärtusega, mis näitab, kas C-01 defineerib sellele väljale
+# kaardistus- või tuletamisloogika.
 #
-# Scope decision — what is EXCLUDED:
-#   - SVBundle.meta (run context, not C-01 mapping)
-#   - SVBundle.accounts (mapped separately, not per-transaction C-01 logic)
-#   - flags[] (populated by mapping warnings and invariant checks, not a
-#     "field mapped from RAW input" — flags are quality annotations, not data)
+# Tegemist ei ole automaatselt tuletatud tõestusega, vaid käsitsi
+# hooldatava deklaratsiooniga, mis peab püsima C-01 teostusega kooskõlas.
+#
+# Skoobi otsus — kaasatud:
+#   Kõik SV tehingutaseme väljad S-01-st, millele C-01
+#   map_single_transaction() defineerib kaardistuse või tuletuse:
+#   - äriväljad (identiteet, kuupäevad, summad, vastaspool jne)
+#   - allikaviited (source.input_file, source.input_path), sest
+#     jälgitavus on lõputöö disainieesmärk
+#
+# Skoobi otsus — välistatud:
+#   - SVBundle.meta (jooksu kontekst, ei ole C-01 kaardistus)
+#   - SVBundle.accounts (kaardistatud eraldi)
+#   - flags[] (kvaliteediannotatsioonid, mitte andmeväljad)
 # ---------------------------------------------------------------------------
 
 SLI1_FIELD_COVERAGE: dict[str, bool] = {
@@ -82,35 +81,36 @@ SLI1_FIELD_COVERAGE: dict[str, bool] = {
 
 def compute_sli1_coverage(
     coverage_map: dict[str, bool] | None = None,
-) -> dict[str, Any]:
-    """Compute SLI-1: schema/contract coverage of relevant SV fields.
+) -> dict[str, float | int]:
+    """SLI-1 skeemikatvus: prioriteetsete SV väljade katvus.
 
-    SLI-1 = covered_relevant_sv_fields / relevant_sv_fields_total
+    SLI-1 = covered_priority_fields / all_priority_fields
 
-    This is a static metric based on the maintained coverage declaration
-    in SLI1_FIELD_COVERAGE.  It does not depend on pipeline run data.
+    Spetsifikatsioonitaseme näitaja, mis põhineb hooldataval
+    katvusdeklaratsioonil SLI1_FIELD_COVERAGE. Ei sõltu jooksuandmetest
+    ega konkreetsest andmestikust.
 
     Parameters
     ----------
     coverage_map : dict[str, bool] | None
-        Override the default SLI1_FIELD_COVERAGE for testing.
-        If None, uses the module-level constant.
+        Asendab vaikimisi SLI1_FIELD_COVERAGE testide jaoks.
 
     Returns
     -------
     dict with keys:
-        schema_coverage_ratio : float   (0–1, rounded to 4 decimals)
-        relevant_sv_fields_total : int
-        covered_relevant_sv_fields : int
+        sli1_coverage_ratio : float   (0–1, rounded to 4 decimals)
+        priority_sv_fields_total : int
+        covered_priority_sv_fields : int
     """
     cmap = coverage_map if coverage_map is not None else SLI1_FIELD_COVERAGE
     total = len(cmap)
-    covered = sum(1 for v in cmap.values() if v)
+    covered = sum(1 for is_covered in cmap.values() if is_covered)
     ratio = covered / total if total > 0 else 0.0
+
     return {
-        "schema_coverage_ratio": round(ratio, 4),
-        "relevant_sv_fields_total": total,
-        "covered_relevant_sv_fields": covered,
+        "sli1_coverage_ratio": round(ratio, 4),
+        "priority_sv_fields_total": total,
+        "covered_priority_sv_fields": covered,
     }
 
 
@@ -354,24 +354,40 @@ def build_report(
     issues: list[dict],
     dropped_details: list[dict] | None = None,
     metrics: dict | None = None,
+    *,
+    spec_lock_sha256: str | None = None,
+    input_fingerprint: str | None = None,
+    output_artifact_hashes: dict[str, str] | None = None,
 ) -> dict:
     """Build report.json structure (S-05 compliant).
 
     Pure function — takes pre-resolved scalars, no Path/I/O.
+
+    SLI-5 auditijälje väljad:
+      Kohustuslikud (run sektsioon): sv_schema_version, mapping_version,
+      ruleset_version, adapter_version.
+      Soovitavad (kui antud): spec_lock_sha256, input_fingerprint,
+      output_artifact_hashes.
     """
-    report = {
+    run_section: dict = {
+        "run_id": run_id,
+        "created_at_utc": created_at_utc,
+        "profile_id": profile_id,
+        "dataset_id": dataset_id,
+        "input_dir": input_dir,
+        "adapter_version": ADAPTER_VERSION,
+        "sv_schema_version": "1.0.0",
+        "mapping_version": "1.0.0",
+        "ruleset_version": "1.1.0",
+    }
+    if spec_lock_sha256 is not None:
+        run_section["spec_lock_sha256"] = spec_lock_sha256
+    if input_fingerprint is not None:
+        run_section["input_fingerprint"] = input_fingerprint
+
+    report: dict = {
         "report_schema_version": "1.3.0",
-        "run": {
-            "run_id": run_id,
-            "created_at_utc": created_at_utc,
-            "profile_id": profile_id,
-            "dataset_id": dataset_id,
-            "input_dir": input_dir,
-            "adapter_version": ADAPTER_VERSION,
-            "sv_schema_version": "1.0.0",
-            "mapping_version": "1.0.0",
-            "ruleset_version": "1.1.0",
-        },
+        "run": run_section,
         "outcome": {
             "status": outcome,
             "stop_reason": stop_reason,
@@ -392,6 +408,74 @@ def build_report(
         "issues": issues,
         "dropped_details": dropped_details or [],
     }
+    if output_artifact_hashes is not None:
+        report["output_artifact_hashes"] = output_artifact_hashes
     if metrics is not None:
         report["metrics"] = metrics
     return report
+
+
+# ---------------------------------------------------------------------------
+# SLI-5: Auditijälje täielikkus — nõutud auditiväljade kontroll
+# ---------------------------------------------------------------------------
+
+#: Kohustuslikud auditiväljad, mis peavad olema report.run sektsioonis.
+SLI5_REQUIRED_AUDIT_FIELDS: list[str] = [
+    "sv_schema_version",
+    "mapping_version",
+    "ruleset_version",
+    "adapter_version",
+]
+
+#: Soovitavad lisaväljad auditijälje täielikkuse tõstmiseks.
+SLI5_OPTIONAL_AUDIT_FIELDS: list[str] = [
+    "spec_lock_sha256",
+    "input_fingerprint",
+]
+
+#: Soovitavad väljundartefaktide räsid (report juuretasemel).
+SLI5_OPTIONAL_ARTIFACT_HASH_KEYS: list[str] = [
+    "sv",
+    "ml",
+    "llm",
+    "report",
+]
+
+
+def _is_substantive(value: Any) -> bool:
+    """Kontrollib, kas auditivälja väärtus on sisuliselt olemas.
+
+    Sisuline olemasolu tähendab:
+    - väli ei ole None
+    - väli ei ole tühi string (ka pärast trimmimist)
+    """
+    if value is None:
+        return False
+    if isinstance(value, str) and value.strip() == "":
+        return False
+    return True
+
+
+def compute_sli5_audit_completeness(report: dict) -> dict[str, float | int]:
+    """SLI-5 auditijälje täielikkus.
+
+    SLI-5 = sisuliselt olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad
+
+    Kohustuslik auditiväli loetakse olevaks ainult siis, kui:
+    - väli on report.run sektsioonis olemas,
+    - väärtus ei ole None,
+    - väärtus ei ole tühi ega ainult tühikutest koosnev string.
+    """
+    run_section = report.get("run", {})
+    present = sum(
+        1 for field in SLI5_REQUIRED_AUDIT_FIELDS
+        if field in run_section and _is_substantive(run_section[field])
+    )
+    total = len(SLI5_REQUIRED_AUDIT_FIELDS)
+    ratio = present / total if total > 0 else 0.0
+
+    return {
+        "sli5_audit_completeness_ratio": round(ratio, 4),
+        "required_fields_present": present,
+        "required_fields_total": total,
+    }
