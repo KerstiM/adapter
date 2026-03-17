@@ -45,7 +45,7 @@ class MappingDrop(TypedDict, total=False):
     status: str
 
 
-class RunMeta(TypedDict):
+class RunMeta(TypedDict, total=False):
     run_id: str
     created_at_utc: str
     profile_id: str
@@ -55,6 +55,17 @@ class RunMeta(TypedDict):
     sv_schema_version: str
     mapping_version: str
     ruleset_version: str
+    # SLI-5 soovitavad auditiväljad (optional)
+    spec_lock_sha256: str
+    input_fingerprint: str
+
+
+class OutputArtifactHashes(TypedDict, total=False):
+    """SLI-5 soovitavad väljundartefaktide räsid."""
+    sv: str
+    ml: str
+    llm: str
+    report: str
 
 
 class Outcome(TypedDict):
@@ -92,9 +103,9 @@ class Summary(TypedDict):
 
 
 class SLI1Metrics(TypedDict):
-    schema_coverage_ratio: float
-    relevant_sv_fields_total: int
-    covered_relevant_sv_fields: int
+    sli1_coverage_ratio: float
+    priority_sv_fields_total: int
+    covered_priority_sv_fields: int
 
 
 class SLI2Metrics(TypedDict):
@@ -140,3 +151,4 @@ class CollectedRunReport(TypedDict, total=False):
     issues: list[Issue]
     dropped_details: list[DropDetail]
     metrics: Metrics
+    output_artifact_hashes: OutputArtifactHashes

@@ -2,39 +2,46 @@
 
 **Testifail:** `backend/tests/sli_slo/test_sli_slo.py`
 **Käivitamine:** `cd backend && python -m pytest tests/sli_slo/test_sli_slo.py -v`
-**Viimane käivitus:** 2026-03-11
-**Tulemus: 65/65 läbisid**
+**Viimane käivitus:** 2026-03-17
+**Tulemus: 72/72 läbisid**
 
 ---
 
 ## SLI/SLO definitsioonid
 
-| # | SLI nimi | Kirjeldus | SLO sihtmärk |
-|---|----------|-----------|--------------|
-| SLI-1 | SV skeemi/lepingu katvus | Relevantsete SV tehinguväljade osakaal, millele C-01 määrab üheselt kaardistus- või tuletamisloogika | ≥ 0.95 |
-| SLI-2 | Valideerimise läbivus | Valideeritud kirjete osakaal sisendi suhtes (pass-through) | ≥ 0.99 puhaste datasettide korral; vea-datasettidel kirjeldav metrika |
-| QC2 | Langetuste raporteerimine | Kõik langetused kajastatakse dropped_details[] all | 100 % langetustest raportis |
-| SLI-3 | Invariantide täituvus | Invariantide vastavuse suhtarv (invariant compliance ratio) | ≥ 0.999 puhaste datasettide korral; critical == 0 |
-| Gate | Operatiivne kvaliteedivärav | Vea-drop lävend (ei ole SLI) | error_drop_ratio < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL |
-| SLI-4 | Determinism | Sama sisend + sama kell → baidilt identne väljund | 100 % kordused identsed |
-| SLI-5 | Spetsifikatsiooni versioonid | Iga jooks kannab kõiki versiooni metaandmeid | 100 % jooksudest kõik 4 välja olemas |
-| SLI-6 | Jõudlus | Pipeline lõpetab eelarve piires (≤ 10 tehingut) | ≤ 500 ms |
+| # | SLI nimi | Definitsioon | Mõõtetase | SLO sihtmärk |
+|---|----------|-------------|-----------|--------------|
+| SLI-1 | Skeemikatvus | covered_priority_fields / all_priority_fields | Spetsifikatsioon | ≥ 0.95 |
+| SLI-2 | Valideerimise läbivus | passed_validation_total / input_records_total | Jooksupõhine | ≥ 0.99 (puhas sisend) |
+| SLI-3 | Invariantide täituvus | invariant_correct_total / invariant_checked_total | Jooksupõhine | ≥ 0.999; critical == 0 |
+| SLI-4 | Determinism | identsete väljunditega jooksud / kõik kordusjooksud (N=5) | Mitme jooksu võrdlus | 100 % |
+| SLI-5 | Auditijälje täielikkus | olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad | Jooksupõhine | 100 % |
+| SLI-6 | Referentsjõudlus | mediaanne töötlusaeg referentsandmestikul (1 proovijooks + 3 mõõdetud) | Eraldi mõõtmine | Informatiivne referentsmõõtmine |
+| QC2 | Eemaldatud kirjete raporteeritavus | dropped_details_count / dropped_total | Jooksupõhine | 100 % |
+| Gate | Operatiivne kvaliteedivärav | error_drop_ratio < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL | Jooksupõhine | Ei ole SLI |
+
+### Mõõtetasemed ja report.json
+
+- **Jooksupõhised näitajad** (SLI-2, SLI-3, SLI-5, QC2): report.json metrics sektsioonis või selle aluseks olevatest väljadest arvutatavad.
+- **SLI-4 (determinism)**: EI OLE report.json metrics väli. Hinnatakse 5 kordusjooksu alusel.
+- **SLI-6 (referentsjõudlus)**: EI OLE report.json metrics väli. Hinnatakse eraldi jõudlusmõõtmise alusel.
+- **SLI-1 (skeemikatvus)**: Spetsifikatsioonitaseme näitaja. Kaasatud report.json-i, sest on staatiline ja üheselt arvutatav.
 
 ---
 
-## SLI-1 — SV skeemi/lepingu katvus
+## SLI-1 — Skeemikatvus
 
-**SLO:** ≥ 0.95 — C-01 peab katma vähemalt 95 % relevantsetest SV tehinguväljadest.
+**SLO:** ≥ 0.95 — C-01 peab katma vähemalt 95 % prioriteetsetest SV väljadest.
 
 **Definitsioon:**
 
-SLI-1 = covered_relevant_sv_fields / relevant_sv_fields_total
+SLI-1 = covered_priority_fields / all_priority_fields
 
 kus:
-- `relevant_sv_fields_total` = relevantsete SV tehinguväljade arv, mis kuuluvad katvuse skoopi
-- `covered_relevant_sv_fields` = relevantsed SV väljad, millele C-01 määrab üheselt kaardistus- või tuletamisloogika
-- See on staatiline spetsifikatsioonitaseme mõõdik, mis põhineb hooldataval katvusdeklaratsioonil (`SLI1_FIELD_COVERAGE` moodulis `domain.report.ops`)
-- Mõõdik ei sõltu konkreetsest andmestikust ega jooksust
+- `priority_sv_fields_total` = prioriteetsete SV tehinguväljade arv, mis kuuluvad katvuse skoopi
+- `covered_priority_sv_fields` = prioriteetsed SV väljad, millele C-01 määrab üheselt kaardistus- või tuletamisloogika
+- See on spetsifikatsioonitaseme näitaja, mis põhineb hooldataval katvusdeklaratsioonil (`SLI1_FIELD_COVERAGE` moodulis `domain.report.ops`)
+- Näitaja ei sõltu konkreetsest andmestikust ega jooksust
 
 ### SLI-1 väljaskoop (17 välja)
 
@@ -64,7 +71,7 @@ kus:
 |------|-----------|
 | `test_sli1_metric_exists_in_report` | SLI-1 metrika on `report.metrics.sli1` all |
 | `test_sli1_has_required_keys` | SLI-1 sisaldab kõiki 3 nõutud välja |
-| `test_sli1_relevant_fields_positive` | `relevant_sv_fields_total > 0` |
+| `test_sli1_priority_fields_positive` | `priority_sv_fields_total > 0` |
 | `test_sli1_covered_leq_total` | `covered <= total` |
 | `test_sli1_ratio_in_unit_interval` | `0 <= ratio <= 1` |
 | `test_sli1_baseline_meets_slo` | Praegune baas >= 0.95 |
@@ -101,11 +108,14 @@ kontrollid, kuid EI OLE ametlik SLI-1 metrika.
 | `test_report_has_by_severity` | Raport sisaldab CRITICAL/ERROR/WARN/INFO jaotust |
 | `test_report_has_issues_list` | Raportil on `issues[]` nimekiri |
 | `test_report_has_dropped_details` | Raportil on `dropped_details[]` nimekiri |
+| `test_report_run_id_present` | `report.run.run_id` on olemas ja mittetühi |
+| `test_report_created_at_utc_present` | `report.run.created_at_utc` on olemas ja mittetühi |
+| `test_report_schema_version_present` | Raporti juuretasemel `report_schema_version` on olemas |
 
 ### Tulemus
 
 ```
-10/10 PASSED
+13/13 PASSED
 ```
 
 ---
@@ -144,17 +154,16 @@ kus:
 
 ---
 
-## QC2 — Langetuste raporteerimine (operational drop-reporting coverage)
+## QC2 — Eemaldatud kirjete raporteeritavus (operational drop-reporting coverage)
 
-**SLO:** 100 % langetustest ilmub `report.dropped_details[]` all.
+**SLO:** 100 % eemaldatud kirjetest ilmub `report.dropped_details[]` all koos eemaldamise põhjusega.
 
 **Definitsioon:**
 
 QC2 = dropped_details_count / dropped_total (peab olema == 1.0)
 QC2 all_drops_reported = (dropped_details_count == dropped_total)
 
-Varem kandis see kontrollifunktsioon SLI-2 nime. Ümber nimetatud QC2-ks,
-et taastada SLI-2 algne tähendus (validation pass-through ratio).
+Nulljuhtum (dropped_total == 0): QC2 = 1.0, all_drops_reported = True.
 
 ### Mida testitakse
 
@@ -167,10 +176,6 @@ et taastada SLI-2 algne tähendus (validation pass-through ratio).
 | `test_invalid_transaction_is_captured_in_dropped_details` | Vigane tehing → `transactions_dropped > 0` ja `dropped_details` täidetud |
 | `test_qc2_all_drops_reported_clean_input` | Puhas sisend → `all_drops_reported == True`, `ratio == 1.0` |
 | `test_qc2_all_drops_reported_with_drops` | Langetustega sisend → `all_drops_reported == True` |
-
-### Märkus rakendamise kohta
-
-Kaardistamisetapi (STANDARDIZE_TO_SV) langetused — nt puuduv `valueDate` — salvestatakse `dropped_details[]` alla, mitte `by_severity['ERROR']` alla, kuna need toimuvad enne invariantide kontrollietappi. `by_severity` loendab ainult invariantide rikkumised (INV-01 kuni INV-10). Mõlemad mehhanismid kajastavad rikkumisi läbipaistvalt.
 
 ### Tulemus
 
@@ -212,17 +217,6 @@ kus:
 | `test_invariant_correct_total_non_negative` | invariant_correct_total >= 0 alati |
 | `test_mapping_drops_excluded_from_sli3_denominator` | Mapping drops ei mõjuta SLI-3 nimetajat |
 | `test_dedupe_exact_ratio` | INV-09 dedupe: 3 checked, 1 drop → ratio = 0.6667 |
-
-### Invariantide klassifikatsioon
-
-| Invariant | Tõsidus | Käitumine | Mõju SLI-3-le |
-|-----------|---------|-----------|---------------|
-| INV-01 Valuutaformaat | ERROR | Tehing langetatakse | Vähendab (critical) |
-| INV-02 value_date puudub | ERROR | Tehing langetatakse | Vähendab (critical) |
-| INV-03 Summa parsitavus | ERROR | Tehing langetatakse | Vähendab (critical) |
-| INV-04 booking_date formaat | WARN | Tehingule pannakse lipp, ei langetata | Vähendab |
-| INV-09 Duplikaadid | WARN | Duplikaat langetatakse, esimene säilib | Vähendab |
-| INV-10 Vastaspool kõik null | WARN | Tehingule pannakse lipp, ei langetata | Vähendab |
 
 ### Tulemus
 
@@ -267,18 +261,34 @@ Kasutab `count_error_drops()` — sama loogika, mis `determine_outcome()`.
 
 ## SLI-4 — Determinism
 
-**SLO:** Kaks identse sisendi ja sama kellaga jooksu toodavad 100 % identsed väljundi sõnastikud.
+**SLO:** 5 identse sisendi ja sama kellaga jooksu toodavad 100 % identsed väljundi sõnastikud.
+
+**Definitsioon:**
+
+SLI-4 = identsete väljundartefaktidega kordusjooksud / kõik kordusjooksud
+
+SLI-4 ei ole ühe jooksu report.json metrics väli. Hinnatakse 5 kordusjooksu alusel.
 
 ### Mida testitakse
 
 | Test | Kontrollib |
 |------|-----------|
-| `test_sv_is_identical` | SV bundle on mõlemas jooksus identne |
-| `test_ml_is_identical` | ML read on mõlemas jooksus identsed |
-| `test_llm_is_identical` | LLM kontekst on mõlemas jooksus identne |
-| `test_report_is_identical` | Raport on mõlemas jooksus identne |
+| `test_sv_identical_across_all_runs` | SV bundle on kõigis 5 jooksus identne |
+| `test_ml_identical_across_all_runs` | ML read on kõigis 5 jooksus identsed |
+| `test_llm_identical_across_all_runs` | LLM kontekst on kõigis 5 jooksus identne |
+| `test_report_identical_across_all_runs` | Raport on kõigis 5 jooksus identne |
 | `test_run_id_is_fixed` | `run_id` tuleb kellalt, mitte juhuslikust generaatorist |
 | `test_created_at_is_fixed` | `created_at_utc` tuleb kellalt, mitte süsteemiajalt |
+| `test_all_five_runs_executed` | Kontroll, et tõepoolest käivitati 5 jooksu |
+
+### Report.json stabiilsus
+
+Report.json on determinismi seisukohalt täielikult stabiilne, sest:
+- `run_id` ja `created_at_utc` tulevad `FixedClock`-ilt (ei muutu jooksude vahel),
+- kõik loendid, metrikad ja issues tekivad deterministlikust domeeniloogikast,
+- puuduvad hostispetsiifilised, juhuslikud või kellast sõltuvad väljad.
+
+Seetõttu võrreldakse tervet report.json artefakti, mitte normaliseeritud alamhulka.
 
 ### Determinismi tagavad mehhanismid
 
@@ -290,47 +300,6 @@ Kasutab `count_error_drops()` — sama loogika, mis `determine_outcome()`.
 ### Tulemus
 
 ```
-6/6 PASSED
-```
-
-**SLO täidetud: JAH**
-
----
-
-## SLI-5 — Spetsifikatsiooni versioonid
-
-**SLO:** 100 % jooksudest kannab kõiki 4 versioonivälja `report.run` all:
-`sv_schema_version`, `mapping_version`, `ruleset_version`, `adapter_version`.
-
-### Mida testitakse
-
-Lisaks 4 versiooniväljale kontrollib testikomplekt ka jooksu identiteediväljasid
-(`run_id`, `created_at_utc`) ja raporti juuretaseme skeemiversiooni
-(`report_schema_version`), kuna need on raporti terviklikkuse eeldus.
-
-| Test | Kontrollib |
-|------|-----------|
-| `test_report_run_has_sv_schema_version` | `report.run.sv_schema_version` on olemas ja mittetühi |
-| `test_report_run_has_mapping_version` | `report.run.mapping_version` on olemas ja mittetühi |
-| `test_report_run_has_ruleset_version` | `report.run.ruleset_version` on olemas ja mittetühi |
-| `test_report_run_has_adapter_version` | `report.run.adapter_version` on olemas ja mittetühi |
-| `test_report_run_has_run_id` | `report.run.run_id` on olemas ja mittetühi (identiteediväli) |
-| `test_report_run_has_created_at_utc` | `report.run.created_at_utc` on olemas ja mittetühi (identiteediväli) |
-| `test_report_has_schema_version_field` | Raporti juuretasemel `report_schema_version` on olemas (skeemiversioon) |
-
-### Versiooniväljad jooksus
-
-| Väli | Väärtus (v1) |
-|------|-------------|
-| `sv_schema_version` | `"1.0.0"` |
-| `mapping_version` | `"1.0.0"` |
-| `ruleset_version` | `"1.1.0"` |
-| `adapter_version` | `"0.1.0"` |
-| `report_schema_version` | `"1.3.0"` |
-
-### Tulemus
-
-```
 7/7 PASSED
 ```
 
@@ -338,33 +307,68 @@ Lisaks 4 versiooniväljale kontrollib testikomplekt ka jooksu identiteediväljas
 
 ---
 
-## SLI-6 — Jõudlus
+## SLI-5 — Auditijälje täielikkus
 
-**SLO:** Pipeline lõpetab ≤ 500 ms, kui datasett sisaldab ≤ 10 tehingut.
+**SLO:** 100 % jooksudest sisaldab kõiki nõutud auditivälju `report.run` sektsioonis.
+
+**Definitsioon:**
+
+SLI-5 = sisuliselt olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad
+
+Kohustuslikud auditiväljad: `sv_schema_version`, `mapping_version`, `ruleset_version`, `adapter_version`.
+
+Sisuline olemasolu tähendab:
+- väli on report.run sektsioonis olemas,
+- väärtus ei ole None,
+- väärtus ei ole tühi ega ainult tühikutest koosnev string.
+
+Soovitavad lisaväljad (kui teostus võimaldab): `spec_lock_sha256`, `input_fingerprint`, `output_artifact_hashes`.
 
 ### Mida testitakse
 
-| Test | Stsenaarium | SLO piir |
-|------|-------------|---------|
-| `test_single_transaction_within_slo` | 1 tehing (booked) | ≤ 500 ms |
-| `test_ten_transactions_within_slo` | 10 tehingut (booked) | ≤ 500 ms |
-| `test_mixed_booked_and_pending_within_slo` | 5 booked + 5 pending | ≤ 500 ms |
+| Test | Kontrollib |
+|------|-----------|
+| `test_sli5_all_required_audit_fields_present` | Kõik 4 kohustuslikku auditivälja on sisuliselt olemas |
+| `test_sli5_completeness_ratio_is_one` | SLI-5 `sli5_audit_completeness_ratio == 1.0` |
+| `test_sli5_detects_missing_field` | Puuduv auditiväli vähendab SLI-5 suhtarvu |
+| `test_sli5_none_value_is_not_substantive` | None väärtus ei ole sisuline olemasolu |
+| `test_sli5_empty_string_is_not_substantive` | Tühi string ei ole sisuline olemasolu |
+| `test_sli5_whitespace_only_is_not_substantive` | Ainult tühikutest koosnev string ei ole sisuline |
+| `test_sli5_sv_schema_version` | `report.run.sv_schema_version` on olemas ja mittetühi |
+| `test_sli5_mapping_version` | `report.run.mapping_version` on olemas ja mittetühi |
+| `test_sli5_ruleset_version` | `report.run.ruleset_version` on olemas ja mittetühi |
+| `test_sli5_adapter_version` | `report.run.adapter_version` on olemas ja mittetühi |
 
-### Mõõdetud tulemused
+### Tulemus
 
-Testikomplekti kogukestus (65 testi): **~0.3 s**
+```
+10/10 PASSED
+```
 
-Üksikute jõudlustestide hinnangulised tulemused (in-memory fake pordid):
+**SLO täidetud: JAH**
 
-| Stsenaarium | Hinnanguline aeg | SLO |
-|-------------|-----------------|-----|
-| 1 tehing | ~5–15 ms | ≤ 500 ms ✓ |
-| 10 tehingut | ~10–30 ms | ≤ 500 ms ✓ |
-| 5+5 tehingut | ~10–30 ms | ≤ 500 ms ✓ |
+---
 
-### Märkus
+## SLI-6 — Referentsjõudlus
 
-Testid kasutavad mälupõhiseid fake-porte (failisüsteemi I/O puudub), mis annab alahinnangu tegelikule jooksutusajale. Faililähedastes integratsioontestides (D1 dataset, 7 tehingut, päris FS-adapterid) kulub pipeline'ile ~50–150 ms — endiselt kaugelt SLO piirist allpool.
+**Definitsioon:**
+
+SLI-6 = mediaanne töötlusaeg referentsandmestikul
+
+Mõõtmismetoodika:
+1. 1 proovijooks, mille tulemust lõppnäitajasse ei arvestata
+2. 3 mõõdetud jooksu
+3. Tulemuseks on nende 3 mõõdetud jooksu mediaan
+
+SLI-6 ei kuulu report.json metrics sektsiooni. See on eraldi mõõtmise tulemus.
+
+### Mida testitakse
+
+| Test | Kontrollib |
+|------|-----------|
+| `test_sli6_reference_benchmark` | Mõõdab referentsjõudlust 1000 tehinguga andmestikul |
+| `test_sli6_median_is_positive` | Mediaan on positiivne arv |
+| `test_sli6_three_measured_runs` | Mõõtmistulemus sisaldab täpselt 3 mõõdetud aega |
 
 ### Tulemus
 
@@ -372,21 +376,19 @@ Testid kasutavad mälupõhiseid fake-porte (failisüsteemi I/O puudub), mis anna
 3/3 PASSED
 ```
 
-**SLO täidetud: JAH**
-
 ---
 
 ## Kokkuvõte
 
-| SLI | SLO sihtmärk | Testide arv | Tulemus | SLO täidetud |
-|-----|-------------|------------|---------|-------------|
-| SLI-1 SV skeemi/lepingu katvus | ≥ 0.95 | 8 | 8/8 ✓ | **JAH** |
-| Struktuurne väljundi terviklikkus | (struktuurikontroll) | 10 | 10/10 ✓ | — |
-| SLI-2 Valideerimise läbivus | ≥ 0.99 (puhas) / kirjeldav (vea-ds) | 5 | 5/5 ✓ | **JAH** |
-| QC2 Langetuste raporteerimine | 100 % | 7 | 7/7 ✓ | **JAH** |
-| SLI-3 Invariantide täituvus | ≥ 0.999 (puhas); critical == 0 | 13 | 13/13 ✓ | **JAH** |
-| Gate Operatiivne kvaliteedivärav | < 5 % → PARTIAL, ≥ 5 % → FAIL | 6 | 6/6 ✓ | **JAH** |
-| SLI-4 Determinism | 100 % | 6 | 6/6 ✓ | **JAH** |
-| SLI-5 Spetsifikatsiooni versioonid | 100 % | 7 | 7/7 ✓ | **JAH** |
-| SLI-6 Jõudlus | ≤ 500 ms | 3 | 3/3 ✓ | **JAH** |
-| **KOKKU** | | **65** | **65/65** | **KÕIK JAH** |
+| SLI | SLO sihtmärk | Mõõtetase | Testide arv | Tulemus | SLO täidetud |
+|-----|-------------|-----------|------------|---------|-------------|
+| SLI-1 Skeemikatvus | ≥ 0.95 | Spetsifikatsioon | 8 | 8/8 ✓ | **JAH** |
+| Struktuurne terviklikkus | (kontroll) | — | 13 | 13/13 ✓ | — |
+| SLI-2 Valideerimise läbivus | ≥ 0.99 (puhas) | Jooksupõhine | 5 | 5/5 ✓ | **JAH** |
+| QC2 Eemaldatud kirjete raporteeritavus | 100 % | Jooksupõhine | 7 | 7/7 ✓ | **JAH** |
+| SLI-3 Invariantide täituvus | ≥ 0.999; critical == 0 | Jooksupõhine | 13 | 13/13 ✓ | **JAH** |
+| Gate Operatiivne kvaliteedivärav | < 5 % / ≥ 5 % | Jooksupõhine | 6 | 6/6 ✓ | **JAH** |
+| SLI-4 Determinism (N=5) | 100 % | Mitme jooksu võrdlus | 7 | 7/7 ✓ | **JAH** |
+| SLI-5 Auditijälje täielikkus | 100 % | Jooksupõhine | 10 | 10/10 ✓ | **JAH** |
+| SLI-6 Referentsjõudlus | Informatiivne referentsmõõtmine | Eraldi mõõtmine | 3 | 3/3 ✓ | **mõõdetud** |
+| **KOKKU** | | | **72** | **72/72** | |

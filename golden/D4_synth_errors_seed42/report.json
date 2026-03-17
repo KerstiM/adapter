@@ -102,11 +102,6 @@
     }
   ],
   "metrics": {
-    "sli1": {
-      "covered_relevant_sv_fields": 17,
-      "relevant_sv_fields_total": 17,
-      "schema_coverage_ratio": 1.0
-    },
     "gate": {
       "error_drop_ratio": 0.1026,
       "error_drops": 4
@@ -117,6 +112,11 @@
     "qc2": {
       "all_drops_reported": true,
       "drop_reporting_ratio": 1.0
+    },
+    "sli1": {
+      "covered_priority_sv_fields": 17,
+      "priority_sv_fields_total": 17,
+      "sli1_coverage_ratio": 1.0
     },
     "sli2": {
       "validation_pass_through_ratio": 0.8974
