@@ -10,9 +10,17 @@ SLI-1  Skeemikatvus           covered_priority_fields / all_priority_fields
                               Tase: spetsifikatsioon   SLO: ≥ 0.95
 
 SLI-2  Valideerimise läbivus  passed_validation_total / input_records_total
+       (standardiseeritud    Töötlusse võetud sisendtehingute osakaal, mis jääb
+        vaheesitusse          pärast kaardistust, invariantide kontrolli ja
+        jõudmise määr)        deduplikatsiooni standardiseeritud vaheesitusse alles.
                               Tase: jooksupõhine       SLO: ≥ 0.99 (puhas sisend)
 
 SLI-3  Invariantide täituvus  invariant_correct_total / invariant_checked_total
+       (invariant compliance  invariant_correct_total väheneb ERROR-rikkumiste,
+        ratio)                deduplikatsioonis eemaldatud kirjete ja WARN-lipuga
+                              alles jäävate kirjete võrra.
+                              Mapping drops ei kuulu nimetajasse
+                              (invariant_checked_total).
                               Tase: jooksupõhine       SLO: ≥ 0.999; critical == 0
 
 SLI-4  Determinism            identsete väljunditega jooksud / kõik kordusjooksud
@@ -315,12 +323,16 @@ class TestStructuralOutputIntegrity:
 # ---------------------------------------------------------------------------
 
 class TestSLI2ValidationPassThrough:
-    """SLI-2 — valideeritud kirjete osakaal sisendi suhtes.
+    """SLI-2 — töötlusse võetud sisendtehingute osakaal, mis jääb pärast
+    kaardistust, invariantide kontrolli ja deduplikatsiooni standardiseeritud
+    vaheesitusse alles.
 
     SLI-2 = passed_validation_total / input_records_total
     where:
       input_records_total    = transactions_total  (all raw input tx)
-      passed_validation_total = transactions_emitted_sv (survived mapping + validation + dedup)
+      passed_validation_total = transactions_emitted_sv
+          (kirjed, mis jäävad alles pärast kaardistust, invariantide
+           kontrolli ja deduplikatsiooni)
     """
 
     def test_clean_input_pass_through_ratio_is_one(self) -> None:
@@ -456,6 +468,15 @@ class TestSLI3InvariantCompliance:
     """SLI-3 — invariantide vastavuse suhtarv (invariant compliance ratio).
 
     SLI-3 = invariant_correct_total / invariant_checked_total
+
+    invariant_correct_total väheneb:
+      − ERROR-taseme invariantrikkumistega langetatud kirjete võrra,
+      − deduplikatsioonis (INV-09) eemaldatud kirjete võrra,
+      − WARN-lipuga alles jäävate kirjete võrra.
+
+    Mapping drops (Stage 2 ebaõnnestumised) ei kuulu nimetajasse
+    (invariant_checked_total), sest need kirjed ei jõua kunagi
+    Stage 4 invariantide kontrollini.
     """
 
     def test_inv01_bad_currency_drops_transaction(self) -> None:

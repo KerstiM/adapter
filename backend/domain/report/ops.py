@@ -241,6 +241,9 @@ def compute_metrics(
     Returns a dict with five metric groups:
 
       sli2  — Validation pass-through ratio (official quality metric).
+              Töötlusse võetud sisendtehingute osakaal, mis jääb pärast
+              kaardistust, invariantide kontrolli ja deduplikatsiooni
+              standardiseeritud vaheesitusse alles.
               = passed_validation_total / input_records_total
 
       qc2   — Drop-reporting coverage (operational control).
@@ -251,15 +254,17 @@ def compute_metrics(
       sli3  — Invariant compliance ratio (official quality metric).
               = invariant_correct_total / invariant_checked_total
 
-              invariant_checked_total = records entering Stage 4
+              invariant_checked_total (nimetaja) = records entering Stage 4
                   (CHECK_INVARIANTS) after mapping, before dedupe.
                   Captured as len(sv_bundle["transactions"]) before
-                  calling check_invariants().  Excludes mapping drops.
+                  calling check_invariants().
+                  Mapping drops (Stage 2) EI KUULU nimetajasse, sest need
+                  kirjed ei jõua kunagi invariantide kontrollini.
 
-              invariant_correct_total = invariant_checked_total
-                  − ERROR invariant drops (dropped_txs)
-                  − INV-09 dedupe drops (dedupe_drops)
-                  − kept records with WARN invariant flags
+              invariant_correct_total (lugeja) = invariant_checked_total
+                  − ERROR-taseme invariantrikkumistega langetatud kirjed
+                  − INV-09 deduplikatsioonis eemaldatud kirjed
+                  − alles jäävad WARN-lipuga kirjed
                   Must be >= 0.
 
               critical_invariant_violations_total = records with
