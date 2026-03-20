@@ -489,7 +489,7 @@ def run_pipeline(
 
     error_drops = _count_error_drops(dropped_txs, mapping_drops, fail_severity)
 
-    # Compute derived metrics (SLI-02, QC2, SLI-03, gate, informative)
+    # Compute derived metrics (SLI-02, QC-02, SLI-03, gate, informative)
     metrics = _compute_metrics(
         input_records_total=total_raw,
         passed_validation_total=len(deduped_txs),

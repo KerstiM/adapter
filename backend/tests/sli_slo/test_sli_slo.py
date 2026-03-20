@@ -34,7 +34,7 @@ SLI-06  Referentsjõudlus       mediaanne töötlusaeg referentsandmestikul
                               Tase: eraldi mõõtmine (1 proovijooks + 3 mõõdetud jooksu)
                               EI OLE report.json metrics väli
 
-QC2  Eemaldatud kirjete      dropped_details_count / dropped_total
+QC-02 Eemaldatud kirjete      dropped_details_count / dropped_total
        raporteeritavus        Tase: jooksupõhine       SLO: 100 %
 
 Gate   Operatiivne värav      error_drop_ratio < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL
@@ -386,14 +386,14 @@ class TestSLI2ValidationPassThrough:
 
 
 # ---------------------------------------------------------------------------
-# QC2: Langetuste raporteerimine (operational drop-reporting coverage)
+# QC-02: Langetuste raporteerimine (operational drop-reporting coverage)
 # SLO: 100 % langetustest ilmub report.dropped_details[] all
 # ---------------------------------------------------------------------------
 
 class TestQC2DropReporting:
-    """QC2 — kõik langetused kajastatakse dropped_details[] all (operational control).
+    """QC-02— kõik langetused kajastatakse dropped_details[] all (operational control).
 
-    This was previously labeled SLI-02. Renamed to QC2 to restore the original
+    This was previously labeled SLI-02. Renamed to QC-02to restore the original
     SLI-02 meaning (validation pass-through ratio).
     """
 
@@ -444,14 +444,14 @@ class TestQC2DropReporting:
         assert len(summary["dropped_details"]) > 0
 
     def test_qc2_all_drops_reported_clean_input(self) -> None:
-        """Puhas sisend → QC2 all_drops_reported == True, ratio == 1.0."""
+        """Puhas sisend → QC-02all_drops_reported == True, ratio == 1.0."""
         summary, _ = _run(booked=[_tx()])
         qc2 = summary["metrics"]["qc2"]
         assert qc2["all_drops_reported"] is True
         assert qc2["drop_reporting_ratio"] == 1.0
 
     def test_qc2_all_drops_reported_with_drops(self) -> None:
-        """Langetustega sisend → QC2 all_drops_reported == True (kõik kajastatud)."""
+        """Langetustega sisend → QC-02all_drops_reported == True (kõik kajastatud)."""
         bad = _tx(currency="xx", transaction_id="BAD")
         summary, _ = _run(booked=[_tx(), bad])
         qc2 = summary["metrics"]["qc2"]
