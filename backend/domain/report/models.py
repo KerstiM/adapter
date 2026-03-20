@@ -55,13 +55,13 @@ class RunMeta(TypedDict, total=False):
     sv_schema_version: str
     mapping_version: str
     ruleset_version: str
-    # SLI-5 soovitavad auditiväljad (optional)
+    # SLI-05 soovitavad auditiväljad (optional)
     spec_lock_sha256: str
     input_fingerprint: str
 
 
 class OutputArtifactHashes(TypedDict, total=False):
-    """SLI-5 soovitavad väljundartefaktide räsid."""
+    """SLI-05 soovitavad väljundartefaktide räsid."""
     sv: str
     ml: str
     llm: str

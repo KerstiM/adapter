@@ -1,30 +1,30 @@
 # D6_synth_dupes_seed99
 
-Testib INV-09 duplikaat-record_id tuvastust. Sisaldab 3 täpset duplikaati (samad räsisisendid → sama record_id → dropitakse INV-09 WARN-iga, jäetakse alles esimene deterministlikult) ja 2 peaaegu-duplikaati (erinev summa või makseselgitus → erinev record_id → jäetakse alles). Adapter peab andma tulemuse PARTIAL_SUCCESS 3 INV-09 WARN-iga.
+Tests INV-09 duplicate record_id detection. Contains 3 exact duplicates (same hash inputs → same record_id → dropped with INV-09 WARN, keeping first deterministically) and 2 near-duplicates (different amount or remittance → different record_id → kept). Adapter should produce PARTIAL_SUCCESS with 3 INV-09 WARNs.
 
-## Omadused
+## Properties
 
-| Omadus | Väärtus |
+| Property | Value |
 |---|---|
 | Seed | 99 |
-| Kuupäevavahemik | 2024-01-01 – 2024-12-31 |
-| Broneeritud (booked) | 21 |
-| Ootel (pending) | 3 |
-| Oodatav dropitud | 3 |
-| Oodatav tulemus | PARTIAL_SUCCESS |
+| Date range | 2024-01-01 – 2024-12-31 |
+| Booked (total) | 21 |
+| Pending (total) | 3 |
+| Expected dropped | 3 |
+| Expected outcome | PARTIAL_SUCCESS |
 
-## Mida see dataset testib
+## What this dataset tests
 
-Testib INV-09 duplikaat-record_id tuvastust. Sisaldab 3 täpset duplikaati (samad räsisisendid → sama record_id → dropitakse INV-09 WARN-iga, jäetakse alles esimene deterministlikult) ja 2 peaaegu-duplikaati (erinev summa või makseselgitus → erinev record_id → jäetakse alles). Adapter peab andma tulemuse PARTIAL_SUCCESS 3 INV-09 WARN-iga.
+Tests INV-09 duplicate record_id detection. Contains 3 exact duplicates (same hash inputs → same record_id → dropped with INV-09 WARN, keeping first deterministically) and 2 near-duplicates (different amount or remittance → different record_id → kept). Adapter should produce PARTIAL_SUCCESS with 3 INV-09 WARNs.
 
-## Variatsioonid / süstitud koodid
+## Variations / injected codes
 
-  - `DUP01_EXACT: booked[0] täpne koopia (transactionId=TX00000013) → INV-09 DROP`
-  - `DUP02_EXACT: booked[0] teine koopia (transactionId=TX00000013) → INV-09 DROP`
-  - `DUP03_EXACT: booked[1] täpne koopia (transactionId=TX00000002) → INV-09 DROP`
-  - `NEAR01_DIFF_AMOUNT: sama txId=TX00000007, summa erineb → erinev record_id, jäetakse alles`
-  - `NEAR02_DIFF_REMITTANCE: sama txId=TX00000019, makseselgitus erineb → erinev record_id, mõlemad jäävad`
+  - `DUP-01_EXACT: exact copy of booked[0] (transactionId=TX00000013) → INV-09 DROP`
+  - `DUP-02_EXACT: second copy of booked[0] (transactionId=TX00000013) → INV-09 DROP`
+  - `DUP-03_EXACT: exact copy of booked[1] (transactionId=TX00000002) → INV-09 DROP`
+  - `NEAR-01_DIFF_AMOUNT: same txId=TX00000007, amount differs → different record_id, kept`
+  - `NEAR-02_DIFF_REMITTANCE: same txId=TX00000019, remittance differs → different record_id, both kept`
 
-## Kvaliteedivärava hoiatused
+## Quality gate warnings
 
-(puuduvad)
+(none)

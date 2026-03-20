@@ -454,8 +454,8 @@
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "00583c0c5d5a3c85",
-      "remittance": "NEAR02 original remittance",
+      "record_id": "ced7e7d64666df83",
+      "remittance": "NEAR-02 original remittance",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[19]"
@@ -480,8 +480,8 @@
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "a007493df2b35a92",
-      "remittance": "NEAR02 modified remittance",
+      "record_id": "7b30aa155948c4f8",
+      "remittance": "NEAR-02 modified remittance",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[20]"

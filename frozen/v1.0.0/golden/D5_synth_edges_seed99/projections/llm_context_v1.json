@@ -83,8 +83,8 @@
       "cp": "Liisa Berg",
       "d": "2024-02-23",
       "dir": "IN",
-      "id": "69a317852aa5c05d",
-      "r": "EDGE01 zero amount",
+      "id": "71173e9ec606ae8e",
+      "r": "EDGE-01 zero amount",
       "s": "BOOKED"
     },
     {
@@ -163,8 +163,8 @@
       "cp": "Luca Lepp",
       "d": "2024-05-07",
       "dir": "OUT",
-      "id": "1b7422edbecca2b3",
-      "r": "EDGE04 negative amount OUT direction",
+      "id": "d26a95c24414a88a",
+      "r": "EDGE-04 negative amount OUT direction",
       "s": "BOOKED"
     },
     {
@@ -173,8 +173,8 @@
       "cp": null,
       "d": "2024-05-18",
       "dir": "OUT",
-      "id": "a889047227078e49",
-      "r": "EDGE08 no counterparty",
+      "id": "551fae9aad34a874",
+      "r": "EDGE-08 no counterparty",
       "s": "BOOKED"
     },
     {
@@ -183,8 +183,8 @@
       "cp": "Peeter Smith",
       "d": "2024-06-10",
       "dir": "IN",
-      "id": "8d31e0048451f474",
-      "r": "EDGE07 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "id": "cc0ce7a7d6296e5c",
+      "r": "EDGE-07 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
       "s": "BOOKED"
     },
     {
@@ -203,8 +203,8 @@
       "cp": "Elena Smith",
       "d": "2024-06-22",
       "dir": "OUT",
-      "id": "f3064438801fd28c",
-      "r": "EDGE02 large amount 3 decimal places",
+      "id": "82f89cb6df10b895",
+      "r": "EDGE-02 large amount 3 decimal places",
       "s": "BOOKED"
     },
     {
@@ -213,8 +213,8 @@
       "cp": "Felix Jansen",
       "d": "2024-06-23",
       "dir": "IN",
-      "id": "4521dcc02c9974b6",
-      "r": "EDGE05 positive amount IN direction",
+      "id": "43c9f0c1668da613",
+      "r": "EDGE-05 positive amount IN direction",
       "s": "BOOKED"
     },
     {
@@ -223,8 +223,8 @@
       "cp": "Jan Oja",
       "d": "2024-07-10",
       "dir": "OUT",
-      "id": "1d557a538962ff03",
-      "r": "EDGE06 same booking and value date",
+      "id": "68fc5a258e059b0e",
+      "r": "EDGE-06 same booking and value date",
       "s": "BOOKED"
     },
     {
@@ -273,8 +273,8 @@
       "cp": "Mart Tamm",
       "d": "2024-10-10",
       "dir": "OUT",
-      "id": "7a932ef687411e12",
-      "r": "EDGE03 integer amount no decimals",
+      "id": "fcc446de6501624d",
+      "r": "EDGE-03 integer amount no decimals",
       "s": "BOOKED"
     },
     {
