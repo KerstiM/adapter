@@ -11,31 +11,31 @@
 
 | # | SLI nimi | Definitsioon | Mõõtetase | SLO sihtmärk |
 |---|----------|-------------|-----------|--------------|
-| SLI-1 | Skeemikatvus | covered_priority_fields / all_priority_fields | Spetsifikatsioon | ≥ 0.95 |
-| SLI-2 | Valideerimise läbivus (standardiseeritud vaheesitusse jõudmise määr) | passed_validation_total / input_records_total | Jooksupõhine | ≥ 0.99 (puhas sisend) |
-| SLI-3 | Invariantide täituvus (mapping drops ei kuulu nimetajasse) | invariant_correct_total / invariant_checked_total | Jooksupõhine | ≥ 0.999; critical == 0 |
-| SLI-4 | Determinism | identsete väljunditega jooksud / kõik kordusjooksud (N=5) | Mitme jooksu võrdlus | 100 % |
-| SLI-5 | Auditijälje täielikkus | olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad | Jooksupõhine | 100 % |
-| SLI-6 | Referentsjõudlus | mediaanne töötlusaeg referentsandmestikul (1 proovijooks + 3 mõõdetud) | Eraldi mõõtmine | Informatiivne referentsmõõtmine |
+| SLI-01 | Skeemikatvus | covered_priority_fields / all_priority_fields | Spetsifikatsioon | ≥ 0.95 |
+| SLI-02 | Valideerimise läbivus (standardiseeritud vaheesitusse jõudmise määr) | passed_validation_total / input_records_total | Jooksupõhine | ≥ 0.99 (puhas sisend) |
+| SLI-03 | Invariantide täituvus (mapping drops ei kuulu nimetajasse) | invariant_correct_total / invariant_checked_total | Jooksupõhine | ≥ 0.999; critical == 0 |
+| SLI-04 | Determinism | identsete väljunditega jooksud / kõik kordusjooksud (N=5) | Mitme jooksu võrdlus | 100 % |
+| SLI-05 | Auditijälje täielikkus | olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad | Jooksupõhine | 100 % |
+| SLI-06 | Referentsjõudlus | mediaanne töötlusaeg referentsandmestikul (1 proovijooks + 3 mõõdetud) | Eraldi mõõtmine | Informatiivne referentsmõõtmine |
 | QC2 | Eemaldatud kirjete raporteeritavus | dropped_details_count / dropped_total | Jooksupõhine | 100 % |
 | Gate | Operatiivne kvaliteedivärav | error_drop_ratio < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL | Jooksupõhine | Ei ole SLI |
 
 ### Mõõtetasemed ja report.json
 
-- **Jooksupõhised näitajad** (SLI-2, SLI-3, SLI-5, QC2): report.json metrics sektsioonis või selle aluseks olevatest väljadest arvutatavad.
-- **SLI-4 (determinism)**: EI OLE report.json metrics väli. Hinnatakse 5 kordusjooksu alusel.
-- **SLI-6 (referentsjõudlus)**: EI OLE report.json metrics väli. Hinnatakse eraldi jõudlusmõõtmise alusel.
-- **SLI-1 (skeemikatvus)**: Spetsifikatsioonitaseme näitaja. Kaasatud report.json-i, sest on staatiline ja üheselt arvutatav.
+- **Jooksupõhised näitajad** (SLI-02, SLI-03, SLI-05, QC2): report.json metrics sektsioonis või selle aluseks olevatest väljadest arvutatavad.
+- **SLI-04 (determinism)**: EI OLE report.json metrics väli. Hinnatakse 5 kordusjooksu alusel.
+- **SLI-06 (referentsjõudlus)**: EI OLE report.json metrics väli. Hinnatakse eraldi jõudlusmõõtmise alusel.
+- **SLI-01 (skeemikatvus)**: Spetsifikatsioonitaseme näitaja. Kaasatud report.json-i, sest on staatiline ja üheselt arvutatav.
 
 ---
 
-## SLI-1 — Skeemikatvus
+## SLI-01 — Skeemikatvus
 
 **SLO:** ≥ 0.95 — C-01 peab katma vähemalt 95 % prioriteetsetest SV väljadest.
 
 **Definitsioon:**
 
-SLI-1 = covered_priority_fields / all_priority_fields
+SLI-01 = covered_priority_fields / all_priority_fields
 
 kus:
 - `priority_sv_fields_total` = prioriteetsete SV tehinguväljade arv, mis kuuluvad katvuse skoopi
@@ -43,7 +43,7 @@ kus:
 - See on spetsifikatsioonitaseme näitaja, mis põhineb hooldataval katvusdeklaratsioonil (`SLI1_FIELD_COVERAGE` moodulis `domain.report.ops`)
 - Näitaja ei sõltu konkreetsest andmestikust ega jooksust
 
-### SLI-1 väljaskoop (17 välja)
+### SLI-01 väljaskoop (17 välja)
 
 | Väli | Kaetud | Kaardistamise allikas |
 |------|--------|---------------------|
@@ -69,14 +69,14 @@ kus:
 
 | Test | Kontrollib |
 |------|-----------|
-| `test_sli1_metric_exists_in_report` | SLI-1 metrika on `report.metrics.sli1` all |
-| `test_sli1_has_required_keys` | SLI-1 sisaldab kõiki 3 nõutud välja |
+| `test_sli1_metric_exists_in_report` | SLI-01 metrika on `report.metrics.sli1` all |
+| `test_sli1_has_required_keys` | SLI-01 sisaldab kõiki 3 nõutud välja |
 | `test_sli1_priority_fields_positive` | `priority_sv_fields_total > 0` |
 | `test_sli1_covered_leq_total` | `covered <= total` |
 | `test_sli1_ratio_in_unit_interval` | `0 <= ratio <= 1` |
 | `test_sli1_baseline_meets_slo` | Praegune baas >= 0.95 |
 | `test_sli1_ratio_decreases_when_field_uncovered` | Ühe välja eemaldamine vähendab suhtarvu |
-| `test_sli1_in_pipeline_summary` | SLI-1 on ka pipeline'i summary.metrics all |
+| `test_sli1_in_pipeline_summary` | SLI-01 on ka pipeline'i summary.metrics all |
 
 ### Tulemus
 
@@ -92,7 +92,7 @@ kus:
 
 Need testid kontrollivad, et väljundartefaktid (SV, ML, LLM, raport) sisaldavad
 nõutud tipptaseme struktuuri ja võtmeid. Need on kasulikud struktuurse terviklikkuse
-kontrollid, kuid EI OLE ametlik SLI-1 metrika.
+kontrollid, kuid EI OLE ametlik SLI-01 metrika.
 
 ### Mida testitakse
 
@@ -120,15 +120,15 @@ kontrollid, kuid EI OLE ametlik SLI-1 metrika.
 
 ---
 
-## SLI-2 — Valideerimise läbivus (validation pass-through ratio)
+## SLI-02 — Valideerimise läbivus (validation pass-through ratio)
 
-**SLO:** Puhaste ja tootmislaadsete datasettide korral peab SLI-2 olema ≥ 0.99. Kontrollitud vea- ja äärejuhtumite datasettidel raporteeritakse SLI-2 kirjeldava metrikana, mida ei hinnata sama läve alusel.
+**SLO:** Puhaste ja tootmislaadsete datasettide korral peab SLI-02 olema ≥ 0.99. Kontrollitud vea- ja äärejuhtumite datasettidel raporteeritakse SLI-02 kirjeldava metrikana, mida ei hinnata sama läve alusel.
 
 **Definitsioon:**
 
-SLI-2 mõõdab töötlusse võetud sisendtehingute osakaalu, mis jääb pärast kaardistust, invariantide kontrolli ja deduplikatsiooni standardiseeritud vaheesitusse alles.
+SLI-02 mõõdab töötlusse võetud sisendtehingute osakaalu, mis jääb pärast kaardistust, invariantide kontrolli ja deduplikatsiooni standardiseeritud vaheesitusse alles.
 
-SLI-2 = passed_validation_total / input_records_total
+SLI-02 = passed_validation_total / input_records_total
 
 kus:
 - `input_records_total` = `transactions_total` — kõik sisendtehingud, mis pipeline'i jõuavad
@@ -140,11 +140,11 @@ kus:
 
 | Test | Kontrollib |
 |------|-----------|
-| `test_clean_input_pass_through_ratio_is_one` | Puhas sisend → SLI-2 = 1.0 |
-| `test_partial_drops_ratio_between_zero_and_one` | Osalised langetused → 0 < SLI-2 < 1 |
-| `test_all_dropped_ratio_is_zero` | Kõik langetatud → SLI-2 = 0.0 |
-| `test_ratio_equals_emitted_over_total` | SLI-2 == `transactions_emitted_sv / transactions_total` |
-| `test_ratio_consistent_with_dropped_total` | SLI-2 + dropped/total ≈ 1.0 (identity check) |
+| `test_clean_input_pass_through_ratio_is_one` | Puhas sisend → SLI-02 = 1.0 |
+| `test_partial_drops_ratio_between_zero_and_one` | Osalised langetused → 0 < SLI-02 < 1 |
+| `test_all_dropped_ratio_is_zero` | Kõik langetatud → SLI-02 = 0.0 |
+| `test_ratio_equals_emitted_over_total` | SLI-02 == `transactions_emitted_sv / transactions_total` |
+| `test_ratio_consistent_with_dropped_total` | SLI-02 + dropped/total ≈ 1.0 (identity check) |
 
 ### Tulemus
 
@@ -189,13 +189,13 @@ Nulljuhtum (dropped_total == 0): QC2 = 1.0, all_drops_reported = True.
 
 ---
 
-## SLI-3 — Invariantide täituvus (invariant compliance ratio)
+## SLI-03 — Invariantide täituvus (invariant compliance ratio)
 
 **SLO:** ≥ 0.999 puhaste/tootmislaadsete datasettide korral; `critical_invariant_violations_total == 0`.
 
 **Definitsioon:**
 
-SLI-3 = invariant_correct_total / invariant_checked_total
+SLI-03 = invariant_correct_total / invariant_checked_total
 
 kus:
 - `invariant_checked_total` (nimetaja) = kirjed, mis jõuavad Stage 4 (CHECK_INVARIANTS) pärast kaardistust, enne deduplikatsiooni. Mapping drops (Stage 2 ebaõnnestumised) **ei kuulu nimetajasse**, sest need kirjed ei jõua kunagi invariantide kontrollini.
@@ -215,12 +215,12 @@ kus:
 | `test_inv09_duplicate_appears_in_dropped_details` | INV-09 duplikaat kajastub `dropped_details[]` all |
 | `test_inv04_bad_booking_date_keeps_transaction_as_warn` | INV-04: vigane `bookingDate` → WARN, tehing ei langetata |
 | `test_dropped_count_matches_dropped_details` | `counts.transactions_dropped == len(dropped_details)` |
-| `test_clean_run_sli3_is_one` | Puhas jooks → SLI-3 = 1.0, critical = 0 |
-| `test_error_drops_reduce_compliance_ratio` | ERROR invariant drop → SLI-3 < 1.0 |
-| `test_warn_flags_reduce_compliance_ratio` | WARN invariant flag → SLI-3 < 1.0 |
-| `test_dedupe_drops_reduce_compliance_ratio` | INV-09 dedupe drops → SLI-3 < 1.0 |
+| `test_clean_run_sli3_is_one` | Puhas jooks → SLI-03 = 1.0, critical = 0 |
+| `test_error_drops_reduce_compliance_ratio` | ERROR invariant drop → SLI-03 < 1.0 |
+| `test_warn_flags_reduce_compliance_ratio` | WARN invariant flag → SLI-03 < 1.0 |
+| `test_dedupe_drops_reduce_compliance_ratio` | INV-09 dedupe drops → SLI-03 < 1.0 |
 | `test_invariant_correct_total_non_negative` | invariant_correct_total >= 0 alati |
-| `test_mapping_drops_excluded_from_sli3_denominator` | Mapping drops ei mõjuta SLI-3 nimetajat |
+| `test_mapping_drops_excluded_from_sli3_denominator` | Mapping drops ei mõjuta SLI-03 nimetajat |
 | `test_dedupe_exact_ratio` | INV-09 dedupe: 3 checked, 1 drop → ratio = 0.6667 |
 
 ### Tulemus
@@ -264,15 +264,15 @@ Kasutab `count_error_drops()` — sama loogika, mis `determine_outcome()`.
 
 ---
 
-## SLI-4 — Determinism
+## SLI-04 — Determinism
 
 **SLO:** 5 identse sisendi ja sama kellaga jooksu toodavad 100 % identsed väljundi sõnastikud.
 
 **Definitsioon:**
 
-SLI-4 = identsete väljundartefaktidega kordusjooksud / kõik kordusjooksud
+SLI-04 = identsete väljundartefaktidega kordusjooksud / kõik kordusjooksud
 
-SLI-4 ei ole ühe jooksu report.json metrics väli. Hinnatakse 5 kordusjooksu alusel.
+SLI-04 ei ole ühe jooksu report.json metrics väli. Hinnatakse 5 kordusjooksu alusel.
 
 ### Mida testitakse
 
@@ -312,13 +312,13 @@ Seetõttu võrreldakse tervet report.json artefakti, mitte normaliseeritud alamh
 
 ---
 
-## SLI-5 — Auditijälje täielikkus
+## SLI-05 — Auditijälje täielikkus
 
 **SLO:** 100 % jooksudest sisaldab kõiki nõutud auditivälju `report.run` sektsioonis.
 
 **Definitsioon:**
 
-SLI-5 = sisuliselt olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad
+SLI-05 = sisuliselt olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad
 
 Kohustuslikud auditiväljad: `sv_schema_version`, `mapping_version`, `ruleset_version`, `adapter_version`.
 
@@ -334,8 +334,8 @@ Soovitavad lisaväljad (kui teostus võimaldab): `spec_lock_sha256`, `input_fing
 | Test | Kontrollib |
 |------|-----------|
 | `test_sli5_all_required_audit_fields_present` | Kõik 4 kohustuslikku auditivälja on sisuliselt olemas |
-| `test_sli5_completeness_ratio_is_one` | SLI-5 `sli5_audit_completeness_ratio == 1.0` |
-| `test_sli5_detects_missing_field` | Puuduv auditiväli vähendab SLI-5 suhtarvu |
+| `test_sli5_completeness_ratio_is_one` | SLI-05 `sli5_audit_completeness_ratio == 1.0` |
+| `test_sli5_detects_missing_field` | Puuduv auditiväli vähendab SLI-05 suhtarvu |
 | `test_sli5_none_value_is_not_substantive` | None väärtus ei ole sisuline olemasolu |
 | `test_sli5_empty_string_is_not_substantive` | Tühi string ei ole sisuline olemasolu |
 | `test_sli5_whitespace_only_is_not_substantive` | Ainult tühikutest koosnev string ei ole sisuline |
@@ -354,18 +354,18 @@ Soovitavad lisaväljad (kui teostus võimaldab): `spec_lock_sha256`, `input_fing
 
 ---
 
-## SLI-6 — Referentsjõudlus
+## SLI-06 — Referentsjõudlus
 
 **Definitsioon:**
 
-SLI-6 = mediaanne töötlusaeg referentsandmestikul
+SLI-06 = mediaanne töötlusaeg referentsandmestikul
 
 Mõõtmismetoodika:
 1. 1 proovijooks, mille tulemust lõppnäitajasse ei arvestata
 2. 3 mõõdetud jooksu
 3. Tulemuseks on nende 3 mõõdetud jooksu mediaan
 
-SLI-6 ei kuulu report.json metrics sektsiooni. See on eraldi mõõtmise tulemus.
+SLI-06 ei kuulu report.json metrics sektsiooni. See on eraldi mõõtmise tulemus.
 
 ### Mida testitakse
 
@@ -387,13 +387,13 @@ SLI-6 ei kuulu report.json metrics sektsiooni. See on eraldi mõõtmise tulemus.
 
 | SLI | SLO sihtmärk | Mõõtetase | Testide arv | Tulemus | SLO täidetud |
 |-----|-------------|-----------|------------|---------|-------------|
-| SLI-1 Skeemikatvus | ≥ 0.95 | Spetsifikatsioon | 8 | 8/8 ✓ | **JAH** |
+| SLI-01 Skeemikatvus | ≥ 0.95 | Spetsifikatsioon | 8 | 8/8 ✓ | **JAH** |
 | Struktuurne terviklikkus | (kontroll) | — | 13 | 13/13 ✓ | — |
-| SLI-2 Valideerimise läbivus | ≥ 0.99 (puhas) | Jooksupõhine | 5 | 5/5 ✓ | **JAH** |
+| SLI-02 Valideerimise läbivus | ≥ 0.99 (puhas) | Jooksupõhine | 5 | 5/5 ✓ | **JAH** |
 | QC2 Eemaldatud kirjete raporteeritavus | 100 % | Jooksupõhine | 7 | 7/7 ✓ | **JAH** |
-| SLI-3 Invariantide täituvus | ≥ 0.999; critical == 0 | Jooksupõhine | 13 | 13/13 ✓ | **JAH** |
+| SLI-03 Invariantide täituvus | ≥ 0.999; critical == 0 | Jooksupõhine | 13 | 13/13 ✓ | **JAH** |
 | Gate Operatiivne kvaliteedivärav | < 5 % / ≥ 5 % | Jooksupõhine | 6 | 6/6 ✓ | **JAH** |
-| SLI-4 Determinism (N=5) | 100 % | Mitme jooksu võrdlus | 7 | 7/7 ✓ | **JAH** |
-| SLI-5 Auditijälje täielikkus | 100 % | Jooksupõhine | 10 | 10/10 ✓ | **JAH** |
-| SLI-6 Referentsjõudlus | Informatiivne referentsmõõtmine | Eraldi mõõtmine | 3 | 3/3 ✓ | **mõõdetud** |
+| SLI-04 Determinism (N=5) | 100 % | Mitme jooksu võrdlus | 7 | 7/7 ✓ | **JAH** |
+| SLI-05 Auditijälje täielikkus | 100 % | Jooksupõhine | 10 | 10/10 ✓ | **JAH** |
+| SLI-06 Referentsjõudlus | Informatiivne referentsmõõtmine | Eraldi mõõtmine | 3 | 3/3 ✓ | **mõõdetud** |
 | **KOKKU** | | | **72** | **72/72** | |

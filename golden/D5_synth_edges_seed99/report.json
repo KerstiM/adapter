@@ -7,7 +7,7 @@
       "refs": {
         "account_id": "9974d75b-3338-44fe-a179-0134676b1b69",
         "field_path": null,
-        "record_id": "a889047227078e49",
+        "record_id": "551fae9aad34a874",
         "source_lineage": "transactions.json"
       },
       "severity": "WARN",

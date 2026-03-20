@@ -558,8 +558,8 @@
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "69a317852aa5c05d",
-      "remittance": "EDGE01 zero amount",
+      "record_id": "71173e9ec606ae8e",
+      "remittance": "EDGE-01 zero amount",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[20]"
@@ -584,8 +584,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "f3064438801fd28c",
-      "remittance": "EDGE02 large amount 3 decimal places",
+      "record_id": "82f89cb6df10b895",
+      "remittance": "EDGE-02 large amount 3 decimal places",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[21]"
@@ -610,8 +610,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "7a932ef687411e12",
-      "remittance": "EDGE03 integer amount no decimals",
+      "record_id": "fcc446de6501624d",
+      "remittance": "EDGE-03 integer amount no decimals",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[22]"
@@ -636,8 +636,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "1b7422edbecca2b3",
-      "remittance": "EDGE04 negative amount OUT direction",
+      "record_id": "d26a95c24414a88a",
+      "remittance": "EDGE-04 negative amount OUT direction",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[23]"
@@ -662,8 +662,8 @@
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "4521dcc02c9974b6",
-      "remittance": "EDGE05 positive amount IN direction",
+      "record_id": "43c9f0c1668da613",
+      "remittance": "EDGE-05 positive amount IN direction",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[24]"
@@ -688,8 +688,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "1d557a538962ff03",
-      "remittance": "EDGE06 same booking and value date",
+      "record_id": "68fc5a258e059b0e",
+      "remittance": "EDGE-06 same booking and value date",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[25]"
@@ -714,8 +714,8 @@
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "8d31e0048451f474",
-      "remittance": "EDGE07 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "record_id": "cc0ce7a7d6296e5c",
+      "remittance": "EDGE-07 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[26]"
@@ -746,8 +746,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "a889047227078e49",
-      "remittance": "EDGE08 no counterparty",
+      "record_id": "551fae9aad34a874",
+      "remittance": "EDGE-08 no counterparty",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[27]"
