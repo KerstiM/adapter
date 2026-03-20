@@ -17,12 +17,12 @@
 | SLI-04 | Determinism | identsete väljunditega jooksud / kõik kordusjooksud (N=5) | Mitme jooksu võrdlus | 100 % |
 | SLI-05 | Auditijälje täielikkus | olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad | Jooksupõhine | 100 % |
 | SLI-06 | Referentsjõudlus | mediaanne töötlusaeg referentsandmestikul (1 proovijooks + 3 mõõdetud) | Eraldi mõõtmine | Informatiivne referentsmõõtmine |
-| QC2 | Eemaldatud kirjete raporteeritavus | dropped_details_count / dropped_total | Jooksupõhine | 100 % |
+| QC-02| Eemaldatud kirjete raporteeritavus | dropped_details_count / dropped_total | Jooksupõhine | 100 % |
 | Gate | Operatiivne kvaliteedivärav | error_drop_ratio < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL | Jooksupõhine | Ei ole SLI |
 
 ### Mõõtetasemed ja report.json
 
-- **Jooksupõhised näitajad** (SLI-02, SLI-03, SLI-05, QC2): report.json metrics sektsioonis või selle aluseks olevatest väljadest arvutatavad.
+- **Jooksupõhised näitajad** (SLI-02, SLI-03, SLI-05, QC-02): report.json metrics sektsioonis või selle aluseks olevatest väljadest arvutatavad.
 - **SLI-04 (determinism)**: EI OLE report.json metrics väli. Hinnatakse 5 kordusjooksu alusel.
 - **SLI-06 (referentsjõudlus)**: EI OLE report.json metrics väli. Hinnatakse eraldi jõudlusmõõtmise alusel.
 - **SLI-01 (skeemikatvus)**: Spetsifikatsioonitaseme näitaja. Kaasatud report.json-i, sest on staatiline ja üheselt arvutatav.
@@ -156,16 +156,16 @@ kus:
 
 ---
 
-## QC2 — Eemaldatud kirjete raporteeritavus (operational drop-reporting coverage)
+## QC-02— Eemaldatud kirjete raporteeritavus (operational drop-reporting coverage)
 
 **SLO:** 100 % eemaldatud kirjetest ilmub `report.dropped_details[]` all koos eemaldamise põhjusega.
 
 **Definitsioon:**
 
-QC2 = dropped_details_count / dropped_total (peab olema == 1.0)
-QC2 all_drops_reported = (dropped_details_count == dropped_total)
+QC-02= dropped_details_count / dropped_total (peab olema == 1.0)
+QC-02all_drops_reported = (dropped_details_count == dropped_total)
 
-Nulljuhtum (dropped_total == 0): QC2 = 1.0, all_drops_reported = True.
+Nulljuhtum (dropped_total == 0): QC-02= 1.0, all_drops_reported = True.
 
 ### Mida testitakse
 
@@ -390,7 +390,7 @@ SLI-06 ei kuulu report.json metrics sektsiooni. See on eraldi mõõtmise tulemus
 | SLI-01 Skeemikatvus | ≥ 0.95 | Spetsifikatsioon | 8 | 8/8 ✓ | **JAH** |
 | Struktuurne terviklikkus | (kontroll) | — | 13 | 13/13 ✓ | — |
 | SLI-02 Valideerimise läbivus | ≥ 0.99 (puhas) | Jooksupõhine | 5 | 5/5 ✓ | **JAH** |
-| QC2 Eemaldatud kirjete raporteeritavus | 100 % | Jooksupõhine | 7 | 7/7 ✓ | **JAH** |
+| QC-02Eemaldatud kirjete raporteeritavus | 100 % | Jooksupõhine | 7 | 7/7 ✓ | **JAH** |
 | SLI-03 Invariantide täituvus | ≥ 0.999; critical == 0 | Jooksupõhine | 13 | 13/13 ✓ | **JAH** |
 | Gate Operatiivne kvaliteedivärav | < 5 % / ≥ 5 % | Jooksupõhine | 6 | 6/6 ✓ | **JAH** |
 | SLI-04 Determinism (N=5) | 100 % | Mitme jooksu võrdlus | 7 | 7/7 ✓ | **JAH** |
