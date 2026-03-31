@@ -296,7 +296,7 @@
           "iban": "FR9641352141056593919446222"
         },
         "debtorName": "Luca Berg",
-        "remittanceInformationUnstructured": "NEAR02 original remittance",
+        "remittanceInformationUnstructured": "NEAR-02 original remittance",
         "transactionAmount": {
           "amount": "4748.98",
           "currency": "EUR"
@@ -311,7 +311,7 @@
           "iban": "FR9641352141056593919446222"
         },
         "debtorName": "Luca Berg",
-        "remittanceInformationUnstructured": "NEAR02 modified remittance",
+        "remittanceInformationUnstructured": "NEAR-02 modified remittance",
         "transactionAmount": {
           "amount": "4748.98",
           "currency": "EUR"

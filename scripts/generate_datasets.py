@@ -524,87 +524,87 @@ def generate_d5(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
 
     variations = []
 
-    # EDGE01: zero amount
+    # EDGE-01: zero amount
     edge01 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         amount_str="0.00",
         match_sign_to_direction=True,
-        remittance="EDGE01 zero amount",
+        remittance="EDGE-01 zero amount",
     )
     booked.append(edge01)
-    variations.append("EDGE01_ZERO_AMOUNT: amount='0.00' — valid but semantically odd")
+    variations.append("EDGE-01_ZERO_AMOUNT: amount='0.00' — valid but semantically odd")
 
-    # EDGE02: very large amount (max precision 3 decimals per schema)
+    # EDGE-02: very large amount (max precision 3 decimals per schema)
     edge02 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         amount_str="9999999.999",
         match_sign_to_direction=True,
-        remittance="EDGE02 large amount 3 decimal places",
+        remittance="EDGE-02 large amount 3 decimal places",
     )
     booked.append(edge02)
-    variations.append("EDGE02_LARGE_AMOUNT: amount='9999999.999' — max precision")
+    variations.append("EDGE-02_LARGE_AMOUNT: amount='9999999.999' — max precision")
 
-    # EDGE03: single digit amount (no decimals)
+    # EDGE-03: single digit amount (no decimals)
     edge03 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         amount_str="1",
         match_sign_to_direction=True,
-        remittance="EDGE03 integer amount no decimals",
+        remittance="EDGE-03 integer amount no decimals",
     )
     booked.append(edge03)
-    variations.append("EDGE03_INTEGER_AMOUNT: amount='1' — valid per pattern ^-?\\d+(\\.\\d{1,3})?$")
+    variations.append("EDGE-03_INTEGER_AMOUNT: amount='1' — valid per pattern ^-?\\d+(\\.\\d{1,3})?$")
 
-    # EDGE04: negative amount with creditorName (OUT, sign matches)
+    # EDGE-04: negative amount with creditorName (OUT, sign matches)
     edge04 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         direction="OUT",
         amount_str="-50.00",
-        remittance="EDGE04 negative amount OUT direction",
+        remittance="EDGE-04 negative amount OUT direction",
     )
     booked.append(edge04)
-    variations.append("EDGE04_NEGATIVE_OUT: amount='-50.00' + creditorName → OUT, sign matches, no INV-05")
+    variations.append("EDGE-04_NEGATIVE_OUT: amount='-50.00' + creditorName → OUT, sign matches, no INV-05")
 
-    # EDGE05: positive amount with debtorName (IN, sign matches)
+    # EDGE-05: positive amount with debtorName (IN, sign matches)
     edge05 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         direction="IN",
         amount_str="100.50",
-        remittance="EDGE05 positive amount IN direction",
+        remittance="EDGE-05 positive amount IN direction",
     )
     booked.append(edge05)
-    variations.append("EDGE05_POSITIVE_IN: amount='100.50' + debtorName → IN, no INV-05")
+    variations.append("EDGE-05_POSITIVE_IN: amount='100.50' + debtorName → IN, no INV-05")
 
-    # EDGE06: same value_date and booking_date
+    # EDGE-06: same value_date and booking_date
     same_date = gen._random_date(start_date, end_date)
     edge06 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         value_date_str=same_date.isoformat(),
         booking_date_str=same_date.isoformat(),
         match_sign_to_direction=True,
-        remittance="EDGE06 same booking and value date",
+        remittance="EDGE-06 same booking and value date",
     )
     booked.append(edge06)
-    variations.append(f"EDGE06_SAME_DATES: bookingDate == valueDate == {same_date.isoformat()}")
+    variations.append(f"EDGE-06_SAME_DATES: bookingDate == valueDate == {same_date.isoformat()}")
 
-    # EDGE07: very long remittance (valid, LLM projection truncates to 160)
-    long_rem = "EDGE07 " + "A" * 300
+    # EDGE-07: very long remittance (valid, LLM projection truncates to 160)
+    long_rem = "EDGE-07 " + "A" * 300
     edge07 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         match_sign_to_direction=True,
         remittance=long_rem,
     )
     booked.append(edge07)
-    variations.append("EDGE07_LONG_REMITTANCE: 307 chars — valid, LLM projection truncates to 160")
+    variations.append("EDGE-07_LONG_REMITTANCE: 308 chars — valid, LLM projection truncates to 160")
 
-    # EDGE08: no counterparty at all (INV-10 WARN)
+    # EDGE-08: no counterparty at all (INV-10 WARN)
     edge08 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         omit_counterparty=True,
         amount_str="-25.00",
-        remittance="EDGE08 no counterparty",
+        remittance="EDGE-08 no counterparty",
     )
     booked.append(edge08)
-    variations.append("EDGE08_NO_COUNTERPARTY: no creditor/debtor → direction by sign, INV-10 WARN")
+    variations.append("EDGE-08_NO_COUNTERPARTY: no creditor/debtor → direction by sign, INV-10 WARN")
 
     return {
         "name": "D5_synth_edges_seed99",
@@ -644,47 +644,47 @@ def generate_d6(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
     variations = []
     expected_dropped = 0
 
-    # DUP01: exact duplicate of booked[0] — same record_id → INV-09 DROP
+    # DUP-01: exact duplicate of booked[0] — same record_id → INV-09 DROP
     if booked:
         original = booked[0]
         exact_dup = json.loads(json.dumps(original))  # deep copy
         booked.append(exact_dup)
-        variations.append(f"DUP01_EXACT: exact copy of booked[0] (transactionId={original['transactionId']}) → INV-09 DROP")
+        variations.append(f"DUP-01_EXACT: exact copy of booked[0] (transactionId={original['transactionId']}) → INV-09 DROP")
         expected_dropped += 1
 
-    # DUP02: second exact duplicate of booked[0] — same record_id → INV-09 DROP
+    # DUP-02: second exact duplicate of booked[0] — same record_id → INV-09 DROP
     if booked:
         exact_dup2 = json.loads(json.dumps(booked[0]))
         booked.append(exact_dup2)
-        variations.append(f"DUP02_EXACT: second copy of booked[0] (transactionId={booked[0]['transactionId']}) → INV-09 DROP")
+        variations.append(f"DUP-02_EXACT: second copy of booked[0] (transactionId={booked[0]['transactionId']}) → INV-09 DROP")
         expected_dropped += 1
 
-    # DUP03: exact duplicate of booked[1] — same record_id → INV-09 DROP
+    # DUP-03: exact duplicate of booked[1] — same record_id → INV-09 DROP
     if len(booked) > 1:
         original2 = booked[1]
         exact_dup3 = json.loads(json.dumps(original2))
         booked.append(exact_dup3)
-        variations.append(f"DUP03_EXACT: exact copy of booked[1] (transactionId={original2['transactionId']}) → INV-09 DROP")
+        variations.append(f"DUP-03_EXACT: exact copy of booked[1] (transactionId={original2['transactionId']}) → INV-09 DROP")
         expected_dropped += 1
 
-    # NEAR01: same txId but different amount — different record_id → NOT dropped
+    # NEAR-01: same txId but different amount — different record_id → NOT dropped
     if len(booked) > 2:
         near1 = json.loads(json.dumps(booked[2]))
         near1["transactionAmount"]["amount"] = str(float(near1["transactionAmount"]["amount"]) + 0.01)
         booked.append(near1)
-        variations.append(f"NEAR01_DIFF_AMOUNT: same txId={near1['transactionId']}, amount differs → different record_id, kept")
+        variations.append(f"NEAR-01_DIFF_AMOUNT: same txId={near1['transactionId']}, amount differs → different record_id, kept")
 
-    # NEAR02: same fields except remittance — different record_id → NOT dropped
+    # NEAR-02: same fields except remittance — different record_id → NOT dropped
     near2_base = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         match_sign_to_direction=True,
-        remittance="NEAR02 original remittance",
+        remittance="NEAR-02 original remittance",
     )
     near2_copy = json.loads(json.dumps(near2_base))
-    near2_copy["remittanceInformationUnstructured"] = "NEAR02 modified remittance"
+    near2_copy["remittanceInformationUnstructured"] = "NEAR-02 modified remittance"
     booked.append(near2_base)
     booked.append(near2_copy)
-    variations.append(f"NEAR02_DIFF_REMITTANCE: same txId={near2_base['transactionId']}, remittance differs → different record_id, both kept")
+    variations.append(f"NEAR-02_DIFF_REMITTANCE: same txId={near2_base['transactionId']}, remittance differs → different record_id, both kept")
 
     return {
         "name": "D6_synth_dupes_seed99",
