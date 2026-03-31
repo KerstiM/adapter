@@ -6,16 +6,16 @@ vastava teenustaseme eesmärgi (SLO).
 
 SLI definitsioonid, mõõtetasemed ja SLO sihtmärgid
 ---------------------------------------------------
-SLI-1  Skeemikatvus           covered_priority_fields / all_priority_fields
+SLI-01  Skeemikatvus           covered_priority_fields / all_priority_fields
                               Tase: spetsifikatsioon   SLO: ≥ 0.95
 
-SLI-2  Valideerimise läbivus  passed_validation_total / input_records_total
+SLI-02  Valideerimise läbivus  passed_validation_total / input_records_total
        (standardiseeritud    Töötlusse võetud sisendtehingute osakaal, mis jääb
         vaheesitusse          pärast kaardistust, invariantide kontrolli ja
         jõudmise määr)        deduplikatsiooni standardiseeritud vaheesitusse alles.
                               Tase: jooksupõhine       SLO: ≥ 0.99 (puhas sisend)
 
-SLI-3  Invariantide täituvus  invariant_correct_total / invariant_checked_total
+SLI-03  Invariantide täituvus  invariant_correct_total / invariant_checked_total
        (invariant compliance  invariant_correct_total väheneb ERROR-rikkumiste,
         ratio)                deduplikatsioonis eemaldatud kirjete ja WARN-lipuga
                               alles jäävate kirjete võrra.
@@ -23,18 +23,18 @@ SLI-3  Invariantide täituvus  invariant_correct_total / invariant_checked_total
                               (invariant_checked_total).
                               Tase: jooksupõhine       SLO: ≥ 0.999; critical == 0
 
-SLI-4  Determinism            identsete väljunditega jooksud / kõik kordusjooksud
+SLI-04  Determinism            identsete väljunditega jooksud / kõik kordusjooksud
                               Tase: mitme jooksu võrdlus (N=5)
                               EI OLE report.json metrics väli
 
-SLI-5  Auditijälje täielikkus olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad
+SLI-05  Auditijälje täielikkus olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad
                               Tase: jooksupõhine       SLO: 100 %
 
-SLI-6  Referentsjõudlus       mediaanne töötlusaeg referentsandmestikul
+SLI-06  Referentsjõudlus       mediaanne töötlusaeg referentsandmestikul
                               Tase: eraldi mõõtmine (1 proovijooks + 3 mõõdetud jooksu)
                               EI OLE report.json metrics väli
 
-QC2    Eemaldatud kirjete      dropped_details_count / dropped_total
+QC-02 Eemaldatud kirjete      dropped_details_count / dropped_total
        raporteeritavus        Tase: jooksupõhine       SLO: 100 %
 
 Gate   Operatiivne värav      error_drop_ratio < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL
@@ -134,14 +134,14 @@ def _run(*, accounts: dict | None = None, booked: list | None = None, pending: l
 
 
 # ---------------------------------------------------------------------------
-# SLI-1: Skeemikatvus (prioriteetsete SV väljade katvus)
+# SLI-01: Skeemikatvus (prioriteetsete SV väljade katvus)
 # SLO: ≥ 0.95 — C-01 peab katma vähemalt 95 % prioriteetsetest SV väljadest
 # ---------------------------------------------------------------------------
 
 class TestSLI1SchemaCoverage:
-    """SLI-1 — skeemikatvus: prioriteetsete SV väljade katvus.
+    """SLI-01 — skeemikatvus: prioriteetsete SV väljade katvus.
 
-    SLI-1 = covered_priority_fields / all_priority_fields
+    SLI-01 = covered_priority_fields / all_priority_fields
 
     See on spetsifikatsioonitaseme näitaja, mis põhineb hooldataval
     katvusdeklaratsioonil (SLI1_FIELD_COVERAGE moodulis domain.report.ops).
@@ -149,13 +149,13 @@ class TestSLI1SchemaCoverage:
     """
 
     def test_sli1_metric_exists_in_report(self) -> None:
-        """SLI-1 metrika peab olema report.metrics.sli1 all."""
+        """SLI-01 metrika peab olema report.metrics.sli1 all."""
         _, out = _run(booked=[_tx()])
         assert out.report is not None
         assert "sli1" in out.report["metrics"]
 
     def test_sli1_has_required_keys(self) -> None:
-        """SLI-1 metrika peab sisaldama kõiki 3 nõutud välja."""
+        """SLI-01 metrika peab sisaldama kõiki 3 nõutud välja."""
         _, out = _run(booked=[_tx()])
         sli1 = out.report["metrics"]["sli1"]
         assert "sli1_coverage_ratio" in sli1
@@ -180,13 +180,13 @@ class TestSLI1SchemaCoverage:
         assert 0.0 <= ratio <= 1.0
 
     def test_sli1_baseline_meets_slo(self) -> None:
-        """Praeguse baasprofiiliga SLI-1 peab olema >= 0.95 (SLO)."""
+        """Praeguse baasprofiiliga SLI-01 peab olema >= 0.95 (SLO)."""
         _, out = _run(booked=[_tx()])
         ratio = out.report["metrics"]["sli1"]["sli1_coverage_ratio"]
         assert ratio >= 0.95
 
     def test_sli1_ratio_decreases_when_field_uncovered(self) -> None:
-        """Kui üks väli märgitakse katvamata, peab SLI-1 suhtarv langema."""
+        """Kui üks väli märgitakse katvamata, peab SLI-01 suhtarv langema."""
         from domain.report.ops import SLI1_FIELD_COVERAGE, compute_sli1_coverage
 
         baseline = compute_sli1_coverage()
@@ -199,26 +199,26 @@ class TestSLI1SchemaCoverage:
         assert reduced["priority_sv_fields_total"] == baseline["priority_sv_fields_total"]
 
     def test_sli1_in_pipeline_summary(self) -> None:
-        """SLI-1 peab olema ka pipeline'i tagastatud summary.metrics all."""
+        """SLI-01 peab olema ka pipeline'i tagastatud summary.metrics all."""
         summary, _ = _run(booked=[_tx()])
         assert "sli1" in summary["metrics"]
         assert summary["metrics"]["sli1"]["sli1_coverage_ratio"] >= 0.95
 
 
 # ---------------------------------------------------------------------------
-# Struktuurne väljundi terviklikkus (varem SLI-1 struktuurikontrollid)
+# Struktuurne väljundi terviklikkus (varem SLI-01 struktuurikontrollid)
 # ---------------------------------------------------------------------------
 # Need testid kontrollivad, et väljundartefaktid (SV, ML, LLM, raport)
 # sisaldavad nõutud tipptaseme struktuuri ja võtmeid.  Need on kasulikud
-# struktuurse terviklikkuse kontrollid, kuid EI OLE ametlik SLI-1 metrika.
-# SLI-1 on skeemi/lepingu katvus (vt TestSLI1SchemaCoverage).
+# struktuurse terviklikkuse kontrollid, kuid EI OLE ametlik SLI-01 metrika.
+# SLI-01 on skeemi/lepingu katvus (vt TestSLI1SchemaCoverage).
 # ---------------------------------------------------------------------------
 
 class TestStructuralOutputIntegrity:
     """Struktuurne väljundi terviklikkus — väljundartefaktid kannavad nõutud tipptaseme struktuuri.
 
     Need on struktuurse kohalolu ja kuju kontrollid SV, ML, LLM ja raporti
-    artefaktidele. Need täiendavad, kuid on eraldi ametlikust SLI-1
+    artefaktidele. Need täiendavad, kuid on eraldi ametlikust SLI-01
     metrikast (skeemi/lepingu katvus).
     """
 
@@ -318,16 +318,16 @@ class TestStructuralOutputIntegrity:
 
 
 # ---------------------------------------------------------------------------
-# SLI-2: Valideerimise läbivus (validation pass-through ratio)
+# SLI-02: Valideerimise läbivus (validation pass-through ratio)
 # SLO: ≥ 0.99 puhaste datasettide korral; vea-datasettidel kirjeldav metrika
 # ---------------------------------------------------------------------------
 
 class TestSLI2ValidationPassThrough:
-    """SLI-2 — töötlusse võetud sisendtehingute osakaal, mis jääb pärast
+    """SLI-02 — töötlusse võetud sisendtehingute osakaal, mis jääb pärast
     kaardistust, invariantide kontrolli ja deduplikatsiooni standardiseeritud
     vaheesitusse alles.
 
-    SLI-2 = passed_validation_total / input_records_total
+    SLI-02 = passed_validation_total / input_records_total
     where:
       input_records_total    = transactions_total  (all raw input tx)
       passed_validation_total = transactions_emitted_sv
@@ -336,13 +336,13 @@ class TestSLI2ValidationPassThrough:
     """
 
     def test_clean_input_pass_through_ratio_is_one(self) -> None:
-        """Puhas sisend annab SLI-2 = 1.0 (kõik kirjed läbivad valideerimise)."""
+        """Puhas sisend annab SLI-02 = 1.0 (kõik kirjed läbivad valideerimise)."""
         summary, _ = _run(booked=[_tx()])
         ratio = summary["metrics"]["sli2"]["validation_pass_through_ratio"]
         assert ratio == 1.0
 
     def test_partial_drops_ratio_between_zero_and_one(self) -> None:
-        """Osaliste langetustega peab SLI-2 olema vahemikus (0, 1)."""
+        """Osaliste langetustega peab SLI-02 olema vahemikus (0, 1)."""
         bad = {
             "transactionAmount": {"amount": "50.00", "currency": "EUR"},
             "transactionId": "TX-NO-DATE",
@@ -356,7 +356,7 @@ class TestSLI2ValidationPassThrough:
         assert ratio == round(4 / 5, 4)
 
     def test_all_dropped_ratio_is_zero(self) -> None:
-        """Kõigi kirjete langetamisel peab SLI-2 olema 0.0."""
+        """Kõigi kirjete langetamisel peab SLI-02 olema 0.0."""
         bad = {
             "transactionAmount": {"amount": "50.00", "currency": "EUR"},
             "transactionId": "TX-NO-DATE",
@@ -366,7 +366,7 @@ class TestSLI2ValidationPassThrough:
         assert ratio == 0.0
 
     def test_ratio_equals_emitted_over_total(self) -> None:
-        """SLI-2 peab võrduma transactions_emitted_sv / transactions_total."""
+        """SLI-02 peab võrduma transactions_emitted_sv / transactions_total."""
         bad = _tx(currency="xx", transaction_id="BAD")
         good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(9)]
         summary, _ = _run(booked=good + [bad])
@@ -375,7 +375,7 @@ class TestSLI2ValidationPassThrough:
         assert summary["metrics"]["sli2"]["validation_pass_through_ratio"] == expected
 
     def test_ratio_consistent_with_dropped_total(self) -> None:
-        """SLI-2 + dropped/total peab andma 1.0 (identity check)."""
+        """SLI-02 + dropped/total peab andma 1.0 (identity check)."""
         bad = _tx(currency="xx", transaction_id="BAD")
         good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(3)]
         summary, _ = _run(booked=good + [bad])
@@ -386,15 +386,15 @@ class TestSLI2ValidationPassThrough:
 
 
 # ---------------------------------------------------------------------------
-# QC2: Langetuste raporteerimine (operational drop-reporting coverage)
+# QC-02: Langetuste raporteerimine (operational drop-reporting coverage)
 # SLO: 100 % langetustest ilmub report.dropped_details[] all
 # ---------------------------------------------------------------------------
 
 class TestQC2DropReporting:
-    """QC2 — kõik langetused kajastatakse dropped_details[] all (operational control).
+    """QC-02— kõik langetused kajastatakse dropped_details[] all (operational control).
 
-    This was previously labeled SLI-2. Renamed to QC2 to restore the original
-    SLI-2 meaning (validation pass-through ratio).
+    This was previously labeled SLI-02. Renamed to QC-02to restore the original
+    SLI-02 meaning (validation pass-through ratio).
     """
 
     def test_valid_input_produces_no_issues(self) -> None:
@@ -444,14 +444,14 @@ class TestQC2DropReporting:
         assert len(summary["dropped_details"]) > 0
 
     def test_qc2_all_drops_reported_clean_input(self) -> None:
-        """Puhas sisend → QC2 all_drops_reported == True, ratio == 1.0."""
+        """Puhas sisend → QC-02all_drops_reported == True, ratio == 1.0."""
         summary, _ = _run(booked=[_tx()])
         qc2 = summary["metrics"]["qc2"]
         assert qc2["all_drops_reported"] is True
         assert qc2["drop_reporting_ratio"] == 1.0
 
     def test_qc2_all_drops_reported_with_drops(self) -> None:
-        """Langetustega sisend → QC2 all_drops_reported == True (kõik kajastatud)."""
+        """Langetustega sisend → QC-02all_drops_reported == True (kõik kajastatud)."""
         bad = _tx(currency="xx", transaction_id="BAD")
         summary, _ = _run(booked=[_tx(), bad])
         qc2 = summary["metrics"]["qc2"]
@@ -460,14 +460,14 @@ class TestQC2DropReporting:
 
 
 # ---------------------------------------------------------------------------
-# SLI-3: Invariantide täituvus (invariant compliance ratio)
+# SLI-03: Invariantide täituvus (invariant compliance ratio)
 # SLO: ≥ 0.999 puhaste datasettide korral; critical == 0
 # ---------------------------------------------------------------------------
 
 class TestSLI3InvariantCompliance:
-    """SLI-3 — invariantide vastavuse suhtarv (invariant compliance ratio).
+    """SLI-03 — invariantide vastavuse suhtarv (invariant compliance ratio).
 
-    SLI-3 = invariant_correct_total / invariant_checked_total
+    SLI-03 = invariant_correct_total / invariant_checked_total
 
     invariant_correct_total väheneb:
       − ERROR-taseme invariantrikkumistega langetatud kirjete võrra,
@@ -532,7 +532,7 @@ class TestSLI3InvariantCompliance:
         assert summary["counts"]["transactions_dropped"] == len(summary["dropped_details"])
 
     def test_clean_run_sli3_is_one(self) -> None:
-        """Puhas jooks: SLI-3 invariant compliance ratio == 1.0, critical == 0."""
+        """Puhas jooks: SLI-03 invariant compliance ratio == 1.0, critical == 0."""
         good = [_tx(transaction_id=f"T{i}", amount=str(10 + i)) for i in range(5)]
         summary, _ = _run(booked=good)
         sli3 = summary["metrics"]["sli3"]
@@ -542,7 +542,7 @@ class TestSLI3InvariantCompliance:
         assert sli3["critical_invariant_violations_total"] == 0
 
     def test_error_drops_reduce_compliance_ratio(self) -> None:
-        """ERROR invariant drop vähendab SLI-3 suhtarvu."""
+        """ERROR invariant drop vähendab SLI-03 suhtarvu."""
         bad = _tx(currency="xx", transaction_id="BAD")
         good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(9)]
         summary, _ = _run(booked=good + [bad])
@@ -553,7 +553,7 @@ class TestSLI3InvariantCompliance:
         assert sli3["invariant_compliance_ratio"] == 0.9
 
     def test_warn_flags_reduce_compliance_ratio(self) -> None:
-        """WARN invariant flag (INV-04) vähendab SLI-3 suhtarvu, kuigi tehing jääb alles."""
+        """WARN invariant flag (INV-04) vähendab SLI-03 suhtarvu, kuigi tehing jääb alles."""
         warn_tx = {
             "transactionAmount": {"amount": "30.00", "currency": "EUR"},
             "valueDate": "2025-07-01",
@@ -572,7 +572,7 @@ class TestSLI3InvariantCompliance:
         assert sli3["critical_invariant_violations_total"] == 0
 
     def test_dedupe_drops_reduce_compliance_ratio(self) -> None:
-        """INV-09 dedupe drops vähendavad SLI-3 suhtarvu."""
+        """INV-09 dedupe drops vähendavad SLI-03 suhtarvu."""
         dup = _tx(amount="77.77", value_date="2025-09-09", booking_date="2025-09-09",
                   debtor_name="DupSender", transaction_id="DUP")
         good = _tx(transaction_id="G1", amount="10.00")
@@ -595,7 +595,7 @@ class TestSLI3InvariantCompliance:
         assert sli3["invariant_compliance_ratio"] == 0.0
 
     def test_mapping_drops_excluded_from_sli3_denominator(self) -> None:
-        """Mapping drops (Stage 2) ei tohi mõjutada SLI-3 nimetajat.
+        """Mapping drops (Stage 2) ei tohi mõjutada SLI-03 nimetajat.
 
         A record that fails mapping (missing transactionAmount) never reaches
         Stage 4 invariant checking, so invariant_checked_total must not include it.
@@ -708,14 +708,14 @@ class TestGateFailPolicy:
 
 
 # ---------------------------------------------------------------------------
-# SLI-4: Determinism
+# SLI-04: Determinism
 # SLO: 5 identset jooksu sama fikseeritud kellaga toodavad identsed väljundid
 # ---------------------------------------------------------------------------
 #
-# SLI-4 = identsete väljundartefaktidega kordusjooksud / kõik kordusjooksud
+# SLI-04 = identsete väljundartefaktidega kordusjooksud / kõik kordusjooksud
 #
-# SLI-4 ei ole ühe jooksu report.json metrics väli.
-# SLI-4 on näitaja, mida hinnatakse mitme kordusjooksu alusel.
+# SLI-04 ei ole ühe jooksu report.json metrics väli.
+# SLI-04 on näitaja, mida hinnatakse mitme kordusjooksu alusel.
 # Sama sisend + sama konfiguratsioon + fikseeritud kell peavad andma
 # identsed väljundartefaktid.
 # ---------------------------------------------------------------------------
@@ -727,7 +727,7 @@ def _run_determinism_suite(
     booked: list[dict],
     n: int = _SLI4_N_RUNS,
 ) -> list[FakeOutputPort]:
-    """Keskne SLI-4 helper: käivitab pipeline n korda sama kellaga.
+    """Keskne SLI-04 helper: käivitab pipeline n korda sama kellaga.
 
     Tagastab n FakeOutputPort objekti, mille artefakte saab võrrelda.
     """
@@ -740,10 +740,10 @@ def _run_determinism_suite(
 
 
 class TestSLI4Determinism:
-    """SLI-4 — determinism: 5 kordusjooksu sama sisendi ja kellaga peavad
+    """SLI-04 — determinism: 5 kordusjooksu sama sisendi ja kellaga peavad
     andma identsed väljundartefaktid.
 
-    SLI-4 = identsete väljundartefaktidega kordusjooksud / kõik kordusjooksud
+    SLI-04 = identsete väljundartefaktidega kordusjooksud / kõik kordusjooksud
 
     See ei ole ühe jooksu report.json metrics väli, vaid mitme kordusjooksu
     alusel hinnatav näitaja.
@@ -805,13 +805,13 @@ class TestSLI4Determinism:
 
 
 # ---------------------------------------------------------------------------
-# SLI-5: Auditijälje täielikkus
+# SLI-05: Auditijälje täielikkus
 # SLO: 100 % jooksudest sisaldab kõiki nõutud auditivälju
 # ---------------------------------------------------------------------------
 #
-# SLI-5 = olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad
+# SLI-05 = olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad
 #
-# SLI-5 on jooksupõhine näitaja.  See kontrollib, et iga jooks kannab
+# SLI-05 on jooksupõhine näitaja.  See kontrollib, et iga jooks kannab
 # raportis kõiki taastoodetavuse ja auditeeritavuse jaoks nõutud
 # metaandmeid.
 #
@@ -823,9 +823,9 @@ class TestSLI4Determinism:
 # ---------------------------------------------------------------------------
 
 class TestSLI5AuditTrailCompleteness:
-    """SLI-5 — auditijälje täielikkus: nõutud auditiväljad report.run sektsioonis.
+    """SLI-05 — auditijälje täielikkus: nõutud auditiväljad report.run sektsioonis.
 
-    SLI-5 = sisuliselt olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad
+    SLI-05 = sisuliselt olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad
 
     Kohustuslik auditiväli loetakse sisuliselt olevaks ainult siis, kui:
     - väli on report.run sektsioonis olemas,
@@ -842,20 +842,20 @@ class TestSLI5AuditTrailCompleteness:
     # -- Täisvastavus: kõik väljad olemas ja mittetühjad --
 
     def test_sli5_all_required_audit_fields_present(self, report: dict) -> None:
-        """SLI-5: kõik 4 kohustuslikku auditivälja peavad olema report.run sektsioonis
+        """SLI-05: kõik 4 kohustuslikku auditivälja peavad olema report.run sektsioonis
         ja sisuliselt mittetühjad."""
         from domain.report.ops import SLI5_REQUIRED_AUDIT_FIELDS
         run_section = report["run"]
         for field in SLI5_REQUIRED_AUDIT_FIELDS:
-            assert field in run_section, f"SLI-5: kohustuslik auditiväli '{field}' puudub report.run-ist"
+            assert field in run_section, f"SLI-05: kohustuslik auditiväli '{field}' puudub report.run-ist"
             value = run_section[field]
-            assert value is not None, f"SLI-5: auditiväli '{field}' on None"
+            assert value is not None, f"SLI-05: auditiväli '{field}' on None"
             assert isinstance(value, str) and value.strip() != "", (
-                f"SLI-5: auditiväli '{field}' on tühi või ainult tühikutest koosnev"
+                f"SLI-05: auditiväli '{field}' on tühi või ainult tühikutest koosnev"
             )
 
     def test_sli5_completeness_ratio_is_one(self, report: dict) -> None:
-        """SLI-5: auditijälje täielikkuse suhtarv peab olema 1.0 kui kõik väljad on olemas."""
+        """SLI-05: auditijälje täielikkuse suhtarv peab olema 1.0 kui kõik väljad on olemas."""
         from domain.report.ops import compute_sli5_audit_completeness
         result = compute_sli5_audit_completeness(report)
         assert result["sli5_audit_completeness_ratio"] == 1.0
@@ -864,7 +864,7 @@ class TestSLI5AuditTrailCompleteness:
     # -- Puuduv väli --
 
     def test_sli5_detects_missing_field(self) -> None:
-        """SLI-5: kui kohustuslik auditiväli puudub, peab suhtarv langema."""
+        """SLI-05: kui kohustuslik auditiväli puudub, peab suhtarv langema."""
         from domain.report.ops import compute_sli5_audit_completeness
         incomplete_report = {
             "run": {
@@ -882,7 +882,7 @@ class TestSLI5AuditTrailCompleteness:
     # -- None väärtus --
 
     def test_sli5_none_value_is_not_substantive(self) -> None:
-        """SLI-5: kui kohustuslik auditiväli on None, ei ole see sisuline olemasolu."""
+        """SLI-05: kui kohustuslik auditiväli on None, ei ole see sisuline olemasolu."""
         from domain.report.ops import compute_sli5_audit_completeness
         report_with_none = {
             "run": {
@@ -899,7 +899,7 @@ class TestSLI5AuditTrailCompleteness:
     # -- Tühi string --
 
     def test_sli5_empty_string_is_not_substantive(self) -> None:
-        """SLI-5: kui kohustuslik auditiväli on tühi string, ei ole see sisuline olemasolu."""
+        """SLI-05: kui kohustuslik auditiväli on tühi string, ei ole see sisuline olemasolu."""
         from domain.report.ops import compute_sli5_audit_completeness
         report_with_empty = {
             "run": {
@@ -916,7 +916,7 @@ class TestSLI5AuditTrailCompleteness:
     # -- Tühikutest koosnev string --
 
     def test_sli5_whitespace_only_is_not_substantive(self) -> None:
-        """SLI-5: kui kohustuslik auditiväli on ainult tühikud, ei ole see sisuline olemasolu."""
+        """SLI-05: kui kohustuslik auditiväli on ainult tühikud, ei ole see sisuline olemasolu."""
         from domain.report.ops import compute_sli5_audit_completeness
         report_with_whitespace = {
             "run": {
@@ -933,34 +933,34 @@ class TestSLI5AuditTrailCompleteness:
     # -- Üksikud auditiväljad --
 
     def test_sli5_sv_schema_version(self, report: dict) -> None:
-        """SLI-5: report.run peab kandma sv_schema_version välja."""
+        """SLI-05: report.run peab kandma sv_schema_version välja."""
         assert "sv_schema_version" in report["run"]
         assert report["run"]["sv_schema_version"] != ""
 
     def test_sli5_mapping_version(self, report: dict) -> None:
-        """SLI-5: report.run peab kandma mapping_version välja."""
+        """SLI-05: report.run peab kandma mapping_version välja."""
         assert "mapping_version" in report["run"]
         assert report["run"]["mapping_version"] != ""
 
     def test_sli5_ruleset_version(self, report: dict) -> None:
-        """SLI-5: report.run peab kandma ruleset_version välja."""
+        """SLI-05: report.run peab kandma ruleset_version välja."""
         assert "ruleset_version" in report["run"]
         assert report["run"]["ruleset_version"] != ""
 
     def test_sli5_adapter_version(self, report: dict) -> None:
-        """SLI-5: report.run peab kandma adapter_version välja."""
+        """SLI-05: report.run peab kandma adapter_version välja."""
         assert "adapter_version" in report["run"]
         assert report["run"]["adapter_version"] != ""
 
 
 # ---------------------------------------------------------------------------
-# SLI-6: Referentsjõudlus
+# SLI-06: Referentsjõudlus
 # ---------------------------------------------------------------------------
 #
-# SLI-6 = mediaanne töötlusaeg referentsandmestikul
+# SLI-06 = mediaanne töötlusaeg referentsandmestikul
 #
-# SLI-6 ei ole lihtsalt "väikese testandmestiku töötlusaeg".
-# SLI-6 on näitaja, mida hinnatakse eraldi jõudlusmõõtmise alusel
+# SLI-06 ei ole lihtsalt "väikese testandmestiku töötlusaeg".
+# SLI-06 on näitaja, mida hinnatakse eraldi jõudlusmõõtmise alusel
 # kokkulepitud referentsandmestikul (D9, ~1000 tehingut).
 #
 # Mõõtmismetoodika:
@@ -968,11 +968,11 @@ class TestSLI5AuditTrailCompleteness:
 #   2) 3 mõõdetud jooksu
 #   3) tulemuseks on nende 3 mõõdetud jooksu mediaan
 #
-# SLI-6 ei kuulu report.json metrics sektsiooni, sest see on eraldi
+# SLI-06 ei kuulu report.json metrics sektsiooni, sest see on eraldi
 # mõõtmise tulemus, mitte ühe jooksu artefakt.
 # ---------------------------------------------------------------------------
 
-# SLI-6 on informatiivne referentsmõõtmine regressioonide jälgimiseks.
+# SLI-06 on informatiivne referentsmõõtmine regressioonide jälgimiseks.
 #
 # Jäika universaalset lävendit ei seata, sest:
 # - in-memory fake portidega mediaan on ~3–8 ms,
@@ -992,7 +992,7 @@ def run_sli6_benchmark(
     proovijooksud: int = 1,
     measured_runs: int = 3,
 ) -> dict[str, float | int]:
-    """SLI-6 referentsjõudluse mõõtmine.
+    """SLI-06 referentsjõudluse mõõtmine.
 
     Käivitab pipeline proovijooksude + mõõdetud jooksude arvu korda
     ja tagastab mõõdetud jooksude mediaani.
@@ -1032,12 +1032,12 @@ def run_sli6_benchmark(
 
 
 class TestSLI6ReferencePerformance:
-    """SLI-6 — referentsjõudlus: mediaanne töötlusaeg referentsandmestikul.
+    """SLI-06 — referentsjõudlus: mediaanne töötlusaeg referentsandmestikul.
 
     Kasutab ~1000 tehinguga sünteetilist andmestikku (D9 formaadis).
     Mõõtmismetoodika: 1 proovijooks + 3 mõõdetud jooksu; tulemus on mediaan.
 
-    SLI-6 ei ole report.json metrics väli, vaid eraldi mõõtmise tulemus.
+    SLI-06 ei ole report.json metrics väli, vaid eraldi mõõtmise tulemus.
     """
 
     @pytest.fixture(scope="class")
@@ -1068,7 +1068,7 @@ class TestSLI6ReferencePerformance:
     def test_sli6_reference_benchmark(
         self, reference_dataset: tuple[list[dict], list[dict]],
     ) -> None:
-        """SLI-6: mõõdab referentsjõudlust 1000 tehinguga andmestikul.
+        """SLI-06: mõõdab referentsjõudlust 1000 tehinguga andmestikul.
 
         Metoodika: 1 proovijooks + 3 mõõdetud jooksu; tulemus on mediaan.
 
@@ -1081,14 +1081,14 @@ class TestSLI6ReferencePerformance:
         result = run_sli6_benchmark(booked, pending, proovijooksud=1, measured_runs=3)
 
         median = result["median_ms"]
-        print(f"\nSLI-6 referentsjõudlus (informatiivne):")
+        print(f"\nSLI-06 referentsjõudlus (informatiivne):")
         print(f"  Mediaan:        {median:.2f} ms")
         print(f"  Mõõdetud ajad:  {result['all_times_ms']} ms")
         print(f"  Proovijooks:    {result['proovijooksu_ms']:.2f} ms")
 
         if _SLI6_THRESHOLD_MS is not None:
             assert median <= _SLI6_THRESHOLD_MS, (
-                f"SLI-6 mediaan {median:.2f} ms ületab lävendi {_SLI6_THRESHOLD_MS} ms"
+                f"SLI-06 mediaan {median:.2f} ms ületab lävendi {_SLI6_THRESHOLD_MS} ms"
             )
 
     def test_sli6_median_is_positive(

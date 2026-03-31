@@ -311,7 +311,7 @@
           "iban": "PL45527547707048915106502555"
         },
         "debtorName": "Liisa Berg",
-        "remittanceInformationUnstructured": "EDGE01 zero amount",
+        "remittanceInformationUnstructured": "EDGE-01 zero amount",
         "transactionAmount": {
           "amount": "0.00",
           "currency": "EUR"
@@ -326,7 +326,7 @@
           "iban": "EE293481171131565330"
         },
         "creditorName": "Elena Smith",
-        "remittanceInformationUnstructured": "EDGE02 large amount 3 decimal places",
+        "remittanceInformationUnstructured": "EDGE-02 large amount 3 decimal places",
         "transactionAmount": {
           "amount": "-9999999.999",
           "currency": "EUR"
@@ -341,7 +341,7 @@
           "iban": "PL55364722900204572024594353"
         },
         "creditorName": "Mart Tamm",
-        "remittanceInformationUnstructured": "EDGE03 integer amount no decimals",
+        "remittanceInformationUnstructured": "EDGE-03 integer amount no decimals",
         "transactionAmount": {
           "amount": "-1",
           "currency": "EUR"
@@ -356,7 +356,7 @@
           "iban": "PL91820935765293368746373480"
         },
         "creditorName": "Luca Lepp",
-        "remittanceInformationUnstructured": "EDGE04 negative amount OUT direction",
+        "remittanceInformationUnstructured": "EDGE-04 negative amount OUT direction",
         "transactionAmount": {
           "amount": "-50.00",
           "currency": "EUR"
@@ -371,7 +371,7 @@
           "iban": "DE80203460112031111104"
         },
         "debtorName": "Felix Jansen",
-        "remittanceInformationUnstructured": "EDGE05 positive amount IN direction",
+        "remittanceInformationUnstructured": "EDGE-05 positive amount IN direction",
         "transactionAmount": {
           "amount": "100.50",
           "currency": "EUR"
@@ -386,7 +386,7 @@
           "iban": "NL7387515244903308"
         },
         "creditorName": "Jan Oja",
-        "remittanceInformationUnstructured": "EDGE06 same booking and value date",
+        "remittanceInformationUnstructured": "EDGE-06 same booking and value date",
         "transactionAmount": {
           "amount": "-3854.68",
           "currency": "EUR"
@@ -401,7 +401,7 @@
           "iban": "PL86310271232261941338809797"
         },
         "debtorName": "Peeter Smith",
-        "remittanceInformationUnstructured": "EDGE07 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "remittanceInformationUnstructured": "EDGE-07 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "transactionAmount": {
           "amount": "6122.65",
           "currency": "EUR"
@@ -412,7 +412,7 @@
       {
         "bankTransactionCode": "PMNT-MCOP-OTHR",
         "bookingDate": "2024-05-16",
-        "remittanceInformationUnstructured": "EDGE08 no counterparty",
+        "remittanceInformationUnstructured": "EDGE-08 no counterparty",
         "transactionAmount": {
           "amount": "-25.00",
           "currency": "EUR"
