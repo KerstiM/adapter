@@ -325,7 +325,7 @@ def run_pipeline(
     # Stage 4: CHECK_INVARIANTS — R-01 (field-level rules)
     # ================================================================
 
-    # SLI-03 denominator: records entering invariant checking after mapping,
+    # SLI-3 denominator: records entering invariant checking after mapping,
     # before dedupe.  Excludes mapping drops (Stage 2).
     invariant_checked_total = len(sv_bundle.get("transactions", []))
 
@@ -450,14 +450,14 @@ def run_pipeline(
     all_dropped_details = _build_dropped_details(dropped_txs, dedupe_drops, mapping_drops)
 
     # ----------------------------------------------------------------
-    # SLI-03 invariant compliance counters
+    # SLI-3 invariant compliance counters
     # ----------------------------------------------------------------
     # critical_invariant_violations_total = records with ERROR-level invariant
     # violations only.  Excludes mapping drops, dedupe drops, WARN-only records.
     critical_invariant_violations_total = len(dropped_txs)
 
     # Count kept records that have WARN-level invariant flags (INV-04/05/10).
-    # These are non-compliant for SLI-03 even though they were not dropped.
+    # These are non-compliant for SLI-3 even though they were not dropped.
     # Only count WARN-level invariant flags (INV-04/05/10); ERROR-level
     # invariants already caused drops and are counted via len(dropped_txs).
     warn_flagged_kept = sum(
@@ -489,7 +489,7 @@ def run_pipeline(
 
     error_drops = _count_error_drops(dropped_txs, mapping_drops, fail_severity)
 
-    # Compute derived metrics (SLI-02, QC-02, SLI-03, gate, informative)
+    # Compute derived metrics (SLI-2, QC-2, SLI-3, gate, informative)
     metrics = _compute_metrics(
         input_records_total=total_raw,
         passed_validation_total=len(deduped_txs),
