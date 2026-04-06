@@ -16,6 +16,7 @@ Output structure per run:
 """
 import csv
 import json
+import statistics
 import time
 from pathlib import Path
 
@@ -997,6 +998,7 @@ class TestD7StandingOrders:
 # D8 — Load test with 10 000 transactions → SUCCESS + performance
 # ---------------------------------------------------------------------------
 
+DATA_D9 = DATASETS_DIR / "D9_synth_perf_seed9"
 DATA_D8 = DATASETS_DIR / "D8_load_test_10k_seed88"
 
 _D8_PERFORMANCE_SLO_MS = 10_000  # 10 seconds for 10k transactions
@@ -1135,3 +1137,75 @@ class TestScalingTiming:
         throughput = tx_count / elapsed_ms if elapsed_ms > 0 else 0
 
         print(f"\n[TIMING] {label}: {tx_count} tx | {elapsed_ms:.1f} ms | {throughput:.3f} tx/ms")
+
+
+# ---------------------------------------------------------------------------
+# Jõudluse võrdlusmõõtmised — mediaan + standardhälve, päris I/O
+# ---------------------------------------------------------------------------
+
+class TestBenchmarkD9D8:
+    """Jõudluse võrdlusmõõtmised D9 (1 000 tx) ja D8 (10 000 tx) andmestikel.
+
+    Metoodika: 1 proovijooks + 5 mõõdetud jooksu; tulemus on mediaan ja standardhälve.
+    Kasutab run_pipeline_fs (päris failisüsteemi I/O).
+
+    Ei kontrolli SLO-t — eesmärk on konkreetsete arvude saamine.
+    Käivita:
+        python -m pytest tests/tests.py::TestBenchmarkD9D8 -v -s
+    """
+
+    WARMUP_RUNS = 1
+    MEASURED_RUNS = 5
+
+    @pytest.mark.parametrize("dataset,label,expected_tx", [
+        ("D9_synth_perf_seed9",     "D9 (1 000 tx)",  1_000),
+        ("D8_load_test_10k_seed88", "D8 (10 000 tx)", 10_000),
+    ])
+    def test_benchmark(
+        self, tmp_path_factory, dataset: str, label: str, expected_tx: int,
+    ) -> None:
+        """Mõõdab pipeline'i jõudlust päris andmestikul mitme jooksuga."""
+        data_dir = DATASETS_DIR / dataset
+
+        # Proovijooksud (soojendus)
+        for i in range(self.WARMUP_RUNS):
+            warmup_dir = tmp_path_factory.mktemp(f"{dataset}_warmup_{i}")
+            run_pipeline_fs(
+                data_dir=data_dir,
+                output_dir=warmup_dir,
+                spec_dir=SPEC_DIR,
+                run_id=f"bench-warmup-{i}",
+                created_at_utc=FIXED_TS,
+            )
+
+        # Mõõdetud jooksud
+        measured_times: list[float] = []
+        for i in range(self.MEASURED_RUNS):
+            run_dir = tmp_path_factory.mktemp(f"{dataset}_run_{i}")
+            t0 = time.perf_counter()
+            summary = run_pipeline_fs(
+                data_dir=data_dir,
+                output_dir=run_dir,
+                spec_dir=SPEC_DIR,
+                run_id=f"bench-run-{i}",
+                created_at_utc=FIXED_TS,
+            )
+            elapsed_ms = (time.perf_counter() - t0) * 1000
+            measured_times.append(elapsed_ms)
+
+            assert summary["counts"]["transactions_total"] == expected_tx
+
+        # Statistika
+        median_ms = statistics.median(measured_times)
+        stdev_ms = statistics.stdev(measured_times)
+        throughput = expected_tx / median_ms if median_ms > 0 else 0
+
+        print(f"\n{'='*60}")
+        print(f"[BENCHMARK] {label}")
+        print(f"  Proovijooksud:    {self.WARMUP_RUNS}")
+        print(f"  Mõõdetud jooksud: {self.MEASURED_RUNS}")
+        print(f"  Kõik ajad (ms):   {[round(t, 2) for t in measured_times]}")
+        print(f"  Mediaan:          {median_ms:.2f} ms")
+        print(f"  Standardhälve:    {stdev_ms:.2f} ms")
+        print(f"  Läbilaskevõime:   {throughput:.3f} tx/ms")
+        print(f"{'='*60}")
