@@ -13,12 +13,12 @@ SEVERITY_RANK: dict[str, int] = {"INFO": 0, "WARN": 1, "ERROR": 2, "CRITICAL": 3
 
 
 # ---------------------------------------------------------------------------
-# SLI-01: Skeemikatvus — prioriteetsete SV väljade katvus
+# SLI-1: Skeemikatvus — prioriteetsete SV väljade katvus
 # ---------------------------------------------------------------------------
 #
-# SLI-01 = covered_priority_fields / all_priority_fields
+# SLI-1 = covered_priority_fields / all_priority_fields
 #
-# SLI-01 on spetsifikatsioonitaseme näitaja. See mõõdab, kui suurele osale
+# SLI-1 on spetsifikatsioonitaseme näitaja. See mõõdab, kui suurele osale
 # standardiseeritud vaheesituse (SV) prioriteetsetest väljadest on määratud
 # üheselt tõlgendatav täitmis- või tuletamisloogika.
 #
@@ -82,9 +82,9 @@ SLI1_FIELD_COVERAGE: dict[str, bool] = {
 def compute_sli1_coverage(
     coverage_map: dict[str, bool] | None = None,
 ) -> dict[str, float | int]:
-    """SLI-01 skeemikatvus: prioriteetsete SV väljade katvus.
+    """SLI-1 skeemikatvus: prioriteetsete SV väljade katvus.
 
-    SLI-01 = covered_priority_fields / all_priority_fields
+    SLI-1 = covered_priority_fields / all_priority_fields
 
     Spetsifikatsioonitaseme näitaja, mis põhineb hooldataval
     katvusdeklaratsioonil SLI1_FIELD_COVERAGE. Ei sõltu jooksuandmetest
@@ -234,7 +234,7 @@ def compute_metrics(
     Identity: input_records_total == passed_validation_total + dropped_total
 
     input_records_total is the single canonical raw-record counter used by
-    both SLI-02 (pass-through ratio) and gate (error-drop ratio).  In
+    both SLI-2 (pass-through ratio) and gate (error-drop ratio).  In
     pipeline.py this is total_raw — the count of all raw transactions across
     all report files before any processing.
 
@@ -278,7 +278,7 @@ def compute_metrics(
       info  — ML emission ratio (informative, NOT an SLI).
               = ml_rows_count / input_records_total
               End-to-end survival from raw input to ML projection.
-              Always ≤ SLI-02 because ML projection excludes INFORMATION-status
+              Always ≤ SLI-2 because ML projection excludes INFORMATION-status
               records that survive validation.
     """
     sli2_ratio = (
@@ -368,7 +368,7 @@ def build_report(
 
     Pure function — takes pre-resolved scalars, no Path/I/O.
 
-    SLI-05 auditijälje väljad:
+    SLI-5 auditijälje väljad:
       Kohustuslikud (run sektsioon): sv_schema_version, mapping_version,
       ruleset_version, adapter_version.
       Soovitavad (kui antud): spec_lock_sha256, input_fingerprint,
@@ -421,7 +421,7 @@ def build_report(
 
 
 # ---------------------------------------------------------------------------
-# SLI-05: Auditijälje täielikkus — nõutud auditiväljade kontroll
+# SLI-5: Auditijälje täielikkus — nõutud auditiväljade kontroll
 # ---------------------------------------------------------------------------
 
 #: Kohustuslikud auditiväljad, mis peavad olema report.run sektsioonis.
@@ -462,9 +462,9 @@ def _is_substantive(value: Any) -> bool:
 
 
 def compute_sli5_audit_completeness(report: dict) -> dict[str, float | int]:
-    """SLI-05 auditijälje täielikkus.
+    """SLI-5 auditijälje täielikkus.
 
-    SLI-05 = sisuliselt olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad
+    SLI-5 = sisuliselt olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad
 
     Kohustuslik auditiväli loetakse olevaks ainult siis, kui:
     - väli on report.run sektsioonis olemas,
