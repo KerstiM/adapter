@@ -1,7 +1,7 @@
 """
 Adapter pipeline — application layer: RAW (Berlin AIS) -> SV -> ML/LLM projections.
 
-Orchestrates the full 7-stage pipeline through ports only.  No filesystem I/O,
+Orchestrates the full 8-stage pipeline through ports only.  No filesystem I/O,
 no pathlib, no os — all I/O is delegated to the injected port implementations.
 
 Stages:
@@ -11,7 +11,8 @@ Stages:
   4. CHECK_INVARIANTS  — R-01 field-level rules + INV-09 dedupe
   5. PROJECT_ML        — ML CSV projection (C-02)
   6. PROJECT_LLM       — LLM context projection (C-03)
-  7. WRITE_OUTPUTS     — persist artifacts via OutputPort + build report
+  7. FORMAT_FOR_MODEL  — model-specific formatting (C-04)
+  8. WRITE_OUTPUTS     — persist artifacts via OutputPort + build report
 """
 
 from __future__ import annotations
@@ -365,7 +366,7 @@ def run_pipeline(
     }
 
     # ================================================================
-    # Stage 5a: PROJECT_ML — ML projection (C-02)
+    # Stage 5: PROJECT_ML — ML projection (C-02)
     # ================================================================
     ml_rows = _project_ml(sv_bundle)
 
@@ -376,7 +377,7 @@ def run_pipeline(
     }
 
     # ================================================================
-    # Stage 5b: PROJECT_LLM — LLM projection (C-03)
+    # Stage 6: PROJECT_LLM — LLM context projection (C-03)
     # ================================================================
     llm_contexts = _project_llm(sv_bundle, profile)
 
@@ -387,7 +388,7 @@ def run_pipeline(
     }
 
     # ================================================================
-    # Stage 5c: FORMAT_FOR_MODEL — optional model-specific formatting
+    # Stage 7: FORMAT_FOR_MODEL — model-specific formatting (C-04)
     # ================================================================
     target_models = profile.get("target_models", {})
     if target_models_override:
@@ -425,7 +426,7 @@ def run_pipeline(
     }
 
     # ================================================================
-    # Stage 6: WRITE_OUTPUTS — persist via OutputPort
+    # Stage 8: WRITE_OUTPUTS — persist via OutputPort
     # ================================================================
     out.write_sv(sv_bundle)
     out.write_ml(ml_rows)
