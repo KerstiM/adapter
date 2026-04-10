@@ -33,9 +33,13 @@ Stsenaarium 3 — Sisendikihi laiendatavus (DatasetPort)
 from __future__ import annotations
 
 import ast
+import copy
 import inspect
+import json
+from pathlib import Path
 from typing import Any
 
+import jsonschema
 import pytest
 
 from application.pipeline import run_pipeline
@@ -48,6 +52,7 @@ from domain.projections.model_formatters import (
 )
 from domain.projections.model_formatters.llm_gemma import format_gemma
 from tests.fakes import FakeDatasetPort, FakeOutputPort, FakeSpecPort, FixedClock
+from tests.fakes.fake_spec_port import _default_profile
 
 
 # ---------------------------------------------------------------------------
@@ -846,3 +851,174 @@ class TestC06ProjectionExtensibility:
             f"C-06 imports forbidden I/O modules: {violations}. "
             "Domain projections must remain pure."
         )
+
+
+# ===================================================================
+# Stsenaarium 5: C-06 opt-in raporti integratsioon
+# ===================================================================
+
+def _run_with_profile(
+    *,
+    profile: dict[str, Any] | None = None,
+    booked: list | None = None,
+    pending: list | None = None,
+) -> tuple[dict, FakeOutputPort]:
+    """Run pipeline with a custom FakeSpecPort profile override.
+
+    Lets tests flip the ``report_extensions`` opt-in flag while keeping the
+    rest of the default profile intact.
+    """
+    dataset = FakeDatasetPort(
+        accounts=_accounts(),
+        transaction_reports={
+            "transactions.json": _report(
+                booked=booked or [], pending=pending or [],
+            ),
+        },
+    )
+    out = FakeOutputPort()
+    spec = FakeSpecPort(profile_override=profile) if profile is not None else FakeSpecPort()
+    clock = FixedClock()
+    summary = run_pipeline(
+        dataset=dataset,
+        out=out,
+        spec=spec,
+        clock=clock,
+        dataset_id="extension-test",
+        input_dir="<memory>",
+    )
+    return summary, out
+
+
+def _profile_with_monthly_balance_extension() -> dict[str, Any]:
+    """Default fake profile plus ``report_extensions: ["monthly_balance"]``."""
+    profile = copy.deepcopy(_default_profile())
+    profile["report_extensions"] = ["monthly_balance"]
+    return profile
+
+
+_SPEC_S05_PATH = (
+    Path(__file__).resolve().parents[3]
+    / "spec" / "schemas" / "S-05_collected_report_schema.json"
+)
+
+
+def _load_s05_schema() -> dict:
+    with _SPEC_S05_PATH.open(encoding="utf-8") as f:
+        return json.load(f)
+
+
+class TestC06ReportIntegration:
+    """Opt-in raporti laiendus — C-06 ``monthly_balance`` ``report.json``-is.
+
+    Tõestab, et uue projektsiooni raportisse ühendamine nõuab ainult
+    väga väikest, lokaliseeritud lisandust (S-05 skeemis üks valikuline
+    väli, ``build_report()``-is üks valikuline nimeline parameeter ja
+    pipeline'is profiilipõhine lüliti) ning ei mõjuta olemasolevat
+    vaikekäitumist ega teisi projektsioone.
+    """
+
+    # Jagatud fikseeritud sisend — samad tehingud disabled/enabled jooksude jaoks,
+    # et kaks jooksu oleksid muus osas täpselt võrreldavad.
+    _FIXED_BOOKED = [
+        _tx(amount="100.00", transaction_id="STEP2-TX1",
+            value_date="2025-01-10", booking_date="2025-01-10"),
+        _tx(amount="-40.00", transaction_id="STEP2-TX2",
+            creditor_name="Vendor", debtor_name=None,
+            value_date="2025-02-15", booking_date="2025-02-15"),
+        _tx(amount="25.00", transaction_id="STEP2-TX3",
+            value_date="2025-03-05", booking_date="2025-03-05"),
+    ]
+
+    def test_c06_not_in_report_when_disabled(self) -> None:
+        """Vaikimisi profiil ei sisalda ``report_extensions`` → raport jääb muutumatuks."""
+        _, out = _run_with_profile(booked=self._FIXED_BOOKED)
+
+        assert out.report is not None
+        assert "extensions" not in out.report, (
+            "Default-profile runs must remain byte-identical — "
+            "no 'extensions' key must appear in report.json."
+        )
+
+    def test_c06_in_report_when_enabled(self) -> None:
+        """Kui profiil lülitab ``monthly_balance`` sisse, siis see ilmub raportisse.
+
+        Raportis olev sektsioon peab olema täpselt sama, mis ``project_monthly_balance()``
+        otsekutse tagastab — ehk samal SV sisendil identne väärtus.
+        """
+        profile = _profile_with_monthly_balance_extension()
+        _, out = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
+
+        assert out.report is not None
+        assert "extensions" in out.report
+        assert "monthly_balance" in out.report["extensions"]
+
+        expected = project_monthly_balance(out.sv)
+        assert out.report["extensions"]["monthly_balance"] == expected
+
+    def test_existing_report_fields_stable_with_c06_enabled(self) -> None:
+        """Laienduse sisselülitamine ei muuda ühtegi teist raporti välja.
+
+        Jooksutame sama sisendit sama kella all kahel korral — ühel korral
+        laiendus disabled, teisel korral enabled.  Eemaldame enabled raporti
+        ``"extensions"`` võtme ja võrdleme ülejäänut baidihaaval disabled
+        raportiga — need peavad olema identsed.  See tõestab, et hook
+        on puhtalt aditiivne ega riku olemasolevat raporti käitumist.
+        """
+        _, out_disabled = _run_with_profile(booked=self._FIXED_BOOKED)
+        _, out_enabled = _run_with_profile(
+            profile=_profile_with_monthly_balance_extension(),
+            booked=self._FIXED_BOOKED,
+        )
+
+        report_enabled_trimmed = {
+            k: v for k, v in out_enabled.report.items() if k != "extensions"
+        }
+        assert report_enabled_trimmed == out_disabled.report, (
+            "Every non-extensions report field must stay byte-identical when "
+            "the C-06 extension is enabled."
+        )
+
+    def test_c06_enablement_does_not_affect_other_projections(self) -> None:
+        """C-06 sisselülitamine ei mõjuta C-02 (ML), C-03 (LLM) ega C-05 (stats) väljundeid.
+
+        Tõestab, et laienduskanal on lokaalne ``report.json``-i suhtes ning
+        teised projektsioonid jäävad puutumata — täpselt see mõjuulatuse
+        kitsendus, mida lõputöö väide nõuab.
+        """
+        _, out_disabled = _run_with_profile(booked=self._FIXED_BOOKED)
+        _, out_enabled = _run_with_profile(
+            profile=_profile_with_monthly_balance_extension(),
+            booked=self._FIXED_BOOKED,
+        )
+
+        assert out_enabled.sv == out_disabled.sv, "SV bundle must be identical"
+        assert out_enabled.ml == out_disabled.ml, "C-02 ML output must be identical"
+        assert out_enabled.llm == out_disabled.llm, "C-03 LLM output must be identical"
+        assert project_stats(out_enabled.sv) == project_stats(out_disabled.sv), (
+            "C-05 stats must be identical"
+        )
+
+    def test_report_validates_against_s05_with_extension(self) -> None:
+        """Raport valideerub tõelise S-05 skeemi vastu nii disabled kui enabled jooksul.
+
+        Tõestab, et S-05 skeemimuudatus (``extensions`` optsionaalne väli)
+        on tegelikult kooskõlas pipeline'i väljundiga mõlemas režiimis ja
+        lõppraport läheb jsonschema-validatsioonist läbi.
+        """
+        s05 = _load_s05_schema()
+
+        _, out_disabled = _run_with_profile(booked=self._FIXED_BOOKED)
+        jsonschema.validate(out_disabled.report, s05)
+
+        _, out_enabled = _run_with_profile(
+            profile=_profile_with_monthly_balance_extension(),
+            booked=self._FIXED_BOOKED,
+        )
+        jsonschema.validate(out_enabled.report, s05)
+
+        # Täielikkuse kontroll: enabled jooksu raportis on ``extensions`` võti
+        # ning valideerus eelnev ``jsonschema.validate`` kutse tähendab, et
+        # S-05 ``additionalProperties: false`` juurtasand aktsepteerib seda
+        # uut nimelist välja.
+        assert "extensions" in out_enabled.report

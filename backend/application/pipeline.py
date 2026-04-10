@@ -26,6 +26,9 @@ from domain.mapping.c01_raw_to_sv import (
 )
 from domain.projections.c02_sv_to_ml import project_ml as _project_ml
 from domain.projections.c03_sv_to_llm import project_llm as _project_llm
+from domain.projections.c06_sv_to_monthly_balance import (
+    project_monthly_balance as _project_monthly_balance,
+)
 from domain.projections.model_formatters import format_for_model as _format_for_model
 from domain.report.ops import (
     build_dropped_details as _build_dropped_details,
@@ -387,6 +390,17 @@ def run_pipeline(
         "warnings": 0,
     }
 
+    # ----------------------------------------------------------------
+    # Opt-in report extensions — additive, gated by profile
+    # ----------------------------------------------------------------
+    # Profile-level extension hook: each entry in ``profile["report_extensions"]``
+    # contributes a named section to the final ``report.json`` under
+    # ``"extensions"``. Absent or empty list → byte-identical default behaviour.
+    report_extensions_out: dict[str, Any] = {}
+    for _ext_name in profile.get("report_extensions", []):
+        if _ext_name == "monthly_balance":
+            report_extensions_out["monthly_balance"] = _project_monthly_balance(sv_bundle)
+
     # ================================================================
     # Stage 7: FORMAT_FOR_MODEL — model-specific formatting (C-04)
     # ================================================================
@@ -558,6 +572,7 @@ def run_pipeline(
         issues=issues,
         dropped_details=all_dropped_details,
         metrics=metrics,
+        report_extensions=report_extensions_out or None,
     )
     out.write_report(report)
 
