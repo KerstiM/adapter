@@ -363,6 +363,7 @@ def build_report(
     spec_lock_sha256: str | None = None,
     input_fingerprint: str | None = None,
     output_artifact_hashes: dict[str, str] | None = None,
+    report_extensions: dict[str, Any] | None = None,
 ) -> dict:
     """Build report.json structure (S-05 compliant).
 
@@ -373,6 +374,11 @@ def build_report(
       ruleset_version, adapter_version.
       Soovitavad (kui antud): spec_lock_sha256, input_fingerprint,
       output_artifact_hashes.
+
+    Opt-in raporti laiendused:
+      Kui *report_extensions* on mitte-tühi dict, lisatakse see juuretasemel
+      ``"extensions"`` võtmesse. Tühja dict'i või ``None`` puhul ``extensions``
+      võtit ei teki — vaikekäitumine jääb baidi-täpselt samaks.
     """
     run_section: dict = {
         "run_id": run_id,
@@ -417,6 +423,8 @@ def build_report(
         report["output_artifact_hashes"] = output_artifact_hashes
     if metrics is not None:
         report["metrics"] = metrics
+    if report_extensions:
+        report["extensions"] = report_extensions
     return report
 
 
