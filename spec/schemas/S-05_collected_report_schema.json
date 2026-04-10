@@ -269,6 +269,11 @@
         "llm": { "type": "string", "minLength": 64 },
         "report": { "type": "string", "minLength": 64 }
       }
+    },
+
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
     }
   }
 }
