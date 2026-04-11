@@ -6,36 +6,19 @@ No I/O, no jsonschema/pathlib/os imports.
 from __future__ import annotations
 
 import hashlib
-from datetime import datetime
-from decimal import Decimal, InvalidOperation
+from decimal import Decimal
+
+from domain._shared.values import is_iso_date, parse_decimal
 
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 
-def _parse_decimal(s: str | None) -> Decimal | None:
-    if s is None:
-        return None
-    try:
-        return Decimal(s)
-    except InvalidOperation:
-        return None
-
 
 def _decimal_str(d: Decimal) -> str:
     """Canonical decimal string without scientific notation."""
     return format(d.normalize(), "f")
-
-
-def _is_iso_date(s: str | None) -> bool:
-    if not s:
-        return False
-    try:
-        datetime.strptime(s, "%Y-%m-%d")
-        return True
-    except ValueError:
-        return False
 
 
 def _hash_record_id(parts: list[str]) -> str:
@@ -89,7 +72,7 @@ def map_single_transaction(
     amount_raw = (raw_tx.get("transactionAmount") or {}).get("amount")
     if amount_raw is None:
         return None
-    amt = _parse_decimal(amount_raw)
+    amt = parse_decimal(amount_raw)
     if amt is None:
         return None
 
@@ -100,10 +83,10 @@ def map_single_transaction(
     value_date_fell_back = False
     if not value_date:
         next_exec = raw_tx.get("nextExecutionDate")
-        if status == "INFORMATION" and next_exec and _is_iso_date(next_exec):
+        if status == "INFORMATION" and next_exec and is_iso_date(next_exec):
             value_date = next_exec
             value_date_fell_back = True
-        elif booking_date and _is_iso_date(booking_date):
+        elif booking_date and is_iso_date(booking_date):
             value_date = booking_date
             value_date_fell_back = True
         else:
@@ -212,9 +195,9 @@ def flatten_report_file(
                 sv_txs.append(sv_tx)
             else:
                 amount_obj = raw_tx.get("transactionAmount") or {}
-                has_amount = amount_obj.get("amount") is not None and _parse_decimal(amount_obj.get("amount")) is not None
+                has_amount = amount_obj.get("amount") is not None and parse_decimal(amount_obj.get("amount")) is not None
                 has_value_date = bool(raw_tx.get("valueDate"))
-                has_booking_date = bool(raw_tx.get("bookingDate") and _is_iso_date(raw_tx.get("bookingDate")))
+                has_booking_date = bool(raw_tx.get("bookingDate") and is_iso_date(raw_tx.get("bookingDate")))
 
                 if not has_amount:
                     reason = "transactionAmount missing or unparseable"

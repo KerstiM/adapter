@@ -21,9 +21,10 @@ Usage::
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import Any
+
+from adapters.fs._io import load_json
 
 
 class FsDatasetAdapter:
@@ -49,7 +50,7 @@ class FsDatasetAdapter:
         Raises ``FileNotFoundError`` when the file does not exist.
         """
         path = self._data_dir / "accounts.json"
-        return self._load_json(path)
+        return load_json(path)
 
     def list_transaction_reports(self) -> list[str]:
         """Return a deterministically-ordered list of transaction-report names.
@@ -71,20 +72,11 @@ class FsDatasetAdapter:
         Raises ``json.JSONDecodeError`` when the file is not valid JSON.
         """
         path = self._data_dir / name
-        return self._load_json(path)
+        return load_json(path)
 
     def read_standing_orders_optional(self) -> dict[str, Any] | None:
         """Return the parsed standing-orders payload, or ``None`` if absent."""
         path = self._data_dir / "standing_orders.json"
         if not path.exists():
             return None
-        return self._load_json(path)
-
-    # ------------------------------------------------------------------
-    # Private helpers
-    # ------------------------------------------------------------------
-
-    @staticmethod
-    def _load_json(path: Path) -> dict[str, Any]:
-        with open(path, encoding="utf-8") as f:
-            return json.load(f)
+        return load_json(path)

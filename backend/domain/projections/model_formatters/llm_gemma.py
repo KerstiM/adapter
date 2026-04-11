@@ -15,12 +15,7 @@ Pure function, no I/O.
 """
 from __future__ import annotations
 
-import json
-
-
-def _context_to_json(ctx: dict) -> str:
-    """Serialize a single LLM context dict to compact JSON."""
-    return json.dumps(ctx, ensure_ascii=False, separators=(",", ":"))
+from domain.projections.model_formatters._common import context_to_json
 
 
 def format_gemma(
@@ -50,7 +45,7 @@ def format_gemma(
 
     results = []
     for ctx in llm_contexts:
-        ctx_json = _context_to_json(ctx)
+        ctx_json = context_to_json(ctx)
         prompt = (
             f"{turn_start_user}{preamble}\n\n{ctx_json}{turn_end}"
             f"{turn_start_model}"
