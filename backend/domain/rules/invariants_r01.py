@@ -7,31 +7,8 @@ from __future__ import annotations
 
 import re
 from collections import OrderedDict
-from decimal import Decimal, InvalidOperation
 
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-def _parse_decimal(s: str | None) -> Decimal | None:
-    if s is None:
-        return None
-    try:
-        return Decimal(s)
-    except InvalidOperation:
-        return None
-
-
-def _is_iso_date(s: str | None) -> bool:
-    if not s:
-        return False
-    try:
-        from datetime import datetime
-        datetime.strptime(s, "%Y-%m-%d")
-        return True
-    except ValueError:
-        return False
+from domain._shared.values import is_iso_date, parse_decimal
 
 
 # ---------------------------------------------------------------------------
@@ -71,7 +48,7 @@ def check_invariants(sv_bundle: dict) -> tuple[list[dict], list[dict]]:
 
         # INV-03: amount parseable
         for key in ("raw", "signed", "abs"):
-            if _parse_decimal(amount.get(key)) is None:
+            if parse_decimal(amount.get(key)) is None:
                 tx["flags"].append({
                     "id": "INV-03_AMOUNT_PARSEABLE",
                     "severity": "ERROR",
@@ -86,7 +63,7 @@ def check_invariants(sv_bundle: dict) -> tuple[list[dict], list[dict]]:
 
         # INV-04: booking_date optional but valid if present
         bd = tx.get("booking_date")
-        if bd is not None and not _is_iso_date(bd):
+        if bd is not None and not is_iso_date(bd):
             tx["flags"].append({
                 "id": "INV-04_BOOKING_DATE_OPTIONAL",
                 "severity": "WARN",
