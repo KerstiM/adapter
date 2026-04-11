@@ -58,88 +58,40 @@ def _is_download_only(data: dict) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# Stage 1: Read & validate RAW input
+# Stage 1 & 3: Schema validation (shared helper)
 # ---------------------------------------------------------------------------
 
-def _validate_raw_accounts(accounts_data: dict, schema: dict) -> list[dict]:
+def _validate_against_schema(
+    data: dict,
+    schema: dict,
+    *,
+    code: str,
+    stage: str,
+    source_lineage: str,
+) -> list[dict]:
+    """Validate *data* against *schema* and return a list of Issue dicts.
+
+    A successful validation returns an empty list.  A failure yields a single
+    Issue dict with the given *code*/*stage*/*source_lineage* and the first
+    schema error reported by ``jsonschema``.  This helper backs all four of
+    the pipeline's schema-validation stages (S-00A/B/C on RAW input, S-01 on
+    the SV bundle).
+    """
     errors: list[dict] = []
     try:
-        jsonschema.validate(accounts_data, schema)
+        jsonschema.validate(data, schema)
     except jsonschema.ValidationError as e:
+        schema_id = code.split("_", 1)[0]
         errors.append({
-            "code": "S-00A_VALIDATION",
+            "code": code,
             "severity": "ERROR",
-            "stage": "READ_INPUT",
-            "message": f"S-00A validation: {e.message}",
+            "stage": stage,
+            "message": f"{schema_id} validation: {e.message}",
             "refs": {
                 "account_id": None,
                 "record_id": None,
                 "field_path": ".".join(str(p) for p in e.absolute_path) or None,
-                "source_lineage": "accounts.json",
-            },
-        })
-    return errors
-
-
-def _validate_raw_transactions(tx_data: dict, schema: dict) -> list[dict]:
-    errors: list[dict] = []
-    try:
-        jsonschema.validate(tx_data, schema)
-    except jsonschema.ValidationError as e:
-        errors.append({
-            "code": "S-00B_VALIDATION",
-            "severity": "ERROR",
-            "stage": "READ_INPUT",
-            "message": f"S-00B validation: {e.message}",
-            "refs": {
-                "account_id": None,
-                "record_id": None,
-                "field_path": ".".join(str(p) for p in e.absolute_path) or None,
-                "source_lineage": "transactions.json",
-            },
-        })
-    return errors
-
-
-def _validate_raw_standing_orders(so_data: dict, schema: dict) -> list[dict]:
-    errors: list[dict] = []
-    try:
-        jsonschema.validate(so_data, schema)
-    except jsonschema.ValidationError as e:
-        errors.append({
-            "code": "S-00C_VALIDATION",
-            "severity": "ERROR",
-            "stage": "READ_INPUT",
-            "message": f"S-00C validation: {e.message}",
-            "refs": {
-                "account_id": None,
-                "record_id": None,
-                "field_path": ".".join(str(p) for p in e.absolute_path) or None,
-                "source_lineage": "standing_orders.json",
-            },
-        })
-    return errors
-
-
-# ---------------------------------------------------------------------------
-# Stage 3: Validate SV schema
-# ---------------------------------------------------------------------------
-
-def _validate_sv_schema(sv_bundle: dict, schema: dict) -> list[dict]:
-    errors: list[dict] = []
-    try:
-        jsonschema.validate(sv_bundle, schema)
-    except jsonschema.ValidationError as e:
-        errors.append({
-            "code": "S-01_VALIDATION",
-            "severity": "ERROR",
-            "stage": "VALIDATE_SCHEMA",
-            "message": f"S-01 validation: {e.message}",
-            "refs": {
-                "account_id": None,
-                "record_id": None,
-                "field_path": ".".join(str(p) for p in e.absolute_path) or None,
-                "source_lineage": "sv.json",
+                "source_lineage": source_lineage,
             },
         })
     return errors
@@ -238,7 +190,13 @@ def run_pipeline(
     stage_warnings_1 = 0
 
     accounts_data = dataset.read_accounts()
-    acct_errors = _validate_raw_accounts(accounts_data, profile["schemas"]["S-00A"])
+    acct_errors = _validate_against_schema(
+        accounts_data,
+        profile["schemas"]["S-00A"],
+        code="S-00A_VALIDATION",
+        stage="READ_INPUT",
+        source_lineage="accounts.json",
+    )
     issues.extend(acct_errors)
     stage_errors_1 += len(acct_errors)
 
@@ -255,12 +213,24 @@ def run_pipeline(
                 })
                 stage_warnings_1 += 1
             else:
-                tx_errors = _validate_raw_transactions(tx_data, profile["schemas"]["S-00B"])
+                tx_errors = _validate_against_schema(
+                    tx_data,
+                    profile["schemas"]["S-00B"],
+                    code="S-00B_VALIDATION",
+                    stage="READ_INPUT",
+                    source_lineage="transactions.json",
+                )
                 issues.extend(tx_errors)
                 stage_errors_1 += len(tx_errors)
                 report_files.append((name, tx_data))
         else:
-            tx_errors = _validate_raw_transactions(tx_data, profile["schemas"]["S-00B"])
+            tx_errors = _validate_against_schema(
+                tx_data,
+                profile["schemas"]["S-00B"],
+                code="S-00B_VALIDATION",
+                stage="READ_INPUT",
+                source_lineage="transactions.json",
+            )
             issues.extend(tx_errors)
             stage_errors_1 += len(tx_errors)
             report_files.append((name, tx_data))
@@ -268,7 +238,13 @@ def run_pipeline(
     # Load optional standing orders via DatasetPort
     so_data = dataset.read_standing_orders_optional()
     if so_data is not None:
-        so_errors = _validate_raw_standing_orders(so_data, profile["schemas"]["S-00C"])
+        so_errors = _validate_against_schema(
+            so_data,
+            profile["schemas"]["S-00C"],
+            code="S-00C_VALIDATION",
+            stage="READ_INPUT",
+            source_lineage="standing_orders.json",
+        )
         issues.extend(so_errors)
         stage_errors_1 += len(so_errors)
         report_files.append(("standing_orders.json", so_data))
@@ -316,7 +292,13 @@ def run_pipeline(
     # ================================================================
     # Stage 3: VALIDATE_SCHEMA — validate SV against S-01
     # ================================================================
-    sv_errors = _validate_sv_schema(sv_bundle, profile["schemas"]["S-01"])
+    sv_errors = _validate_against_schema(
+        sv_bundle,
+        profile["schemas"]["S-01"],
+        code="S-01_VALIDATION",
+        stage="VALIDATE_SCHEMA",
+        source_lineage="sv.json",
+    )
     issues.extend(sv_errors)
 
     stage_log["VALIDATE_SCHEMA"] = {

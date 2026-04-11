@@ -28,7 +28,11 @@ class FixedClock:
         The run-ID string to return from :meth:`new_run_id`.
     """
 
-    def __init__(self, fixed_utc: str, fixed_run_id: str) -> None:
+    def __init__(
+        self,
+        fixed_utc: str = "2026-01-01T00:00:00Z",
+        fixed_run_id: str = "fake-run-001",
+    ) -> None:
         self._utc = fixed_utc
         self._run_id = fixed_run_id
 
