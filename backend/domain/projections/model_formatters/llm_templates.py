@@ -11,12 +11,7 @@ Returns a list of dicts, one per account, each containing the formatted prompt.
 """
 from __future__ import annotations
 
-import json
-
-
-def _context_to_json(ctx: dict) -> str:
-    """Serialize a single LLM context dict to compact JSON."""
-    return json.dumps(ctx, ensure_ascii=False, separators=(",", ":"))
+from domain.projections.model_formatters._common import context_to_json
 
 
 def format_llama3(
@@ -47,7 +42,7 @@ def format_llama3(
 
     results = []
     for ctx in llm_contexts:
-        ctx_json = _context_to_json(ctx)
+        ctx_json = context_to_json(ctx)
         prompt = (
             f"{bos}{sys_start}{preamble}{sys_end}"
             f"{usr_start}{ctx_json}{usr_end}"
@@ -83,7 +78,7 @@ def format_mistral(
 
     results = []
     for ctx in llm_contexts:
-        ctx_json = _context_to_json(ctx)
+        ctx_json = context_to_json(ctx)
         prompt = f"{bos}{inst_start}{preamble}\n\n{ctx_json}{inst_end}"
         results.append({
             "model_id": "mistral-7b-instruct-v0.3",
@@ -116,7 +111,7 @@ def format_chatml(
 
     results = []
     for ctx in llm_contexts:
-        ctx_json = _context_to_json(ctx)
+        ctx_json = context_to_json(ctx)
         prompt = (
             f"{im_start}system\n{preamble}{im_end}\n"
             f"{im_start}user\n{ctx_json}{im_end}\n"

@@ -13,11 +13,12 @@ Usage::
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import Any
 
 import yaml
+
+from adapters.fs._io import load_json
 
 
 class FsSpecAdapter:
@@ -65,7 +66,7 @@ class FsSpecAdapter:
         resolved["schemas"] = {}
         for key, relpath in raw.get("schemas", {}).items():
             path = self._resolve_path(relpath)
-            resolved["schemas"][key] = self._load_json(path)
+            resolved["schemas"][key] = load_json(path)
 
         # Load contracts
         resolved["contracts"] = {}
@@ -137,11 +138,6 @@ class FsSpecAdapter:
                 f"Spec file missing (profile points to it): {relpath!r} -> {path}"
             )
         return path
-
-    @staticmethod
-    def _load_json(path: Path) -> dict[str, Any]:
-        with open(path, encoding="utf-8") as f:
-            return json.load(f)
 
     @staticmethod
     def _load_yaml(path: Path) -> dict[str, Any]:
