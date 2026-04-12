@@ -517,6 +517,9 @@ class SimpleOutputPort:
     def write_llm_model(self, output: list[dict[str, Any]], model_suffix: str) -> None:
         self.artifacts[f"llm_model_{model_suffix}"] = output
 
+    def write_extra_projection(self, data: list[dict[str, Any]], filename: str) -> None:
+        self.artifacts[f"extra_{filename}"] = data
+
 
 class TestInputExtensibility:
     """DatasetPort / OutputPort laiendatavuse evolutsioonistsenaarium.
@@ -1022,3 +1025,239 @@ class TestC06ReportIntegration:
         # S-05 ``additionalProperties: false`` juurtasand aktsepteerib seda
         # uut nimelist välja.
         assert "extensions" in out_enabled.report
+
+
+# ===================================================================
+# Stsenaarium 6: C-05 & C-06 esimese klassi projektsioonid
+# ===================================================================
+
+def _profile_with_extra_projections(*names: str) -> dict[str, Any]:
+    """Default fake profile plus ``extra_projections`` opt-in gate.
+
+    Adds permissive schemas for S-06/S-07 and minimal contracts for C-05/C-06
+    with ``output.file`` and ``output.schema`` fields so that the pipeline can
+    derive the output filename and validation schema from the contract.
+    """
+    profile = copy.deepcopy(_default_profile())
+    profile["extra_projections"] = list(names)
+    profile["schemas"]["S-06"] = {}
+    profile["schemas"]["S-07"] = {}
+    profile["contracts"]["C-05"] = {
+        "id": "C-05_SV_TO_STATS",
+        "version": "1.0.0",
+        "output": {
+            "format": "JSON",
+            "file": "projections/stats_v1.json",
+            "schema": "S-06",
+        },
+    }
+    profile["contracts"]["C-06"] = {
+        "id": "C-06_SV_TO_MONTHLY_BALANCE",
+        "version": "1.0.0",
+        "output": {
+            "format": "JSON",
+            "file": "projections/monthly_balance_v1.json",
+            "schema": "S-07",
+        },
+    }
+    return profile
+
+
+_SPEC_S06_PATH = (
+    Path(__file__).resolve().parents[3]
+    / "spec" / "schemas" / "S-06_stats_schema.json"
+)
+
+_SPEC_S07_PATH = (
+    Path(__file__).resolve().parents[3]
+    / "spec" / "schemas" / "S-07_monthly_balance_schema.json"
+)
+
+
+def _load_real_schema(path: Path) -> dict:
+    with path.open(encoding="utf-8") as f:
+        return json.load(f)
+
+
+class TestExtraProjectionsIntegration:
+    """C-05 & C-06 esimese klassi projektsioonid — profiili kaudu aktiveeritud,
+    lepinguga seotud, skeemi vastu valideeritud, eraldi väljundfailidena.
+
+    Tõestab, et uued projektsioonid järgivad sama arhitektuurimustrit nagu
+    C-02 (ML) ja C-03 (LLM): profiil juhib aktiveerimist, leping määrab
+    väljundfaili tee ja skeemi, pipeline valideerib ja kirjutab eraldi faili,
+    raport sisaldab auditijälge.
+    """
+
+    _FIXED_BOOKED = [
+        _tx(amount="100.00", transaction_id="EP-TX1",
+            value_date="2025-01-10", booking_date="2025-01-10"),
+        _tx(amount="-40.00", transaction_id="EP-TX2",
+            creditor_name="Vendor", debtor_name=None,
+            value_date="2025-02-15", booking_date="2025-02-15"),
+        _tx(amount="25.00", transaction_id="EP-TX3",
+            value_date="2025-03-05", booking_date="2025-03-05"),
+    ]
+
+    def test_not_triggered_on_default_profile(self) -> None:
+        """Vaikeprofiil ei tekita ühtki extra projection väljundit."""
+        _, out = _run_with_profile(booked=self._FIXED_BOOKED)
+
+        assert out.extra_projections == {}, (
+            "Default-profile runs must produce no extra projection files."
+        )
+        assert "extra_projections" not in (out.report or {}), (
+            "Default-profile report must not contain extra_projections key."
+        )
+
+    def test_stats_written_when_enabled(self) -> None:
+        """extra_projections: [stats] tekitab stats_v1.json väljundi."""
+        profile = _profile_with_extra_projections("stats")
+        _, out = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
+
+        assert "stats_v1.json" in out.extra_projections
+        expected = project_stats(out.sv)
+        assert out.extra_projections["stats_v1.json"] == expected
+
+    def test_monthly_balance_written_when_enabled(self) -> None:
+        """extra_projections: [monthly_balance] tekitab monthly_balance_v1.json."""
+        profile = _profile_with_extra_projections("monthly_balance")
+        _, out = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
+
+        assert "monthly_balance_v1.json" in out.extra_projections
+        expected = project_monthly_balance(out.sv)
+        assert out.extra_projections["monthly_balance_v1.json"] == expected
+
+    def test_both_projections_enabled(self) -> None:
+        """Mõlemad projektsioonid aktiveerituna tekitavad mõlemad väljundid."""
+        profile = _profile_with_extra_projections("stats", "monthly_balance")
+        _, out = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
+
+        assert "stats_v1.json" in out.extra_projections
+        assert "monthly_balance_v1.json" in out.extra_projections
+
+    def test_audit_trail_in_report(self) -> None:
+        """Raport sisaldab extra_projections auditijälge."""
+        profile = _profile_with_extra_projections("stats", "monthly_balance")
+        _, out = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
+
+        assert "extra_projections" in out.report
+        audit = out.report["extra_projections"]
+        assert len(audit) == 2
+
+        names = {a["name"] for a in audit}
+        assert names == {"stats", "monthly_balance"}
+
+        for entry in audit:
+            assert entry["enabled"] is True
+            assert entry["contract_id"].startswith("C-0")
+            assert entry["contract_version"] == "1.0.0"
+            assert entry["schema_id"] in ("S-06", "S-07")
+            assert entry["output_file"].startswith("projections/")
+            assert entry["item_count"] >= 1
+            assert entry["validation_result"] == "PASS"
+
+    def test_schema_validation_pass_recorded(self) -> None:
+        """Permissiivse skeemiga valideerimistulemus on PASS."""
+        profile = _profile_with_extra_projections("stats")
+        _, out = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
+
+        audit = out.report["extra_projections"]
+        assert audit[0]["validation_result"] == "PASS"
+
+    def test_schema_validation_failure_recorded(self) -> None:
+        """Piiratud skeemiga valideerimistulemus on FAIL ja issue tekib."""
+        profile = _profile_with_extra_projections("stats")
+        # Override S-06 with a schema that rejects the actual output
+        profile["schemas"]["S-06"] = {
+            "type": "object",
+            "required": ["nonexistent_field"],
+        }
+        _, out = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
+
+        audit = out.report["extra_projections"]
+        assert audit[0]["validation_result"].startswith("FAIL:")
+
+        # Validation failure must also appear in issues
+        schema_issues = [
+            i for i in out.report.get("issues", [])
+            if i["code"] == "S-06_VALIDATION"
+        ]
+        assert len(schema_issues) >= 1
+
+    def test_contract_drives_output_filename(self) -> None:
+        """Lepingu output.file väli määrab väljundfaili nime."""
+        profile = _profile_with_extra_projections("stats")
+        profile["contracts"]["C-05"]["output"]["file"] = "projections/custom_stats.json"
+        _, out = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
+
+        assert "custom_stats.json" in out.extra_projections
+        assert "stats_v1.json" not in out.extra_projections
+
+    def test_default_behavior_unchanged(self) -> None:
+        """Vaikeprofiili väljund on baidihaaval identne enne ja pärast muudatusi."""
+        _, out_default = _run_with_profile(booked=self._FIXED_BOOKED)
+        _, out_extra = _run_with_profile(
+            profile=_profile_with_extra_projections("stats", "monthly_balance"),
+            booked=self._FIXED_BOOKED,
+        )
+
+        # SV, ML, LLM peavad olema identsed
+        assert out_default.sv == out_extra.sv, "SV must be identical"
+        assert out_default.ml == out_extra.ml, "ML must be identical"
+        assert out_default.llm == out_extra.llm, "LLM must be identical"
+
+    def test_existing_ml_llm_unchanged(self) -> None:
+        """Extra projections sisselülitamine ei mõjuta ML ja LLM väljundeid."""
+        _, out_disabled = _run_with_profile(booked=self._FIXED_BOOKED)
+        _, out_enabled = _run_with_profile(
+            profile=_profile_with_extra_projections("stats", "monthly_balance"),
+            booked=self._FIXED_BOOKED,
+        )
+
+        assert out_enabled.ml == out_disabled.ml, "C-02 ML must be identical"
+        assert out_enabled.llm == out_disabled.llm, "C-03 LLM must be identical"
+        assert project_stats(out_enabled.sv) == project_stats(out_disabled.sv)
+
+    def test_report_extensions_coexist(self) -> None:
+        """report_extensions ja extra_projections töötavad koos."""
+        profile = _profile_with_extra_projections("monthly_balance")
+        profile["report_extensions"] = ["monthly_balance"]
+
+        _, out = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
+
+        # report_extensions mehhanism paneb andmed report.extensions sisse
+        assert "extensions" in out.report
+        assert "monthly_balance" in out.report["extensions"]
+
+        # extra_projections mehhanism kirjutab eraldi faili + audit
+        assert "monthly_balance_v1.json" in out.extra_projections
+        assert "extra_projections" in out.report
+
+    def test_stats_validates_against_real_s06(self) -> None:
+        """Stats väljund valideerub tõelise S-06 skeemi vastu."""
+        _, out = _run(booked=self._FIXED_BOOKED)
+        stats = project_stats(out.sv)
+        s06 = _load_real_schema(_SPEC_S06_PATH)
+        jsonschema.validate(stats, s06)
+
+    def test_monthly_balance_validates_against_real_s07(self) -> None:
+        """Monthly balance väljund valideerub tõelise S-07 skeemi vastu."""
+        _, out = _run(booked=self._FIXED_BOOKED)
+        timelines = project_monthly_balance(out.sv)
+        s07 = _load_real_schema(_SPEC_S07_PATH)
+        jsonschema.validate(timelines, s07)
+
+    def test_report_validates_against_s05_with_extra_projections(self) -> None:
+        """Raport valideerub S-05 skeemi vastu nii disabled kui enabled jooksul."""
+        s05 = _load_s05_schema()
+
+        # Disabled
+        _, out_disabled = _run_with_profile(booked=self._FIXED_BOOKED)
+        jsonschema.validate(out_disabled.report, s05)
+
+        # Enabled
+        profile = _profile_with_extra_projections("stats", "monthly_balance")
+        _, out_enabled = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
+        jsonschema.validate(out_enabled.report, s05)
+        assert "extra_projections" in out_enabled.report

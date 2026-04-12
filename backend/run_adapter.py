@@ -77,6 +77,9 @@ def main() -> None:
     parser.add_argument("--llm-preamble", default=None,
                         help="System preamble for LLM projections. "
                              "Overrides profile setting.")
+    parser.add_argument("--profile", "-p", default="default",
+                        help="Run profile to use (e.g. extensions_eval). "
+                             "Default: default")
     args = parser.parse_args()
 
     if args.data:
@@ -104,6 +107,8 @@ def main() -> None:
 
     print(f"Dataset:    {data_dir}")
     print(f"Output to:  {output_dir}")
+    if args.profile != "default":
+        print(f"Profile:    {args.profile}")
     if target_models_override:
         if target_models_override.get("llm"):
             print(f"Target LLM: {', '.join(target_models_override['llm'])}")
@@ -113,6 +118,7 @@ def main() -> None:
 
     summary = run_pipeline_fs(
         data_dir, output_dir, spec_dir=ROOT / "spec",
+        profile_id=args.profile,
         target_models_override=target_models_override,
     )
 

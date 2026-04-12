@@ -28,6 +28,7 @@ class FakeOutputPort:
         self.report: dict[str, Any] | None = None
         self.ml_models: dict[str, dict[str, Any]] = {}
         self.llm_models: dict[str, list[dict[str, Any]]] = {}
+        self.extra_projections: dict[str, list[dict[str, Any]]] = {}
 
     def init_run_folder(self, run_id: str, created_at_utc: str) -> None:
         self.run_id = run_id
@@ -50,3 +51,6 @@ class FakeOutputPort:
 
     def write_llm_model(self, output: list[dict[str, Any]], model_suffix: str) -> None:
         self.llm_models[model_suffix] = output
+
+    def write_extra_projection(self, data: list[dict[str, Any]], filename: str) -> None:
+        self.extra_projections[filename] = data

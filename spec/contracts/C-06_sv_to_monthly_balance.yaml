@@ -1,0 +1,18 @@
+id: C-06_SV_TO_MONTHLY_BALANCE
+version: "1.0.0"
+
+filter:
+  include_status: ["BOOKED", "PENDING"]
+
+temporal:
+  group_by: "value_date[:7]"
+  sort: ASC
+  accumulator: running_balance
+  initial_balance: "0"
+
+output:
+  format: JSON
+  file: "projections/monthly_balance_v1.json"
+  schema: "S-07"
+  cardinality: >
+    JSON array, one timeline object per account.
