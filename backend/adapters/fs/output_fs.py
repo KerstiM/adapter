@@ -158,6 +158,14 @@ class FsOutputAdapter:
             f.write(_stable_json(output))
             f.write("\n")
 
+    def write_extra_projection(self, data: list[dict[str, Any]], filename: str) -> None:
+        """Write extra projection to ``projections/<filename>`` (stable JSON, trailing newline)."""
+        self._require_init()
+        path = self._proj_folder / filename  # type: ignore[operator]
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(_stable_json(data))
+            f.write("\n")
+
     # ------------------------------------------------------------------
     # Extra helpers (not part of the port but useful for callers)
     # ------------------------------------------------------------------

@@ -364,6 +364,7 @@ def build_report(
     input_fingerprint: str | None = None,
     output_artifact_hashes: dict[str, str] | None = None,
     report_extensions: dict[str, Any] | None = None,
+    extra_projections_audit: list[dict] | None = None,
 ) -> dict:
     """Build report.json structure (S-05 compliant).
 
@@ -379,6 +380,12 @@ def build_report(
       Kui *report_extensions* on mitte-tühi dict, lisatakse see juuretasemel
       ``"extensions"`` võtmesse. Tühja dict'i või ``None`` puhul ``extensions``
       võtit ei teki — vaikekäitumine jääb baidi-täpselt samaks.
+
+    Extra projektsioonide auditijälg:
+      Kui *extra_projections_audit* on mitte-tühi list, lisatakse see
+      juuretasemel ``"extra_projections"`` võtmesse.  Iga kirje sisaldab
+      projektsiooni nime, lepingu ID/versiooni, skeemi ID-d, väljundfaili
+      teed, kirjete arvu ja valideerimistulemust.
     """
     run_section: dict = {
         "run_id": run_id,
@@ -425,6 +432,8 @@ def build_report(
         report["metrics"] = metrics
     if report_extensions:
         report["extensions"] = report_extensions
+    if extra_projections_audit:
+        report["extra_projections"] = extra_projections_audit
     return report
 
 

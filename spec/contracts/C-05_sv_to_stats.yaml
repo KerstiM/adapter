@@ -1,0 +1,21 @@
+id: C-05_SV_TO_STATS
+version: "1.0.0"
+
+filter:
+  include_status: ["BOOKED", "PENDING"]
+
+aggregation:
+  scope: per_account
+  metrics:
+    - transaction_count_by_status
+    - inflow_total_count_avg
+    - outflow_total_count_avg
+    - period_boundaries
+    - top_counterparties_by_abs_total
+
+output:
+  format: JSON
+  file: "projections/stats_v1.json"
+  schema: "S-06"
+  cardinality: >
+    JSON array, one statistics object per account.
