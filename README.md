@@ -33,6 +33,7 @@ for d in datasets/D*; do python backend/run_adapter.py --data "$d" --out backend
 CLI argumendid:
 - `--data / -d` — dataseti nimi (nt `D1`, `D4`) või kaustatee. Vaikimisi: `D1_public_valid_small`.
 - `--out / -o` — väljundi juurkaust. Vaikimisi: `<repo>/.backend/out/`.
+- `--profile / -p` — jooksuprofiil (nt `extensions_eval`). Vaikimisi: `default`. Profiil määrab, millised skeemid, lepingud ja reeglistikud on aktiivsed ning kas on lubatud lisaprojektsioonid (nt `extra_projections`).
 - `--target-llm MODEL [MODEL ...]` — LLM mudel(id), millele genereerida projektsioonid. Valikud: `llama3.1-8b-instruct`, `mistral-7b-instruct-v0.3`, `qwen2.5-7b-instruct`.
 - `--target-ml MODEL [MODEL ...]` — ML mudel(id), millele genereerida projektsioonid. Valikud: `xgboost`, `catboost`.
 - `--llm-preamble TEXT` — LLM süsteemne preamble (ülekirjutab profiili seadistuse).
@@ -80,6 +81,9 @@ backend/
         mapping/c01_raw_to_sv.py     #   RAW → SV kaardistus (C-01)
         projections/c02_sv_to_ml.py  #   SV → ML projektsioon (C-02)
         projections/c03_sv_to_llm.py #   SV → LLM kontekst (C-03)
+        projections/c05_sv_to_stats.py       # statistika (C-05)
+        projections/c06_sv_to_monthly_balance.py  # kuubilanss (C-06)
+        projections/model_formatters/#   C-04 mudeliformaatijad
         rules/invariants_r01.py      #   invariandid + dedupe (R-01)
         report/models.py             #   Issue, RunFlag, CollectedRunReport
         report/ops.py                #   outcome, counts, by_severity
@@ -91,10 +95,11 @@ backend/
         clock_port.py                #   aeg + run ID (determinism)
 
     application/                     # orkestreerimine, räägib ainult portidega
-        pipeline.py                  #   7-etapiline pipeline (run_pipeline)
+        pipeline.py                  #   8-etapiline pipeline (run_pipeline)
 
     entrypoints/                     # driving-adapter: portide kokkuühendamine
         wiring_fs.py                 #   FS-adapterid + kell → run_pipeline
+        api.py                       #   stdlib HTTP API server (port 5000)
 
     adapters/
         fs/                          # failisüsteemi I/O teostused
@@ -173,8 +178,7 @@ Adapter pipeline kasutab **kella** (`ClockPort`) kahe asja jaoks:
 | Klass | Asukoht | Kasutus |
 |-------|---------|---------|
 | `RealClock` | `adapters/system/clock_real.py` | **Tootmine**: `datetime.now(timezone.utc)` + `uuid.uuid4()` |
-| `FixedClock` | `adapters/testing/clock_fixed.py` | **Integratsioonitestid**: fikseeritud ajatempel + run_id |
-| `FixedClock` | `tests/fakes/fixed_clock.py` | **Unit-testid**: sama loogika, vaikeväärustega |
+| `FixedClock` | `adapters/testing/clock_fixed.py` | **Testid**: fikseeritud ajatempel + run_id (kasutatakse nii unit- kui integratsioonitestides) |
 
 ### Kuidas determinism tagatakse
 
@@ -202,12 +206,18 @@ Kogu normatiivne käitumine on versioonitud `spec/` kataloogis:
 |------|----------------|-----------|
 | Skeem | S-00A/B/C | RAW sisendi valideerimine (accounts, transactions, standing orders) |
 | Skeem | S-01 | Standardiseeritud vaheesituse (SV) skeem |
+| Skeem | S-02 | ML projektsiooni rea miinimumveerud ja tüübid |
 | Skeem | S-03 | LLM konteksti skeem |
 | Skeem | S-05 | Koondraporti skeem |
+| Skeem | S-06 | Statistika projektsiooni skeem |
+| Skeem | S-07 | Kuubilansi projektsiooni skeem |
 | Leping | C-01 | RAW → SV kaardistusreeglid |
 | Leping | C-02 | SV → ML projektsioon |
 | Leping | C-03 | SV → LLM kontekst |
-| Reeglistik | R-01 | Invariandid (INV-01..INV-09) + dedupe |
+| Leping | C-04 | Mudelispetsiifilised formaatijad (LLM promptimallid + ML kodeeringud) |
+| Leping | C-05 | SV → statistika (kontode ja tehingute kokkuvõtted) |
+| Leping | C-06 | SV → kuubilanss (kuu kaupa saldod) |
+| Reeglistik | R-01 | Invariandid (INV-01..INV-10) + dedupe |
 
 Täpsem spetsifikatsioonide indeks: [`docs/SPETSIFIKATSIOONID.md`](docs/SPETSIFIKATSIOONID.md).
 
@@ -246,18 +256,22 @@ Fail-gate konfiguratsioon on profiilis `spec/profiles/default.yaml`:
 ```
 backend/tests/
     unit/
-        test_pipeline_with_fakes.py  # pipeline läbi fake-portide (mälus, I/O-vaba)
-        test_import_boundaries.py    # domain ei impordi keelatud mooduleid
-    fakes/                           # in-memory port-teostused testidele
+        test_pipeline_with_fakes.py       # pipeline läbi fake-portide (mälus, I/O-vaba)
+        test_import_boundaries.py         # domain ei impordi keelatud mooduleid
+        test_model_formatters.py          # C-04 mudeliformaatijate testid
+        test_pipeline_with_model_target.py # pipeline + mudelisihtmärk end-to-end
+        test_scalability.py               # D8/D9 skaleeritavus ja jõudlus
+    fakes/                                # in-memory port-teostused testidele
         fake_dataset_port.py
         fake_output_port.py
         fake_spec_port.py
-        fixed_clock.py               # FixedClock (vaikeväärustega unit-testidele)
-    tests.py                         # integratsioonitestid (FS + tmp_path)
+    sli_slo/
+        test_sli_slo.py                   # SLI/SLO metrikate testid (72 testi)
+    tests.py                              # integratsioonitestid (FS + tmp_path)
 ```
 
-**Unit-testid** (`unit/`) kasutavad fake-porte — `FakeDatasetPort`, `FakeOutputPort`, `FakeSpecPort`, `FixedClock`.
-Pipeline jookseb täielikult mälus, failisüsteemi ei puudutata. Testivad äriloogikat: kaardistus, invariandid, projektsioonid, outcome.
+**Unit-testid** (`unit/`) kasutavad fake-porte — `FakeDatasetPort`, `FakeOutputPort`, `FakeSpecPort` ja `FixedClock` (asub `adapters/testing/clock_fixed.py`).
+Pipeline jookseb täielikult mälus, failisüsteemi ei puudutata. Testivad äriloogikat: kaardistus, invariandid, projektsioonid, mudeliformaatijad, outcome.
 
 **Integratsioonitestid** (`tests.py`) kasutavad päris FS-adaptereid läbi `entrypoints/wiring_fs.py`.
 Kellaadapterina süstitakse `FixedClock` (fikseeritud ajatempel + run_id).
