@@ -4,7 +4,7 @@
 
 - **Raamistik**: Vue 3 (Composition API, `<script setup>`)
 - **Ehitustööriist**: Vite 7.1.11
-- **Ruuter**: vue-router 4.6.3 (üks marsruut: `/` → Dashboard)
+- **Ruuter**: vue-router 4.6.3 (kaks marsruuti: `/` → Dashboard, `/docs` → DocsView)
 - **Juurkaust**: `frontend/vue-project/`
 
 ---
@@ -40,22 +40,22 @@ Peamine orkestreerimiskomponent, mis haldab kogu rakenduse olekut ja koordineeri
 
 **Fail**: `src/components/DatasetSelector.vue`
 
-- Kuvab 7 andmestikku (D1–D7) grid-kaartidena
+- Kuvab 10 andmestikku (D1–D10) grid-kaartidena
 - `v-model` sidumine valitud ID-ga
 - Iga kaart näitab: ID, kirjete arv, nimi, kirjeldus
 - Andmed tulevad: `getDatasets()` → `src/services/api.js`
 
 ---
 
-## 3. Sihtmudelite valik – ModelSelector (mock)
+## 3. Sihtmudelite valik – ModelSelector
 
 **Fail**: `src/components/ModelSelector.vue`
 
-- Sihtmudelite mock-valik (OpenAI GPT-4o, Claude 3.5 Sonnet, Gemini 1.5 Pro)
+- Sihtmudelite valik: 3 LLM (Llama 3.1, Mistral 7B, Qwen 2.5) ja 2 ML (XGBoost, CatBoost)
 - Mudelite valik on **valikuline** – pipeline käivitub ka ilma mudeliteta
 - Chip-põhine UI: valitud mudelid kuvatakse chip'idena, saab lisada/eemaldada
 - `v-model` sidumine valitud mudelite massiiviga
-- Pipeline toodab alati mõlemad projektsioonid (ML + LLM) sõltumata mudelivalikust
+- Pipeline toodab alati baas-projektsioonid (ML CSV + LLM JSON) sõltumata mudelivalikust; mudeli valik lisab mudeli-spetsiifilised väljundid
 
 ---
 
@@ -69,25 +69,36 @@ Kuvab pipeline täitmise tulemused:
 2. **Tühi olek** – juhendtekst
 3. **Tulemuste päis** – tulemus-badge (Success / Partial Success / Failed), andmestik & mudel, aeg
 4. **Arvude grid** (6 mõõdikut): accounts_total, transactions_total, transactions_emitted_sv, transactions_dropped, ml_rows, llm_contexts
-5. **Pipeline etappide logi** – READ_INPUT → STANDARDIZE_TO_SV → VALIDATE_SCHEMA → CHECK_INVARIANTS → PROJECT_ML → PROJECT_LLM → WRITE_OUTPUTS
+5. **Pipeline etappide logi** – READ_INPUT → STANDARDIZE_TO_SV → VALIDATE_SCHEMA → CHECK_INVARIANTS → PROJECT_ML → PROJECT_LLM → FORMAT_FOR_MODEL → WRITE_OUTPUTS
 6. **Probleemide nimekiri** – raskusaste (ERROR/WARN), kood, teade, esinemisarv
 7. **ML projektsiooni eelvaade** – HTML tabel (dünaamiliste veergudega), esimesed 5 rida
 8. **LLM konteksti eelvaade** – narratiiv-tekst, konto kokkuvõtte statistika, tipptarbekategooriad ribadega
 
 ---
 
-## 5. Voo samm-indikaator – FlowStepper
+## 5. Keelevahetaja – LanguageToggle
 
-**Fail**: `src/components/FlowStepper.vue`
+**Fail**: `src/components/LanguageToggle.vue`
 
-- Horisontaalne samm-indikaator (stepper), mis näitab pipeline töövoo etappe
-- 3 sammu: Andmete valik → Tulemused → Projektsioonid
-- Aktiivne samm on visuaalselt esiletõstetud, läbitud sammud on märgistatud
-- Prop: `activeStep` (number) – DashboardView arvutab automaatselt
+- Kompaktne ET/EN keelevahetaja nupp
+- Kasutab `useI18n` composable'i `locale` ja `setLocale` meetodit
+- Kuvab kaks keelenuppu, aktiivne keel on esiletõstetud
 
 ---
 
-## 6. Projektsiooni modaal – ProjectionModal
+## 6. Tulemuste detailvaade – RunResultDetails
+
+**Fail**: `src/components/RunResultDetails.vue`
+
+- Ühe dataseti pipeline'i tulemuse detailne kuvamine
+- Props: `datasetResult` (objekt: `{ datasetId, status, durationMs, result, error }`)
+- Emits: `open-projection` (projektsioonide modaali avamine)
+- Kuvab: outcome badge, mõõdikud, etappide logi, probleemid, ML/LLM eelvaated
+- Kasutab `useI18n` tõlgete jaoks
+
+---
+
+## 7. Projektsiooni modaal – ProjectionModal
 
 **Fail**: `src/components/ProjectionModal.vue`
 
@@ -99,21 +110,34 @@ Kuvab pipeline täitmise tulemused:
 
 ---
 
-## 7. API teenus
+## 8. Dokumentatsioonivaade – DocsView
 
-**Fail**: `src/services/api.js`
+**Fail**: `src/views/DocsView.vue`
 
-| Funktsioon | Kirjeldus |
-|---|---|
-| `getDatasets()` | Tagastab 7 andmestikku (ID, nimi, kirjete arv) |
-| `getModels()` | Tagastab 2 mudelit: ML (CSV), LLM (JSON) |
-| `runPipeline(datasetId, modelId)` | POST `/api/run` → pipeline tulemus |
-
-Backend: `http://localhost:5000`, Vite proxy: `/api` → backend.
+- Marsruut: `/docs`
+- Kuvab projekti dokumentatsiooni markdown-formaadis (kasutab `useMarkdown` renderdajat)
+- Sidebar-navigatsioon: tuumdokumendid ja dataseti-dokumendid (andmed: `src/data/docs.js`)
+- Tõlked `useI18n` kaudu
 
 ---
 
-## 8. Olemasolevate teekide kontroll
+## 9. API teenus
+
+**Fail**: `src/services/api.js`
+
+Kogu andmevahetus backend'iga — null mock-andmeid.
+
+| Funktsioon | Kirjeldus |
+|---|---|
+| `getDatasets()` | Tagastab 10 andmestikku (D1–D10): ID, nimi, kirjete arv |
+| `getModels()` | Tagastab 5 mudelit: 3 LLM (Llama 3.1, Mistral 7B, Qwen 2.5) + 2 ML (XGBoost, CatBoost) |
+| `runPipeline(datasetId, selectedModelIds)` | POST `/api/run` → pipeline tulemus. `selectedModelIds` on massiiv mudeli-ID-dest. |
+
+Backend: `python -m entrypoints.api` (stdlib http.server, port 5000). Vite proxy: `/api` → backend.
+
+---
+
+## 10. Olemasolevate teekide kontroll
 
 ### vue-i18n
 
@@ -122,10 +146,11 @@ Backend: `http://localhost:5000`, Vite proxy: `/api` → backend.
 | Fail | Kirjeldus |
 |---|---|
 | `src/composables/useI18n.js` | Tõlkemootor (punkt-notatsioon, parameetrite interpoleerimine) |
+| `src/composables/useMarkdown.js` | Minimaalne markdown → HTML renderdaja (pealkirjad, koodiplokid, tabelid, loendid, lingid). Kasutatakse DocsView's. |
 | `src/i18n/en.json` | Inglise tõlked |
 | `src/i18n/et.json` | Eesti tõlked |
 
-Keelevahetaja (ET/EN nupp) asub `App.vue` päises.
+Keelevahetaja on eraldiseisev komponent `LanguageToggle.vue` (vt sektsioon 5).
 
 ### Pinia / Vuex / muu state management
 
@@ -144,11 +169,11 @@ DashboardView (konteiner)
   ├─ error: ref
   └─ activeProjectionKind: ref (null / 'ml' / 'llm')
         │
-        ├──→ FlowStepper       (props: activeStep)
-        ├──→ DatasetSelector    (emit: update:modelValue)
-        ├──→ ModelSelector      (emit: update:modelValue)
-        ├──→ ResultsPanel       (props: result, elapsedMs, loading; emit: open-projection)
-        └──→ ProjectionModal    (props: open, title; emit: close)
+        ├──→ DatasetSelector     (emit: update:modelValue)
+        ├──→ ModelSelector       (emit: update:modelValue)
+        ├──→ ResultsPanel        (props: result, elapsedMs, loading; emit: open-projection)
+        │     └──→ RunResultDetails  (props: datasetResult; emit: open-projection)
+        └──→ ProjectionModal     (props: open, title; emit: close)
 ```
 
 ### Modal / Dialog komponent
@@ -163,44 +188,51 @@ DashboardView (konteiner)
 
 ---
 
-## 9. Failide koondnimekiri
+## 11. Failide koondnimekiri
 
 | # | Fail | Otstarve |
 |---|------|----------|
-| 1 | `src/App.vue` | Juurkomponent (päis + keelevahetaja) |
+| 1 | `src/App.vue` | Juurkomponent (päis + LanguageToggle) |
 | 2 | `src/main.js` | Sisenemispunkt |
 | 3 | `src/views/DashboardView.vue` | Pealeht (orkestreeija) |
-| 4 | `src/components/DatasetSelector.vue` | Andmestiku valik |
-| 5 | `src/components/ModelSelector.vue` | Sihtmudelite mock-valik (valikuline) |
-| 6 | `src/components/ResultsPanel.vue` | Tulemuste kuvamine (ML CSV + LLM JSON) |
-| 7 | `src/components/FlowStepper.vue` | Voo samm-indikaator (3 sammu) |
-| 8 | `src/components/ProjectionModal.vue` | Projektsiooni modaal-dialoog |
-| 9 | `src/router/index.js` | Ruuteri seadistus |
-| 10 | `src/services/api.js` | API klient |
-| 11 | `src/composables/useI18n.js` | i18n composable |
-| 12 | `src/i18n/en.json` | Inglise tõlked |
-| 13 | `src/i18n/et.json` | Eesti tõlked |
-| 14 | `src/assets/base.css` | Disainisüsteem (CSS muutujad) |
-| 15 | `src/assets/main.css` | Globaalsed utiliidid |
-| 16 | `package.json` | Sõltuvused |
-| 17 | `vite.config.js` | Ehitusseadistus |
+| 4 | `src/views/DocsView.vue` | Dokumentatsioonivaade (markdown-renderdaja) |
+| 5 | `src/components/DatasetSelector.vue` | Andmestiku valik (D1–D10) |
+| 6 | `src/components/ModelSelector.vue` | Sihtmudelite valik (3 LLM + 2 ML, valikuline) |
+| 7 | `src/components/ResultsPanel.vue` | Tulemuste kuvamine (ML CSV + LLM JSON) |
+| 8 | `src/components/RunResultDetails.vue` | Ühe dataseti tulemuse detailvaade |
+| 9 | `src/components/LanguageToggle.vue` | ET/EN keelevahetaja |
+| 10 | `src/components/ProjectionModal.vue` | Projektsiooni modaal-dialoog |
+| 11 | `src/router/index.js` | Ruuteri seadistus (2 marsruuti) |
+| 12 | `src/services/api.js` | API klient (backend-ühendus) |
+| 13 | `src/composables/useI18n.js` | i18n composable (kohandatud tõlkemootor) |
+| 14 | `src/composables/useMarkdown.js` | Markdown → HTML renderdaja |
+| 15 | `src/utils/downloadFile.js` | Faili allalaadimine brauseris (CSV/JSON/TXT) |
+| 16 | `src/data/docs.js` | Dokumentatsiooni sisu (DocsView andmed) |
+| 17 | `src/i18n/en.json` | Inglise tõlked |
+| 18 | `src/i18n/et.json` | Eesti tõlked |
+| 19 | `src/assets/base.css` | Disainisüsteem (CSS muutujad) |
+| 20 | `src/assets/main.css` | Globaalsed utiliidid |
+| 21 | `package.json` | Sõltuvused |
+| 22 | `vite.config.js` | Ehitusseadistus |
 
 ---
 
-## 10. Kokkuvõte
+## 12. Kokkuvõte
 
 | Aspekt | Olek |
 |--------|------|
 | Raamistik | Vue 3 (Composition API) |
 | State management | Puudub (Vue ref) |
-| Ruuter | vue-router (üks Dashboard marsruut) |
+| Ruuter | vue-router (kaks marsruuti: Dashboard + Docs) |
 | i18n | Kohandatud composable (EN/ET) – **mitte** vue-i18n |
 | Modal / Dialog | **Olemas** – ProjectionModal.vue (Teleport-põhine) |
 | Peavaade | DashboardView.vue |
-| Voo samm-indikaator | FlowStepper.vue (3 sammu) |
-| Valiku komponendid | DatasetSelector, ModelSelector (mock, valikuline) |
-| Tulemuste komponent | ResultsPanel (projektsioonid: ML CSV + LLM JSON) |
+| Dokumentatsioonivaade | DocsView.vue (markdown-renderdaja) |
+| Keelevahetaja | LanguageToggle.vue (ET/EN) |
+| Valiku komponendid | DatasetSelector (D1–D10), ModelSelector (3 LLM + 2 ML, valikuline) |
+| Tulemuste komponendid | ResultsPanel + RunResultDetails |
 | Projektsiooni modaal | ProjectionModal.vue (ML tabel + LLM JSON) |
+| Utiliidid | useMarkdown.js (renderdaja), downloadFile.js (faili allalaadimine) |
 | Paketihaldur | npm |
 | Ehitustööriist | Vite 7.1.11 |
 | Testimine | Vitest |

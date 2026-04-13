@@ -17,6 +17,9 @@ CLI entrypoint on [`backend/run_adapter.py`](backend/run_adapter.py:1).
     - *prefix match* loogikat (nt `D6` sobitub `D6_...`), kus `D1` ei sobitu `D10_...` (underscore fence).
 - `--out` / `-o`: väljundi juurkaust (suhteline repo juure suhtes).
   - Kui jätad andmata, kasutatakse vaikimisi `<repo>/.backend/out/`.
+- `--profile` / `-p`: jooksuprofiil. Vaikimisi: `default`.
+  - `default` — baasskeemid + lepingud (S-00A..S-05, C-01..C-04, R-01). Lisaprojektsioone ei luba.
+  - `extensions_eval` — lisab S-06, S-07, C-05, C-06 ja lubab `extra_projections` (statistika + kuubilanss).
 - `--target-llm MODEL [MODEL ...]`: LLM mudel(id), millele genereerida projektsioonid.
   - Valikud: `llama3.1-8b-instruct`, `mistral-7b-instruct-v0.3`, `qwen2.5-7b-instruct`
 - `--target-ml MODEL [MODEL ...]`: ML mudel(id), millele genereerida projektsioonid.
@@ -67,6 +70,12 @@ python backend/run_adapter.py --data D1 \
 python backend/run_adapter.py --data D1 \
   --target-llm llama3.1-8b-instruct \
   --llm-preamble "Analüüsi pangatehinguid ja tuvasta anomaaliad."
+```
+
+### Laiendatud profiil (statistika + kuubilanss)
+
+```bash
+python backend/run_adapter.py --data D1 --profile extensions_eval --out backend/out
 ```
 
 ### PowerShell
