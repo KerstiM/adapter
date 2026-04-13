@@ -1,32 +1,36 @@
 """UK3 laiendatavuse evolutsioonistsenaariumid.
 
-Kolm stsenaariumit, mis tõestavad praktilist lokaalsust erinevatel
-arhitektuurikihtidel:
+Viis laiendatavuse tõendit neljal arhitektuuritasandil:
 
-Stsenaarium 1 — Projektsiooni laiendatavus (väljundikiht)
-    Uus reeglipõhine projektsioon C-05 (SV → Statistics) lisatakse
-    eraldiseisvana.  Pipeline'i, porte ega adaptereid ei muudeta.
+Tõend 1 — Projektsiooni laiendatavus (C-05 statistika)
+    Uus reeglipõhine projektsioon lisatakse eraldiseisvana.
+    Pipeline'i, porte ega adaptereid ei muudeta.
     Tõestab: SV vaheesitus on stabiilne laienduspunkt.
 
-Stsenaarium 2 — Formaateri laiendatavus (C-04 dispatch-kiht)
-    Uus LLM formaateri moodul (Gemma 2) on registreeritud dispatch-
-    tabelis.  Tõestab: dispatch-mehhanism on avatud laiendamiseks
-    ilma pipeline'i, porte ega adaptereid muutmata.
+Tõend 2 — Formaateri laiendatavus (C-04 dispatch, Gemma)
+    Uus LLM formaateri moodul registreeritakse dispatch-tabelis.
+    Tõestab: dispatch-mehhanism on avatud laiendamiseks.
+    Lisamine: 1 import + 1 dict-entry + 1 YAML-kirje.
 
-    Lisamine nõudis: 1 import + 1 dict-entry __init__.py-s ja
-    1 kirje C-04 YAML-is.  Moodul ise (llm_gemma.py) järgib täpselt
-    sama mustrit nagu olemasolevad formaatijad.
-
-Stsenaarium 3 — Sisendikihi laiendatavus (DatasetPort)
+Tõend 3 — Sisendiadapteri laiendatavus (DatasetPort)
     Testis defineeritud uus DatasetPort implementatsioon läbib
-    pipeline'i end-to-end.  Tõestab: pordi protokoll (duck typing)
+    pipeline'i end-to-end.  Tõestab: pordi Protocol (duck typing)
     lubab uue allika lisamist ilma pipeline'i muutmata.
 
-    NB: testis defineeritud implementatsioon on piisav, sest
-    FakeDatasetPort on juba üks näide alternatiivadapterist.
-    Siinne SimpleDictDatasetPort on struktuuriliselt erinev
-    (üks dict vs eraldi payload'id), mis näitab, et pordi
-    protokoll ei sõltu konkreetsest sisemisest struktuurist.
+Tõend 4 — Projektsiooni laiendatavus, struktuuriliselt uudne kuju (C-06 kuubilanss)
+    C-06 toodab ajaseeria-kujulise cashflow projektsiooni.
+    Tõestab: SV vahekiht toetab ka struktuuriliselt erinevat
+    projektsiooni (akumulatiivne aegrida vs lamedad agregaadid).
+
+Tõend 5 — Sisendiformaadi laiendatavus (D7 standing orders)
+    Pipeline käsitleb uut finantsinstrumendi tüüpi (püsikorraldused)
+    ilma pipeline'i tuumkoodi muutmata.  S-00C skeem + valikuline
+    read_standing_orders_optional() portimeetod.  INFORMATION tehingud
+    läbivad SV, aga jäetakse välja ML/LLM projektsioonidest.
+
+Lisaks sisaldab fail integratsiooniteste, mis kontrollivad C-05/C-06
+aktiveerimismehhanisme (raporti laiendus, extra_projections pipeline).
+Need ei ole eraldiseisvad laiendatavuse tõendid.
 """
 
 from __future__ import annotations
@@ -165,7 +169,7 @@ def _run(
 
 
 # ===================================================================
-# Stsenaarium 1: Projektsiooni laiendatavus — C-05 SV → Statistics
+# Tõend 1: Projektsiooni laiendatavus — C-05 SV → Statistics
 # ===================================================================
 
 class TestC05ProjectionExtensibility:
@@ -343,7 +347,7 @@ class TestC05ProjectionExtensibility:
 
 
 # ===================================================================
-# Stsenaarium 2: Formaateri laiendatavus — C-04 dispatch
+# Tõend 2: Formaateri laiendatavus — C-04 dispatch (Gemma)
 # ===================================================================
 
 class TestFormatterExtensibility:
@@ -452,7 +456,7 @@ class TestFormatterExtensibility:
 
 
 # ===================================================================
-# Stsenaarium 3: Sisendikihi laiendatavus — DatasetPort
+# Tõend 3: Sisendiadapteri laiendatavus — DatasetPort
 # ===================================================================
 
 class SimpleDictDatasetPort:
@@ -632,7 +636,7 @@ class TestInputExtensibility:
 
 
 # ===================================================================
-# Stsenaarium 4: Struktuurselt uudne projektsioon — C-06 SV → kuubilanss
+# Tõend 4: Projektsiooni laiendatavus, uudne kuju — C-06 SV → kuubilanss
 # ===================================================================
 
 class TestC06ProjectionExtensibility:
@@ -856,7 +860,7 @@ class TestC06ProjectionExtensibility:
 
 
 # ===================================================================
-# Stsenaarium 5: C-06 opt-in raporti integratsioon
+# Integratsioon: C-06 opt-in raporti laiendus
 # ===================================================================
 
 def _run_with_profile(
@@ -1027,7 +1031,7 @@ class TestC06ReportIntegration:
 
 
 # ===================================================================
-# Stsenaarium 6: C-05 & C-06 esimese klassi projektsioonid
+# Integratsioon: C-05 & C-06 extra_projections pipeline
 # ===================================================================
 
 def _profile_with_extra_projections(*names: str) -> dict[str, Any]:
@@ -1260,3 +1264,239 @@ class TestExtraProjectionsIntegration:
         _, out_enabled = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
         jsonschema.validate(out_enabled.report, s05)
         assert "extra_projections" in out_enabled.report
+
+
+# ===================================================================
+# Tõend 5: Sisendiformaadi laiendatavus — D7 standing orders
+# ===================================================================
+
+
+def _standing_orders_payload(
+    *,
+    creditor_name: str = "Stadtwerke Berlin",
+    amount: str = "85.00",
+    currency: str = "EUR",
+    next_execution_date: str = "2025-02-01",
+    value_date: str | None = None,
+    remittance: str = "Electricity monthly",
+) -> dict:
+    """Build a Berlin AIS standing-orders payload with one information tx."""
+    tx: dict = {
+        "creditorName": creditor_name,
+        "creditorAccount": {"iban": "DE44500105175407324931"},
+        "transactionAmount": {"currency": currency, "amount": amount},
+        "remittanceInformationUnstructured": remittance,
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "nextExecutionDate": next_execution_date,
+    }
+    if value_date is not None:
+        tx["valueDate"] = value_date
+    return {
+        "account": {"iban": "DE89370400440532013000"},
+        "transactions": {"information": [tx]},
+    }
+
+
+class TestStandingOrdersExtensibility:
+    """D7 sisendiformaadi laiendatavuse evolutsioonistsenaarium.
+
+    Tõestab, et uut finantsinstrumendi tüüpi (püsikorraldused / standing
+    orders) saab lisada pipeline'i ilma pipeline'i tuumkoodi muutmata.
+    Laiendamine nõudis:
+
+    - S-00C skeem (sisendi valideerimine)
+    - Valikuline ``read_standing_orders_optional()`` portimeetod
+    - INFORMATION staatuse tugi kaardistuses (C-01)
+    - valueDate fallback nextExecutionDate'ist
+
+    Pipeline'i orkestreerimiskoodi (application/pipeline.py), olemasolevaid
+    projektsioone (C-02..C-06) ega adaptereid ei muudetud.
+    """
+
+    def test_pipeline_works_without_standing_orders(self) -> None:
+        """Pipeline töötab korrektselt ilma standing orders'ita.
+
+        Tõestab valikulisust: read_standing_orders_optional() tagastab
+        None ja pipeline käsitleb seda gracefully.
+        """
+        dataset = FakeDatasetPort(
+            accounts=_accounts(),
+            transaction_reports={
+                "transactions.json": _report(
+                    booked=[_tx(amount="100.00", transaction_id="NO-SO-TX1")],
+                ),
+            },
+            standing_orders=None,
+        )
+        out = FakeOutputPort()
+        spec = FakeSpecPort()
+        clock = FixedClock()
+
+        summary = run_pipeline(
+            dataset=dataset, out=out, spec=spec, clock=clock,
+            dataset_id="no-standing-orders", input_dir="<memory>",
+        )
+
+        assert summary["outcome"] in ("SUCCESS", "PARTIAL_SUCCESS")
+        assert summary["counts"]["transactions_emitted_sv"] >= 1
+        assert out.sv is not None
+
+    def test_standing_orders_flow_through_pipeline(self) -> None:
+        """Standing orders INFORMATION tehingud jõuavad SV-sse.
+
+        Tõestab, et uue sisenditüübi lisamine töötab: pipeline loeb
+        standing orders'i, kaardistab INFORMATION tehingud SV-sse.
+        """
+        dataset = FakeDatasetPort(
+            accounts=_accounts(),
+            transaction_reports={
+                "transactions.json": _report(
+                    booked=[_tx(amount="100.00", transaction_id="SO-BOOKED-1")],
+                ),
+            },
+            standing_orders=_standing_orders_payload(),
+        )
+        out = FakeOutputPort()
+        spec = FakeSpecPort()
+        clock = FixedClock()
+
+        summary = run_pipeline(
+            dataset=dataset, out=out, spec=spec, clock=clock,
+            dataset_id="with-standing-orders", input_dir="<memory>",
+        )
+
+        assert summary["outcome"] in ("SUCCESS", "PARTIAL_SUCCESS")
+
+        # SV peab sisaldama INFORMATION tehingut standing orders'ist
+        info_txs = [
+            tx for tx in out.sv["transactions"]
+            if tx["status"] == "INFORMATION"
+        ]
+        assert len(info_txs) >= 1, (
+            "Standing orders INFORMATION transactions must appear in SV"
+        )
+
+        # Total peab kajastama mõlemaid (booked + information)
+        assert summary["counts"]["transactions_total"] >= 2
+
+    def test_information_excluded_from_ml_llm(self) -> None:
+        """INFORMATION tehingud ei lähe ML ega LLM projektsioonidesse.
+
+        Tõestab korrektset filtreerimist: ainult BOOKED ja PENDING
+        tehingud jõuavad projektsioonidesse, INFORMATION jäetakse välja.
+        """
+        dataset = FakeDatasetPort(
+            accounts=_accounts(),
+            transaction_reports={
+                "transactions.json": _report(
+                    booked=[_tx(amount="100.00", transaction_id="ML-TX1")],
+                ),
+            },
+            standing_orders=_standing_orders_payload(),
+        )
+        out = FakeOutputPort()
+        spec = FakeSpecPort()
+        clock = FixedClock()
+
+        run_pipeline(
+            dataset=dataset, out=out, spec=spec, clock=clock,
+            dataset_id="info-filter-test", input_dir="<memory>",
+        )
+
+        # ML: ainult BOOKED read
+        assert out.ml is not None
+        for row in out.ml:
+            assert row.get("status") != "INFORMATION", (
+                "INFORMATION transactions must not appear in ML projection"
+            )
+
+        # LLM: ainult BOOKED/PENDING tehingud
+        llm_contexts = out.llm if isinstance(out.llm, list) else [out.llm]
+        for ctx in llm_contexts:
+            for tx in ctx.get("tx", []):
+                assert tx.get("s") != "INFORMATION", (
+                    "INFORMATION transactions must not appear in LLM projection"
+                )
+
+    def test_value_date_fallback_from_next_execution_date(self) -> None:
+        """valueDate puudumisel kasutatakse nextExecutionDate'd.
+
+        Tõestab uue formaadi eriloogikat: standing orders'il puuduv
+        valueDate → fallback nextExecutionDate'ist (C-01 kaardistus).
+        """
+        # Standing order ilma valueDate'ita → nextExecutionDate = 2025-02-01
+        dataset = FakeDatasetPort(
+            accounts=_accounts(),
+            transaction_reports={
+                "transactions.json": _report(
+                    booked=[_tx(amount="100.00", transaction_id="FB-TX1")],
+                ),
+            },
+            standing_orders=_standing_orders_payload(
+                next_execution_date="2025-02-01",
+                value_date=None,
+            ),
+        )
+        out = FakeOutputPort()
+        spec = FakeSpecPort()
+        clock = FixedClock()
+
+        run_pipeline(
+            dataset=dataset, out=out, spec=spec, clock=clock,
+            dataset_id="fallback-test", input_dir="<memory>",
+        )
+
+        info_txs = [
+            tx for tx in out.sv["transactions"]
+            if tx["status"] == "INFORMATION"
+        ]
+        assert len(info_txs) >= 1
+        assert info_txs[0]["value_date"] == "2025-02-01", (
+            "Missing valueDate must fall back to nextExecutionDate"
+        )
+
+    def test_standing_orders_dont_affect_existing_projections(self) -> None:
+        """Sama sisend koos ja ilma standing orders annab identsed ML/LLM read.
+
+        Tõestab, et standing orders lisamine ei mõjuta olemasolevaid
+        projektsioone — INFORMATION tehingud on korrektselt isoleeritud.
+        """
+        booked_txs = [
+            _tx(amount="100.00", transaction_id="CMP-TX1"),
+            _tx(amount="-50.00", transaction_id="CMP-TX2"),
+        ]
+        accts = _accounts()
+        report_data = _report(booked=booked_txs)
+        clock = FixedClock()
+
+        # Jooks A: ilma standing orders'ita
+        dataset_a = FakeDatasetPort(
+            accounts=accts,
+            transaction_reports={"transactions.json": report_data},
+            standing_orders=None,
+        )
+        out_a = FakeOutputPort()
+        run_pipeline(
+            dataset=dataset_a, out=out_a, spec=FakeSpecPort(), clock=clock,
+            dataset_id="compare-test", input_dir="<memory>",
+        )
+
+        # Jooks B: koos standing orders'iga
+        dataset_b = FakeDatasetPort(
+            accounts=accts,
+            transaction_reports={"transactions.json": report_data},
+            standing_orders=_standing_orders_payload(),
+        )
+        out_b = FakeOutputPort()
+        run_pipeline(
+            dataset=dataset_b, out=out_b, spec=FakeSpecPort(), clock=clock,
+            dataset_id="compare-test", input_dir="<memory>",
+        )
+
+        # ML ja LLM peavad olema identsed
+        assert out_a.ml == out_b.ml, (
+            "ML projection must be identical with and without standing orders"
+        )
+        assert out_a.llm == out_b.llm, (
+            "LLM projection must be identical with and without standing orders"
+        )
