@@ -1,0 +1,34 @@
+id: extensions_eval
+version: "1.0.0"
+
+schemas:
+  S-00A: "spec/schemas/S-00A_berlin_accounts.schema.json"
+  S-00B: "spec/schemas/S-00B_berlin_transactions.schema.json"
+  S-00C: "spec/schemas/S-00C_berlin_standing_orders.schema.json"
+  S-01:  "spec/schemas/S-01_sv_schema.json"
+  S-02:  "spec/schemas/S-02_ml_projection_schema.json"
+  S-03:  "spec/schemas/S-03_llm_context_schema.json"
+  S-05:  "spec/schemas/S-05_collected_report_schema.json"
+  S-06:  "spec/schemas/S-06_stats_schema.json"
+  S-07:  "spec/schemas/S-07_monthly_balance_schema.json"
+
+contracts:
+  C-01: "spec/contracts/C-01_berlin_to_sv.yaml"
+  C-02: "spec/contracts/C-02_sv_to_ml.yaml"
+  C-03: "spec/contracts/C-03_sv_to_llm.yaml"
+  C-04: "spec/contracts/C-04_model_formatters.yaml"
+  C-05: "spec/contracts/C-05_sv_to_stats.yaml"
+  C-06: "spec/contracts/C-06_sv_to_monthly_balance.yaml"
+
+rulesets:
+  R-01: "spec/rulesets/R-01_sv_invariants.yaml"
+
+run_policy:
+  partial_success_policy:
+    fail_on:
+      any_severity: ERROR
+      ratio_over_records: 0.05
+
+extra_projections:
+  - stats
+  - monthly_balance

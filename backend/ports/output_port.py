@@ -78,3 +78,15 @@ class OutputPort(Protocol):
         Only called when *target_models.llm* is configured in the profile.
         """
         ...
+
+    def write_extra_projection(self, data: list[dict[str, Any]], filename: str) -> None:
+        """Persist an extra projection artefact to ``projections/<filename>``.
+
+        *data* is the projection output (list of per-account dicts).
+        *filename* is the target file name within the projections directory
+        (e.g. ``"stats_v1.json"``), derived from the contract's
+        ``output.file`` field.
+
+        Only called when ``extra_projections`` is configured in the profile.
+        """
+        ...
