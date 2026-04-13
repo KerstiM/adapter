@@ -9,14 +9,13 @@ Stsenaarium 1 — Projektsiooni laiendatavus (väljundikiht)
     Tõestab: SV vaheesitus on stabiilne laienduspunkt.
 
 Stsenaarium 2 — Formaateri laiendatavus (C-04 dispatch-kiht)
-    Uus LLM formaateri moodul (Gemma 2) registreeritakse ajutiselt
-    dispatch-tabelisse.  Tõestab: dispatch-mehhanism on avatud
-    laiendamiseks ilma olemasolevat koodi muutmata.
+    Uus LLM formaateri moodul (Gemma 2) on registreeritud dispatch-
+    tabelis.  Tõestab: dispatch-mehhanism on avatud laiendamiseks
+    ilma pipeline'i, porte ega adaptereid muutmata.
 
-    NB: testis kasutatakse ajutist registreerimist, sest tootmisse
-    lisamine nõuaks 1 import + 1 dict-rida __init__.py-s — see oleks
-    põhjendamatu tootmismuudatus prototüübis.  Formaateri moodul ise
-    on reaalne artefakt, mis järgib olemasolevat mustrit.
+    Lisamine nõudis: 1 import + 1 dict-entry __init__.py-s ja
+    1 kirje C-04 YAML-is.  Moodul ise (llm_gemma.py) järgib täpselt
+    sama mustrit nagu olemasolevad formaatijad.
 
 Stsenaarium 3 — Sisendikihi laiendatavus (DatasetPort)
     Testis defineeritud uus DatasetPort implementatsioon läbib
@@ -353,44 +352,44 @@ class TestFormatterExtensibility:
     Tõestab, et uue LLM/ML formaateri lisamine dispatch-tabelisse on
     võimalik ilma pipeline'i ega olemasoleva dispatcheri koodi muutmata.
 
-    Testid registreerivad formaateri ajutiselt ja puhastavad pärast testi.
-    See on piisav UK3 tõenduseks, sest:
-    - formaateri moodul (llm_gemma.py) on reaalne artefakt
-    - tootmisse lisamine nõuaks ainult 1 import + 1 dict-entry __init__.py-s
-    - dispatch-mehhanism ise ei muutu
+    Gemma formaateri (llm_gemma.py) lisamine on selle tõestus:
+    - moodul järgib olemasolevat mustrit (llama3, mistral, chatml)
+    - dispatch-tabelis registreeritud ühe import + dict-entry kaudu
+    - pipeline, pordid ja adapterid jäid muutmata
     """
 
-    def test_new_llm_formatter_pluggable(self) -> None:
-        """Uus LLM formaateri moodul on ühildatav dispatch-mehhanismiga.
+    def test_gemma_registered_in_dispatch(self) -> None:
+        """Gemma formaateri on registreeritud dispatch-tabelis.
 
-        Registreerib format_gemma ajutiselt _LLM_FAMILY_DISPATCH tabelisse
-        ja kutsub format_for_model() — formaateri väljund on korrektne.
+        Kontrollib, et Gemma on päriselt registreeritud (mitte ajutiselt
+        patchitud) ja et format_for_model() dispatchib korrektselt.
         """
-        assert "gemma" not in _LLM_FAMILY_DISPATCH, "gemma must not be pre-registered"
+        assert "gemma" in _LLM_FAMILY_DISPATCH, (
+            "gemma must be registered in _LLM_FAMILY_DISPATCH"
+        )
+        assert _LLM_FAMILY_DISPATCH["gemma"] is format_gemma
 
-        _LLM_FAMILY_DISPATCH["gemma"] = format_gemma
-        try:
-            llm_contexts = [{
-                "meta": {"run_id": "test", "created_at_utc": "2026-01-01T00:00:00Z",
-                         "account_id": "acct-001", "iban": "DE89...", "currency": "EUR"},
-                "tx": [{"id": "TX1", "d": "2025-06-01", "s": "BOOKED",
-                        "dir": "DEBIT", "a": "-100.00", "c": "EUR", "cp": "Alice", "r": "Test"}],
-            }]
-            config = {"family": "gemma", "template_tokens": {}}
-            sv_bundle = {"meta": {"run_id": "test", "created_at_utc": "2026-01-01T00:00:00Z"}}
+    def test_gemma_formatter_produces_correct_output(self) -> None:
+        """Gemma formaateri väljund on korrektne läbi standardse dispatch'i."""
+        llm_contexts = [{
+            "meta": {"run_id": "test", "created_at_utc": "2026-01-01T00:00:00Z",
+                     "account_id": "acct-001", "iban": "DE89...", "currency": "EUR"},
+            "tx": [{"id": "TX1", "d": "2025-06-01", "s": "BOOKED",
+                    "dir": "DEBIT", "a": "-100.00", "c": "EUR", "cp": "Alice", "r": "Test"}],
+        }]
+        config = {"family": "gemma", "template_tokens": {}}
+        sv_bundle = {"meta": {"run_id": "test", "created_at_utc": "2026-01-01T00:00:00Z"}}
 
-            result = format_for_model(
-                llm_contexts, sv_bundle, "gemma-2-2b-it", config, "llm", preamble="Analyze.",
-            )
+        result = format_for_model(
+            llm_contexts, sv_bundle, "gemma-2-2b-it", config, "llm", preamble="Analyze.",
+        )
 
-            assert isinstance(result, list)
-            assert len(result) == 1
-            assert result[0]["model_id"] == "gemma-2-2b-it"
-            assert "<start_of_turn>user" in result[0]["prompt"]
-            assert "Analyze." in result[0]["prompt"]
-            assert "<start_of_turn>model" in result[0]["prompt"]
-        finally:
-            _LLM_FAMILY_DISPATCH.pop("gemma", None)
+        assert isinstance(result, list)
+        assert len(result) == 1
+        assert result[0]["model_id"] == "gemma-2-2b-it"
+        assert "<start_of_turn>user" in result[0]["prompt"]
+        assert "Analyze." in result[0]["prompt"]
+        assert "<start_of_turn>model" in result[0]["prompt"]
 
     def test_new_ml_encoder_pluggable(self) -> None:
         """Uue ML enkooderi lisamine dispatch-tabelisse töötab.

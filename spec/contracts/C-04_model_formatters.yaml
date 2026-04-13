@@ -28,6 +28,14 @@ llm_models:
       im_end: "<|im_end|>"
     output_suffix: "qwen"
 
+  gemma-2-2b-it:
+    family: gemma
+    template_tokens:
+      turn_start_user: "<start_of_turn>user\n"
+      turn_end: "<end_of_turn>\n"
+      turn_start_model: "<start_of_turn>model\n"
+    output_suffix: "gemma"
+
 ml_models:
   xgboost:
     encoding: label

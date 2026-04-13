@@ -21,7 +21,7 @@ CLI entrypoint on [`backend/run_adapter.py`](backend/run_adapter.py:1).
   - `default` — baasskeemid + lepingud (S-00A..S-05, C-01..C-04, R-01). Lisaprojektsioone ei luba.
   - `extensions_eval` — lisab S-06, S-07, C-05, C-06 ja lubab `extra_projections` (statistika + kuubilanss).
 - `--target-llm MODEL [MODEL ...]`: LLM mudel(id), millele genereerida projektsioonid.
-  - Valikud: `llama3.1-8b-instruct`, `mistral-7b-instruct-v0.3`, `qwen2.5-7b-instruct`
+  - Valikud: `llama3.1-8b-instruct`, `mistral-7b-instruct-v0.3`, `qwen2.5-7b-instruct`, `gemma-2-2b-it`
 - `--target-ml MODEL [MODEL ...]`: ML mudel(id), millele genereerida projektsioonid.
   - Valikud: `xgboost`, `catboost`
 - `--llm-preamble TEXT`: LLM süsteemne preamble (ülekirjutab profiili seadistuse).
@@ -148,6 +148,7 @@ backend/out/
       llm_llama3.txt               # Llama 3 prompt (kui --target-llm llama3.1-8b-instruct)
       llm_mistral.txt              # Mistral prompt (kui --target-llm mistral-7b-instruct-v0.3)
       llm_qwen.txt                 # Qwen prompt (kui --target-llm qwen2.5-7b-instruct)
+      llm_gemma.txt                # Gemma 2 prompt (kui --target-llm gemma-2-2b-it)
 ```
 
 CLI prindib alati:

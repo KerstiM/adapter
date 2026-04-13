@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from domain.projections.model_formatters.llm_gemma import format_gemma as _format_gemma
 from domain.projections.model_formatters.llm_templates import (
     format_chatml as _format_chatml,
     format_llama3 as _format_llama3,
@@ -22,6 +23,7 @@ _LLM_FAMILY_DISPATCH: dict[str, Any] = {
     "llama3": _format_llama3,
     "mistral": _format_mistral,
     "chatml": _format_chatml,
+    "gemma": _format_gemma,
 }
 
 _ML_ENCODING_DISPATCH: dict[str, Any] = {
