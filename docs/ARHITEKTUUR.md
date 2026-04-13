@@ -208,13 +208,13 @@ Raport ei ole "kõrvalprodukt", vaid **põhiartefakt**, mille põhjal tehakse ou
 
 ## Laiendatavus (UK3)
 
-Arhitektuur on kavandatud nii, et uusi projektsioone, formaatijaid ja sisendiallikaid saab lisada olemasolevat koodi muutmata (Open/Closed printsiip). Seda tõestavad viis laiendatavuse tõendit neljal arhitektuuritasandil, mis on testitega kaetud (`tests/unit/test_scalability.py`, 7 stsenaariumit):
+Arhitektuur on kavandatud nii, et uusi projektsioone, formaatijaid ja sisendiallikaid saab lisada olemasolevat koodi muutmata (Open/Closed printsiip). Seda tõestavad viis laiendatavuse tõendit neljal arhitektuuritasandil, mis on testitega kaetud (`tests/unit/test_scalability.py`):
 
-### Stsenaarium 1 — Projektsiooni laiendatavus (C-05)
+### Tõend 1 — Projektsiooni laiendatavus (C-05 statistika)
 
 Uus reeglipõhine projektsioon C-05 (statistika) lisati eraldiseisvana. Pipeline'i, porte ega adaptereid ei muudetud. SV vaheesitus on stabiilne laienduspunkt — iga uus projektsioon on puhas funktsioon, mis võtab SVBundle sisendiks.
 
-### Stsenaarium 2 — Formaateri laiendatavus (C-04 dispatch)
+### Tõend 2 — Formaateri laiendatavus (C-04 dispatch, Gemma)
 
 Uus LLM formaateri moodul Gemma 2 (`domain/projections/model_formatters/llm_gemma.py`) lisati dispatch-tabelisse. Muutused:
 
@@ -223,17 +223,15 @@ Uus LLM formaateri moodul Gemma 2 (`domain/projections/model_formatters/llm_gemm
 
 Pipeline'i, porte, adaptereid ega olemasolevaid formaatijaid ei muudetud. Moodul järgib täpselt sama signatuuri ja mustrit nagu olemasolevad formaatijad (llama3, mistral, chatml). Git-diff on ise tõestus — see näitab, kui väike on muudatus.
 
-### Stsenaarium 3 — Sisendiadapteri laiendatavus (DatasetPort)
+### Tõend 3 — Sisendiadapteri laiendatavus (DatasetPort)
 
 Testis defineeritud `SimpleDictDatasetPort` implementatsioon (struktuuriliselt erinev `FakeDatasetPort`-st ja FS-adapterist) läbib pipeline'i end-to-end. Pordi `Protocol` (duck typing) ei sõltu konkreetsest sisemisest struktuurist — piisab meetodite olemasolust.
 
-### Stsenaarium 4 — Struktuurselt uudne projektsioon (C-06)
+### Tõend 4 — Projektsiooni laiendatavus, struktuuriliselt uudne kuju (C-06 kuubilanss)
 
-C-06 (kuubilanss) toodab ajaseeria-kujulise cashflow projektsiooni — kuju, mis on struktuuriliselt erinev C-02 (lame), C-03 (kontekstiaken) ja C-05 (lamedad agregaadid) omast. Tõestab, et SV vahekiht toetab ka ajalis-akumulatiivset projektsiooni ilma pipeline'i muutmata.
+C-06 (kuubilanss) toodab ajaseeria-kujulise cashflow projektsiooni — kuju, mis on struktuuriliselt erinev C-02 (lame), C-03 (kontekstiaken) ja C-05 (lamedad agregaadid) omast. Tõestab, et SV vahekiht toetab ka ajalis-akumulatiivset projektsiooni ilma pipeline'i muutmata. Aktiveeritakse profiili kaudu (`extra_projections: [stats, monthly_balance]`).
 
-Aktiveeritakse profiili kaudu (`extra_projections: [stats, monthly_balance]`), mis tähendab, et baasprofiil jääb muutumatuks.
-
-### Stsenaarium 5 — Sisendiformaadi laiendatavus (D7 standing orders)
+### Tõend 5 — Sisendiformaadi laiendatavus (D7 standing orders)
 
 Pipeline käsitleb uut finantsinstrumendi tüüpi (püsikorraldused) ilma pipeline'i tuumkoodi muutmata. Muudatused:
 

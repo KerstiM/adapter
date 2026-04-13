@@ -1,55 +1,36 @@
 """UK3 laiendatavuse evolutsioonistsenaariumid.
 
-Seitse stsenaariumit, mis tõestavad praktilist lokaalsust erinevatel
-arhitektuurikihtidel:
+Viis laiendatavuse tõendit neljal arhitektuuritasandil:
 
-Stsenaarium 1 — Projektsiooni laiendatavus (väljundikiht)
-    Uus reeglipõhine projektsioon C-05 (SV → Statistics) lisatakse
-    eraldiseisvana.  Pipeline'i, porte ega adaptereid ei muudeta.
+Tõend 1 — Projektsiooni laiendatavus (C-05 statistika)
+    Uus reeglipõhine projektsioon lisatakse eraldiseisvana.
+    Pipeline'i, porte ega adaptereid ei muudeta.
     Tõestab: SV vaheesitus on stabiilne laienduspunkt.
 
-Stsenaarium 2 — Formaateri laiendatavus (C-04 dispatch-kiht)
-    Uus LLM formaateri moodul (Gemma 2) on registreeritud dispatch-
-    tabelis.  Tõestab: dispatch-mehhanism on avatud laiendamiseks
-    ilma pipeline'i, porte ega adaptereid muutmata.
+Tõend 2 — Formaateri laiendatavus (C-04 dispatch, Gemma)
+    Uus LLM formaateri moodul registreeritakse dispatch-tabelis.
+    Tõestab: dispatch-mehhanism on avatud laiendamiseks.
+    Lisamine: 1 import + 1 dict-entry + 1 YAML-kirje.
 
-    Lisamine nõudis: 1 import + 1 dict-entry __init__.py-s ja
-    1 kirje C-04 YAML-is.  Moodul ise (llm_gemma.py) järgib täpselt
-    sama mustrit nagu olemasolevad formaatijad.
-
-Stsenaarium 3 — Sisendikihi laiendatavus (DatasetPort)
+Tõend 3 — Sisendiadapteri laiendatavus (DatasetPort)
     Testis defineeritud uus DatasetPort implementatsioon läbib
-    pipeline'i end-to-end.  Tõestab: pordi protokoll (duck typing)
+    pipeline'i end-to-end.  Tõestab: pordi Protocol (duck typing)
     lubab uue allika lisamist ilma pipeline'i muutmata.
 
-    NB: testis defineeritud implementatsioon on piisav, sest
-    FakeDatasetPort on juba üks näide alternatiivadapterist.
-    Siinne SimpleDictDatasetPort on struktuuriliselt erinev
-    (üks dict vs eraldi payload'id), mis näitab, et pordi
-    protokoll ei sõltu konkreetsest sisemisest struktuurist.
+Tõend 4 — Projektsiooni laiendatavus, struktuuriliselt uudne kuju (C-06 kuubilanss)
+    C-06 toodab ajaseeria-kujulise cashflow projektsiooni.
+    Tõestab: SV vahekiht toetab ka struktuuriliselt erinevat
+    projektsiooni (akumulatiivne aegrida vs lamedad agregaadid).
 
-Stsenaarium 4 — Struktuurselt uudne projektsioon (C-06 kuubilanss)
-    C-06 toodab ajaseeria-kujulise cashflow projektsiooni — kuju,
-    mis on struktuuriliselt erinev C-02 (lame), C-03 (kontekstiaken)
-    ja C-05 (lamedad agregaadid) omast.  Tõestab: SV vahekiht toetab
-    ka ajalis-akumulatiivset projektsiooni ilma pipeline'i muutmata.
-
-Stsenaarium 5 — C-06 opt-in raporti integratsioon
-    C-06 ühendamine raportisse (report.json) nõuab ainult lokaliseeritud
-    muudatust: S-05 skeemis valikuline väli + pipeline'is profiilipõhine
-    lüliti.  Vaikekäitumine jääb muutumatuks.
-
-Stsenaarium 6 — C-05 & C-06 esimese klassi projektsioonid
-    Profiili extra_projections kaudu aktiveeritud, lepinguga seotud,
-    skeemi vastu valideeritud, eraldi väljundfailidena kirjutatud.
-    Järgib sama mustrit nagu C-02 ja C-03.
-
-Stsenaarium 7 — Sisendiformaadi laiendatavus (D7 standing orders)
+Tõend 5 — Sisendiformaadi laiendatavus (D7 standing orders)
     Pipeline käsitleb uut finantsinstrumendi tüüpi (püsikorraldused)
-    ilma pipeline'i tuumkoodi muutmata.  Tõestab: S-00C skeem +
-    valikuline read_standing_orders_optional() portimeetod võimaldavad
-    uut sisenditüüpi lisada.  INFORMATION tehingud läbivad SV
-    standardiseerimise, aga jäetakse välja ML ja LLM projektsioonidest.
+    ilma pipeline'i tuumkoodi muutmata.  S-00C skeem + valikuline
+    read_standing_orders_optional() portimeetod.  INFORMATION tehingud
+    läbivad SV, aga jäetakse välja ML/LLM projektsioonidest.
+
+Lisaks sisaldab fail integratsiooniteste, mis kontrollivad C-05/C-06
+aktiveerimismehhanisme (raporti laiendus, extra_projections pipeline).
+Need ei ole eraldiseisvad laiendatavuse tõendid.
 """
 
 from __future__ import annotations
@@ -188,7 +169,7 @@ def _run(
 
 
 # ===================================================================
-# Stsenaarium 1: Projektsiooni laiendatavus — C-05 SV → Statistics
+# Tõend 1: Projektsiooni laiendatavus — C-05 SV → Statistics
 # ===================================================================
 
 class TestC05ProjectionExtensibility:
@@ -366,7 +347,7 @@ class TestC05ProjectionExtensibility:
 
 
 # ===================================================================
-# Stsenaarium 2: Formaateri laiendatavus — C-04 dispatch
+# Tõend 2: Formaateri laiendatavus — C-04 dispatch (Gemma)
 # ===================================================================
 
 class TestFormatterExtensibility:
@@ -475,7 +456,7 @@ class TestFormatterExtensibility:
 
 
 # ===================================================================
-# Stsenaarium 3: Sisendikihi laiendatavus — DatasetPort
+# Tõend 3: Sisendiadapteri laiendatavus — DatasetPort
 # ===================================================================
 
 class SimpleDictDatasetPort:
@@ -655,7 +636,7 @@ class TestInputExtensibility:
 
 
 # ===================================================================
-# Stsenaarium 4: Struktuurselt uudne projektsioon — C-06 SV → kuubilanss
+# Tõend 4: Projektsiooni laiendatavus, uudne kuju — C-06 SV → kuubilanss
 # ===================================================================
 
 class TestC06ProjectionExtensibility:
@@ -879,7 +860,7 @@ class TestC06ProjectionExtensibility:
 
 
 # ===================================================================
-# Stsenaarium 5: C-06 opt-in raporti integratsioon
+# Integratsioon: C-06 opt-in raporti laiendus
 # ===================================================================
 
 def _run_with_profile(
@@ -1050,7 +1031,7 @@ class TestC06ReportIntegration:
 
 
 # ===================================================================
-# Stsenaarium 6: C-05 & C-06 esimese klassi projektsioonid
+# Integratsioon: C-05 & C-06 extra_projections pipeline
 # ===================================================================
 
 def _profile_with_extra_projections(*names: str) -> dict[str, Any]:
@@ -1286,7 +1267,7 @@ class TestExtraProjectionsIntegration:
 
 
 # ===================================================================
-# Stsenaarium 7: Sisendiformaadi laiendatavus — D7 standing orders
+# Tõend 5: Sisendiformaadi laiendatavus — D7 standing orders
 # ===================================================================
 
 

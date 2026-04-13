@@ -262,7 +262,7 @@ backend/tests/
         test_import_boundaries.py         # domain ei impordi keelatud mooduleid
         test_model_formatters.py          # C-04 mudeliformaatijate testid
         test_pipeline_with_model_target.py # pipeline + mudelisihtmärk end-to-end
-        test_scalability.py               # UK3 laiendatavuse stsenaariumid (7)
+        test_scalability.py               # UK3 laiendatavuse tõendid + integratsioon
     fakes/                                # in-memory port-teostused testidele
         fake_dataset_port.py
         fake_output_port.py
