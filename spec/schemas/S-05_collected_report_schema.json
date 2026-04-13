@@ -274,6 +274,34 @@
     "extensions": {
       "type": "object",
       "additionalProperties": true
+    },
+
+    "extra_projections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "enabled",
+          "contract_id",
+          "contract_version",
+          "schema_id",
+          "output_file",
+          "item_count",
+          "validation_result"
+        ],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "enabled": { "type": "boolean" },
+          "contract_id": { "type": "string", "minLength": 1 },
+          "contract_version": { "type": "string", "minLength": 1 },
+          "schema_id": { "type": ["string", "null"] },
+          "output_file": { "type": "string", "minLength": 1 },
+          "item_count": { "type": "integer", "minimum": 0 },
+          "validation_result": { "type": "string", "minLength": 1 }
+        }
+      }
     }
   }
 }

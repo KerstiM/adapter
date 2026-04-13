@@ -26,6 +26,7 @@ from domain.mapping.c01_raw_to_sv import (
 )
 from domain.projections.c02_sv_to_ml import project_ml as _project_ml
 from domain.projections.c03_sv_to_llm import project_llm as _project_llm
+from domain.projections.c05_sv_to_stats import project_stats as _project_stats
 from domain.projections.c06_sv_to_monthly_balance import (
     project_monthly_balance as _project_monthly_balance,
 )
@@ -55,6 +56,15 @@ from ports.spec_port import SpecPort
 def _is_download_only(data: dict) -> bool:
     """Check if a transaction response is download-only (C-01 rule)."""
     return bool((data.get("_links") or {}).get("download", {}).get("href"))
+
+
+# ---------------------------------------------------------------------------
+# Extra-projection dispatch: name -> (pure function, contract key)
+# ---------------------------------------------------------------------------
+_EXTRA_PROJECTION_DISPATCH: dict[str, tuple[Any, str]] = {
+    "stats": (_project_stats, "C-05"),
+    "monthly_balance": (_project_monthly_balance, "C-06"),
+}
 
 
 # ---------------------------------------------------------------------------
@@ -383,6 +393,62 @@ def run_pipeline(
         if _ext_name == "monthly_balance":
             report_extensions_out["monthly_balance"] = _project_monthly_balance(sv_bundle)
 
+    # ----------------------------------------------------------------
+    # Opt-in extra projections — profile-gated, contract-linked,
+    # schema-validated, written as standalone output artefacts
+    # ----------------------------------------------------------------
+    extra_projections_audit: list[dict] = []
+    for _proj_name in profile.get("extra_projections", []):
+        _dispatch = _EXTRA_PROJECTION_DISPATCH.get(_proj_name)
+        if _dispatch is None:
+            continue
+        _proj_fn, _contract_key = _dispatch
+
+        # Read contract for output path and schema reference
+        _contract = profile.get("contracts", {}).get(_contract_key, {})
+        _output_cfg = _contract.get("output") or {}
+        _schema_key = _output_cfg.get("schema")
+        _output_file = _output_cfg.get("file", f"projections/{_proj_name}_v1.json")
+        _output_filename = _output_file.rsplit("/", 1)[-1]
+
+        # Run projection
+        _proj_data = _proj_fn(sv_bundle)
+
+        # Runtime schema validation
+        _validation_result = "PASS"
+        if _schema_key and _schema_key in profile.get("schemas", {}):
+            try:
+                jsonschema.validate(_proj_data, profile["schemas"][_schema_key])
+            except jsonschema.ValidationError as e:
+                _validation_result = f"FAIL: {e.message}"
+                issues.append({
+                    "code": f"{_schema_key}_VALIDATION",
+                    "severity": "WARN",
+                    "stage": "WRITE_OUTPUTS",
+                    "message": f"{_schema_key} validation ({_proj_name}): {e.message}",
+                    "refs": {
+                        "account_id": None,
+                        "record_id": None,
+                        "field_path": ".".join(str(p) for p in e.absolute_path) or None,
+                        "source_lineage": f"extra_projection:{_proj_name}",
+                    },
+                })
+
+        # Write standalone output artefact
+        out.write_extra_projection(_proj_data, _output_filename)
+
+        # Audit trail entry
+        extra_projections_audit.append({
+            "name": _proj_name,
+            "enabled": True,
+            "contract_id": _contract.get("id", _contract_key),
+            "contract_version": _contract.get("version", "unknown"),
+            "schema_id": _schema_key,
+            "output_file": f"projections/{_output_filename}",
+            "item_count": len(_proj_data),
+            "validation_result": _validation_result,
+        })
+
     # ================================================================
     # Stage 7: FORMAT_FOR_MODEL — model-specific formatting (C-04)
     # ================================================================
@@ -555,6 +621,7 @@ def run_pipeline(
         dropped_details=all_dropped_details,
         metrics=metrics,
         report_extensions=report_extensions_out or None,
+        extra_projections_audit=extra_projections_audit or None,
     )
     out.write_report(report)
 

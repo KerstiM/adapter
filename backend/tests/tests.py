@@ -448,6 +448,110 @@ class TestHappyPathPipeline:
         schema_issues = [i for i in summary["issues"] if "validation" in i.get("message", "").lower()]
         assert len(schema_issues) == 0
 
+
+# ---------------------------------------------------------------------------
+# Extra projections: FS end-to-end tests with extensions_eval profile
+# ---------------------------------------------------------------------------
+
+@pytest.fixture()
+def d1_extensions_output(tmp_path: Path) -> tuple[dict, Path]:
+    """Run pipeline on D1 with extensions_eval profile."""
+    summary = run_pipeline_fs(
+        data_dir=DATA_D1,
+        output_dir=tmp_path,
+        spec_dir=SPEC_DIR,
+        profile_id="extensions_eval",
+        run_id=FIXED_RUN_ID,
+        created_at_utc=FIXED_TS,
+    )
+    run_folder = Path(summary["run_folder"])
+    return summary, run_folder
+
+
+class TestExtraProjectionsFS:
+    """FS end-to-end testid extensions_eval profiiliga.
+
+    Tõestab, et extra projections mehhanism töötab päris
+    failisüsteemi adapteritega, mitte ainult FakeSpecPort'iga.
+    """
+
+    def test_stats_file_exists(self, d1_extensions_output: tuple) -> None:
+        """extensions_eval profiiliga tekib projections/stats_v1.json."""
+        _, run_folder = d1_extensions_output
+        assert (run_folder / "projections" / "stats_v1.json").exists()
+
+    def test_monthly_balance_file_exists(self, d1_extensions_output: tuple) -> None:
+        """extensions_eval profiiliga tekib projections/monthly_balance_v1.json."""
+        _, run_folder = d1_extensions_output
+        assert (run_folder / "projections" / "monthly_balance_v1.json").exists()
+
+    def test_stats_validates_against_s06(self, d1_extensions_output: tuple) -> None:
+        """stats_v1.json valideerub tõelise S-06 skeemi vastu."""
+        _, run_folder = d1_extensions_output
+        schema = _load_schema("S-06_stats_schema.json")
+        with open(run_folder / "projections" / "stats_v1.json", encoding="utf-8") as f:
+            data = json.load(f)
+        jsonschema.validate(data, schema)
+
+    def test_monthly_balance_validates_against_s07(self, d1_extensions_output: tuple) -> None:
+        """monthly_balance_v1.json valideerub tõelise S-07 skeemi vastu."""
+        _, run_folder = d1_extensions_output
+        schema = _load_schema("S-07_monthly_balance_schema.json")
+        with open(run_folder / "projections" / "monthly_balance_v1.json", encoding="utf-8") as f:
+            data = json.load(f)
+        jsonschema.validate(data, schema)
+
+    def test_default_profile_no_extra_projections(self, d1_output: tuple) -> None:
+        """Default profiiliga ei teki extra projection faile."""
+        _, run_folder = d1_output
+        assert not (run_folder / "projections" / "stats_v1.json").exists()
+        assert not (run_folder / "projections" / "monthly_balance_v1.json").exists()
+
+    def test_existing_artifacts_unchanged(
+        self, d1_output: tuple, d1_extensions_output: tuple,
+    ) -> None:
+        """ML ja LLM väljundid on identsed default ja extensions_eval profiili vahel."""
+        _, default_folder = d1_output
+        _, ext_folder = d1_extensions_output
+
+        with open(default_folder / "projections" / "ml_v1.csv", encoding="utf-8") as f:
+            ml_default = f.read()
+        with open(ext_folder / "projections" / "ml_v1.csv", encoding="utf-8") as f:
+            ml_ext = f.read()
+        assert ml_default == ml_ext, "ML CSV must be byte-identical across profiles"
+
+        with open(default_folder / "projections" / "llm_context_v1.json", encoding="utf-8") as f:
+            llm_default = f.read()
+        with open(ext_folder / "projections" / "llm_context_v1.json", encoding="utf-8") as f:
+            llm_ext = f.read()
+        assert llm_default == llm_ext, "LLM JSON must be byte-identical across profiles"
+
+    def test_audit_trail_in_report(self, d1_extensions_output: tuple) -> None:
+        """report.json sisaldab extra_projections auditijälge."""
+        _, run_folder = d1_extensions_output
+        with open(run_folder / "report.json", encoding="utf-8") as f:
+            report = json.load(f)
+
+        assert "extra_projections" in report
+        audit = report["extra_projections"]
+        assert len(audit) == 2
+
+        names = {a["name"] for a in audit}
+        assert names == {"stats", "monthly_balance"}
+
+        for entry in audit:
+            assert entry["enabled"] is True
+            assert entry["validation_result"] == "PASS"
+            assert entry["item_count"] >= 1
+
+    def test_report_validates_against_s05(self, d1_extensions_output: tuple) -> None:
+        """extensions_eval raporti valideerimiskontroll S-05 skeemi vastu."""
+        _, run_folder = d1_extensions_output
+        schema = _load_schema("S-05_collected_report_schema.json")
+        with open(run_folder / "report.json", encoding="utf-8") as f:
+            report = json.load(f)
+        jsonschema.validate(report, schema)
+
     def test_dropped_details_in_report(self, d1_output: tuple) -> None:
         """D1 has no dropped transactions."""
         _, run_folder = d1_output

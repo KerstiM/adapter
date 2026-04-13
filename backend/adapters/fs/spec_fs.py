@@ -84,6 +84,11 @@ class FsSpecAdapter:
         if "run_policy" in raw:
             resolved["run_policy"] = raw["run_policy"]
 
+        # Forward optional profile-level keys as-is
+        for optional_key in ("report_extensions", "target_models", "extra_projections"):
+            if optional_key in raw:
+                resolved[optional_key] = raw[optional_key]
+
         self._profile_cache[profile_id] = resolved
         return resolved
 
