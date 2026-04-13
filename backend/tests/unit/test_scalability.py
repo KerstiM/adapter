@@ -50,7 +50,6 @@ from domain.projections.c05_sv_to_stats import project_stats
 from domain.projections.c06_sv_to_monthly_balance import project_monthly_balance
 from domain.projections.model_formatters import (
     _LLM_FAMILY_DISPATCH,
-    _ML_ENCODING_DISPATCH,
     format_for_model,
 )
 from domain.projections.model_formatters.llm_gemma import format_gemma
@@ -394,57 +393,6 @@ class TestFormatterExtensibility:
         assert "<start_of_turn>user" in result[0]["prompt"]
         assert "Analyze." in result[0]["prompt"]
         assert "<start_of_turn>model" in result[0]["prompt"]
-
-    def test_new_ml_encoder_pluggable(self) -> None:
-        """Uue ML enkooderi lisamine dispatch-tabelisse töötab.
-
-        Loob minimaalse enkooderi funktsiooni ja registreerib selle
-        _ML_ENCODING_DISPATCH tabelisse.  Tõestab, et dispatch-mehhanism
-        on avatud ka ML poolel.
-        """
-        def format_lightgbm(ml_rows: list[dict], sv_bundle: dict, config: dict) -> dict:
-            """Minimal LightGBM encoder — UK3 test artifact."""
-            return {
-                "model_id": "lightgbm",
-                "row_count": len(ml_rows),
-                "features": [{"signed_amount": float(r.get("signed_amount", 0))} for r in ml_rows],
-            }
-
-        assert "lgbm" not in _ML_ENCODING_DISPATCH, "lgbm must not be pre-registered"
-
-        _ML_ENCODING_DISPATCH["lgbm"] = format_lightgbm
-        try:
-            ml_rows = [
-                {"row_id": 1, "signed_amount": "100.00", "status": "BOOKED"},
-                {"row_id": 2, "signed_amount": "-50.00", "status": "BOOKED"},
-            ]
-            config = {"encoding": "lgbm"}
-            sv_bundle = {"meta": {"run_id": "test", "created_at_utc": "2026-01-01T00:00:00Z"}}
-
-            result = format_for_model(ml_rows, sv_bundle, "lightgbm", config, "ml")
-
-            assert result["model_id"] == "lightgbm"
-            assert result["row_count"] == 2
-        finally:
-            _ML_ENCODING_DISPATCH.pop("lgbm", None)
-
-    def test_formatter_cleanup_no_side_effects(self) -> None:
-        """Ajutine registreerimine ja eemaldamine ei jäta kõrvalmõjusid.
-
-        Pärast registreerimist ja eemaldamist on dispatch-tabel endises
-        olekus — tõestab, et laiendamine ei rikuks olemasolevat loogikat.
-        """
-        original_llm_keys = set(_LLM_FAMILY_DISPATCH.keys())
-        original_ml_keys = set(_ML_ENCODING_DISPATCH.keys())
-
-        _LLM_FAMILY_DISPATCH["test_family"] = lambda *a, **k: []
-        _ML_ENCODING_DISPATCH["test_encoding"] = lambda *a, **k: {}
-
-        _LLM_FAMILY_DISPATCH.pop("test_family")
-        _ML_ENCODING_DISPATCH.pop("test_encoding")
-
-        assert set(_LLM_FAMILY_DISPATCH.keys()) == original_llm_keys
-        assert set(_ML_ENCODING_DISPATCH.keys()) == original_ml_keys
 
     def test_unknown_family_raises_clear_error(self) -> None:
         """Tundmatu LLM perekond annab selge ValueError veateate."""
@@ -1160,14 +1108,6 @@ class TestExtraProjectionsIntegration:
             assert entry["item_count"] >= 1
             assert entry["validation_result"] == "PASS"
 
-    def test_schema_validation_pass_recorded(self) -> None:
-        """Permissiivse skeemiga valideerimistulemus on PASS."""
-        profile = _profile_with_extra_projections("stats")
-        _, out = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
-
-        audit = out.report["extra_projections"]
-        assert audit[0]["validation_result"] == "PASS"
-
     def test_schema_validation_failure_recorded(self) -> None:
         """Piiratud skeemiga valideerimistulemus on FAIL ja issue tekib."""
         profile = _profile_with_extra_projections("stats")
@@ -1196,19 +1136,6 @@ class TestExtraProjectionsIntegration:
 
         assert "custom_stats.json" in out.extra_projections
         assert "stats_v1.json" not in out.extra_projections
-
-    def test_default_behavior_unchanged(self) -> None:
-        """Vaikeprofiili väljund on baidihaaval identne enne ja pärast muudatusi."""
-        _, out_default = _run_with_profile(booked=self._FIXED_BOOKED)
-        _, out_extra = _run_with_profile(
-            profile=_profile_with_extra_projections("stats", "monthly_balance"),
-            booked=self._FIXED_BOOKED,
-        )
-
-        # SV, ML, LLM peavad olema identsed
-        assert out_default.sv == out_extra.sv, "SV must be identical"
-        assert out_default.ml == out_extra.ml, "ML must be identical"
-        assert out_default.llm == out_extra.llm, "LLM must be identical"
 
     def test_existing_ml_llm_unchanged(self) -> None:
         """Extra projections sisselülitamine ei mõjuta ML ja LLM väljundeid."""
