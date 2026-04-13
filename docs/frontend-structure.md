@@ -51,7 +51,7 @@ Peamine orkestreerimiskomponent, mis haldab kogu rakenduse olekut ja koordineeri
 
 **Fail**: `src/components/ModelSelector.vue`
 
-- Sihtmudelite valik: 3 LLM (Llama 3.1, Mistral 7B, Qwen 2.5) ja 2 ML (XGBoost, CatBoost)
+- Sihtmudelite valik: 4 LLM (Llama 3.1, Mistral 7B, Qwen 2.5, Gemma 2) ja 2 ML (XGBoost, CatBoost)
 - Mudelite valik on **valikuline** – pipeline käivitub ka ilma mudeliteta
 - Chip-põhine UI: valitud mudelid kuvatakse chip'idena, saab lisada/eemaldada
 - `v-model` sidumine valitud mudelite massiiviga
@@ -130,7 +130,7 @@ Kogu andmevahetus backend'iga — null mock-andmeid.
 | Funktsioon | Kirjeldus |
 |---|---|
 | `getDatasets()` | Tagastab 10 andmestikku (D1–D10): ID, nimi, kirjete arv |
-| `getModels()` | Tagastab 5 mudelit: 3 LLM (Llama 3.1, Mistral 7B, Qwen 2.5) + 2 ML (XGBoost, CatBoost) |
+| `getModels()` | Tagastab 6 mudelit: 3 LLM (Llama 3.1, Mistral 7B, Qwen 2.5) + 2 ML (XGBoost, CatBoost) |
 | `runPipeline(datasetId, selectedModelIds)` | POST `/api/run` → pipeline tulemus. `selectedModelIds` on massiiv mudeli-ID-dest. |
 
 Backend: `python -m entrypoints.api` (stdlib http.server, port 5000). Vite proxy: `/api` → backend.
@@ -197,7 +197,7 @@ DashboardView (konteiner)
 | 3 | `src/views/DashboardView.vue` | Pealeht (orkestreeija) |
 | 4 | `src/views/DocsView.vue` | Dokumentatsioonivaade (markdown-renderdaja) |
 | 5 | `src/components/DatasetSelector.vue` | Andmestiku valik (D1–D10) |
-| 6 | `src/components/ModelSelector.vue` | Sihtmudelite valik (3 LLM + 2 ML, valikuline) |
+| 6 | `src/components/ModelSelector.vue` | Sihtmudelite valik (4 LLM + 2 ML, valikuline) |
 | 7 | `src/components/ResultsPanel.vue` | Tulemuste kuvamine (ML CSV + LLM JSON) |
 | 8 | `src/components/RunResultDetails.vue` | Ühe dataseti tulemuse detailvaade |
 | 9 | `src/components/LanguageToggle.vue` | ET/EN keelevahetaja |
@@ -229,7 +229,7 @@ DashboardView (konteiner)
 | Peavaade | DashboardView.vue |
 | Dokumentatsioonivaade | DocsView.vue (markdown-renderdaja) |
 | Keelevahetaja | LanguageToggle.vue (ET/EN) |
-| Valiku komponendid | DatasetSelector (D1–D10), ModelSelector (3 LLM + 2 ML, valikuline) |
+| Valiku komponendid | DatasetSelector (D1–D10), ModelSelector (4 LLM + 2 ML, valikuline) |
 | Tulemuste komponendid | ResultsPanel + RunResultDetails |
 | Projektsiooni modaal | ProjectionModal.vue (ML tabel + LLM JSON) |
 | Utiliidid | useMarkdown.js (renderdaja), downloadFile.js (faili allalaadimine) |

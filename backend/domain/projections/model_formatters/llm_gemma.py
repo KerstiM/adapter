@@ -1,15 +1,11 @@
 """
-C-04 LLM formatter for Google Gemma 2 — UK3 evolution artifact.
+C-04 LLM formatter for Google Gemma 2.
 
-This module is a UK3 evolution artifact: it demonstrates that a new LLM
-formatter can be added as a standalone module following the same pattern
-as existing formatters (llama3, mistral, chatml) without modifying the
-pipeline, ports, or dispatcher logic.
-
-In production, registering this formatter requires adding one import and
-one dict entry to model_formatters/__init__.py.  The test suite verifies
-the mechanism by temporarily registering this formatter in the dispatch
-table.
+Added as UK3 extensibility proof: demonstrates that a new LLM formatter
+can be introduced as a standalone module following the same pattern as
+existing formatters (llama3, mistral, chatml) without modifying the
+pipeline, ports, or dispatcher logic.  Registered in the dispatch table
+via one import + one dict entry in ``__init__.py``.
 
 Pure function, no I/O.
 """

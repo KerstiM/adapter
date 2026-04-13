@@ -23,6 +23,7 @@ const MODELS = [
   { id: 'llama3.1-8b-instruct', label: 'Meta Llama 3.1 8B Instruct', type: 'llm' },
   { id: 'mistral-7b-instruct-v0.3', label: 'Mistral 7B Instruct v0.3', type: 'llm' },
   { id: 'qwen2.5-7b-instruct', label: 'Qwen2.5 7B Instruct', type: 'llm' },
+  { id: 'gemma-2-2b-it', label: 'Google Gemma 2 2B', type: 'llm' },
   { id: 'xgboost', label: 'XGBoost', type: 'ml' },
   { id: 'catboost', label: 'CatBoost', type: 'ml' },
 ]
