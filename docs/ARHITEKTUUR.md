@@ -46,10 +46,11 @@ Operatiivsed käsud ja käivitamisnäited: [`docs/runbook.md`](runbook.md).
 │  │       ports/        │    │           domain/                │   │
 │  │  (Protocol-liidesed)│    │  puhas loogika (standardlib)     │   │
 │  │  ─────────────────  │    │  ──────────────────────────────  │   │
-│  │  DatasetPort        │    │  mapping/     → C-01             │   │
-│  │  OutputPort         │    │  rules/       → R-01             │   │
-│  │  SpecPort           │    │  projections/ → C-02, C-03       │   │
-│  │  ClockPort          │    │  report/      → models + ops     │   │
+│  │  DatasetPort        │    │  mapping/       → C-01           │   │
+│  │  OutputPort         │    │  rules/         → R-01           │   │
+│  │  SpecPort           │    │  projections/   → C-02..C-06     │   │
+│  │  ClockPort          │    │    model_formatters/ → C-04      │   │
+│  │                     │    │  report/        → models + ops   │   │
 │  └─────────────────────┘    └─────────────────────────────────┘   │
 │                                                                    │
 │  ports defineerivad liidesed · application kasutab liideseid ·     │
@@ -73,7 +74,7 @@ Sõltuvuste suund:
 
 ---
 
-## Pipeline etapid (7 sammu)
+## Pipeline etapid (8 sammu)
 
 | # | Koodi etapp (`stage_log`) | Kirjeldus |
 |---|--------------------------|-----------|
@@ -83,7 +84,8 @@ Sõltuvuste suund:
 | 4 | `CHECK_INVARIANTS` | Invariantide kontroll (R-01) + dedupe (INV-09); võib tekitada drop'e |
 | 5 | `PROJECT_ML` | ML CSV projektsioon (C-02) |
 | 6 | `PROJECT_LLM` | LLM kontekst projektsioon (C-03) |
-| 7 | `WRITE_OUTPUTS` | Artefaktide kirjutamine + raporti koostamine + outcome otsus |
+| 7 | `FORMAT_FOR_MODEL` | Mudeli-spetsiifiline formaatimine (C-04): XGBoost/CatBoost kodeeringud, Llama/Mistral/Qwen prompti mallid. Käivitub ainult siis, kui CLI, API või profiil määrab sihtmudelid. |
+| 8 | `WRITE_OUTPUTS` | Artefaktide kirjutamine + raporti koostamine + outcome otsus |
 
 ---
 
@@ -121,6 +123,12 @@ backend/
         mapping/c01_raw_to_sv.py     #   RAW → SV kaardistus (C-01)
         projections/c02_sv_to_ml.py  #   SV → ML projektsioon (C-02)
         projections/c03_sv_to_llm.py #   SV → LLM kontekst (C-03)
+        projections/c05_sv_to_stats.py       # statistika projektsioon (C-05)
+        projections/c06_sv_to_monthly_balance.py  # kuubilanss (C-06)
+        projections/model_formatters/#   C-04 mudelispetsiifilised formaatijad
+            _common.py               #     jagatud abifunktsioonid
+            llm_templates.py         #     Llama 3 / Mistral / ChatML promptimallid
+            ml_encoders.py           #     XGBoost label-encoding, CatBoost native
         rules/invariants_r01.py      #   invariandid + dedupe (R-01)
         report/models.py             #   Issue, RunFlag, CollectedRunReport
         report/ops.py                #   outcome, counts, by_severity
@@ -132,10 +140,11 @@ backend/
         clock_port.py                #   aeg + run ID (determinism)
 
     application/                     # orkestreerimine, räägib ainult portidega
-        pipeline.py                  #   7-etapiline pipeline (run_pipeline)
+        pipeline.py                  #   8-etapiline pipeline (run_pipeline)
 
     entrypoints/                     # driving-adapter: portide kokkuühendamine
         wiring_fs.py                 #   FS-adapterid → run_pipeline
+        api.py                       #   stdlib HTTP API server (port 5000)
 
     adapters/fs/                     # failisüsteemi I/O teostused
         dataset_fs.py                #   datasets/ lugemine failisüsteemist
@@ -166,9 +175,16 @@ backend/
 ## Stabiilsed artefaktid (leping)
 
 - `sv.json` — SVBundle
-- `projections/ml_v1.csv` — ML projektsioon
-- `projections/llm_context_v1.json` — LLM kontekst
+- `projections/ml_v1.csv` — ML baasprojektsioon
+- `projections/llm_context_v1.json` — LLM baaskontekst
 - `report.json` — kogutud raport
+
+Mudelispetsiifilised artefaktid (tekivad ainult siis, kui CLI, API või profiil määrab sihtmudelid):
+
+- `projections/ml_xgboost.csv` / `ml_catboost.csv` — ML mudeli-kodeeritud projektsioonid
+- `projections/llm_llama3.txt` / `llm_mistral.txt` / `llm_qwen.txt` — LLM promptimallid
+- `projections/stats_v1.json` — statistika (kui profiil lubab C-05 `extra_projections` kaudu)
+- `projections/monthly_balance_v1.json` — kuubilanss (kui profiil lubab C-06 `extra_projections` kaudu)
 
 ---
 
@@ -176,7 +192,7 @@ backend/
 
 - `DatasetPort`: `read_accounts()`, `list_transaction_reports()`, `read_transactions_report(name)`, `read_standing_orders_optional()`
 - `SpecPort`: `load_profile(profile_id)`, `load_schema(id)`, `load_contract(id)`, `load_ruleset(id)`
-- `OutputPort`: `init_run_folder(run_id, created_at_utc)`, `write_sv(bundle)`, `write_ml(rows)`, `write_llm(context)`, `write_report(report)`
+- `OutputPort`: `init_run_folder(run_id, created_at_utc)`, `write_sv(bundle)`, `write_ml(rows)`, `write_llm(context)`, `write_report(report)`, `write_ml_model(output, model_suffix)`, `write_llm_model(output, model_suffix)`, `write_extra_projection(data, filename)`
 - `ClockPort`: `now_utc()`, `new_run_id()`
 
 ---

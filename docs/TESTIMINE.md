@@ -15,8 +15,11 @@ Pipeline jookseb täielikult mälus, failisüsteemi ei puudutata.
 |------|--------|
 | `test_pipeline_with_fakes.py` | Pipeline äriloogika: mapping, invariandid, projektsioonid, outcome |
 | `test_import_boundaries.py` | Kihistus: `domain/` ei impordi keelatud mooduleid (AST skaneerimine) |
+| `test_model_formatters.py` | C-04 mudeliformaatijad: XGBoost label-encoding, CatBoost native, Llama 3 / Mistral / Qwen promptimallid |
+| `test_pipeline_with_model_target.py` | Pipeline end-to-end mudelisihtmärgiga: kõik 5 mudelit (3 LLM + 2 ML) |
+| `test_scalability.py` | Skaleeritavus ja jõudlus: D8 (10k tehingut) ja D9 (1k tehingut) mediaanaeg, stddev, determinism |
 
-Fake-portide allikad: `backend/tests/fakes/`.
+Fake-portide allikad: `backend/tests/fakes/`. Kellaadapter testides: `adapters/testing/clock_fixed.py`.
 
 ### Integratsioonitestid (`backend/tests/tests.py`)
 
@@ -30,6 +33,23 @@ Testivad end-to-end voo: sisend → SV → ML/LLM → raport → skeemivalideeri
 | Fail | Testib |
 |------|--------|
 | `test_import_boundaries.py` | `domain/` importe AST-ga — keelatud impordid (pathlib, os, adapters) |
+
+### SLI/SLO-testid (`backend/tests/sli_slo/`)
+
+Kvaliteedimõõdikute automatiseeritud valideerimine. 72 testi, mis kontrollivad:
+
+| SLI | Kirjeldus |
+|-----|-----------|
+| SLI-1 | Skeemikatvus: prioriteetsete väljade kaetus (≥ 0.95) |
+| SLI-2 | Valideerimisläbilaskvus: puhta sisendi korral 100% |
+| QC-2 | Drop-raporteerimine: kõik dropitud kirjed on `dropped_details[]`-s selgitatud |
+| SLI-3 | Invariantide vastavus: kriitilisi rikkumisi 0 |
+| Gate | Veadropide osakaal: <5% → PARTIAL_SUCCESS, ≥5% → FAIL |
+| SLI-4 | Determinism: N=5 jooksu identsed artefaktid |
+| SLI-5 | Auditiraja täielikkus: kõik kohustuslikud metaväljad olemas |
+| SLI-6 | Viitejõudlus: D9 (1000 tx) mediaan ≤ 500 ms |
+
+Tulemused: [`backend/tests/sli_slo/RESULTS.md`](../backend/tests/sli_slo/RESULTS.md).
 
 ### QA / E2E valideerimine (`scripts/qa/`)
 
