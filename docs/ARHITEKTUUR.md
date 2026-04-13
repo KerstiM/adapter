@@ -182,7 +182,7 @@ backend/
 Mudelispetsiifilised artefaktid (tekivad ainult siis, kui CLI, API või profiil määrab sihtmudelid):
 
 - `projections/ml_xgboost.csv` / `ml_catboost.csv` — ML mudeli-kodeeritud projektsioonid
-- `projections/llm_llama3.txt` / `llm_mistral.txt` / `llm_qwen.txt` — LLM promptimallid
+- `projections/llm_llama3.txt` / `llm_mistral.txt` / `llm_qwen.txt` / `llm_gemma.txt` — LLM promptimallid
 - `projections/stats_v1.json` — statistika (kui profiil lubab C-05 `extra_projections` kaudu)
 - `projections/monthly_balance_v1.json` — kuubilanss (kui profiil lubab C-06 `extra_projections` kaudu)
 
@@ -203,3 +203,28 @@ Raport ei ole "kõrvalprodukt", vaid **põhiartefakt**, mille põhjal tehakse ou
 
 - `domain/report/` — tüübid (`Issue`, `Severity`, `RunFlag`, `DropDetail`, `CollectedRunReport`) + abifunktsioonid.
 - `application/pipeline.py` — pipeline etapid tagastavad tulemuse + raporti sündmused.
+
+---
+
+## Laiendatavus (UK3)
+
+Arhitektuur on kavandatud nii, et uusi projektsioone, formaatijaid ja sisendiallikaid saab lisada olemasolevat koodi muutmata (Open/Closed printsiip). Seda tõestavad kolm evolutsioonistsenaariumit, mis on testitega kaetud (`tests/unit/test_scalability.py`):
+
+### Stsenaarium 1 — Projektsiooni laiendatavus
+
+Uued reeglipõhised projektsioonid C-05 (statistika) ja C-06 (kuubilanss) lisati eraldiseisvatena. Pipeline'i, porte ega adaptereid ei muudetud. SV vaheesitus on stabiilne laienduspunkt — iga uus projektsioon on puhas funktsioon, mis võtab SVBundle sisendiks.
+
+Aktiveeritakse profiili kaudu (`extra_projections: [stats, monthly_balance]`), mis tähendab, et baasprofiil jääb muutumatuks.
+
+### Stsenaarium 2 — Formaateri laiendatavus (C-04 dispatch)
+
+Uus LLM formaateri moodul Gemma 2 (`domain/projections/model_formatters/llm_gemma.py`) lisati dispatch-tabelisse. Muutused:
+
+- 1 kirje `C-04_model_formatters.yaml` lepingusse (`gemma-2-2b-it` perekonnaga `gemma`)
+- 1 import + 1 dict-entry `model_formatters/__init__.py`-s
+
+Pipeline'i, porte, adaptereid ega olemasolevaid formaatijaid ei muudetud. Moodul järgib täpselt sama signatuuri ja mustrit nagu olemasolevad formaatijad (llama3, mistral, chatml). Git-diff on ise tõestus — see näitab, kui väike on muudatus.
+
+### Stsenaarium 3 — Sisendikihi laiendatavus
+
+Testis defineeritud `SimpleDictDatasetPort` implementatsioon (struktuuriliselt erinev `FakeDatasetPort`-st ja FS-adapterist) läbib pipeline'i end-to-end. Pordi `Protocol` (duck typing) ei sõltu konkreetsest sisemisest struktuurist — piisab meetodite olemasolust.
