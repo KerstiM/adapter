@@ -31,6 +31,9 @@ Tõend 5 — Sisendiformaadi laiendatavus (D7 standing orders)
 Lisaks sisaldab fail integratsiooniteste, mis kontrollivad C-05/C-06
 aktiveerimismehhanisme (raporti laiendus, extra_projections pipeline).
 Need ei ole eraldiseisvad laiendatavuse tõendid.
+
+C-05/C-06 funktsionaalsed testid (projektsiooni sisemise loogika korrektsus)
+on eraldi failides: test_c05_stats.py ja test_c06_monthly_balance.py.
 """
 
 from __future__ import annotations
@@ -75,19 +78,6 @@ def _accounts(
                 "currency": currency,
                 "name": name,
             }
-        ]
-    }
-
-
-def _multi_accounts(*specs: tuple[str, str, str, str]) -> dict:
-    """Build accounts payload with multiple accounts.
-
-    Each spec is (resource_id, iban, currency, name).
-    """
-    return {
-        "accounts": [
-            {"resourceId": rid, "iban": iban, "currency": cur, "name": name}
-            for rid, iban, cur, name in specs
         ]
     }
 
@@ -177,105 +167,6 @@ class TestC05ProjectionExtensibility:
     Iga test tõestab, et uus projektsioon töötab SV vaheesitusel
     ilma pipeline'i, porte ega adaptereid muutmata.
     """
-
-    def test_c05_produces_stats_for_single_account(self) -> None:
-        """C-05 tagastab ühe konto statistika minimaalselt sisendilt."""
-        _, out = _run(booked=[_tx(amount="50.00"), _tx(amount="-30.00", transaction_id="TX002")])
-        stats = project_stats(out.sv)
-
-        assert len(stats) == 1
-        s = stats[0]
-        assert s["account_id"] == "acct-001"
-        assert s["currency"] == "EUR"
-        assert s["transaction_count"]["total"] == 2
-
-    def test_c05_produces_stats_for_multiple_accounts(self) -> None:
-        """C-05 tagastab statistika iga konto kohta eraldi."""
-        accounts = _multi_accounts(
-            ("acct-001", "DE89370400440532013000", "EUR", "Account A"),
-            ("acct-002", "GB29NWBK60161331926819", "GBP", "Account B"),
-        )
-        reports = {
-            "tx_acct1.json": _report(
-                iban="DE89370400440532013000",
-                booked=[_tx(amount="100.00", transaction_id="TX-A1")],
-            ),
-            "tx_acct2.json": _report(
-                iban="GB29NWBK60161331926819",
-                booked=[_tx(amount="200.00", transaction_id="TX-B1")],
-            ),
-        }
-        _, out = _run(accounts=accounts, transaction_reports=reports)
-        stats = project_stats(out.sv)
-
-        assert len(stats) == 2
-        account_ids = {s["account_id"] for s in stats}
-        assert "acct-001" in account_ids
-        assert "acct-002" in account_ids
-
-    def test_c05_inflow_outflow_correct(self) -> None:
-        """C-05 agregeerib sissevoolu ja väljavoolu korrektselt.
-
-        Berlin AIS suunareeglid: debtorName → IN (sissevool),
-        creditorName → OUT (väljavool).  Positiivne summa + debtorName
-        annab positiivse signed_amount SV-s.
-        """
-        booked = [
-            _tx(amount="100.00", transaction_id="TX-IN1", debtor_name="Payer A", creditor_name=None),
-            _tx(amount="250.00", transaction_id="TX-IN2", debtor_name="Payer B", creditor_name=None),
-            _tx(amount="80.00", transaction_id="TX-OUT1", creditor_name="Vendor X", debtor_name=None),
-            _tx(amount="20.00", transaction_id="TX-OUT2", creditor_name="Vendor Y", debtor_name=None),
-        ]
-        _, out = _run(booked=booked)
-        stats = project_stats(out.sv)
-
-        s = stats[0]
-        assert s["inflow"]["count"] == 2
-        assert s["inflow"]["total"] == "350"
-        assert s["outflow"]["count"] == 2
-        assert s["outflow"]["total"] == "-100"
-
-    def test_c05_top_counterparties_sorted_by_total(self) -> None:
-        """C-05 sorteerib vastaspooled absoluutsumma järgi kahanevalt."""
-        booked = [
-            _tx(amount="-500.00", transaction_id="TX1", creditor_name="Big Corp", debtor_name=None),
-            _tx(amount="-100.00", transaction_id="TX2", creditor_name="Small LLC", debtor_name=None),
-            _tx(amount="-300.00", transaction_id="TX3", creditor_name="Big Corp", debtor_name=None),
-        ]
-        _, out = _run(booked=booked)
-        stats = project_stats(out.sv)
-
-        cps = stats[0]["top_counterparties"]
-        assert len(cps) == 2
-        assert cps[0]["name"] == "Big Corp"
-        assert cps[1]["name"] == "Small LLC"
-
-    def test_c05_handles_empty_transactions(self) -> None:
-        """C-05 käsitleb tühja tehinguloendit korrektselt."""
-        _, out = _run(booked=[], pending=[])
-        stats = project_stats(out.sv)
-
-        assert len(stats) == 1
-        s = stats[0]
-        assert s["transaction_count"]["total"] == 0
-        assert s["inflow"]["count"] == 0
-        assert s["outflow"]["count"] == 0
-        assert s["period"] == {}
-        assert s["top_counterparties"] == []
-
-    def test_c05_period_boundaries_correct(self) -> None:
-        """C-05 arvutab perioodi piirid min/max kuupäevadest."""
-        booked = [
-            _tx(amount="10.00", value_date="2025-03-15", booking_date="2025-03-15", transaction_id="TX1"),
-            _tx(amount="20.00", value_date="2025-01-10", booking_date="2025-01-10", transaction_id="TX2"),
-            _tx(amount="30.00", value_date="2025-06-20", booking_date="2025-06-20", transaction_id="TX3"),
-        ]
-        _, out = _run(booked=booked)
-        stats = project_stats(out.sv)
-
-        period = stats[0]["period"]
-        assert period["from"] == "2025-01-10"
-        assert period["to"] == "2025-06-20"
 
     def test_c05_callable_on_pipeline_sv_output(self) -> None:
         """Võtmetest: C-05 töötab pipeline SV väljundil ilma pipeline'i muutmata.
@@ -638,146 +529,6 @@ class TestC06ProjectionExtensibility:
         # C-05 väärtus jääb täpselt samaks (puhas funktsioon ilma kõrvalmõjudeta)
         stats_after = project_stats(out.sv)
         assert stats_after == stats_before, "C-05 stats must remain byte-identical"
-
-    def test_c06_output_shape_is_time_series(self) -> None:
-        """C-06 väljundi kuju on selgelt erinev C-02 / C-03 / C-05 omast.
-
-        Iga konto kirje peab sisaldama ajalist ``timeline`` massiivi, kus
-        bucket'idel on ``month``, ``net`` ja ``running_balance`` väljad.
-        Need on C-02 (lame), C-03 (kontekstiaken) ja C-05 (lamedad
-        skalaarid) juures puudu.
-        """
-        booked = [
-            _tx(amount="200.00", transaction_id="TX1", value_date="2025-01-10", booking_date="2025-01-10"),
-            _tx(amount="-80.00", transaction_id="TX2", creditor_name="Vendor", debtor_name=None, value_date="2025-02-05", booking_date="2025-02-05"),
-            _tx(amount="50.00", transaction_id="TX3", value_date="2025-03-01", booking_date="2025-03-01"),
-        ]
-        _, out = _run(booked=booked)
-
-        timelines = project_monthly_balance(out.sv)
-        assert isinstance(timelines, list) and len(timelines) == 1
-
-        entry = timelines[0]
-        assert set(entry.keys()) == {"account_id", "iban", "currency", "timeline"}
-        assert isinstance(entry["timeline"], list)
-        assert len(entry["timeline"]) == 3
-
-        bucket = entry["timeline"][0]
-        expected_bucket_keys = {
-            "month",
-            "inflow_count", "inflow_total",
-            "outflow_count", "outflow_total",
-            "net", "running_balance",
-        }
-        assert set(bucket.keys()) == expected_bucket_keys
-
-        # Struktuurne eristumine C-02-st: C-02 ridadel on row_id ja signed_amount,
-        # C-06 bucket'idel mitte.
-        assert "row_id" not in bucket
-        assert "signed_amount" not in bucket
-        # Struktuurne eristumine C-05-st: C-05 konto kirjel on top_counterparties
-        # ja transaction_count, C-06-l mitte.
-        assert "top_counterparties" not in entry
-        assert "transaction_count" not in entry
-
-    def test_c06_monthly_buckets_sorted_chronologically(self) -> None:
-        """C-06 bucket'id tulevad kronoloogilises järjekorras, isegi kui sisend on segamini."""
-        booked = [
-            _tx(amount="10.00", transaction_id="TX-JUN", value_date="2025-06-15", booking_date="2025-06-15"),
-            _tx(amount="20.00", transaction_id="TX-MAR", value_date="2025-03-20", booking_date="2025-03-20"),
-            _tx(amount="30.00", transaction_id="TX-SEP", value_date="2025-09-05", booking_date="2025-09-05"),
-            _tx(amount="40.00", transaction_id="TX-JAN", value_date="2025-01-10", booking_date="2025-01-10"),
-        ]
-        _, out = _run(booked=booked)
-
-        timelines = project_monthly_balance(out.sv)
-        months = [b["month"] for b in timelines[0]["timeline"]]
-
-        assert months == ["2025-01", "2025-03", "2025-06", "2025-09"]
-
-    def test_c06_running_balance_accumulates(self) -> None:
-        """Iga bucket'i jooksev saldo on eelmiste netide kumulatiivne summa.
-
-        See on C-06 keskne eristus C-05-st: akumulaator üle kuudejärjekorra,
-        mitte lamedad sõltumatud agregaadid.
-        """
-        booked = [
-            # 2025-01: +100
-            _tx(amount="100.00", transaction_id="TX-JAN1",
-                value_date="2025-01-10", booking_date="2025-01-10"),
-            # 2025-02: -30
-            _tx(amount="-30.00", transaction_id="TX-FEB1",
-                creditor_name="Vendor", debtor_name=None,
-                value_date="2025-02-05", booking_date="2025-02-05"),
-            # 2025-03: +50
-            _tx(amount="50.00", transaction_id="TX-MAR1",
-                value_date="2025-03-02", booking_date="2025-03-02"),
-        ]
-        _, out = _run(booked=booked)
-
-        timeline = project_monthly_balance(out.sv)[0]["timeline"]
-        assert len(timeline) == 3
-
-        assert timeline[0]["month"] == "2025-01"
-        assert timeline[0]["net"] == "100"
-        assert timeline[0]["running_balance"] == "100"
-
-        assert timeline[1]["month"] == "2025-02"
-        assert timeline[1]["net"] == "-30"
-        assert timeline[1]["running_balance"] == "70"
-
-        assert timeline[2]["month"] == "2025-03"
-        assert timeline[2]["net"] == "50"
-        assert timeline[2]["running_balance"] == "120"
-
-    def test_c06_multi_account_isolation(self) -> None:
-        """Iga konto saab oma iseseisva aegrea; kontode vahel ei toimu lekkimist."""
-        accounts = _multi_accounts(
-            ("acct-001", "DE89370400440532013000", "EUR", "Account A"),
-            ("acct-002", "GB29NWBK60161331926819", "GBP", "Account B"),
-        )
-        reports = {
-            "tx_acct1.json": _report(
-                iban="DE89370400440532013000",
-                booked=[
-                    _tx(amount="100.00", transaction_id="A-JAN",
-                        value_date="2025-01-10", booking_date="2025-01-10"),
-                    _tx(amount="200.00", transaction_id="A-FEB",
-                        value_date="2025-02-10", booking_date="2025-02-10"),
-                ],
-            ),
-            "tx_acct2.json": _report(
-                iban="GB29NWBK60161331926819",
-                booked=[
-                    _tx(amount="500.00", transaction_id="B-MAR",
-                        value_date="2025-03-15", booking_date="2025-03-15"),
-                ],
-            ),
-        }
-        _, out = _run(accounts=accounts, transaction_reports=reports)
-
-        timelines = project_monthly_balance(out.sv)
-        by_id = {t["account_id"]: t for t in timelines}
-
-        assert set(by_id.keys()) == {"acct-001", "acct-002"}
-
-        months_a = [b["month"] for b in by_id["acct-001"]["timeline"]]
-        months_b = [b["month"] for b in by_id["acct-002"]["timeline"]]
-        assert months_a == ["2025-01", "2025-02"]
-        assert months_b == ["2025-03"]
-
-        # Jooksev saldo konto A-l ei mõjuta konto B-d.
-        assert by_id["acct-001"]["timeline"][-1]["running_balance"] == "300"
-        assert by_id["acct-002"]["timeline"][-1]["running_balance"] == "500"
-
-    def test_c06_handles_empty_transactions(self) -> None:
-        """C-06 tühja tehinguloendiga annab tühja aegrea."""
-        _, out = _run(booked=[], pending=[])
-
-        timelines = project_monthly_balance(out.sv)
-        assert len(timelines) == 1
-        assert timelines[0]["account_id"] == "acct-001"
-        assert timelines[0]["timeline"] == []
 
     def test_c06_no_io_imports(self) -> None:
         """C-06 moodul ei impordi I/O, pathlib ega os mooduleid.
