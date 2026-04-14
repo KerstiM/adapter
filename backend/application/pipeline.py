@@ -43,6 +43,7 @@ from domain.rules.invariants_r01 import (
     check_invariants as _check_invariants,
     deduplicate_transactions as _deduplicate_transactions,
 )
+from domain.rules.quality_checks import check_quality as _check_quality
 from ports.clock_port import ClockPort
 from ports.dataset_port import DatasetPort
 from ports.output_port import OutputPort
@@ -330,6 +331,9 @@ def run_pipeline(
     # Stage 4b: Deduplicate by (account_id, record_id) — INV-09
     deduped_txs, dedupe_drops = _deduplicate_transactions(valid_txs)
     sv_bundle["transactions"] = deduped_txs
+
+    # Stage 4c: Quality / completeness checks (INFO-level diagnostics)
+    _check_quality(deduped_txs)
 
     # Count flags from invariants (on valid + dropped + dedupe-dropped txs)
     # and promote them into the issues list so the frontend can display details

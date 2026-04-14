@@ -12,7 +12,7 @@ from domain._shared.values import is_iso_date, parse_decimal
 
 
 # ---------------------------------------------------------------------------
-# Invariant checks (INV-01 through INV-10)
+# Invariant checks (INV-01 through INV-09)
 # ---------------------------------------------------------------------------
 
 def check_invariants(sv_bundle: dict) -> tuple[list[dict], list[dict]]:
@@ -71,15 +71,6 @@ def check_invariants(sv_bundle: dict) -> tuple[list[dict], list[dict]]:
             })
 
         # INV-05 already handled during mapping (flags_extra in C-01)
-
-        # INV-10: counterparty all null
-        cp = tx.get("counterparty", {})
-        if cp.get("name") is None and cp.get("iban") is None:
-            tx["flags"].append({
-                "id": "INV-10_COUNTERPARTY_ALL_NULL",
-                "severity": "WARN",
-                "message": "counterparty present but all fields null.",
-            })
 
         valid.append(tx)
 

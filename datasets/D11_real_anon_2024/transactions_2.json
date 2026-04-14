@@ -1,0 +1,1536 @@
+{
+  "account": {
+    "currency": "EUR",
+    "iban": "EE127700771001384912"
+  },
+  "transactions": {
+    "booked": [
+      {
+        "bookingDate": "2024-10-01",
+        "creditorName": "Sklep McDonalds Warsza",
+        "remittanceInformationUnstructured": "(..9786) 2024-09-30 16:23 Sklep McDonalds Warsza\\ul.Zwirki i Wigury 1\\Warszawa\\02-143    POLPOL (49.90 PLN, konverteerimistasu 0.12 EUR, kurss 0.2346693, ECB kurss 0.2337104, vahe 1.44%)",
+        "transactionAmount": {
+          "amount": "-11.83",
+          "currency": "EUR"
+        },
+        "transactionId": "980388486",
+        "valueDate": "2024-10-01"
+      },
+      {
+        "bookingDate": "2024-10-01",
+        "creditorName": "LENNUJAAMA R-KIOSKI IS",
+        "remittanceInformationUnstructured": "(..9786) 2024-09-30 13:46 LENNUJAAMA R-KIOSKI IS\\TARTU MNT 101             \\HARJUMAA, TAL\\10112     ESTEST",
+        "transactionAmount": {
+          "amount": "-3.00",
+          "currency": "EUR"
+        },
+        "transactionId": "980224831",
+        "valueDate": "2024-10-01"
+      },
+      {
+        "bookingDate": "2024-10-01",
+        "creditorName": "Wolt",
+        "remittanceInformationUnstructured": "(..4271) 2024-09-30 14:50 Wolt\\Harju maakon\\Estonia\\10111     ESTEST",
+        "transactionAmount": {
+          "amount": "-13.40",
+          "currency": "EUR"
+        },
+        "transactionId": "980368969",
+        "valueDate": "2024-10-01"
+      },
+      {
+        "bookingDate": "2024-10-01",
+        "creditorName": "ELERINGI KOHVIK",
+        "remittanceInformationUnstructured": "(..9786) 2024-09-30 12:23 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+        "transactionAmount": {
+          "amount": "-5.50",
+          "currency": "EUR"
+        },
+        "transactionId": "980150217",
+        "valueDate": "2024-10-01"
+      },
+      {
+        "bookingDate": "2024-10-01",
+        "debtorAccount": {
+          "iban": "EE387700771001449271"
+        },
+        "debtorName": "Ana Tamm",
+        "remittanceInformationUnstructured": "Oktoober",
+        "transactionAmount": {
+          "amount": "500.00",
+          "currency": "EUR"
+        },
+        "transactionId": "980958855",
+        "valueDate": "2024-10-01"
+      },
+      {
+        "bookingDate": "2024-10-01",
+        "creditorAccount": {
+          "iban": "EE277700771005253877"
+        },
+        "creditorName": "Tursekeskus OÜ",
+        "remittanceInformationUnstructured": "Arve-saateleht nr.: 104806",
+        "transactionAmount": {
+          "amount": "-23.52",
+          "currency": "EUR"
+        },
+        "transactionId": "980959840",
+        "valueDate": "2024-10-01"
+      },
+      {
+        "bookingDate": "2024-10-01",
+        "creditorAccount": {
+          "iban": "EE437700771000968905"
+        },
+        "creditorName": "Tallinna Linnakantselei",
+        "remittanceInformationUnstructured": "Arve nr. 5001341306",
+        "transactionAmount": {
+          "amount": "-71.25",
+          "currency": "EUR"
+        },
+        "transactionId": "981024966",
+        "valueDate": "2024-10-01"
+      },
+      {
+        "bookingDate": "2024-10-02",
+        "creditorName": "MYSUSHI",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-01 18:13 MYSUSHI\\Tartu mnt. 80D\\TALLINN\\10112     DUBEST",
+        "transactionAmount": {
+          "amount": "-7.14",
+          "currency": "EUR"
+        },
+        "transactionId": "981218255",
+        "valueDate": "2024-10-02"
+      },
+      {
+        "bookingDate": "2024-10-02",
+        "creditorName": "Merimetsa  Selver",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-01 09:11 Merimetsa  Selver     \\Partner app           \\Tallinn      \\11624     ESTEST",
+        "transactionAmount": {
+          "amount": "-13.99",
+          "currency": "EUR"
+        },
+        "transactionId": "980774892",
+        "valueDate": "2024-10-02"
+      },
+      {
+        "bookingDate": "2024-10-02",
+        "creditorName": "MYSUSHI MUSTIKA KESKUS",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-01 18:13 MYSUSHI MUSTIKA KESKUS\\KARJAVALJA 4              \\HARJUMAA, TAL\\12918     ESTEST",
+        "transactionAmount": {
+          "amount": "-6.90",
+          "currency": "EUR"
+        },
+        "transactionId": "981200106",
+        "valueDate": "2024-10-02"
+      },
+      {
+        "bookingDate": "2024-10-03",
+        "creditorName": "Kadaka Selver",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-02 15:27 Kadaka Selver         \\Partner app           \\Tallinn      \\11624     ESTEST",
+        "transactionAmount": {
+          "amount": "-34.07",
+          "currency": "EUR"
+        },
+        "transactionId": "981903763",
+        "valueDate": "2024-10-03"
+      },
+      {
+        "bookingDate": "2024-10-03",
+        "creditorName": "DRI*GALLUP",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-02 07:23 DRI*GALLUP\\4029513660\\4029513660\\D01 YE64  IRLIRL",
+        "transactionAmount": {
+          "amount": "-67.00",
+          "currency": "EUR"
+        },
+        "transactionId": "981590450",
+        "valueDate": "2024-10-03"
+      },
+      {
+        "bookingDate": "2024-10-03",
+        "creditorName": "BK 32260 KAS",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-02 18:24 BK 32260 KAS          \\Flughafenstr.1-3                             \\HAMBURG      \\22335     HH DEU",
+        "transactionAmount": {
+          "amount": "-16.58",
+          "currency": "EUR"
+        },
+        "transactionId": "982067160",
+        "valueDate": "2024-10-03"
+      },
+      {
+        "bookingDate": "2024-10-04",
+        "creditorName": "VAPIANO FOORUM",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-03 15:05 VAPIANO FOORUM\\Hobujaama 10\\TALLINN\\10151     DUBEST",
+        "transactionAmount": {
+          "amount": "-7.90",
+          "currency": "EUR"
+        },
+        "transactionId": "982467114",
+        "valueDate": "2024-10-04"
+      },
+      {
+        "bookingDate": "2024-10-04",
+        "creditorName": "ELERINGI KOHVIK",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-03 12:11 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+        "transactionAmount": {
+          "amount": "-5.50",
+          "currency": "EUR"
+        },
+        "transactionId": "982456631",
+        "valueDate": "2024-10-04"
+      },
+      {
+        "bookingDate": "2024-10-04",
+        "creditorName": "ELERINGI KOHVIK",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-03 14:04 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+        "transactionAmount": {
+          "amount": "-2.00",
+          "currency": "EUR"
+        },
+        "transactionId": "982539848",
+        "valueDate": "2024-10-04"
+      },
+      {
+        "bookingDate": "2024-10-04",
+        "creditorName": "RIMI/SOPRUSE RIMI ISET",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-03 16:46 RIMI/SOPRUSE RIMI ISET\\SOPRUS PST 174/176        \\TALLINN      \\13413     ESTEST",
+        "transactionAmount": {
+          "amount": "-9.14",
+          "currency": "EUR"
+        },
+        "transactionId": "982658993",
+        "valueDate": "2024-10-04"
+      },
+      {
+        "bookingDate": "2024-10-04",
+        "creditorName": "NESTE SOPRUSE",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-03 15:24 NESTE SOPRUSE         \\SOPRUSE PST 155A          \\TALLINN      \\13417     ESTEST",
+        "transactionAmount": {
+          "amount": "-92.26",
+          "currency": "EUR"
+        },
+        "transactionId": "982594802",
+        "valueDate": "2024-10-04"
+      },
+      {
+        "bookingDate": "2024-10-04",
+        "debtorAccount": {
+          "iban": "EE937700771001384940"
+        },
+        "debtorName": "Mart Mägi",
+        "remittanceInformationUnstructured": "$$$",
+        "transactionAmount": {
+          "amount": "3000.00",
+          "currency": "EUR"
+        },
+        "transactionId": "983610665",
+        "valueDate": "2024-10-04"
+      },
+      {
+        "bookingDate": "2024-10-05",
+        "creditorAccount": {
+          "iban": "EE201010010409384918"
+        },
+        "creditorName": "PIRET KASK",
+        "remittanceInformationUnstructured": "Vaarikad",
+        "transactionAmount": {
+          "amount": "-7.50",
+          "currency": "EUR"
+        },
+        "transactionId": "983739502",
+        "valueDate": "2024-10-05"
+      },
+      {
+        "bookingDate": "2024-10-05",
+        "creditorAccount": {
+          "iban": "EE687700771001384930"
+        },
+        "creditorName": "Ana Tamm",
+        "remittanceInformationUnstructured": "Oktoober",
+        "transactionAmount": {
+          "amount": "-1500.00",
+          "currency": "EUR"
+        },
+        "transactionId": "983973510",
+        "valueDate": "2024-10-05"
+      },
+      {
+        "bookingDate": "2024-10-05",
+        "creditorAccount": {
+          "iban": "EE782200221073272932"
+        },
+        "creditorName": "Ilupilt Oü",
+        "remittanceInformationUnstructured": "Arve nr ILU20240890",
+        "transactionAmount": {
+          "amount": "-12.00",
+          "currency": "EUR"
+        },
+        "transactionId": "983973873",
+        "valueDate": "2024-10-05"
+      },
+      {
+        "bookingDate": "2024-10-05",
+        "creditorAccount": {
+          "iban": "EE372200221072817576"
+        },
+        "creditorName": "DG ELITE OÜ",
+        "remittanceInformationUnstructured": "Arve nr. 1470, DG Elite grupitreening",
+        "transactionAmount": {
+          "amount": "-50.00",
+          "currency": "EUR"
+        },
+        "transactionId": "983974549",
+        "valueDate": "2024-10-05"
+      },
+      {
+        "bookingDate": "2024-10-05",
+        "creditorName": "ELERINGI KOHVIK",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-04 11:10 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+        "transactionAmount": {
+          "amount": "-5.50",
+          "currency": "EUR"
+        },
+        "transactionId": "983174767",
+        "valueDate": "2024-10-05"
+      },
+      {
+        "bookingDate": "2024-10-05",
+        "creditorName": "ELERINGI KOHVIK",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-04 08:30 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+        "transactionAmount": {
+          "amount": "-1.20",
+          "currency": "EUR"
+        },
+        "transactionId": "983065890",
+        "valueDate": "2024-10-05"
+      },
+      {
+        "bookingDate": "2024-10-05",
+        "creditorName": "ELERINGI KOHVIK",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-04 11:04 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+        "transactionAmount": {
+          "amount": "-5.50",
+          "currency": "EUR"
+        },
+        "transactionId": "983170701",
+        "valueDate": "2024-10-05"
+      },
+      {
+        "bookingDate": "2024-10-05",
+        "creditorName": "PRISMA MUSTAMAE",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-04 20:38 PRISMA MUSTAMAE       \\PRISMA MUSTAMAKI          \\TALLINNVIRO  \\12918     ESTEST",
+        "transactionAmount": {
+          "amount": "-34.95",
+          "currency": "EUR"
+        },
+        "transactionId": "983642739",
+        "valueDate": "2024-10-05"
+      },
+      {
+        "bookingDate": "2024-10-05",
+        "creditorName": "PRISMA MUSTAMAE",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-04 20:24 PRISMA MUSTAMAE       \\PRISMA MUSTAMAKI          \\TALLINNVIRO  \\12918     ESTEST",
+        "transactionAmount": {
+          "amount": "-27.27",
+          "currency": "EUR"
+        },
+        "transactionId": "983634613",
+        "valueDate": "2024-10-05"
+      },
+      {
+        "bookingDate": "2024-10-05",
+        "creditorName": "PRISMA ROCCA AL MARE",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-04 19:05 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
+        "transactionAmount": {
+          "amount": "-33.63",
+          "currency": "EUR"
+        },
+        "transactionId": "983586612",
+        "valueDate": "2024-10-05"
+      },
+      {
+        "bookingDate": "2024-10-05",
+        "creditorName": "PRISMA ROCCA AL MARE",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-04 18:15 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
+        "transactionAmount": {
+          "amount": "-32.09",
+          "currency": "EUR"
+        },
+        "transactionId": "983551738",
+        "valueDate": "2024-10-05"
+      },
+      {
+        "bookingDate": "2024-10-06",
+        "creditorName": "IT KOLLEDZ",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-04 12:09 IT KOLLEDZ            \\RAJA TN 4                 \\HARJUMAA, TAL\\12616     ESTEST",
+        "transactionAmount": {
+          "amount": "-5.00",
+          "currency": "EUR"
+        },
+        "transactionId": "983230472",
+        "valueDate": "2024-10-06"
+      },
+      {
+        "bookingDate": "2024-10-06",
+        "creditorName": "EUGENIO S GASTRONOOMIA",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-05 17:52 EUGENIO S GASTRONOOMIA\\\\TALLINN      \\10412     ESTEST",
+        "transactionAmount": {
+          "amount": "-10.81",
+          "currency": "EUR"
+        },
+        "transactionId": "984222105",
+        "valueDate": "2024-10-06"
+      },
+      {
+        "bookingDate": "2024-10-06",
+        "creditorName": "MERIMETSA SELVERI ISET",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-04 18:06 MERIMETSA SELVERI ISET\\PALDISKI MNT 56           \\TALLINN      \\10617     ESTEST",
+        "transactionAmount": {
+          "amount": "-14.81",
+          "currency": "EUR"
+        },
+        "transactionId": "983544319",
+        "valueDate": "2024-10-06"
+      },
+      {
+        "bookingDate": "2024-10-06",
+        "creditorName": "KADAKA SELVERI APTEEK",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-05 18:40 KADAKA SELVERI APTEEK \\KADAKA TEE 56A            \\HARJUMAA, TAL\\12915     ESTEST",
+        "transactionAmount": {
+          "amount": "-0.20",
+          "currency": "EUR"
+        },
+        "transactionId": "984248207",
+        "valueDate": "2024-10-06"
+      },
+      {
+        "bookingDate": "2024-10-06",
+        "creditorName": "REALKESKUS KPLS",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-05 14:14 REALKESKUS KPLS       \\Ehitajate tee 110E    \\TALLINN      \\13517     ESTEST",
+        "transactionAmount": {
+          "amount": "-3.15",
+          "currency": "EUR"
+        },
+        "transactionId": "984099047",
+        "valueDate": "2024-10-06"
+      },
+      {
+        "bookingDate": "2024-10-06",
+        "creditorName": "KADAKA SELVERI ISETEEN",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-05 18:37 KADAKA SELVERI ISETEEN\\KADAKA TEE 56A            \\TALLINN      \\12915     ESTEST",
+        "transactionAmount": {
+          "amount": "-52.02",
+          "currency": "EUR"
+        },
+        "transactionId": "984246687",
+        "valueDate": "2024-10-06"
+      },
+      {
+        "bookingDate": "2024-10-06",
+        "creditorName": "Kadaka Selver",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-05 14:31 Kadaka Selver         \\Partner app           \\Tallinn      \\11624     ESTEST",
+        "transactionAmount": {
+          "amount": "-9.21",
+          "currency": "EUR"
+        },
+        "transactionId": "984108606",
+        "valueDate": "2024-10-06"
+      },
+      {
+        "bookingDate": "2024-10-06",
+        "creditorName": "Maxima T291",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-05 14:13 Maxima T291\\Tallinna 25\\Keila\\76608        EST",
+        "transactionAmount": {
+          "amount": "-3.79",
+          "currency": "EUR"
+        },
+        "transactionId": "984098408",
+        "valueDate": "2024-10-06"
+      },
+      {
+        "bookingDate": "2024-10-06",
+        "creditorName": "Kadaka Selver",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-05 18:37 Kadaka Selver         \\Partner app           \\Tallinn      \\11624     ESTEST",
+        "transactionAmount": {
+          "amount": "-8.90",
+          "currency": "EUR"
+        },
+        "transactionId": "984246601",
+        "valueDate": "2024-10-06"
+      },
+      {
+        "bookingDate": "2024-10-06",
+        "creditorAccount": {
+          "iban": "EE877700771004280469"
+        },
+        "creditorName": "Reds OÜ",
+        "remittanceInformationUnstructured": "Trampolino 12460",
+        "transactionAmount": {
+          "amount": "-50.00",
+          "currency": "EUR"
+        },
+        "transactionId": "984871277",
+        "valueDate": "2024-10-06"
+      },
+      {
+        "bookingDate": "2024-10-07",
+        "creditorAccount": {
+          "iban": "EE207700771005384950"
+        },
+        "creditorName": "Kaspar Mägi",
+        "remittanceInformationUnstructured": "Jasper NÄDALARAHA",
+        "transactionAmount": {
+          "amount": "-2.00",
+          "currency": "EUR"
+        },
+        "transactionId": "985000310",
+        "valueDate": "2024-10-07"
+      },
+      {
+        "bookingDate": "2024-10-07",
+        "creditorAccount": {
+          "iban": "EE577700771002384960"
+        },
+        "creditorName": "Riku Mägi",
+        "remittanceInformationUnstructured": "Ruben NÄDALARAHA",
+        "transactionAmount": {
+          "amount": "-2.00",
+          "currency": "EUR"
+        },
+        "transactionId": "985000312",
+        "valueDate": "2024-10-07"
+      },
+      {
+        "bookingDate": "2024-10-07",
+        "creditorAccount": {
+          "iban": "EE541010220207486226"
+        },
+        "creditorName": "Maksekeskus AS",
+        "remittanceInformationUnstructured": "KPG Kaubanduse OU, pood.magaziin.ee, 117404 (50451678)",
+        "transactionAmount": {
+          "amount": "-15.89",
+          "currency": "EUR"
+        },
+        "transactionId": "985318460",
+        "valueDate": "2024-10-07"
+      },
+      {
+        "bookingDate": "2024-10-07",
+        "creditorName": "ROCCA AL MARE KESKUSE",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-06 15:07 ROCCA AL MARE KESKUSE \\PALDISKI MNT 102          \\HARJUMAA, TAL\\13522     ESTEST",
+        "transactionAmount": {
+          "amount": "-20.00",
+          "currency": "EUR"
+        },
+        "transactionId": "984656404",
+        "valueDate": "2024-10-07"
+      },
+      {
+        "bookingDate": "2024-10-08",
+        "creditorName": "PRISMA ROCCA AL MARE",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-06 14:53 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
+        "transactionAmount": {
+          "amount": "-72.78",
+          "currency": "EUR"
+        },
+        "transactionId": "984648748",
+        "valueDate": "2024-10-08"
+      },
+      {
+        "bookingDate": "2024-10-08",
+        "creditorAccount": {
+          "iban": "EE142200221001137609"
+        },
+        "creditorName": "SA Tallinna Lastehaigla Toetusfond",
+        "remittanceInformationUnstructured": "Arve number 250260340",
+        "transactionAmount": {
+          "amount": "-5.00",
+          "currency": "EUR"
+        },
+        "transactionId": "985899560",
+        "valueDate": "2024-10-08"
+      },
+      {
+        "bookingDate": "2024-10-08",
+        "creditorName": "Marienthali Selver",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-07 19:53 Marienthali Selver    \\Partner app           \\Tallinn      \\11624     ESTEST",
+        "transactionAmount": {
+          "amount": "-11.04",
+          "currency": "EUR"
+        },
+        "transactionId": "985594348",
+        "valueDate": "2024-10-08"
+      },
+      {
+        "bookingDate": "2024-10-08",
+        "creditorName": "ELERINGI KOHVIK",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-07 11:01 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+        "transactionAmount": {
+          "amount": "-5.50",
+          "currency": "EUR"
+        },
+        "transactionId": "985170503",
+        "valueDate": "2024-10-08"
+      },
+      {
+        "bookingDate": "2024-10-08",
+        "creditorAccount": {
+          "iban": "EE647700771002085967"
+        },
+        "creditorName": "AKTSIASELTS TALLINNA VESI",
+        "remittanceInformationUnstructured": "Makse iseteeninduses",
+        "transactionAmount": {
+          "amount": "-38.16",
+          "currency": "EUR"
+        },
+        "transactionId": "986390244",
+        "valueDate": "2024-10-08"
+      },
+      {
+        "bookingDate": "2024-10-08",
+        "creditorAccount": {
+          "iban": "EE127700771001133975"
+        },
+        "creditorName": "Telia Eesti AS",
+        "remittanceInformationUnstructured": "Makse /BLID/RVXLCVAFZ7QGP7X",
+        "transactionAmount": {
+          "amount": "-83.06",
+          "currency": "EUR"
+        },
+        "transactionId": "986391036",
+        "valueDate": "2024-10-08"
+      },
+      {
+        "bookingDate": "2024-10-08",
+        "creditorAccount": {
+          "iban": "EE837700771009807601"
+        },
+        "creditorName": "Enefit AS",
+        "remittanceInformationUnstructured": "Konto: 8451025320",
+        "transactionAmount": {
+          "amount": "-31.69",
+          "currency": "EUR"
+        },
+        "transactionId": "986392259",
+        "valueDate": "2024-10-08"
+      },
+      {
+        "bookingDate": "2024-10-08",
+        "creditorAccount": {
+          "iban": "EE217700771003691800"
+        },
+        "creditorName": "AS Alexela",
+        "remittanceInformationUnstructured": "alexela.ee/EE, st837263, itk:092024054539",
+        "transactionAmount": {
+          "amount": "-43.37",
+          "currency": "EUR"
+        },
+        "transactionId": "986393832",
+        "valueDate": "2024-10-08"
+      },
+      {
+        "bookingDate": "2024-10-08",
+        "creditorAccount": {
+          "iban": "EE852200221055633162"
+        },
+        "creditorName": "ELEKTRUM EESTI OÜ",
+        "remittanceInformationUnstructured": "Arve: 560795565919",
+        "transactionAmount": {
+          "amount": "-77.51",
+          "currency": "EUR"
+        },
+        "transactionId": "986394763",
+        "valueDate": "2024-10-08"
+      },
+      {
+        "bookingDate": "2024-10-08",
+        "creditorAccount": {
+          "iban": "EE157700771001352947"
+        },
+        "creditorName": "Eesti Keskkonnateenused AS",
+        "remittanceInformationUnstructured": "TLNO24310728",
+        "transactionAmount": {
+          "amount": "-8.76",
+          "currency": "EUR"
+        },
+        "transactionId": "986397164",
+        "valueDate": "2024-10-08"
+      },
+      {
+        "bookingDate": "2024-10-09",
+        "creditorName": "NARVA KOHVIK",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-08 12:42 NARVA KOHVIK          \\Narva mnt 10          \\TALLINN      \\10124     ESTEST",
+        "transactionAmount": {
+          "amount": "-3.60",
+          "currency": "EUR"
+        },
+        "transactionId": "986027299",
+        "valueDate": "2024-10-09"
+      },
+      {
+        "bookingDate": "2024-10-10",
+        "creditorName": "PRISMA ROCCA AL MARE",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-09 17:00 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
+        "transactionAmount": {
+          "amount": "-64.95",
+          "currency": "EUR"
+        },
+        "transactionId": "987026738",
+        "valueDate": "2024-10-10"
+      },
+      {
+        "bookingDate": "2024-10-10",
+        "creditorName": "7-CHARLOT ROCCA",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-09 17:10 7-CHARLOT ROCCA       \\Paldiski mnt 102      \\TALLINN      \\13522     ESTEST",
+        "transactionAmount": {
+          "amount": "-10.95",
+          "currency": "EUR"
+        },
+        "transactionId": "987034225",
+        "valueDate": "2024-10-10"
+      },
+      {
+        "bookingDate": "2024-10-10",
+        "creditorName": "ELERINGI KOHVIK",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-09 11:07 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+        "transactionAmount": {
+          "amount": "-5.70",
+          "currency": "EUR"
+        },
+        "transactionId": "986663249",
+        "valueDate": "2024-10-10"
+      },
+      {
+        "bookingDate": "2024-10-10",
+        "remittanceInformationUnstructured": "Kaardi (..9786) kuutasu 09-2024",
+        "transactionAmount": {
+          "amount": "-1.00",
+          "currency": "EUR"
+        },
+        "transactionId": "987880616",
+        "valueDate": "2024-10-10"
+      },
+      {
+        "bookingDate": "2024-10-10",
+        "remittanceInformationUnstructured": "Kaardi (..4271) kuutasu 09-2024",
+        "transactionAmount": {
+          "amount": "-1.00",
+          "currency": "EUR"
+        },
+        "transactionId": "987885213",
+        "valueDate": "2024-10-10"
+      },
+      {
+        "bookingDate": "2024-10-11",
+        "creditorName": "ELERINGI KOHVIK",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-10 12:15 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+        "transactionAmount": {
+          "amount": "-4.50",
+          "currency": "EUR"
+        },
+        "transactionId": "987589205",
+        "valueDate": "2024-10-11"
+      },
+      {
+        "bookingDate": "2024-10-12",
+        "creditorName": "TERAS BEACH TALLINN",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-11 19:35 TERAS BEACH TALLINN   \\\\TALLINN      \\13521     ESTEST",
+        "transactionAmount": {
+          "amount": "-6.00",
+          "currency": "EUR"
+        },
+        "transactionId": "988866351",
+        "valueDate": "2024-10-12"
+      },
+      {
+        "bookingDate": "2024-10-12",
+        "creditorName": "BOLT.EU/D/2410111052",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-11 13:32 BOLT.EU/D/2410111052\\Vana-Louna\\Tallinn\\10134     ESTEST",
+        "transactionAmount": {
+          "amount": "-17.28",
+          "currency": "EUR"
+        },
+        "transactionId": "988612732",
+        "valueDate": "2024-10-12"
+      },
+      {
+        "bookingDate": "2024-10-12",
+        "creditorName": "PRISMA ROCCA AL MARE",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-11 20:27 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
+        "transactionAmount": {
+          "amount": "-22.06",
+          "currency": "EUR"
+        },
+        "transactionId": "988895350",
+        "valueDate": "2024-10-12"
+      },
+      {
+        "bookingDate": "2024-10-12",
+        "creditorName": "WLE00631 Kopli 1",
+        "remittanceInformationUnstructured": "Sularaha välja: (..4271) 2024-10-12 17:54:08 WLE00631 Kopli 1         >Tallinn     EE",
+        "transactionAmount": {
+          "amount": "-125.00",
+          "currency": "EUR"
+        },
+        "transactionId": "989356650",
+        "valueDate": "2024-10-12"
+      },
+      {
+        "bookingDate": "2024-10-13",
+        "creditorName": "BOLT.EU/D/2410121335",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-12 16:05 BOLT.EU/D/2410121335\\Vana-Louna\\Tallinn\\10134     ESTEST",
+        "transactionAmount": {
+          "amount": "-27.39",
+          "currency": "EUR"
+        },
+        "transactionId": "989313922",
+        "valueDate": "2024-10-13"
+      },
+      {
+        "bookingDate": "2024-10-13",
+        "creditorName": "POSITRON",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-12 12:31 POSITRON              \\Pirita tee 28         \\TALLINN      \\12011     ESTEST",
+        "transactionAmount": {
+          "amount": "-10.00",
+          "currency": "EUR"
+        },
+        "transactionId": "989180111",
+        "valueDate": "2024-10-13"
+      },
+      {
+        "bookingDate": "2024-10-13",
+        "creditorName": "ULEMISTE KESKUS INFOLA",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-12 11:24 ULEMISTE KESKUS INFOLA\\SUUR-SOJAMAE 4\\TALLINN\\11415        EST",
+        "transactionAmount": {
+          "amount": "-25.00",
+          "currency": "EUR"
+        },
+        "transactionId": "989147172",
+        "valueDate": "2024-10-13"
+      },
+      {
+        "bookingDate": "2024-10-13",
+        "creditorName": "KODUEKSTRA ULEMISTE",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-12 11:30 KODUEKSTRA ULEMISTE\\SUUR-SOJAMAE 4\\TALLINN\\11415        EST",
+        "transactionAmount": {
+          "amount": "-0.74",
+          "currency": "EUR"
+        },
+        "transactionId": "989150262",
+        "valueDate": "2024-10-13"
+      },
+      {
+        "bookingDate": "2024-10-14",
+        "creditorAccount": {
+          "iban": "EE207700771005384950"
+        },
+        "creditorName": "Kaspar Mägi",
+        "remittanceInformationUnstructured": "Jasper NÄDALARAHA",
+        "transactionAmount": {
+          "amount": "-2.00",
+          "currency": "EUR"
+        },
+        "transactionId": "990099826",
+        "valueDate": "2024-10-14"
+      },
+      {
+        "bookingDate": "2024-10-14",
+        "creditorAccount": {
+          "iban": "EE577700771002384960"
+        },
+        "creditorName": "Riku Mägi",
+        "remittanceInformationUnstructured": "Ruben NÄDALARAHA",
+        "transactionAmount": {
+          "amount": "-2.00",
+          "currency": "EUR"
+        },
+        "transactionId": "990099827",
+        "valueDate": "2024-10-14"
+      },
+      {
+        "bookingDate": "2024-10-14",
+        "creditorName": "pargi.ee",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-12 19:34 pargi.ee              \\\\Tallinn      \\15033     ESTEST",
+        "transactionAmount": {
+          "amount": "-0.49",
+          "currency": "EUR"
+        },
+        "transactionId": "989407821",
+        "valueDate": "2024-10-14"
+      },
+      {
+        "bookingDate": "2024-10-14",
+        "creditorName": "pargi.ee",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-12 19:34 pargi.ee              \\\\Tallinn      \\15033     ESTEST",
+        "transactionAmount": {
+          "amount": "-8.00",
+          "currency": "EUR"
+        },
+        "transactionId": "989407814",
+        "valueDate": "2024-10-14"
+      },
+      {
+        "bookingDate": "2024-10-15",
+        "creditorName": "epood.grano.ee-pood",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-14 18:58 epood.grano.ee-pood   \\\\Tallinn      \\10143     ESTEST",
+        "transactionAmount": {
+          "amount": "-5.73",
+          "currency": "EUR"
+        },
+        "transactionId": "990613136",
+        "valueDate": "2024-10-15"
+      },
+      {
+        "bookingDate": "2024-10-15",
+        "creditorName": "Sudameapteek Lennujaam",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-14 05:42 Sudameapteek Lennujaam\\Tartu mnt. 101\\TALLINN\\10112        EST",
+        "transactionAmount": {
+          "amount": "-18.48",
+          "currency": "EUR"
+        },
+        "transactionId": "990094803",
+        "valueDate": "2024-10-15"
+      },
+      {
+        "bookingDate": "2024-10-16",
+        "creditorName": "Heberer FFM Flgh Squa",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-14 08:44 Heberer FFM Flgh Squa\\Ebene3 West  5180302\\Frankfurt am\\60549        DEU",
+        "transactionAmount": {
+          "amount": "-5.90",
+          "currency": "EUR"
+        },
+        "transactionId": "990196729",
+        "valueDate": "2024-10-16"
+      },
+      {
+        "bookingDate": "2024-10-16",
+        "creditorName": "DB Automaten",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-15 17:08 DB Automaten\\Bonnstr\\K?ln\\50858        DEU",
+        "transactionAmount": {
+          "amount": "-3.50",
+          "currency": "EUR"
+        },
+        "transactionId": "991372417",
+        "valueDate": "2024-10-16"
+      },
+      {
+        "bookingDate": "2024-10-16",
+        "creditorName": "Lindner City Plaza",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-15 08:31 Lindner City Plaza    \\Magnusstrasse 20                             \\Koeln        \\50672     DEUDEU",
+        "transactionAmount": {
+          "amount": "-3.66",
+          "currency": "EUR"
+        },
+        "transactionId": "990992423",
+        "valueDate": "2024-10-16"
+      },
+      {
+        "bookingDate": "2024-10-16",
+        "creditorName": "MEYER FEINKOST GMBH",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-15 20:11 MEYER FEINKOST GMBH   \\FLUGHAFEN FRANKFURT                          \\Frankfurt    \\60594     DEUDEU",
+        "transactionAmount": {
+          "amount": "-9.95",
+          "currency": "EUR"
+        },
+        "transactionId": "991471534",
+        "valueDate": "2024-10-16"
+      },
+      {
+        "bookingDate": "2024-10-16",
+        "creditorName": "Maxima T282",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-13 17:53 Maxima T282\\Parnu mnt 390b\\TALLINN\\11612        EST",
+        "transactionAmount": {
+          "amount": "-8.47",
+          "currency": "EUR"
+        },
+        "transactionId": "989862679",
+        "valueDate": "2024-10-16"
+      },
+      {
+        "bookingDate": "2024-10-17",
+        "creditorName": "ELERINGI KOHVIK",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-16 10:58 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+        "transactionAmount": {
+          "amount": "-5.50",
+          "currency": "EUR"
+        },
+        "transactionId": "991776085",
+        "valueDate": "2024-10-17"
+      },
+      {
+        "bookingDate": "2024-10-18",
+        "creditorName": "SUSHI PLAZA",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-17 11:44 SUSHI PLAZA           \\Narva mnt 6-M50       \\TALLINN      \\10117     ESTEST",
+        "transactionAmount": {
+          "amount": "-8.00",
+          "currency": "EUR"
+        },
+        "transactionId": "992524699",
+        "valueDate": "2024-10-18"
+      },
+      {
+        "bookingDate": "2024-10-18",
+        "creditorName": "ELERINGI KOHVIK",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-17 11:31 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+        "transactionAmount": {
+          "amount": "-6.70",
+          "currency": "EUR"
+        },
+        "transactionId": "992516350",
+        "valueDate": "2024-10-18"
+      },
+      {
+        "bookingDate": "2024-10-18",
+        "creditorName": "MERIMETSA SELVERI ISET",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-17 17:17 MERIMETSA SELVERI ISET\\PALDISKI MNT 56           \\TALLINN      \\10617     ESTEST",
+        "transactionAmount": {
+          "amount": "-63.46",
+          "currency": "EUR"
+        },
+        "transactionId": "992755655",
+        "valueDate": "2024-10-18"
+      },
+      {
+        "bookingDate": "2024-10-18",
+        "creditorName": "KOHVIPAUS",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-17 08:45 KOHVIPAUS             \\NARVA MNT 7               \\TALLINN      \\10117     ESTEST",
+        "transactionAmount": {
+          "amount": "-3.30",
+          "currency": "EUR"
+        },
+        "transactionId": "992427582",
+        "valueDate": "2024-10-18"
+      },
+      {
+        "bookingDate": "2024-10-19",
+        "creditorName": "ELERINGI KOHVIK",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-18 11:02 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+        "transactionAmount": {
+          "amount": "-7.80",
+          "currency": "EUR"
+        },
+        "transactionId": "993126395",
+        "valueDate": "2024-10-19"
+      },
+      {
+        "bookingDate": "2024-10-20",
+        "creditorName": "IT KOLLEDZ",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-18 11:52 IT KOLLEDZ            \\RAJA TN 4                 \\HARJUMAA, TAL\\12616     ESTEST",
+        "transactionAmount": {
+          "amount": "-10.00",
+          "currency": "EUR"
+        },
+        "transactionId": "993157182",
+        "valueDate": "2024-10-20"
+      },
+      {
+        "bookingDate": "2024-10-20",
+        "creditorName": "KADAKA SELVERI ISETEEN",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-19 13:20 KADAKA SELVERI ISETEEN\\KADAKA TEE 56A            \\TALLINN      \\12915     ESTEST",
+        "transactionAmount": {
+          "amount": "-32.81",
+          "currency": "EUR"
+        },
+        "transactionId": "993790377",
+        "valueDate": "2024-10-20"
+      },
+      {
+        "bookingDate": "2024-10-20",
+        "creditorName": "NESTE KADAKA",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-19 13:25 NESTE KADAKA          \\KADAKA TEE 60             \\TALLINN      \\12915     ESTEST",
+        "transactionAmount": {
+          "amount": "-51.71",
+          "currency": "EUR"
+        },
+        "transactionId": "993792126",
+        "valueDate": "2024-10-20"
+      },
+      {
+        "bookingDate": "2024-10-21",
+        "creditorAccount": {
+          "iban": "EE207700771005384950"
+        },
+        "creditorName": "Kaspar Mägi",
+        "remittanceInformationUnstructured": "Jasper NÄDALARAHA",
+        "transactionAmount": {
+          "amount": "-2.00",
+          "currency": "EUR"
+        },
+        "transactionId": "994711181",
+        "valueDate": "2024-10-21"
+      },
+      {
+        "bookingDate": "2024-10-21",
+        "creditorAccount": {
+          "iban": "EE577700771002384960"
+        },
+        "creditorName": "Riku Mägi",
+        "remittanceInformationUnstructured": "Ruben NÄDALARAHA",
+        "transactionAmount": {
+          "amount": "-2.00",
+          "currency": "EUR"
+        },
+        "transactionId": "994711184",
+        "valueDate": "2024-10-21"
+      },
+      {
+        "bookingDate": "2024-10-22",
+        "creditorName": "LAANEVARAV 3",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-21 09:44 LAANEVARAV 3          \\\\TALLINN      \\13522     ESTEST",
+        "transactionAmount": {
+          "amount": "-40.00",
+          "currency": "EUR"
+        },
+        "transactionId": "994810213",
+        "valueDate": "2024-10-22"
+      },
+      {
+        "bookingDate": "2024-10-22",
+        "creditorName": "PRISMA ROCCA AL MARE",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-21 17:02 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
+        "transactionAmount": {
+          "amount": "-4.55",
+          "currency": "EUR"
+        },
+        "transactionId": "995140780",
+        "valueDate": "2024-10-22"
+      },
+      {
+        "bookingDate": "2024-10-22",
+        "creditorName": "ELERINGI KOHVIK",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-21 11:04 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+        "transactionAmount": {
+          "amount": "-5.50",
+          "currency": "EUR"
+        },
+        "transactionId": "994870866",
+        "valueDate": "2024-10-22"
+      },
+      {
+        "bookingDate": "2024-10-22",
+        "creditorName": "Google Payment IE LTD",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-22 03:08 Google Payment IE LTD\\Sir John Rogerson's Quay\\Dublin\\2         IRLIRL",
+        "transactionAmount": {
+          "amount": "-3.99",
+          "currency": "EUR"
+        },
+        "transactionId": "995375911",
+        "valueDate": "2024-10-22"
+      },
+      {
+        "bookingDate": "2024-10-22",
+        "creditorName": "RAVALA PARKIMISMAJA",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-21 10:23 RAVALA PARKIMISMAJA   \\RAVALA PST.5              \\TALLINN      \\10143     ESTEST",
+        "transactionAmount": {
+          "amount": "-6.00",
+          "currency": "EUR"
+        },
+        "transactionId": "994837329",
+        "valueDate": "2024-10-22"
+      },
+      {
+        "bookingDate": "2024-10-22",
+        "creditorAccount": {
+          "iban": "LV14HABA0551030154640"
+        },
+        "creditorName": "MADARA COSMETICS AS",
+        "remittanceInformationUnstructured": "MADARACOSMETICS.COM/LV, st, EE000066703",
+        "transactionAmount": {
+          "amount": "-28.21",
+          "currency": "EUR"
+        },
+        "transactionId": "995943014",
+        "valueDate": "2024-10-22"
+      },
+      {
+        "bookingDate": "2024-10-23",
+        "debtorAccount": {
+          "iban": "EE387700771001449271"
+        },
+        "debtorName": "Ana Tamm",
+        "remittanceInformationUnstructured": "Oktoober",
+        "transactionAmount": {
+          "amount": "300.00",
+          "currency": "EUR"
+        },
+        "transactionId": "996237807",
+        "valueDate": "2024-10-23"
+      },
+      {
+        "bookingDate": "2024-10-23",
+        "creditorAccount": {
+          "iban": "EE922200221023037350"
+        },
+        "creditorName": "OSAÜHING RAKSMAN GRUPP",
+        "remittanceInformationUnstructured": "salong",
+        "transactionAmount": {
+          "amount": "-210.00",
+          "currency": "EUR"
+        },
+        "transactionId": "996238043",
+        "valueDate": "2024-10-23"
+      },
+      {
+        "bookingDate": "2024-10-23",
+        "creditorName": "R-14",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-22 12:38 R-14                  \\ROTERMANNI 14             \\HARJUMAA, TAL\\10111     ESTEST",
+        "transactionAmount": {
+          "amount": "-7.90",
+          "currency": "EUR"
+        },
+        "transactionId": "995597484",
+        "valueDate": "2024-10-23"
+      },
+      {
+        "bookingDate": "2024-10-24",
+        "creditorName": "MARIENTHALI SELVERI IS",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-23 17:17 MARIENTHALI SELVERI IS\\MUSTAMAE TEE 16           \\TALLINN      \\10617     ESTEST",
+        "transactionAmount": {
+          "amount": "-6.55",
+          "currency": "EUR"
+        },
+        "transactionId": "996465080",
+        "valueDate": "2024-10-24"
+      },
+      {
+        "bookingDate": "2024-10-24",
+        "creditorName": "PRISMA ROCCA AL MARE",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-23 19:26 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
+        "transactionAmount": {
+          "amount": "-6.97",
+          "currency": "EUR"
+        },
+        "transactionId": "996540379",
+        "valueDate": "2024-10-24"
+      },
+      {
+        "bookingDate": "2024-10-24",
+        "creditorName": "ELERINGI KOHVIK",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-23 11:01 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+        "transactionAmount": {
+          "amount": "-6.70",
+          "currency": "EUR"
+        },
+        "transactionId": "996142863",
+        "valueDate": "2024-10-24"
+      },
+      {
+        "bookingDate": "2024-10-24",
+        "creditorAccount": {
+          "iban": "EE937700771001384940"
+        },
+        "creditorName": "Mart Mägi",
+        "remittanceInformationUnstructured": "Riku malering",
+        "transactionAmount": {
+          "amount": "-85.00",
+          "currency": "EUR"
+        },
+        "transactionId": "997145999",
+        "valueDate": "2024-10-24"
+      },
+      {
+        "bookingDate": "2024-10-24",
+        "creditorAccount": {
+          "iban": "EE937700771001384940"
+        },
+        "creditorName": "Mart Mägi",
+        "remittanceInformationUnstructured": "Riku kergejõustik",
+        "transactionAmount": {
+          "amount": "-45.00",
+          "currency": "EUR"
+        },
+        "transactionId": "997163341",
+        "valueDate": "2024-10-24"
+      },
+      {
+        "bookingDate": "2024-10-25",
+        "creditorName": "Marienthali Sudameapte",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-24 09:12 Marienthali Sudameapte\\Mustamae tee 16\\TALLINN\\10617        EST",
+        "transactionAmount": {
+          "amount": "-5.89",
+          "currency": "EUR"
+        },
+        "transactionId": "996777042",
+        "valueDate": "2024-10-25"
+      },
+      {
+        "bookingDate": "2024-10-25",
+        "creditorName": "KUNST - HOBI - ROCCA A",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-23 19:18 KUNST - HOBI - ROCCA A\\Paldiski mnt 102                             \\TALLINN      \\13522     ESTEST",
+        "transactionAmount": {
+          "amount": "-3.00",
+          "currency": "EUR"
+        },
+        "transactionId": "996535982",
+        "valueDate": "2024-10-25"
+      },
+      {
+        "bookingDate": "2024-10-26",
+        "creditorName": "Marienthali Sudameapte",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-25 18:24 Marienthali Sudameapte\\Mustamae tee 16\\TALLINN\\10617        EST",
+        "transactionAmount": {
+          "amount": "-20.36",
+          "currency": "EUR"
+        },
+        "transactionId": "997763968",
+        "valueDate": "2024-10-26"
+      },
+      {
+        "bookingDate": "2024-10-26",
+        "creditorName": "MARIENTHALI SELVERI IS",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-25 18:36 MARIENTHALI SELVERI IS\\MUSTAMAE TEE 16           \\TALLINN      \\10617     ESTEST",
+        "transactionAmount": {
+          "amount": "-21.39",
+          "currency": "EUR"
+        },
+        "transactionId": "997771297",
+        "valueDate": "2024-10-26"
+      },
+      {
+        "bookingDate": "2024-10-27",
+        "debtorAccount": {
+          "iban": "EE387700771001449271"
+        },
+        "debtorName": "Ana Tamm",
+        "remittanceInformationUnstructured": "Oktoober",
+        "transactionAmount": {
+          "amount": "200.00",
+          "currency": "EUR"
+        },
+        "transactionId": "998855480",
+        "valueDate": "2024-10-27"
+      },
+      {
+        "bookingDate": "2024-10-27",
+        "creditorAccount": {
+          "iban": "LT833250003948415294"
+        },
+        "creditorName": "Inclusion OÜ",
+        "remittanceInformationUnstructured": "INV/2024/0061 White table",
+        "transactionAmount": {
+          "amount": "-150.00",
+          "currency": "EUR"
+        },
+        "transactionId": "998856953",
+        "valueDate": "2024-10-27"
+      },
+      {
+        "bookingDate": "2024-10-28",
+        "creditorAccount": {
+          "iban": "EE207700771005384950"
+        },
+        "creditorName": "Kaspar Mägi",
+        "remittanceInformationUnstructured": "Jasper NÄDALARAHA",
+        "transactionAmount": {
+          "amount": "-2.00",
+          "currency": "EUR"
+        },
+        "transactionId": "998962756",
+        "valueDate": "2024-10-28"
+      },
+      {
+        "bookingDate": "2024-10-28",
+        "creditorAccount": {
+          "iban": "EE577700771002384960"
+        },
+        "creditorName": "Riku Mägi",
+        "remittanceInformationUnstructured": "Ruben NÄDALARAHA",
+        "transactionAmount": {
+          "amount": "-2.00",
+          "currency": "EUR"
+        },
+        "transactionId": "998962757",
+        "valueDate": "2024-10-28"
+      },
+      {
+        "bookingDate": "2024-10-28",
+        "creditorName": "Merimetsa  Selver",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-27 17:35 Merimetsa  Selver     \\Partner app           \\Tallinn      \\11624     ESTEST",
+        "transactionAmount": {
+          "amount": "-13.69",
+          "currency": "EUR"
+        },
+        "transactionId": "998735489",
+        "valueDate": "2024-10-28"
+      },
+      {
+        "bookingDate": "2024-10-28",
+        "creditorName": "RAHVA RAAMAT AS KRISTI",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-27 15:00 RAHVA RAAMAT AS KRISTI\\ENDLA 45                  \\HARJUMAA, TAL\\10615     ESTEST",
+        "transactionAmount": {
+          "amount": "-1.99",
+          "currency": "EUR"
+        },
+        "transactionId": "998634460",
+        "valueDate": "2024-10-28"
+      },
+      {
+        "bookingDate": "2024-10-28",
+        "creditorName": "KRISTIINE KESKUSE APOL",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-27 14:57 KRISTIINE KESKUSE APOL\\ENDLA 45                  \\HARJUMAA, TAL\\10615     ESTEST",
+        "transactionAmount": {
+          "amount": "-20.48",
+          "currency": "EUR"
+        },
+        "transactionId": "998632417",
+        "valueDate": "2024-10-28"
+      },
+      {
+        "bookingDate": "2024-10-28",
+        "creditorName": "ECO TANKLA",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-26 12:10 ECO TANKLA            \\MUSTAMAE TEE 12C          \\TALLINN      \\10621     ESTEST",
+        "transactionAmount": {
+          "amount": "-50.35",
+          "currency": "EUR"
+        },
+        "transactionId": "998078456",
+        "valueDate": "2024-10-28"
+      },
+      {
+        "bookingDate": "2024-10-29",
+        "creditorName": "STOCKMANN RIGA",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-28 17:19 STOCKMANN RIGA        \\13. JANVARA IELA 8        \\RIGALATVIA   \\01050     LVALVA",
+        "transactionAmount": {
+          "amount": "-6.68",
+          "currency": "EUR"
+        },
+        "transactionId": "999373311",
+        "valueDate": "2024-10-29"
+      },
+      {
+        "bookingDate": "2024-10-29",
+        "creditorName": "OLEREX PARNU LAKI",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-28 08:18 OLEREX PARNU LAKI     \\LAKI 8                    \\PARNUMAA, PAR\\80010     ESTEST",
+        "transactionAmount": {
+          "amount": "-3.00",
+          "currency": "EUR"
+        },
+        "transactionId": "999006427",
+        "valueDate": "2024-10-29"
+      },
+      {
+        "bookingDate": "2024-10-29",
+        "debtorAccount": {
+          "iban": "EE387700771001449271"
+        },
+        "debtorName": "Ana Tamm",
+        "remittanceInformationUnstructured": "Oktoober",
+        "transactionAmount": {
+          "amount": "200.00",
+          "currency": "EUR"
+        },
+        "transactionId": "999971615",
+        "valueDate": "2024-10-29"
+      },
+      {
+        "bookingDate": "2024-10-30",
+        "creditorName": "ST.PATRICK'S",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-29 12:14 ST.PATRICK'S          \\NARVA MNT 5               \\HARJUMAA, TAL\\10117     ESTEST",
+        "transactionAmount": {
+          "amount": "-6.50",
+          "currency": "EUR"
+        },
+        "transactionId": "999777731",
+        "valueDate": "2024-10-30"
+      },
+      {
+        "bookingDate": "2024-10-30",
+        "creditorName": "LIDL/LIDL 610 TALLINN",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-29 17:40 LIDL/LIDL 610 TALLINN \\KARJAVALJA TN 12          \\HARJUMAA, TAL\\12918     ESTEST",
+        "transactionAmount": {
+          "amount": "-17.16",
+          "currency": "EUR"
+        },
+        "transactionId": "999984615",
+        "valueDate": "2024-10-30"
+      },
+      {
+        "bookingDate": "2024-10-30",
+        "creditorName": "PRISMA ROCCA AL MARE",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-29 17:21 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
+        "transactionAmount": {
+          "amount": "-101.86",
+          "currency": "EUR"
+        },
+        "transactionId": "999972915",
+        "valueDate": "2024-10-30"
+      },
+      {
+        "bookingDate": "2024-10-30",
+        "debtorAccount": {
+          "iban": "EE387700771001449271"
+        },
+        "debtorName": "Ana Tamm",
+        "remittanceInformationUnstructured": "Oktoober",
+        "transactionAmount": {
+          "amount": "100.00",
+          "currency": "EUR"
+        },
+        "transactionId": "1000772962",
+        "valueDate": "2024-10-30"
+      },
+      {
+        "bookingDate": "2024-10-30",
+        "creditorAccount": {
+          "iban": "EE502200221015384969"
+        },
+        "creditorName": "JAANIKA KUKK",
+        "remittanceInformationUnstructured": "Konverents",
+        "transactionAmount": {
+          "amount": "-55.00",
+          "currency": "EUR"
+        },
+        "transactionId": "1000798101",
+        "valueDate": "2024-10-30"
+      },
+      {
+        "bookingDate": "2024-10-31",
+        "creditorName": "TRAMPOLINO",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-30 21:06 TRAMPOLINO            \\\\TALLINN      \\11415     ESTEST",
+        "transactionAmount": {
+          "amount": "-100.00",
+          "currency": "EUR"
+        },
+        "transactionId": "1000773146",
+        "valueDate": "2024-10-31"
+      },
+      {
+        "bookingDate": "2024-10-31",
+        "debtorAccount": {
+          "iban": "EE387700771001449271"
+        },
+        "debtorName": "Ana Tamm",
+        "remittanceInformationUnstructured": "Ravimid",
+        "transactionAmount": {
+          "amount": "25.00",
+          "currency": "EUR"
+        },
+        "transactionId": "1001095541",
+        "valueDate": "2024-10-31"
+      },
+      {
+        "bookingDate": "2024-10-31",
+        "creditorName": "MERIMETSA TERVISEKESKU",
+        "remittanceInformationUnstructured": "(..4271) 2024-10-30 16:09 MERIMETSA TERVISEKESKU\\PALDISKI MNT 68A          \\HARJUMAA, TAL\\10617     ESTEST",
+        "transactionAmount": {
+          "amount": "-5.89",
+          "currency": "EUR"
+        },
+        "transactionId": "1000605019",
+        "valueDate": "2024-10-31"
+      },
+      {
+        "bookingDate": "2024-10-31",
+        "creditorName": "RIMI/ULEMISTE RIMI HM",
+        "remittanceInformationUnstructured": "(..9786) 2024-10-30 18:17 RIMI/ULEMISTE RIMI HM \\SUUR-SOJAMAE 4            \\TALLINN      \\11415     ESTEST",
+        "transactionAmount": {
+          "amount": "-28.04",
+          "currency": "EUR"
+        },
+        "transactionId": "1000691137",
+        "valueDate": "2024-10-31"
+      }
+    ],
+    "pending": []
+  }
+}

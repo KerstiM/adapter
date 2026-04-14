@@ -11,7 +11,7 @@ Schema-valid edge cases testing boundary conditions: zero amount, large amount, 
 | Booked (total) | 28 |
 | Pending (total) | 5 |
 | Expected dropped | 0 |
-| Expected outcome | PARTIAL_SUCCESS |
+| Expected outcome | SUCCESS |
 
 ## What this dataset tests
 

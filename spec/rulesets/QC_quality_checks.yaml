@@ -1,0 +1,13 @@
+version: "1.0.0"
+description: >
+  Data-completeness quality checks — INFO-level diagnostics that do not
+  affect run outcome.  These flag observable data gaps that may or may not
+  indicate a problem, depending on the source system.
+
+rules:
+  - id: QC-1_COUNTERPARTY_MISSING
+    severity: INFO
+    scope: TRANSACTION
+    when: "is_null(counterparty.name) and is_null(counterparty.iban)"
+    action: FLAG_ONLY
+    message: "counterparty name and IBAN both absent."
