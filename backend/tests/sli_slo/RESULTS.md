@@ -16,7 +16,7 @@
 | SLI-3 | Invariantide täituvus (mapping drops ei kuulu nimetajasse) | invariant_correct_total / invariant_checked_total | Jooksupõhine | ≥ 0.999; critical == 0 |
 | SLI-4 | Determinism | identsete väljunditega jooksud / kõik kordusjooksud (N=5) | Mitme jooksu võrdlus | 100 % |
 | SLI-5 | Auditijälje täielikkus | olemasolevad nõutud auditiväljad / kõik nõutud auditiväljad | Jooksupõhine | 100 % |
-| SLI-6 | Referentsjõudlus | mediaanne töötlusaeg referentsandmestikul (1 proovijooks + 3 mõõdetud) | Eraldi mõõtmine | Informatiivne referentsmõõtmine |
+| SLI-6 | Referentsjõudlus | mediaanne töötlusaeg referentsandmestikul (1 proovijooks + 5 mõõdetud) | Eraldi mõõtmine | Informatiivne referentsmõõtmine |
 | QC-2| Eemaldatud kirjete raporteeritavus | dropped_details_count / dropped_total | Jooksupõhine | 100 % |
 | Gate | Operatiivne kvaliteedivärav | error_drop_ratio < 5 % → PARTIAL_SUCCESS; ≥ 5 % → FAIL | Jooksupõhine | Ei ole SLI |
 
@@ -362,8 +362,8 @@ SLI-6 = mediaanne töötlusaeg referentsandmestikul
 
 Mõõtmismetoodika:
 1. 1 proovijooks, mille tulemust lõppnäitajasse ei arvestata
-2. 3 mõõdetud jooksu
-3. Tulemuseks on nende 3 mõõdetud jooksu mediaan
+2. 5 mõõdetud jooksu
+3. Tulemuseks on nende 5 mõõdetud jooksu mediaan
 
 SLI-6 ei kuulu report.json metrics sektsiooni. See on eraldi mõõtmise tulemus.
 
@@ -373,7 +373,7 @@ SLI-6 ei kuulu report.json metrics sektsiooni. See on eraldi mõõtmise tulemus.
 |------|-----------|
 | `test_sli6_reference_benchmark` | Mõõdab referentsjõudlust 1000 tehinguga andmestikul |
 | `test_sli6_median_is_positive` | Mediaan on positiivne arv |
-| `test_sli6_three_measured_runs` | Mõõtmistulemus sisaldab täpselt 3 mõõdetud aega |
+| `test_sli6_five_measured_runs` | Mõõtmistulemus sisaldab täpselt 5 mõõdetud aega |
 
 ### Tulemus
 
