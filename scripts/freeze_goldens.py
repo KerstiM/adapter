@@ -51,12 +51,13 @@ EXPECTED_OUTCOME_FALLBACK = {
     "D2_public_mixed_large":     "PARTIAL_SUCCESS",
     "D3_synth_valid_seed42":     "SUCCESS",
     "D4_synth_errors_seed42":    "FAILED",
-    "D5_synth_edges_seed99":     "PARTIAL_SUCCESS",
+    "D5_synth_edges_seed99":     "SUCCESS",
     "D6_synth_dupes_seed99":     "PARTIAL_SUCCESS",
     "D7_standing_orders_seed77": "PARTIAL_SUCCESS",
     "D8_load_test_10k_seed88":   "SUCCESS",
     "D9_synth_perf_seed9":       "SUCCESS",
     "D10_real_anon_oct16":       "PARTIAL_SUCCESS",
+    "D11_real_anon_2024":        "SUCCESS",
 }
 
 

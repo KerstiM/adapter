@@ -44,9 +44,5 @@ rules:
     action: DROP_RECORD
     message: "Duplicate record_id within account; keeping first deterministically."
 
-  - id: INV-10_COUNTERPARTY_ALL_NULL
-    severity: WARN
-    scope: TRANSACTION
-    when: "is_null(counterparty.name) and is_null(counterparty.iban)"
-    action: FLAG_ONLY
-    message: "counterparty present but all fields null."
+  # INV-10 removed — counterparty absence is not an invariant violation.
+  # See quality_checks / QC-1_COUNTERPARTY_MISSING (INFO-level diagnostic).

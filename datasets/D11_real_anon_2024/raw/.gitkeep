@@ -1,0 +1,7 @@
+# Pane siia LHV CSV väljavõtted:
+#   EE327700771001467683.csv
+#   EE127700771001654768.csv
+#
+# Seejärel käivita: python scripts/build_d11.py
+#
+# Need failid on .gitignore-ga versioonihallusest välja jäetud (isikuandmed).

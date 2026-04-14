@@ -910,14 +910,14 @@ class TestD3MultiAccount:
 
 
 # ---------------------------------------------------------------------------
-# D5 — Edge cases dataset → PARTIAL_SUCCESS
+# D5 — Edge cases dataset → SUCCESS
 # ---------------------------------------------------------------------------
 
 DATA_D5 = DATASETS_DIR / "D5_synth_edges_seed99"
 
 
 class TestD5EdgeCases:
-    """Tests for D5: edge cases — zero/large/integer amounts, INV-10 WARN, long remittance."""
+    """Tests for D5: edge cases — zero/large/integer amounts, QC-1 INFO, long remittance."""
 
     @pytest.fixture()
     def d5_output(self, tmp_path: Path) -> tuple[dict, Path]:
@@ -930,10 +930,10 @@ class TestD5EdgeCases:
         )
         return summary, Path(summary["run_folder"])
 
-    def test_d5_outcome_partial_success(self, d5_output: tuple) -> None:
-        """D5 has WARN-level flags (INV-10 etc.) → PARTIAL_SUCCESS."""
+    def test_d5_outcome_success(self, d5_output: tuple) -> None:
+        """D5 edge cases are all valid — SUCCESS (QC-1 INFO flags do not affect outcome)."""
         summary, _ = d5_output
-        assert summary["outcome"] == "PARTIAL_SUCCESS"
+        assert summary["outcome"] == "SUCCESS"
 
     def test_d5_transaction_counts(self, d5_output: tuple) -> None:
         """D5: 28 booked + 5 pending = 33, all emitted."""
@@ -948,17 +948,17 @@ class TestD5EdgeCases:
         summary, _ = d5_output
         assert len(summary["dropped_details"]) == 0
 
-    def test_d5_inv10_warn_present(self, d5_output: tuple) -> None:
-        """D5 has a no-counterparty transaction → INV-10 WARN."""
+    def test_d5_qc01_info_present(self, d5_output: tuple) -> None:
+        """D5 has a no-counterparty transaction → QC-1 INFO."""
         _, run_folder = d5_output
         with open(run_folder / "sv.json", encoding="utf-8") as f:
             sv = json.load(f)
-        inv10_flags = [
+        qc01_flags = [
             flag for tx in sv["transactions"]
             for flag in tx.get("flags", [])
-            if flag["id"].startswith("INV-10")
+            if flag["id"].startswith("QC-1")
         ]
-        assert len(inv10_flags) >= 1
+        assert len(qc01_flags) >= 1
 
     def test_d5_zero_amount_handled(self, d5_output: tuple) -> None:
         """Zero amount transaction should be emitted without errors."""
@@ -1313,3 +1313,98 @@ class TestBenchmarkD9D8:
         print(f"  Standardhälve:    {stdev_ms:.2f} ms")
         print(f"  Läbilaskevõime:   {throughput:.3f} tx/ms")
         print(f"{'='*60}")
+
+
+# ---------------------------------------------------------------------------
+# D11 — Real anonymised 2024 dataset (2 accounts) → SUCCESS
+# ---------------------------------------------------------------------------
+DATA_D11 = DATASETS_DIR / "D11_real_anon_2024"
+
+
+@pytest.mark.skipif(
+    not (DATA_D11 / "accounts.json").exists(),
+    reason="D11 dataset not built yet (run: python scripts/build_d11.py)",
+)
+class TestD11RealAnon2024:
+    """Tests for D11: 2 real anonymised accounts, ~380 booked, 0 pending, SUCCESS."""
+
+    @pytest.fixture()
+    def d11_output(self, tmp_path: Path) -> tuple[dict, Path]:
+        summary = run_pipeline_fs(
+            data_dir=DATA_D11,
+            output_dir=tmp_path,
+            spec_dir=SPEC_DIR,
+            run_id="d11-real-anon-test",
+            created_at_utc=FIXED_TS,
+        )
+        return summary, Path(summary["run_folder"])
+
+    def test_d11_outcome_success(self, d11_output: tuple) -> None:
+        """D11 has valid real data with correct sign convention → SUCCESS."""
+        summary, _ = d11_output
+        assert summary["outcome"] == "SUCCESS"
+
+    def test_d11_account_count(self, d11_output: tuple) -> None:
+        """D11 has 2 accounts."""
+        summary, _ = d11_output
+        assert summary["counts"]["accounts_total"] == 2
+
+    def test_d11_transaction_counts(self, d11_output: tuple) -> None:
+        """D11: all transactions emitted, none dropped."""
+        summary, _ = d11_output
+        counts = summary["counts"]
+        assert counts["transactions_total"] > 0
+        assert counts["transactions_emitted_sv"] == counts["transactions_total"]
+        assert counts["transactions_dropped"] == 0
+
+    def test_d11_sv_has_two_accounts(self, d11_output: tuple) -> None:
+        """SV bundle should list 2 accounts."""
+        _, run_folder = d11_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        assert len(sv["accounts"]) == 2
+
+    def test_d11_sv_account_ibans(self, d11_output: tuple) -> None:
+        """SV accounts should include both anonymised IBANs."""
+        _, run_folder = d11_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        ibans = {a["iban"] for a in sv["accounts"]}
+        assert "EE517700771002836491" in ibans
+        assert "EE347700771003958274" in ibans
+
+    def test_d11_sv_transactions_from_both_accounts(self, d11_output: tuple) -> None:
+        """SV transactions should reference both accounts."""
+        _, run_folder = d11_output
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        account_ids = {tx["account_id"] for tx in sv["transactions"]}
+        assert len(account_ids) == 2
+
+    def test_d11_llm_contexts_per_account(self, d11_output: tuple) -> None:
+        """LLM output should have contexts for both accounts."""
+        _, run_folder = d11_output
+        with open(run_folder / "projections" / "llm_context_v1.json", encoding="utf-8") as f:
+            ctx = json.load(f)
+        if isinstance(ctx, list):
+            assert len(ctx) == 2
+        else:
+            assert False, "Expected list of 2 LLM contexts for multi-account dataset"
+
+    def test_d11_ml_csv_row_count(self, d11_output: tuple) -> None:
+        """ML CSV row count should equal total transactions."""
+        summary, run_folder = d11_output
+        with open(run_folder / "projections" / "ml_v1.csv", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        assert len(rows) == summary["counts"]["transactions_total"]
+
+    def test_d11_no_drops(self, d11_output: tuple) -> None:
+        """D11 has no dropped transactions."""
+        summary, _ = d11_output
+        assert len(summary["dropped_details"]) == 0
+
+    def test_d11_total_invariant(self, d11_output: tuple) -> None:
+        """total == emitted + dropped."""
+        summary, _ = d11_output
+        counts = summary["counts"]
+        assert counts["transactions_total"] == counts["transactions_emitted_sv"] + counts["transactions_dropped"]
