@@ -43,6 +43,7 @@
     "D8": "Large dataset",
     "D9": "Synthetic, performance",
     "D10": "Real, anonymised",
+    "D11": "Real, anon. 2024 (2 accounts)",
     "CUSTOM": "Your own data"
   },
   "model": {
