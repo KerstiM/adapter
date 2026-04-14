@@ -31,7 +31,7 @@ SLI-5  Auditijälje täielikkus olemasolevad nõutud auditiväljad / kõik nõut
                               Tase: jooksupõhine       SLO: 100 %
 
 SLI-6  Referentsjõudlus       mediaanne töötlusaeg referentsandmestikul
-                              Tase: eraldi mõõtmine (1 proovijooks + 3 mõõdetud jooksu)
+                              Tase: eraldi mõõtmine (1 proovijooks + 5 mõõdetud jooksu)
                               EI OLE report.json metrics väli
 
 QC-2 Eemaldatud kirjete      dropped_details_count / dropped_total
@@ -965,8 +965,8 @@ class TestSLI5AuditTrailCompleteness:
 #
 # Mõõtmismetoodika:
 #   1) 1 proovijooks, mille tulemust ei arvestata
-#   2) 3 mõõdetud jooksu
-#   3) tulemuseks on nende 3 mõõdetud jooksu mediaan
+#   2) 5 mõõdetud jooksu
+#   3) tulemuseks on nende 5 mõõdetud jooksu mediaan
 #
 # SLI-6 ei kuulu report.json metrics sektsiooni, sest see on eraldi
 # mõõtmise tulemus, mitte ühe jooksu artefakt.
@@ -990,7 +990,7 @@ def run_sli6_benchmark(
     pending: list[dict] | None = None,
     *,
     proovijooksud: int = 1,
-    measured_runs: int = 3,
+    measured_runs: int = 5,
 ) -> dict[str, float | int]:
     """SLI-6 referentsjõudluse mõõtmine.
 
@@ -1000,7 +1000,7 @@ def run_sli6_benchmark(
     Returns
     -------
     dict with keys:
-        median_ms : float  — 3 mõõdetud jooksu mediaan millisekundites
+        median_ms : float  — 5 mõõdetud jooksu mediaan millisekundites
         all_times_ms : list[float]  — kõik mõõdetud ajad
         proovijooksu_ms : float  — proovijooksu aeg
     """
@@ -1035,7 +1035,7 @@ class TestSLI6ReferencePerformance:
     """SLI-6 — referentsjõudlus: mediaanne töötlusaeg referentsandmestikul.
 
     Kasutab ~1000 tehinguga sünteetilist andmestikku (D9 formaadis).
-    Mõõtmismetoodika: 1 proovijooks + 3 mõõdetud jooksu; tulemus on mediaan.
+    Mõõtmismetoodika: 1 proovijooks + 5 mõõdetud jooksu; tulemus on mediaan.
 
     SLI-6 ei ole report.json metrics väli, vaid eraldi mõõtmise tulemus.
     """
@@ -1070,7 +1070,7 @@ class TestSLI6ReferencePerformance:
     ) -> None:
         """SLI-6: mõõdab referentsjõudlust 1000 tehinguga andmestikul.
 
-        Metoodika: 1 proovijooks + 3 mõõdetud jooksu; tulemus on mediaan.
+        Metoodika: 1 proovijooks + 5 mõõdetud jooksu; tulemus on mediaan.
 
         See on informatiivne referentsmõõtmine regressioonide jälgimiseks.
         Jäika lävendit ei jõustata vaikimisi, sest mõõdetud mediaan sõltub
@@ -1078,7 +1078,7 @@ class TestSLI6ReferencePerformance:
         on seadistatud, kontrollitakse seda.
         """
         booked, pending = reference_dataset
-        result = run_sli6_benchmark(booked, pending, proovijooksud=1, measured_runs=3)
+        result = run_sli6_benchmark(booked, pending, proovijooksud=1, measured_runs=5)
 
         median = result["median_ms"]
         print(f"\nSLI-6 referentsjõudlus (informatiivne):")
@@ -1096,13 +1096,13 @@ class TestSLI6ReferencePerformance:
     ) -> None:
         """Mediaan peab olema positiivne arv."""
         booked, pending = reference_dataset
-        result = run_sli6_benchmark(booked, pending, proovijooksud=1, measured_runs=3)
+        result = run_sli6_benchmark(booked, pending, proovijooksud=1, measured_runs=5)
         assert result["median_ms"] > 0
 
-    def test_sli6_three_measured_runs(
+    def test_sli6_five_measured_runs(
         self, reference_dataset: tuple[list[dict], list[dict]],
     ) -> None:
-        """Mõõtmistulemus peab sisaldama täpselt 3 mõõdetud aega."""
+        """Mõõtmistulemus peab sisaldama täpselt 5 mõõdetud aega."""
         booked, pending = reference_dataset
-        result = run_sli6_benchmark(booked, pending, proovijooksud=1, measured_runs=3)
-        assert len(result["all_times_ms"]) == 3
+        result = run_sli6_benchmark(booked, pending, proovijooksud=1, measured_runs=5)
+        assert len(result["all_times_ms"]) == 5
