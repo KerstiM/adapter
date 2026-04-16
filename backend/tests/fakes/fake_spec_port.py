@@ -1,43 +1,71 @@
-"""In-memory fake of SpecPort — no filesystem access."""
+"""In-memory fake of SpecPort — loads real schemas/contracts/rulesets.
+
+The fake reads JSON Schemas, contract YAMLs and ruleset YAMLs from the repo at
+instantiation time so that unit tests validate pipeline output against the
+same specs as production. Override via *profile_override* to plug in
+permissive dicts where a test intentionally exercises malformed input.
+"""
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import Any
+
+import yaml
+
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+_SCHEMAS_DIR = _REPO_ROOT / "spec" / "schemas"
+_CONTRACTS_DIR = _REPO_ROOT / "spec" / "contracts"
+_RULESETS_DIR = _REPO_ROOT / "spec" / "rulesets"
+
+_SCHEMA_FILES: dict[str, str] = {
+    "S-00A": "S-00A_berlin_accounts.schema.json",
+    "S-00B": "S-00B_berlin_transactions.schema.json",
+    "S-00C": "S-00C_berlin_standing_orders.schema.json",
+    "S-01":  "S-01_sv_schema.json",
+    "S-02":  "S-02_ml_projection_schema.json",
+    "S-03":  "S-03_llm_context_schema.json",
+    "S-05":  "S-05_collected_report_schema.json",
+}
+
+_CONTRACT_FILES: dict[str, str] = {
+    "C-01": "C-01_berlin_to_sv.yaml",
+    "C-02": "C-02_sv_to_ml.yaml",
+    "C-03": "C-03_sv_to_llm.yaml",
+}
+
+_RULESET_FILES: dict[str, str] = {
+    "R-01": "R-01_sv_invariants.yaml",
+}
+
+
+def _load_real_schemas() -> dict[str, dict[str, Any]]:
+    schemas: dict[str, dict[str, Any]] = {}
+    for sid, filename in _SCHEMA_FILES.items():
+        path = _SCHEMAS_DIR / filename
+        with open(path, encoding="utf-8") as f:
+            schemas[sid] = json.load(f)
+    return schemas
+
+
+def _load_real_yaml(base: Path, files: dict[str, str]) -> dict[str, dict[str, Any]]:
+    out: dict[str, dict[str, Any]] = {}
+    for key, filename in files.items():
+        path = base / filename
+        with open(path, encoding="utf-8") as f:
+            out[key] = yaml.safe_load(f)
+    return out
 
 
 def _default_profile() -> dict[str, Any]:
-    """Return a minimal profile that lets the pipeline run without errors.
-
-    Schemas are permissive (empty JSON Schema ``{}`` matches anything) so that
-    unit tests can focus on pipeline logic rather than schema validation.
-    """
+    """Return a profile that mirrors production schemas, contracts and rulesets."""
     return {
         "id": "default",
         "version": "1.0.0",
-        "schemas": {
-            "S-00A": {},   # accepts any accounts payload
-            "S-00B": {},   # accepts any transactions payload
-            "S-00C": {},   # accepts any standing-orders payload
-            "S-01": {},    # accepts any SV bundle
-            "S-02": {},    # accepts any ML projection row
-            "S-03": {},
-            "S-05": {},
-        },
-        "contracts": {
-            "C-01": {"version": "1.0.0"},
-            "C-02": {"version": "1.0.0"},
-            "C-03": {
-                "version": "1.0.0",
-                "window": {"last_n": 200},
-                "truncate": {
-                    "counterparty_name_max_len": 80,
-                    "remittance_max_len": 160,
-                },
-            },
-        },
-        "rulesets": {
-            "R-01": {"version": "1.0.0"},
-        },
+        "schemas": _load_real_schemas(),
+        "contracts": _load_real_yaml(_CONTRACTS_DIR, _CONTRACT_FILES),
+        "rulesets": _load_real_yaml(_RULESETS_DIR, _RULESET_FILES),
         "run_policy": {
             "partial_success_policy": {
                 "fail_on": {

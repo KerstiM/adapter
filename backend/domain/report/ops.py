@@ -114,6 +114,38 @@ def compute_sli1_coverage(
     }
 
 
+def _lookup_dotted(obj: Any, dotted_path: str) -> Any:
+    current: Any = obj
+    for key in dotted_path.split("."):
+        if not isinstance(current, dict) or key not in current:
+            return None
+        current = current[key]
+    return current
+
+
+def derive_sli1_coverage_from_sv(
+    sv_bundle: dict[str, Any],
+    priority_fields: list[str] | None = None,
+) -> dict[str, bool]:
+    """Tuleta runtime SLI-1 katvuskaart tegeliku SV bundle'i pealt.
+
+    Iga prioriteetne tee loetakse "kaetuks", kui vähemalt ühes tehingus on
+    vastav väli olemas ja mitte-null. See vaatleb C-01 **tegelikku** väljundit
+    ja ei saa valetada (erinevalt deklaratsioonist SLI1_FIELD_COVERAGE).
+    """
+    fields = priority_fields if priority_fields is not None else list(SLI1_FIELD_COVERAGE.keys())
+    transactions = sv_bundle.get("transactions", []) or []
+    coverage: dict[str, bool] = {f: False for f in fields}
+    for tx in transactions:
+        for field in fields:
+            if coverage[field]:
+                continue
+            value = _lookup_dotted(tx, field)
+            if value not in (None, ""):
+                coverage[field] = True
+    return coverage
+
+
 def count_flags_by_severity(
     sv_transactions: list[dict],
     dropped: list[dict],
