@@ -1,8 +1,37 @@
-"""In-memory fake of SpecPort — no filesystem access."""
+"""In-memory fake of SpecPort.
+
+Schemas and contracts are inlined as permissive stubs.  Rulesets are loaded
+from the canonical YAML files (R-01, QC) so the fake stays in lockstep with
+the spec — there is one source of truth for rule metadata, and registry
+mismatches surface in tests just as they would in production.
+"""
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
+
+import yaml
+
+_SPEC_DIR = Path(__file__).resolve().parents[3] / "spec"
+
+
+def _load_ruleset(filename: str) -> dict[str, Any]:
+    with open(_SPEC_DIR / "rulesets" / filename, encoding="utf-8") as f:
+        return yaml.safe_load(f)
+
+
+def load_spec_rulesets() -> dict[str, dict[str, Any]]:
+    """Return the {R-01, QC} rulesets loaded from canonical YAML.
+
+    Tests that build their own profile dict (rather than using the fake's
+    default profile) can drop this into the ``rulesets`` slot to keep one
+    source of truth for rule metadata.
+    """
+    return {
+        "R-01": _load_ruleset("R-01_sv_invariants.yaml"),
+        "QC": _load_ruleset("QC_quality_checks.yaml"),
+    }
 
 
 def _default_profile() -> dict[str, Any]:
@@ -10,6 +39,8 @@ def _default_profile() -> dict[str, Any]:
 
     Schemas are permissive (empty JSON Schema ``{}`` matches anything) so that
     unit tests can focus on pipeline logic rather than schema validation.
+    Rulesets are real spec content so the registry/YAML consistency check
+    behaves identically to production.
     """
     return {
         "id": "default",
@@ -35,9 +66,7 @@ def _default_profile() -> dict[str, Any]:
                 },
             },
         },
-        "rulesets": {
-            "R-01": {"version": "1.0.0"},
-        },
+        "rulesets": load_spec_rulesets(),
         "run_policy": {
             "partial_success_policy": {
                 "fail_on": {

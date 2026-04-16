@@ -8,7 +8,14 @@ from __future__ import annotations
 import pytest
 
 from application.pipeline import run_pipeline
-from tests.fakes import FakeDatasetPort, FakeOutputPort, FakeSpecPort, FakeValidationPort, FixedClock
+from tests.fakes import (
+    FakeDatasetPort,
+    FakeOutputPort,
+    FakeSpecPort,
+    FakeValidationPort,
+    FixedClock,
+    load_spec_rulesets,
+)
 from tests.fakes.builders import make_accounts as _minimal_accounts, make_tx as _make_transaction, make_report as _transactions_report
 
 
@@ -85,9 +92,7 @@ def _profile_with_target_models() -> dict:
                 },
             },
         },
-        "rulesets": {
-            "R-01": {"version": "1.0.0"},
-        },
+        "rulesets": load_spec_rulesets(),
         "run_policy": {
             "partial_success_policy": {
                 "fail_on": {

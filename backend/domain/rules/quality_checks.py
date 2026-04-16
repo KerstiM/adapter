@@ -1,32 +1,53 @@
-"""
-Data-completeness quality checks — INFO-level diagnostics.
+"""Data-completeness quality checks — predicates registered against YAML rule IDs.
 
-These are not invariants (validity constraints that must hold for all
-legal inputs).  They flag observable data gaps that may or may not
-indicate a problem, depending on the source system.
+Rule metadata (id, severity, message) lives in
+``spec/rulesets/QC_quality_checks.yaml``.  This module only provides the
+Python predicate per rule.  ``check_quality`` reads the YAML ruleset and
+emits flags using the metadata declared there.
+
+These are not invariants (validity constraints that must hold for all legal
+inputs).  They flag observable data gaps that may or may not indicate a
+problem, depending on the source system.
 
 No I/O, no jsonschema/pathlib/os imports.
 """
 from __future__ import annotations
 
+from typing import Callable
 
-def check_quality(transactions: list[dict]) -> None:
-    """Append INFO-level quality flags to transactions in-place."""
-    for tx in transactions:
-        _qc01_counterparty_missing(tx)
+from domain.rules._registry import assert_registry_matches_yaml, flag_from_rule
 
 
-def _qc01_counterparty_missing(tx: dict) -> None:
-    """QC-1: counterparty name and IBAN both absent.
+QC_PREDICATES: dict[str, Callable[[dict], bool]] = {}
 
-    Bank-internal transactions (fees, loan payments, card charges)
-    legitimately have no counterparty in PSD2 data.  This is not a
-    validity error but a completeness observation.
+
+def _register(rule_id: str):
+    def deco(fn: Callable[[dict], bool]) -> Callable[[dict], bool]:
+        QC_PREDICATES[rule_id] = fn
+        return fn
+    return deco
+
+
+@_register("QC-1_COUNTERPARTY_MISSING")
+def _qc1(tx: dict) -> bool:
+    cp = tx.get("counterparty", {}) or {}
+    return cp.get("name") is None and cp.get("iban") is None
+
+
+def check_quality(transactions: list[dict], ruleset: dict) -> None:
+    """Append quality flags to transactions in-place.
+
+    Iterates rules in YAML order; for each transaction, fires each rule whose
+    predicate returns True and appends a flag built from the rule's YAML
+    metadata.
     """
-    cp = tx.get("counterparty", {})
-    if cp.get("name") is None and cp.get("iban") is None:
-        tx["flags"].append({
-            "id": "QC-1_COUNTERPARTY_MISSING",
-            "severity": "INFO",
-            "message": "counterparty name and IBAN both absent.",
-        })
+    rules = ruleset["rules"]
+    rules_by_id = {r["id"]: r for r in rules}
+    assert_registry_matches_yaml(
+        set(QC_PREDICATES.keys()), set(rules_by_id.keys()), "QC",
+    )
+
+    for tx in transactions:
+        for rule in rules:
+            if QC_PREDICATES[rule["id"]](tx):
+                tx["flags"].append(flag_from_rule(rule))

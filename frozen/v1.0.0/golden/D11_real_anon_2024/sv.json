@@ -3,13 +3,13 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "currency": "EUR",
-      "iban": "EE387700771001449271",
+      "iban": "EE517700771002836491",
       "name": "D11 Anonymised Real Account 1"
     },
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "currency": "EUR",
-      "iban": "EE127700771001384912",
+      "iban": "EE347700771003958274",
       "name": "D11 Anonymised Real Account 2"
     }
   ],
@@ -31,10 +31,10 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "500",
+        "abs": "562.93",
         "currency": "EUR",
-        "raw": "-500.00",
-        "signed": "-500"
+        "raw": "-562.93",
+        "signed": "-562.93"
       },
       "booking_date": "2024-10-01",
       "counterparty": {
@@ -44,7 +44,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "6700f90e89c7ce0c",
+      "record_id": "d2a805e06c40cf40",
       "remittance": "30101119828,",
       "source": {
         "input_file": "transactions_1.json",
@@ -57,10 +57,10 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "500",
+        "abs": "432.38",
         "currency": "EUR",
-        "raw": "-500.00",
-        "signed": "-500"
+        "raw": "-432.38",
+        "signed": "-432.38"
       },
       "booking_date": "2024-10-01",
       "counterparty": {
@@ -70,7 +70,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "3eaed66512898cd8",
+      "record_id": "b41eea4619be85a7",
       "remittance": "30101119828,",
       "source": {
         "input_file": "transactions_1.json",
@@ -83,20 +83,20 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "500",
+        "abs": "458.81",
         "currency": "EUR",
-        "raw": "-500.00",
-        "signed": "-500"
+        "raw": "-458.81",
+        "signed": "-458.81"
       },
       "booking_date": "2024-10-01",
       "counterparty": {
-        "iban": "EE127700771001384912",
-        "name": "Ana Tamm",
+        "iban": "EE347700771003958274",
+        "name": "Tiiu Lepp",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "8ae6faed4efdf253",
+      "record_id": "7b9e5ff59c4c15ce",
       "remittance": "Oktoober",
       "source": {
         "input_file": "transactions_1.json",
@@ -109,20 +109,20 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "30",
+        "abs": "32.48",
         "currency": "EUR",
-        "raw": "30.00",
-        "signed": "30"
+        "raw": "32.48",
+        "signed": "32.48"
       },
       "booking_date": "2024-10-04",
       "counterparty": {
-        "iban": "EE672200221010384902",
-        "name": "LIINA TAMM",
+        "iban": "EE832200221045729168",
+        "name": "MAIE LEPP",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "23da35c276c2d23c",
+      "record_id": "5878a248b14f070f",
       "remittance": "raha",
       "source": {
         "input_file": "transactions_1.json",
@@ -135,10 +135,10 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "363.51",
+        "abs": "343.54",
         "currency": "EUR",
-        "raw": "-363.51",
-        "signed": "-363.51"
+        "raw": "-343.54",
+        "signed": "-343.54"
       },
       "booking_date": "2024-10-05",
       "counterparty": {
@@ -154,7 +154,7 @@
           "severity": "INFO"
         }
       ],
-      "record_id": "a11627f11a86bdf8",
+      "record_id": "b1ba47e98ea68246",
       "remittance": "Kodulaenu põhiosa tagasimakse (laenuleping nr ANON-20240226XX)",
       "source": {
         "input_file": "transactions_1.json",
@@ -167,10 +167,10 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "1233.1",
+        "abs": "1404.49",
         "currency": "EUR",
-        "raw": "-1233.10",
-        "signed": "-1233.1"
+        "raw": "-1404.49",
+        "signed": "-1404.49"
       },
       "booking_date": "2024-10-05",
       "counterparty": {
@@ -186,7 +186,7 @@
           "severity": "INFO"
         }
       ],
-      "record_id": "94d3286583fb0dfb",
+      "record_id": "6b86024e95d5f947",
       "remittance": "Kodulaenu intressimakse (laenuleping nr ANON-20240226XX)",
       "source": {
         "input_file": "transactions_1.json",
@@ -199,21 +199,21 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "50",
+        "abs": "43.43",
         "currency": "EUR",
-        "raw": "50.00",
-        "signed": "50"
+        "raw": "43.43",
+        "signed": "43.43"
       },
       "booking_date": "2024-10-06",
       "counterparty": {
-        "iban": "EE791010010043384918",
-        "name": "KRISTEL KASK",
+        "iban": "EE431010010078562934",
+        "name": "HELEN RAND",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "b5bf0e6bf7c13703",
-      "remittance": "Rikule 8.ndaks sünnipäevaks",
+      "record_id": "7ab6ad311445070c",
+      "remittance": "Sünnipäevaks",
       "source": {
         "input_file": "transactions_1.json",
         "input_path": "$.transactions.booked[6]"
@@ -225,21 +225,21 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "30",
+        "abs": "28.03",
         "currency": "EUR",
-        "raw": "30.00",
-        "signed": "30"
+        "raw": "28.03",
+        "signed": "28.03"
       },
       "booking_date": "2024-10-06",
       "counterparty": {
-        "iban": "EE201010010409384918",
-        "name": "PIRET KASK",
+        "iban": "EE671010010083472956",
+        "name": "KATRIN RAND",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "c2de7f57c44dc9e1",
-      "remittance": "Rikule 8. sünnipaevaks  Tädi Piret, onu Kert ja väike Orm",
+      "record_id": "d6c4ac5640f9763b",
+      "remittance": "Sünnipäevaks perelt",
       "source": {
         "input_file": "transactions_1.json",
         "input_path": "$.transactions.booked[7]"
@@ -251,21 +251,21 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "110",
+        "abs": "120.52",
         "currency": "EUR",
-        "raw": "-110.00",
-        "signed": "-110"
+        "raw": "-120.52",
+        "signed": "-120.52"
       },
       "booking_date": "2024-10-06",
       "counterparty": {
-        "iban": "EE577700771002384960",
-        "name": "Riku Mägi",
+        "iban": "EE897700771007461823",
+        "name": "Siim Paju",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "bf5789c1a87d41f2",
-      "remittance": "Riku sünnipäev",
+      "record_id": "6d66caa89ef7ab9b",
+      "remittance": "Sünnipäev",
       "source": {
         "input_file": "transactions_1.json",
         "input_path": "$.transactions.booked[8]"
@@ -277,10 +277,10 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "160",
+        "abs": "152",
         "currency": "EUR",
-        "raw": "160.00",
-        "signed": "160"
+        "raw": "152.00",
+        "signed": "152"
       },
       "booking_date": "2024-10-08",
       "counterparty": {
@@ -290,7 +290,7 @@
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "e476974c638ab529",
+      "record_id": "2d9db5a80e036325",
       "remittance": "Peretoetus",
       "source": {
         "input_file": "transactions_1.json",
@@ -303,21 +303,21 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "40",
+        "abs": "44.79",
         "currency": "EUR",
-        "raw": "40.00",
-        "signed": "40"
+        "raw": "44.79",
+        "signed": "44.79"
       },
       "booking_date": "2024-10-10",
       "counterparty": {
-        "iban": "EE201010010409384918",
-        "name": "PIRET KASK",
+        "iban": "EE671010010083472956",
+        "name": "KATRIN RAND",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "b02bbd63c39c6f53",
-      "remittance": "Nf (märts, aprill, mai, juuni, juuli, august, september, oktoober)",
+      "record_id": "73e8dfa1a1165409",
+      "remittance": "Nf",
       "source": {
         "input_file": "transactions_1.json",
         "input_path": "$.transactions.booked[10]"
@@ -329,10 +329,10 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "15.75",
+        "abs": "14.06",
         "currency": "EUR",
-        "raw": "-15.75",
-        "signed": "-15.75"
+        "raw": "-14.06",
+        "signed": "-14.06"
       },
       "booking_date": "2024-10-13",
       "counterparty": {
@@ -348,7 +348,7 @@
           "severity": "INFO"
         }
       ],
-      "record_id": "4524a1830bf6682d",
+      "record_id": "58f2155c5fbfcf21",
       "remittance": "Kodukindlustuse makse (laenuleping nr ANON-20240226XX, poliis nr 105089654)",
       "source": {
         "input_file": "transactions_1.json",
@@ -361,20 +361,20 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "300",
+        "abs": "315",
         "currency": "EUR",
-        "raw": "-300.00",
-        "signed": "-300"
+        "raw": "-315.00",
+        "signed": "-315"
       },
       "booking_date": "2024-10-23",
       "counterparty": {
-        "iban": "EE127700771001384912",
-        "name": "Ana Tamm",
+        "iban": "EE347700771003958274",
+        "name": "Tiiu Lepp",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "100a369b40f93707",
+      "record_id": "aa8c250c887dbb81",
       "remittance": "Oktoober",
       "source": {
         "input_file": "transactions_1.json",
@@ -387,20 +387,20 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "200",
+        "abs": "171.68",
         "currency": "EUR",
-        "raw": "-200.00",
-        "signed": "-200"
+        "raw": "-171.68",
+        "signed": "-171.68"
       },
       "booking_date": "2024-10-27",
       "counterparty": {
-        "iban": "EE127700771001384912",
-        "name": "Ana Tamm",
+        "iban": "EE347700771003958274",
+        "name": "Tiiu Lepp",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "1ecc362cf4b4f7a1",
+      "record_id": "3cd55a2d98ad91c2",
       "remittance": "Oktoober",
       "source": {
         "input_file": "transactions_1.json",
@@ -413,20 +413,20 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "250",
+        "abs": "262.5",
         "currency": "EUR",
-        "raw": "-250.00",
-        "signed": "-250"
+        "raw": "-262.50",
+        "signed": "-262.5"
       },
       "booking_date": "2024-10-28",
       "counterparty": {
-        "iban": "EE041010010433384915",
-        "name": "Annika Lepik",
+        "iban": "EE281010010067584913",
+        "name": "Sandra Kiisk",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "91420c67bad86b04",
+      "record_id": "c89ddc8bfc8a01fb",
       "remittance": "ülekanne",
       "source": {
         "input_file": "transactions_1.json",
@@ -439,20 +439,20 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "200",
+        "abs": "213.57",
         "currency": "EUR",
-        "raw": "-200.00",
-        "signed": "-200"
+        "raw": "-213.57",
+        "signed": "-213.57"
       },
       "booking_date": "2024-10-29",
       "counterparty": {
-        "iban": "EE127700771001384912",
-        "name": "Ana Tamm",
+        "iban": "EE347700771003958274",
+        "name": "Tiiu Lepp",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "75c5d47988a681d0",
+      "record_id": "87d349a8d398b230",
       "remittance": "Oktoober",
       "source": {
         "input_file": "transactions_1.json",
@@ -465,20 +465,20 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "100",
+        "abs": "92.48",
         "currency": "EUR",
-        "raw": "-100.00",
-        "signed": "-100"
+        "raw": "-92.48",
+        "signed": "-92.48"
       },
       "booking_date": "2024-10-30",
       "counterparty": {
-        "iban": "EE127700771001384912",
-        "name": "Ana Tamm",
+        "iban": "EE347700771003958274",
+        "name": "Tiiu Lepp",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "c5a439e3c45ce208",
+      "record_id": "9fd3bbfc98901120",
       "remittance": "Oktoober",
       "source": {
         "input_file": "transactions_1.json",
@@ -491,20 +491,20 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "25",
+        "abs": "22.69",
         "currency": "EUR",
-        "raw": "-25.00",
-        "signed": "-25"
+        "raw": "-22.69",
+        "signed": "-22.69"
       },
       "booking_date": "2024-10-31",
       "counterparty": {
-        "iban": "EE127700771001384912",
-        "name": "Ana Tamm",
+        "iban": "EE347700771003958274",
+        "name": "Tiiu Lepp",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "ffba1775ceef38ec",
+      "record_id": "53aae460c6727127",
       "remittance": "Ravimid",
       "source": {
         "input_file": "transactions_1.json",
@@ -517,21 +517,21 @@
     {
       "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
       "amount": {
-        "abs": "3120",
+        "abs": "2908.77",
         "currency": "EUR",
-        "raw": "3120.00",
-        "signed": "3120"
+        "raw": "2908.77",
+        "signed": "2908.77"
       },
       "booking_date": "2024-10-31",
       "counterparty": {
-        "iban": "EE322200001120384980",
-        "name": "AS Tehnogrupp",
+        "iban": "EE582200001145697823",
+        "name": "AS Digipartner",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "14de8bf1536e26a2",
-      "remittance": "oktoobri tasu/october payment",
+      "record_id": "69f94335c02f6c98",
+      "remittance": "kuutasu/monthly payment",
       "source": {
         "input_file": "transactions_1.json",
         "input_path": "$.transactions.booked[18]"
@@ -543,10 +543,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "11.83",
+        "abs": "11.16",
         "currency": "EUR",
-        "raw": "-11.83",
-        "signed": "-11.83"
+        "raw": "-11.16",
+        "signed": "-11.16"
       },
       "booking_date": "2024-10-01",
       "counterparty": {
@@ -556,8 +556,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "ffe6aa0a51b84dd8",
-      "remittance": "(..9786) 2024-09-30 16:23 Sklep McDonalds Warsza\\ul.Zwirki i Wigury 1\\Warszawa\\02-143    POLPOL (49.90 PLN, konverteerimistasu 0.12 EUR, kurss 0.2346693, ECB kurss 0.2337104, vahe 1.44%)",
+      "record_id": "10583e1b38a66708",
+      "remittance": "(..5923) 2024-09-30 16:23 Sklep McDonalds Warsza\\ul.Zwirki i Wigury 1\\Warszawa\\02-143    POLPOL (49.90 PLN, konverteerimistasu 0.12 EUR, kurss 0.2346693, ECB kurss 0.2337104, vahe 1.44%)",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[0]"
@@ -569,10 +569,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "3",
+        "abs": "3.15",
         "currency": "EUR",
-        "raw": "-3.00",
-        "signed": "-3"
+        "raw": "-3.15",
+        "signed": "-3.15"
       },
       "booking_date": "2024-10-01",
       "counterparty": {
@@ -582,8 +582,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "90d4ade156baf4c3",
-      "remittance": "(..9786) 2024-09-30 13:46 LENNUJAAMA R-KIOSKI IS\\TARTU MNT 101             \\HARJUMAA, TAL\\10112     ESTEST",
+      "record_id": "c7215d5a3c495d2b",
+      "remittance": "(..5923) 2024-09-30 13:46 LENNUJAAMA R-KIOSKI IS\\TARTU MNT 101             \\HARJUMAA, TAL\\10112     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[1]"
@@ -595,10 +595,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "13.4",
+        "abs": "11.64",
         "currency": "EUR",
-        "raw": "-13.40",
-        "signed": "-13.4"
+        "raw": "-11.64",
+        "signed": "-11.64"
       },
       "booking_date": "2024-10-01",
       "counterparty": {
@@ -608,8 +608,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "48c60cdee2a21227",
-      "remittance": "(..4271) 2024-09-30 14:50 Wolt\\Harju maakon\\Estonia\\10111     ESTEST",
+      "record_id": "8eb67dd76400ce45",
+      "remittance": "(..8164) 2024-09-30 14:50 Wolt\\Harju maakon\\Estonia\\10111     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[2]"
@@ -621,21 +621,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "5.5",
+        "abs": "6.28",
         "currency": "EUR",
-        "raw": "-5.50",
-        "signed": "-5.5"
+        "raw": "-6.28",
+        "signed": "-6.28"
       },
       "booking_date": "2024-10-01",
       "counterparty": {
         "iban": null,
-        "name": "ELERINGI KOHVIK",
+        "name": "KONTORI KOHVIK",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "15e99c8e83cf7263",
-      "remittance": "(..9786) 2024-09-30 12:23 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+      "record_id": "469faffc6cda646c",
+      "remittance": "(..5923) 2024-09-30 12:23 KONTORI KOHVIK\\PARNU MNT 130\\TALLINN\\12915        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[3]"
@@ -647,20 +647,20 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "500",
+        "abs": "525",
         "currency": "EUR",
-        "raw": "500.00",
-        "signed": "500"
+        "raw": "525.00",
+        "signed": "525"
       },
       "booking_date": "2024-10-01",
       "counterparty": {
-        "iban": "EE387700771001449271",
-        "name": "Ana Tamm",
+        "iban": "EE517700771002836491",
+        "name": "Tiiu Lepp",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "9c5117756f37db08",
+      "record_id": "c935892b0df8c3a0",
       "remittance": "Oktoober",
       "source": {
         "input_file": "transactions_2.json",
@@ -673,10 +673,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "23.52",
+        "abs": "21.77",
         "currency": "EUR",
-        "raw": "-23.52",
-        "signed": "-23.52"
+        "raw": "-21.77",
+        "signed": "-21.77"
       },
       "booking_date": "2024-10-01",
       "counterparty": {
@@ -686,7 +686,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "ddbde0a79e5de08e",
+      "record_id": "06ecdd957ddfaf92",
       "remittance": "Arve-saateleht nr.: 104806",
       "source": {
         "input_file": "transactions_2.json",
@@ -699,10 +699,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "71.25",
+        "abs": "77.72",
         "currency": "EUR",
-        "raw": "-71.25",
-        "signed": "-71.25"
+        "raw": "-77.72",
+        "signed": "-77.72"
       },
       "booking_date": "2024-10-01",
       "counterparty": {
@@ -712,7 +712,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "c0af2c927222f93b",
+      "record_id": "96ccef8dbc1cc419",
       "remittance": "Arve nr. 5001341306",
       "source": {
         "input_file": "transactions_2.json",
@@ -725,10 +725,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "7.14",
+        "abs": "6.72",
         "currency": "EUR",
-        "raw": "-7.14",
-        "signed": "-7.14"
+        "raw": "-6.72",
+        "signed": "-6.72"
       },
       "booking_date": "2024-10-02",
       "counterparty": {
@@ -738,8 +738,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "fc5e55ab2dde920d",
-      "remittance": "(..4271) 2024-10-01 18:13 MYSUSHI\\Tartu mnt. 80D\\TALLINN\\10112     DUBEST",
+      "record_id": "bb6fadf5999e75b3",
+      "remittance": "(..8164) 2024-10-01 18:13 MYSUSHI\\Tartu mnt. 80D\\TALLINN\\10112     DUBEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[7]"
@@ -751,10 +751,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "13.99",
+        "abs": "15.59",
         "currency": "EUR",
-        "raw": "-13.99",
-        "signed": "-13.99"
+        "raw": "-15.59",
+        "signed": "-15.59"
       },
       "booking_date": "2024-10-02",
       "counterparty": {
@@ -764,8 +764,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "9eb5c5758aacbae2",
-      "remittance": "(..4271) 2024-10-01 09:11 Merimetsa  Selver     \\Partner app           \\Tallinn      \\11624     ESTEST",
+      "record_id": "3b1d1e98ebfb00ff",
+      "remittance": "(..8164) 2024-10-01 09:11 Merimetsa  Selver     \\Partner app           \\Tallinn      \\11624     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[8]"
@@ -777,10 +777,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "6.9",
+        "abs": "5.97",
         "currency": "EUR",
-        "raw": "-6.90",
-        "signed": "-6.9"
+        "raw": "-5.97",
+        "signed": "-5.97"
       },
       "booking_date": "2024-10-02",
       "counterparty": {
@@ -790,8 +790,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "a4a6d339b7fa6b33",
-      "remittance": "(..4271) 2024-10-01 18:13 MYSUSHI MUSTIKA KESKUS\\KARJAVALJA 4              \\HARJUMAA, TAL\\12918     ESTEST",
+      "record_id": "c69b965cb2906d1d",
+      "remittance": "(..8164) 2024-10-01 18:13 MYSUSHI MUSTIKA KESKUS\\KARJAVALJA 4              \\HARJUMAA, TAL\\12918     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[9]"
@@ -803,10 +803,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "34.07",
+        "abs": "35.77",
         "currency": "EUR",
-        "raw": "-34.07",
-        "signed": "-34.07"
+        "raw": "-35.77",
+        "signed": "-35.77"
       },
       "booking_date": "2024-10-03",
       "counterparty": {
@@ -816,8 +816,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "e8bcf755c839db18",
-      "remittance": "(..4271) 2024-10-02 15:27 Kadaka Selver         \\Partner app           \\Tallinn      \\11624     ESTEST",
+      "record_id": "40f609dd0e510c20",
+      "remittance": "(..8164) 2024-10-02 15:27 Kadaka Selver         \\Partner app           \\Tallinn      \\11624     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[10]"
@@ -829,10 +829,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "67",
+        "abs": "57.55",
         "currency": "EUR",
-        "raw": "-67.00",
-        "signed": "-67"
+        "raw": "-57.55",
+        "signed": "-57.55"
       },
       "booking_date": "2024-10-03",
       "counterparty": {
@@ -842,8 +842,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "8f774102918f1a28",
-      "remittance": "(..4271) 2024-10-02 07:23 DRI*GALLUP\\4029513660\\4029513660\\D01 YE64  IRLIRL",
+      "record_id": "52ef4dac191de91e",
+      "remittance": "(..8164) 2024-10-02 07:23 DRI*GALLUP\\4029513660\\4029513660\\D01 YE64  IRLIRL",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[11]"
@@ -855,10 +855,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "16.58",
+        "abs": "15.75",
         "currency": "EUR",
-        "raw": "-16.58",
-        "signed": "-16.58"
+        "raw": "-15.75",
+        "signed": "-15.75"
       },
       "booking_date": "2024-10-03",
       "counterparty": {
@@ -868,8 +868,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "c2c6d16f28a20275",
-      "remittance": "(..9786) 2024-10-02 18:24 BK 32260 KAS          \\Flughafenstr.1-3                             \\HAMBURG      \\22335     HH DEU",
+      "record_id": "e6366343af76240c",
+      "remittance": "(..5923) 2024-10-02 18:24 BK 32260 KAS          \\Flughafenstr.1-3                             \\HAMBURG      \\22335     HH DEU",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[12]"
@@ -881,10 +881,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "7.9",
+        "abs": "7.33",
         "currency": "EUR",
-        "raw": "-7.90",
-        "signed": "-7.9"
+        "raw": "-7.33",
+        "signed": "-7.33"
       },
       "booking_date": "2024-10-04",
       "counterparty": {
@@ -894,8 +894,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "d81d879f376205ce",
-      "remittance": "(..4271) 2024-10-03 15:05 VAPIANO FOORUM\\Hobujaama 10\\TALLINN\\10151     DUBEST",
+      "record_id": "6d43a9216d7dfe59",
+      "remittance": "(..8164) 2024-10-03 15:05 VAPIANO FOORUM\\Hobujaama 10\\TALLINN\\10151     DUBEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[13]"
@@ -907,21 +907,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "5.5",
+        "abs": "6.13",
         "currency": "EUR",
-        "raw": "-5.50",
-        "signed": "-5.5"
+        "raw": "-6.13",
+        "signed": "-6.13"
       },
       "booking_date": "2024-10-04",
       "counterparty": {
         "iban": null,
-        "name": "ELERINGI KOHVIK",
+        "name": "KONTORI KOHVIK",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "5f30580e5b7fcdfd",
-      "remittance": "(..9786) 2024-10-03 12:11 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+      "record_id": "1841464db821aeea",
+      "remittance": "(..5923) 2024-10-03 12:11 KONTORI KOHVIK\\PARNU MNT 130\\TALLINN\\12915        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[14]"
@@ -933,21 +933,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "2",
+        "abs": "2.28",
         "currency": "EUR",
-        "raw": "-2.00",
-        "signed": "-2"
+        "raw": "-2.28",
+        "signed": "-2.28"
       },
       "booking_date": "2024-10-04",
       "counterparty": {
         "iban": null,
-        "name": "ELERINGI KOHVIK",
+        "name": "KONTORI KOHVIK",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "3fb384351080ec3a",
-      "remittance": "(..9786) 2024-10-03 14:04 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+      "record_id": "0467f96354b3e862",
+      "remittance": "(..5923) 2024-10-03 14:04 KONTORI KOHVIK\\PARNU MNT 130\\TALLINN\\12915        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[15]"
@@ -959,10 +959,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "9.14",
+        "abs": "10.12",
         "currency": "EUR",
-        "raw": "-9.14",
-        "signed": "-9.14"
+        "raw": "-10.12",
+        "signed": "-10.12"
       },
       "booking_date": "2024-10-04",
       "counterparty": {
@@ -972,8 +972,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "b46b7dd976db3725",
-      "remittance": "(..9786) 2024-10-03 16:46 RIMI/SOPRUSE RIMI ISET\\SOPRUS PST 174/176        \\TALLINN      \\13413     ESTEST",
+      "record_id": "78f545023ea1a2eb",
+      "remittance": "(..5923) 2024-10-03 16:46 RIMI/SOPRUSE RIMI ISET\\SOPRUS PST 174/176        \\TALLINN      \\13413     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[16]"
@@ -985,10 +985,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "92.26",
+        "abs": "105.46",
         "currency": "EUR",
-        "raw": "-92.26",
-        "signed": "-92.26"
+        "raw": "-105.46",
+        "signed": "-105.46"
       },
       "booking_date": "2024-10-04",
       "counterparty": {
@@ -998,8 +998,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "39e806c9f946e5db",
-      "remittance": "(..9786) 2024-10-03 15:24 NESTE SOPRUSE         \\SOPRUSE PST 155A          \\TALLINN      \\13417     ESTEST",
+      "record_id": "21b1dc82d2ccd2c2",
+      "remittance": "(..5923) 2024-10-03 15:24 NESTE SOPRUSE         \\SOPRUSE PST 155A          \\TALLINN      \\13417     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[17]"
@@ -1011,20 +1011,20 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "3000",
+        "abs": "2572.62",
         "currency": "EUR",
-        "raw": "3000.00",
-        "signed": "3000"
+        "raw": "2572.62",
+        "signed": "2572.62"
       },
       "booking_date": "2024-10-04",
       "counterparty": {
-        "iban": "EE937700771001384940",
-        "name": "Mart Mägi",
+        "iban": "EE157700771008593741",
+        "name": "Toomas Paju",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "a9ab3f46741ac1fe",
+      "record_id": "eb58e8f2d84a9b0f",
       "remittance": "$$$",
       "source": {
         "input_file": "transactions_2.json",
@@ -1037,20 +1037,20 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "7.5",
+        "abs": "8.38",
         "currency": "EUR",
-        "raw": "-7.50",
-        "signed": "-7.5"
+        "raw": "-8.38",
+        "signed": "-8.38"
       },
       "booking_date": "2024-10-05",
       "counterparty": {
-        "iban": "EE201010010409384918",
-        "name": "PIRET KASK",
+        "iban": "EE671010010083472956",
+        "name": "KATRIN RAND",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "cb565ea9d0d1cb6b",
+      "record_id": "fbb5bcb959ea878c",
       "remittance": "Vaarikad",
       "source": {
         "input_file": "transactions_2.json",
@@ -1063,20 +1063,20 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "1500",
+        "abs": "1680.38",
         "currency": "EUR",
-        "raw": "-1500.00",
-        "signed": "-1500"
+        "raw": "-1680.38",
+        "signed": "-1680.38"
       },
       "booking_date": "2024-10-05",
       "counterparty": {
-        "iban": "EE687700771001384930",
-        "name": "Ana Tamm",
+        "iban": "EE417700771006283945",
+        "name": "Tiiu Lepp",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "6a4e726c18818510",
+      "record_id": "4e648cc24828ef64",
       "remittance": "Oktoober",
       "source": {
         "input_file": "transactions_2.json",
@@ -1089,10 +1089,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "12",
+        "abs": "11.01",
         "currency": "EUR",
-        "raw": "-12.00",
-        "signed": "-12"
+        "raw": "-11.01",
+        "signed": "-11.01"
       },
       "booking_date": "2024-10-05",
       "counterparty": {
@@ -1102,7 +1102,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "ac19f948d4c276eb",
+      "record_id": "9bf69e4301edc356",
       "remittance": "Arve nr ILU20240890",
       "source": {
         "input_file": "transactions_2.json",
@@ -1115,10 +1115,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "50",
+        "abs": "56.41",
         "currency": "EUR",
-        "raw": "-50.00",
-        "signed": "-50"
+        "raw": "-56.41",
+        "signed": "-56.41"
       },
       "booking_date": "2024-10-05",
       "counterparty": {
@@ -1128,7 +1128,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "fc31ba701b8da63a",
+      "record_id": "27cee3a95bc512f5",
       "remittance": "Arve nr. 1470, DG Elite grupitreening",
       "source": {
         "input_file": "transactions_2.json",
@@ -1141,21 +1141,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "5.5",
+        "abs": "4.9",
         "currency": "EUR",
-        "raw": "-5.50",
-        "signed": "-5.5"
+        "raw": "-4.90",
+        "signed": "-4.9"
       },
       "booking_date": "2024-10-05",
       "counterparty": {
         "iban": null,
-        "name": "ELERINGI KOHVIK",
+        "name": "KONTORI KOHVIK",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "43e7b9b43a2b8b02",
-      "remittance": "(..9786) 2024-10-04 11:10 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+      "record_id": "fa5297382bbe2cf6",
+      "remittance": "(..5923) 2024-10-04 11:10 KONTORI KOHVIK\\PARNU MNT 130\\TALLINN\\12915        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[23]"
@@ -1167,21 +1167,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "1.2",
+        "abs": "1.04",
         "currency": "EUR",
-        "raw": "-1.20",
-        "signed": "-1.2"
+        "raw": "-1.04",
+        "signed": "-1.04"
       },
       "booking_date": "2024-10-05",
       "counterparty": {
         "iban": null,
-        "name": "ELERINGI KOHVIK",
+        "name": "KONTORI KOHVIK",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "7cc6ff4e34e8199f",
-      "remittance": "(..9786) 2024-10-04 08:30 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+      "record_id": "72872a5365499ac7",
+      "remittance": "(..5923) 2024-10-04 08:30 KONTORI KOHVIK\\PARNU MNT 130\\TALLINN\\12915        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[24]"
@@ -1193,21 +1193,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "5.5",
+        "abs": "5.22",
         "currency": "EUR",
-        "raw": "-5.50",
-        "signed": "-5.5"
+        "raw": "-5.22",
+        "signed": "-5.22"
       },
       "booking_date": "2024-10-05",
       "counterparty": {
         "iban": null,
-        "name": "ELERINGI KOHVIK",
+        "name": "KONTORI KOHVIK",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "37e59e4f55a486a2",
-      "remittance": "(..9786) 2024-10-04 11:04 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+      "record_id": "6619cc154884522b",
+      "remittance": "(..5923) 2024-10-04 11:04 KONTORI KOHVIK\\PARNU MNT 130\\TALLINN\\12915        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[25]"
@@ -1219,10 +1219,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "34.95",
+        "abs": "36.7",
         "currency": "EUR",
-        "raw": "-34.95",
-        "signed": "-34.95"
+        "raw": "-36.70",
+        "signed": "-36.7"
       },
       "booking_date": "2024-10-05",
       "counterparty": {
@@ -1232,8 +1232,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "80e1fabacdd26de4",
-      "remittance": "(..9786) 2024-10-04 20:38 PRISMA MUSTAMAE       \\PRISMA MUSTAMAKI          \\TALLINNVIRO  \\12918     ESTEST",
+      "record_id": "d5ce22467c0011b7",
+      "remittance": "(..5923) 2024-10-04 20:38 PRISMA MUSTAMAE       \\PRISMA MUSTAMAKI          \\TALLINNVIRO  \\12918     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[26]"
@@ -1245,10 +1245,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "27.27",
+        "abs": "29.88",
         "currency": "EUR",
-        "raw": "-27.27",
-        "signed": "-27.27"
+        "raw": "-29.88",
+        "signed": "-29.88"
       },
       "booking_date": "2024-10-05",
       "counterparty": {
@@ -1258,8 +1258,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "d97988c9dc178008",
-      "remittance": "(..9786) 2024-10-04 20:24 PRISMA MUSTAMAE       \\PRISMA MUSTAMAKI          \\TALLINNVIRO  \\12918     ESTEST",
+      "record_id": "2765d755f90bb2dd",
+      "remittance": "(..5923) 2024-10-04 20:24 PRISMA MUSTAMAE       \\PRISMA MUSTAMAKI          \\TALLINNVIRO  \\12918     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[27]"
@@ -1271,10 +1271,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "33.63",
+        "abs": "35.5",
         "currency": "EUR",
-        "raw": "-33.63",
-        "signed": "-33.63"
+        "raw": "-35.50",
+        "signed": "-35.5"
       },
       "booking_date": "2024-10-05",
       "counterparty": {
@@ -1284,8 +1284,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "a797d2122c6558a0",
-      "remittance": "(..9786) 2024-10-04 19:05 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
+      "record_id": "66d9df8a8f96fa18",
+      "remittance": "(..5923) 2024-10-04 19:05 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[28]"
@@ -1297,10 +1297,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "32.09",
+        "abs": "29.7",
         "currency": "EUR",
-        "raw": "-32.09",
-        "signed": "-32.09"
+        "raw": "-29.70",
+        "signed": "-29.7"
       },
       "booking_date": "2024-10-05",
       "counterparty": {
@@ -1310,8 +1310,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "eb68663c5e89c02b",
-      "remittance": "(..4271) 2024-10-04 18:15 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
+      "record_id": "0523bf3be36724e4",
+      "remittance": "(..8164) 2024-10-04 18:15 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[29]"
@@ -1323,10 +1323,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "5",
+        "abs": "5.35",
         "currency": "EUR",
-        "raw": "-5.00",
-        "signed": "-5"
+        "raw": "-5.35",
+        "signed": "-5.35"
       },
       "booking_date": "2024-10-06",
       "counterparty": {
@@ -1336,8 +1336,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "e51180532c979fe2",
-      "remittance": "(..4271) 2024-10-04 12:09 IT KOLLEDZ            \\RAJA TN 4                 \\HARJUMAA, TAL\\12616     ESTEST",
+      "record_id": "8fce0ea67ba3d841",
+      "remittance": "(..8164) 2024-10-04 12:09 IT KOLLEDZ            \\RAJA TN 4                 \\HARJUMAA, TAL\\12616     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[30]"
@@ -1349,10 +1349,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "10.81",
+        "abs": "11.77",
         "currency": "EUR",
-        "raw": "-10.81",
-        "signed": "-10.81"
+        "raw": "-11.77",
+        "signed": "-11.77"
       },
       "booking_date": "2024-10-06",
       "counterparty": {
@@ -1362,8 +1362,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "7ceb08b7c51808c4",
-      "remittance": "(..9786) 2024-10-05 17:52 EUGENIO S GASTRONOOMIA\\\\TALLINN      \\10412     ESTEST",
+      "record_id": "30339252b67c2954",
+      "remittance": "(..5923) 2024-10-05 17:52 EUGENIO S GASTRONOOMIA\\\\TALLINN      \\10412     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[31]"
@@ -1375,10 +1375,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "14.81",
+        "abs": "15.55",
         "currency": "EUR",
-        "raw": "-14.81",
-        "signed": "-14.81"
+        "raw": "-15.55",
+        "signed": "-15.55"
       },
       "booking_date": "2024-10-06",
       "counterparty": {
@@ -1388,8 +1388,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "7dde371c97684dbb",
-      "remittance": "(..9786) 2024-10-04 18:06 MERIMETSA SELVERI ISET\\PALDISKI MNT 56           \\TALLINN      \\10617     ESTEST",
+      "record_id": "db88a2b94120565e",
+      "remittance": "(..5923) 2024-10-04 18:06 MERIMETSA SELVERI ISET\\PALDISKI MNT 56           \\TALLINN      \\10617     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[32]"
@@ -1401,10 +1401,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "0.2",
+        "abs": "0.21",
         "currency": "EUR",
-        "raw": "-0.20",
-        "signed": "-0.2"
+        "raw": "-0.21",
+        "signed": "-0.21"
       },
       "booking_date": "2024-10-06",
       "counterparty": {
@@ -1414,8 +1414,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "348a7bd832a323e6",
-      "remittance": "(..9786) 2024-10-05 18:40 KADAKA SELVERI APTEEK \\KADAKA TEE 56A            \\HARJUMAA, TAL\\12915     ESTEST",
+      "record_id": "9314b0dae9f889f0",
+      "remittance": "(..5923) 2024-10-05 18:40 KADAKA SELVERI APTEEK \\PARNU MNT 132            \\HARJUMAA, TAL\\12915     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[33]"
@@ -1427,10 +1427,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "3.15",
+        "abs": "2.84",
         "currency": "EUR",
-        "raw": "-3.15",
-        "signed": "-3.15"
+        "raw": "-2.84",
+        "signed": "-2.84"
       },
       "booking_date": "2024-10-06",
       "counterparty": {
@@ -1440,8 +1440,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "4659e11964743c6c",
-      "remittance": "(..4271) 2024-10-05 14:14 REALKESKUS KPLS       \\Ehitajate tee 110E    \\TALLINN      \\13517     ESTEST",
+      "record_id": "7aa11f0180e7aa24",
+      "remittance": "(..8164) 2024-10-05 14:14 REALKESKUS KPLS       \\Ehitajate tee 110E    \\TALLINN      \\13517     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[34]"
@@ -1453,10 +1453,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "52.02",
+        "abs": "47.72",
         "currency": "EUR",
-        "raw": "-52.02",
-        "signed": "-52.02"
+        "raw": "-47.72",
+        "signed": "-47.72"
       },
       "booking_date": "2024-10-06",
       "counterparty": {
@@ -1466,8 +1466,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "6caa37504aeab871",
-      "remittance": "(..9786) 2024-10-05 18:37 KADAKA SELVERI ISETEEN\\KADAKA TEE 56A            \\TALLINN      \\12915     ESTEST",
+      "record_id": "2c69201ce08659a8",
+      "remittance": "(..5923) 2024-10-05 18:37 KADAKA SELVERI ISETEEN\\PARNU MNT 132            \\TALLINN      \\12915     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[35]"
@@ -1479,10 +1479,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "9.21",
+        "abs": "10.4",
         "currency": "EUR",
-        "raw": "-9.21",
-        "signed": "-9.21"
+        "raw": "-10.40",
+        "signed": "-10.4"
       },
       "booking_date": "2024-10-06",
       "counterparty": {
@@ -1492,8 +1492,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "fe93f20cac7ca078",
-      "remittance": "(..4271) 2024-10-05 14:31 Kadaka Selver         \\Partner app           \\Tallinn      \\11624     ESTEST",
+      "record_id": "83325256912e88e6",
+      "remittance": "(..8164) 2024-10-05 14:31 Kadaka Selver         \\Partner app           \\Tallinn      \\11624     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[36]"
@@ -1505,10 +1505,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "3.79",
+        "abs": "3.53",
         "currency": "EUR",
-        "raw": "-3.79",
-        "signed": "-3.79"
+        "raw": "-3.53",
+        "signed": "-3.53"
       },
       "booking_date": "2024-10-06",
       "counterparty": {
@@ -1518,8 +1518,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "93cee1169e7ff7e4",
-      "remittance": "(..9786) 2024-10-05 14:13 Maxima T291\\Tallinna 25\\Keila\\76608        EST",
+      "record_id": "3fb86dd4e43bf3b0",
+      "remittance": "(..5923) 2024-10-05 14:13 Maxima T291\\Tallinna 25\\Keila\\76608        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[37]"
@@ -1531,10 +1531,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "8.9",
+        "abs": "9.94",
         "currency": "EUR",
-        "raw": "-8.90",
-        "signed": "-8.9"
+        "raw": "-9.94",
+        "signed": "-9.94"
       },
       "booking_date": "2024-10-06",
       "counterparty": {
@@ -1544,8 +1544,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "3f014a657eede4d4",
-      "remittance": "(..4271) 2024-10-05 18:37 Kadaka Selver         \\Partner app           \\Tallinn      \\11624     ESTEST",
+      "record_id": "8a40c117e5302206",
+      "remittance": "(..8164) 2024-10-05 18:37 Kadaka Selver         \\Partner app           \\Tallinn      \\11624     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[38]"
@@ -1557,10 +1557,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "50",
+        "abs": "52.5",
         "currency": "EUR",
-        "raw": "-50.00",
-        "signed": "-50"
+        "raw": "-52.50",
+        "signed": "-52.5"
       },
       "booking_date": "2024-10-06",
       "counterparty": {
@@ -1570,7 +1570,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "12ba440d404a586a",
+      "record_id": "98a698422665ced3",
       "remittance": "Trampolino 12460",
       "source": {
         "input_file": "transactions_2.json",
@@ -1583,21 +1583,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "2",
+        "abs": "1.84",
         "currency": "EUR",
-        "raw": "-2.00",
-        "signed": "-2"
+        "raw": "-1.84",
+        "signed": "-1.84"
       },
       "booking_date": "2024-10-07",
       "counterparty": {
-        "iban": "EE207700771005384950",
-        "name": "Kaspar Mägi",
+        "iban": "EE637700771004718362",
+        "name": "Karl Paju",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "44cb8f278f21d02b",
-      "remittance": "Jasper NÄDALARAHA",
+      "record_id": "88241f429f428e39",
+      "remittance": "K NÄDALARAHA",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[40]"
@@ -1609,21 +1609,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "2",
+        "abs": "2.12",
         "currency": "EUR",
-        "raw": "-2.00",
-        "signed": "-2"
+        "raw": "-2.12",
+        "signed": "-2.12"
       },
       "booking_date": "2024-10-07",
       "counterparty": {
-        "iban": "EE577700771002384960",
-        "name": "Riku Mägi",
+        "iban": "EE897700771007461823",
+        "name": "Siim Paju",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "49cc0ed7418cd9b6",
-      "remittance": "Ruben NÄDALARAHA",
+      "record_id": "8b34c1c24dac4cb2",
+      "remittance": "S NÄDALARAHA",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[41]"
@@ -1635,10 +1635,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "15.89",
+        "abs": "16.91",
         "currency": "EUR",
-        "raw": "-15.89",
-        "signed": "-15.89"
+        "raw": "-16.91",
+        "signed": "-16.91"
       },
       "booking_date": "2024-10-07",
       "counterparty": {
@@ -1648,7 +1648,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "a4585836c42a35f8",
+      "record_id": "9fbe14ca776d62d5",
       "remittance": "KPG Kaubanduse OU, pood.magaziin.ee, 117404 (50451678)",
       "source": {
         "input_file": "transactions_2.json",
@@ -1661,10 +1661,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "20",
+        "abs": "22.59",
         "currency": "EUR",
-        "raw": "-20.00",
-        "signed": "-20"
+        "raw": "-22.59",
+        "signed": "-22.59"
       },
       "booking_date": "2024-10-07",
       "counterparty": {
@@ -1674,8 +1674,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "ad711825e64a7dec",
-      "remittance": "(..9786) 2024-10-06 15:07 ROCCA AL MARE KESKUSE \\PALDISKI MNT 102          \\HARJUMAA, TAL\\13522     ESTEST",
+      "record_id": "7ee9cf0cd31eaa6d",
+      "remittance": "(..5923) 2024-10-06 15:07 ROCCA AL MARE KESKUSE \\PALDISKI MNT 102          \\HARJUMAA, TAL\\13522     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[43]"
@@ -1687,10 +1687,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "72.78",
+        "abs": "81.44",
         "currency": "EUR",
-        "raw": "-72.78",
-        "signed": "-72.78"
+        "raw": "-81.44",
+        "signed": "-81.44"
       },
       "booking_date": "2024-10-08",
       "counterparty": {
@@ -1700,8 +1700,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "1aacae77aea4b032",
-      "remittance": "(..9786) 2024-10-06 14:53 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
+      "record_id": "e853b08d3efcfbe0",
+      "remittance": "(..5923) 2024-10-06 14:53 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[44]"
@@ -1713,10 +1713,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "5",
+        "abs": "5.3",
         "currency": "EUR",
-        "raw": "-5.00",
-        "signed": "-5"
+        "raw": "-5.30",
+        "signed": "-5.3"
       },
       "booking_date": "2024-10-08",
       "counterparty": {
@@ -1726,7 +1726,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "4ea7094810a3bf68",
+      "record_id": "8084d367d56840c4",
       "remittance": "Arve number 250260340",
       "source": {
         "input_file": "transactions_2.json",
@@ -1739,10 +1739,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "11.04",
+        "abs": "10.1",
         "currency": "EUR",
-        "raw": "-11.04",
-        "signed": "-11.04"
+        "raw": "-10.10",
+        "signed": "-10.1"
       },
       "booking_date": "2024-10-08",
       "counterparty": {
@@ -1752,8 +1752,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "67066e212400fae4",
-      "remittance": "(..4271) 2024-10-07 19:53 Marienthali Selver    \\Partner app           \\Tallinn      \\11624     ESTEST",
+      "record_id": "5a48704d41df0ea6",
+      "remittance": "(..8164) 2024-10-07 19:53 Marienthali Selver    \\Partner app           \\Tallinn      \\11624     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[46]"
@@ -1765,21 +1765,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "5.5",
+        "abs": "5.78",
         "currency": "EUR",
-        "raw": "-5.50",
-        "signed": "-5.5"
+        "raw": "-5.78",
+        "signed": "-5.78"
       },
       "booking_date": "2024-10-08",
       "counterparty": {
         "iban": null,
-        "name": "ELERINGI KOHVIK",
+        "name": "KONTORI KOHVIK",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "9864e68ea226e203",
-      "remittance": "(..9786) 2024-10-07 11:01 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+      "record_id": "196e61f69d93e12a",
+      "remittance": "(..5923) 2024-10-07 11:01 KONTORI KOHVIK\\PARNU MNT 130\\TALLINN\\12915        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[47]"
@@ -1791,10 +1791,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "38.16",
+        "abs": "35.07",
         "currency": "EUR",
-        "raw": "-38.16",
-        "signed": "-38.16"
+        "raw": "-35.07",
+        "signed": "-35.07"
       },
       "booking_date": "2024-10-08",
       "counterparty": {
@@ -1804,7 +1804,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "7417148343da0c3c",
+      "record_id": "d4834fe7e138bd5d",
       "remittance": "Makse iseteeninduses",
       "source": {
         "input_file": "transactions_2.json",
@@ -1817,10 +1817,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "83.06",
+        "abs": "93.99",
         "currency": "EUR",
-        "raw": "-83.06",
-        "signed": "-83.06"
+        "raw": "-93.99",
+        "signed": "-93.99"
       },
       "booking_date": "2024-10-08",
       "counterparty": {
@@ -1830,7 +1830,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "22aad5f834d383c0",
+      "record_id": "655203064a32f9ec",
       "remittance": "Makse /BLID/RVXLCVAFZ7QGP7X",
       "source": {
         "input_file": "transactions_2.json",
@@ -1843,10 +1843,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "31.69",
+        "abs": "29.08",
         "currency": "EUR",
-        "raw": "-31.69",
-        "signed": "-31.69"
+        "raw": "-29.08",
+        "signed": "-29.08"
       },
       "booking_date": "2024-10-08",
       "counterparty": {
@@ -1856,7 +1856,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "d97484cd6ed3cd5e",
+      "record_id": "d21230136022d44c",
       "remittance": "Konto: 8451025320",
       "source": {
         "input_file": "transactions_2.json",
@@ -1869,10 +1869,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "43.37",
+        "abs": "40.91",
         "currency": "EUR",
-        "raw": "-43.37",
-        "signed": "-43.37"
+        "raw": "-40.91",
+        "signed": "-40.91"
       },
       "booking_date": "2024-10-08",
       "counterparty": {
@@ -1882,7 +1882,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "cd3c3bf618e8d539",
+      "record_id": "f53152e424468119",
       "remittance": "alexela.ee/EE, st837263, itk:092024054539",
       "source": {
         "input_file": "transactions_2.json",
@@ -1895,10 +1895,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "77.51",
+        "abs": "66.75",
         "currency": "EUR",
-        "raw": "-77.51",
-        "signed": "-77.51"
+        "raw": "-66.75",
+        "signed": "-66.75"
       },
       "booking_date": "2024-10-08",
       "counterparty": {
@@ -1908,7 +1908,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "93b9e4db7057a6dd",
+      "record_id": "338d4e7309b032d3",
       "remittance": "Arve: 560795565919",
       "source": {
         "input_file": "transactions_2.json",
@@ -1921,10 +1921,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "8.76",
+        "abs": "7.72",
         "currency": "EUR",
-        "raw": "-8.76",
-        "signed": "-8.76"
+        "raw": "-7.72",
+        "signed": "-7.72"
       },
       "booking_date": "2024-10-08",
       "counterparty": {
@@ -1934,7 +1934,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "4dbd2cb4addbb7ca",
+      "record_id": "a5bda875791954cf",
       "remittance": "TLNO24310728",
       "source": {
         "input_file": "transactions_2.json",
@@ -1947,10 +1947,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "3.6",
+        "abs": "3.12",
         "currency": "EUR",
-        "raw": "-3.60",
-        "signed": "-3.6"
+        "raw": "-3.12",
+        "signed": "-3.12"
       },
       "booking_date": "2024-10-09",
       "counterparty": {
@@ -1960,8 +1960,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "91b93f3008ae35cf",
-      "remittance": "(..4271) 2024-10-08 12:42 NARVA KOHVIK          \\Narva mnt 10          \\TALLINN      \\10124     ESTEST",
+      "record_id": "ea54993c5e2faf48",
+      "remittance": "(..8164) 2024-10-08 12:42 NARVA KOHVIK          \\Narva mnt 10          \\TALLINN      \\10124     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[54]"
@@ -1973,10 +1973,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "64.95",
+        "abs": "73.14",
         "currency": "EUR",
-        "raw": "-64.95",
-        "signed": "-64.95"
+        "raw": "-73.14",
+        "signed": "-73.14"
       },
       "booking_date": "2024-10-10",
       "counterparty": {
@@ -1986,8 +1986,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "acf33411ac733bf6",
-      "remittance": "(..4271) 2024-10-09 17:00 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
+      "record_id": "a02797afb61d9dec",
+      "remittance": "(..8164) 2024-10-09 17:00 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[55]"
@@ -1999,10 +1999,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "10.95",
+        "abs": "9.34",
         "currency": "EUR",
-        "raw": "-10.95",
-        "signed": "-10.95"
+        "raw": "-9.34",
+        "signed": "-9.34"
       },
       "booking_date": "2024-10-10",
       "counterparty": {
@@ -2012,8 +2012,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "14bfd147fa81dc7d",
-      "remittance": "(..4271) 2024-10-09 17:10 7-CHARLOT ROCCA       \\Paldiski mnt 102      \\TALLINN      \\13522     ESTEST",
+      "record_id": "7606d0ce08f4e7a6",
+      "remittance": "(..8164) 2024-10-09 17:10 7-CHARLOT ROCCA       \\Paldiski mnt 102      \\TALLINN      \\13522     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[56]"
@@ -2025,21 +2025,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "5.7",
+        "abs": "5.99",
         "currency": "EUR",
-        "raw": "-5.70",
-        "signed": "-5.7"
+        "raw": "-5.99",
+        "signed": "-5.99"
       },
       "booking_date": "2024-10-10",
       "counterparty": {
         "iban": null,
-        "name": "ELERINGI KOHVIK",
+        "name": "KONTORI KOHVIK",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "1fc924f8f8b8bf82",
-      "remittance": "(..9786) 2024-10-09 11:07 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+      "record_id": "d93099b3f2c00356",
+      "remittance": "(..5923) 2024-10-09 11:07 KONTORI KOHVIK\\PARNU MNT 130\\TALLINN\\12915        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[57]"
@@ -2051,10 +2051,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "1",
+        "abs": "1.06",
         "currency": "EUR",
-        "raw": "-1.00",
-        "signed": "-1"
+        "raw": "-1.06",
+        "signed": "-1.06"
       },
       "booking_date": "2024-10-10",
       "counterparty": {
@@ -2070,8 +2070,8 @@
           "severity": "INFO"
         }
       ],
-      "record_id": "bf32e1f516548200",
-      "remittance": "Kaardi (..9786) kuutasu 09-2024",
+      "record_id": "d2e84481003b39a2",
+      "remittance": "Kaardi (..5923) kuutasu 09-2024",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[58]"
@@ -2083,10 +2083,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "1",
+        "abs": "1.07",
         "currency": "EUR",
-        "raw": "-1.00",
-        "signed": "-1"
+        "raw": "-1.07",
+        "signed": "-1.07"
       },
       "booking_date": "2024-10-10",
       "counterparty": {
@@ -2102,8 +2102,8 @@
           "severity": "INFO"
         }
       ],
-      "record_id": "a8dc6957ffb57543",
-      "remittance": "Kaardi (..4271) kuutasu 09-2024",
+      "record_id": "6a7c162173f15393",
+      "remittance": "Kaardi (..8164) kuutasu 09-2024",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[59]"
@@ -2115,21 +2115,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "4.5",
+        "abs": "4.73",
         "currency": "EUR",
-        "raw": "-4.50",
-        "signed": "-4.5"
+        "raw": "-4.73",
+        "signed": "-4.73"
       },
       "booking_date": "2024-10-11",
       "counterparty": {
         "iban": null,
-        "name": "ELERINGI KOHVIK",
+        "name": "KONTORI KOHVIK",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "5bf0d1a0e056d7f5",
-      "remittance": "(..9786) 2024-10-10 12:15 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+      "record_id": "162cee7ebda1994c",
+      "remittance": "(..5923) 2024-10-10 12:15 KONTORI KOHVIK\\PARNU MNT 130\\TALLINN\\12915        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[60]"
@@ -2141,10 +2141,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "6",
+        "abs": "6.33",
         "currency": "EUR",
-        "raw": "-6.00",
-        "signed": "-6"
+        "raw": "-6.33",
+        "signed": "-6.33"
       },
       "booking_date": "2024-10-12",
       "counterparty": {
@@ -2154,8 +2154,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "c3b942ec45dbeda8",
-      "remittance": "(..9786) 2024-10-11 19:35 TERAS BEACH TALLINN   \\\\TALLINN      \\13521     ESTEST",
+      "record_id": "48bcd5439106ab9f",
+      "remittance": "(..5923) 2024-10-11 19:35 TERAS BEACH TALLINN   \\\\TALLINN      \\13521     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[61]"
@@ -2167,10 +2167,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "17.28",
+        "abs": "18.14",
         "currency": "EUR",
-        "raw": "-17.28",
-        "signed": "-17.28"
+        "raw": "-18.14",
+        "signed": "-18.14"
       },
       "booking_date": "2024-10-12",
       "counterparty": {
@@ -2180,8 +2180,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "ed621dc7b8a60513",
-      "remittance": "(..4271) 2024-10-11 13:32 BOLT.EU/D/2410111052\\Vana-Louna\\Tallinn\\10134     ESTEST",
+      "record_id": "151b20424f225344",
+      "remittance": "(..8164) 2024-10-11 13:32 BOLT.EU/D/2410111052\\Vana-Louna\\Tallinn\\10134     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[62]"
@@ -2193,10 +2193,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "22.06",
+        "abs": "24.78",
         "currency": "EUR",
-        "raw": "-22.06",
-        "signed": "-22.06"
+        "raw": "-24.78",
+        "signed": "-24.78"
       },
       "booking_date": "2024-10-12",
       "counterparty": {
@@ -2206,8 +2206,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "adbfc3c2b6dc29b5",
-      "remittance": "(..9786) 2024-10-11 20:27 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
+      "record_id": "2d590b171ad5b4dd",
+      "remittance": "(..5923) 2024-10-11 20:27 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[63]"
@@ -2219,10 +2219,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "125",
+        "abs": "118.75",
         "currency": "EUR",
-        "raw": "-125.00",
-        "signed": "-125"
+        "raw": "-118.75",
+        "signed": "-118.75"
       },
       "booking_date": "2024-10-12",
       "counterparty": {
@@ -2232,8 +2232,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "f473db33eaedead9",
-      "remittance": "Sularaha välja: (..4271) 2024-10-12 17:54:08 WLE00631 Kopli 1         >Tallinn     EE",
+      "record_id": "52b59a315368f2d2",
+      "remittance": "Sularaha välja: (..8164) 2024-10-12 17:54:08 WLE00631 Kopli 1         >Tallinn     EE",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[64]"
@@ -2245,10 +2245,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "27.39",
+        "abs": "26.02",
         "currency": "EUR",
-        "raw": "-27.39",
-        "signed": "-27.39"
+        "raw": "-26.02",
+        "signed": "-26.02"
       },
       "booking_date": "2024-10-13",
       "counterparty": {
@@ -2258,8 +2258,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "b6f9f6f78447dcb1",
-      "remittance": "(..9786) 2024-10-12 16:05 BOLT.EU/D/2410121335\\Vana-Louna\\Tallinn\\10134     ESTEST",
+      "record_id": "1d56be1b36fc6f22",
+      "remittance": "(..5923) 2024-10-12 16:05 BOLT.EU/D/2410121335\\Vana-Louna\\Tallinn\\10134     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[65]"
@@ -2271,10 +2271,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "10",
+        "abs": "9.2",
         "currency": "EUR",
-        "raw": "-10.00",
-        "signed": "-10"
+        "raw": "-9.20",
+        "signed": "-9.2"
       },
       "booking_date": "2024-10-13",
       "counterparty": {
@@ -2284,8 +2284,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "7f243e9be62c7dcf",
-      "remittance": "(..4271) 2024-10-12 12:31 POSITRON              \\Pirita tee 28         \\TALLINN      \\12011     ESTEST",
+      "record_id": "c815f2e2dcbf40d6",
+      "remittance": "(..8164) 2024-10-12 12:31 POSITRON              \\Pirita tee 28         \\TALLINN      \\12011     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[66]"
@@ -2297,10 +2297,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "25",
+        "abs": "26.25",
         "currency": "EUR",
-        "raw": "-25.00",
-        "signed": "-25"
+        "raw": "-26.25",
+        "signed": "-26.25"
       },
       "booking_date": "2024-10-13",
       "counterparty": {
@@ -2310,8 +2310,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "b0bfd285a8774725",
-      "remittance": "(..4271) 2024-10-12 11:24 ULEMISTE KESKUS INFOLA\\SUUR-SOJAMAE 4\\TALLINN\\11415        EST",
+      "record_id": "f20b24974e8cefeb",
+      "remittance": "(..8164) 2024-10-12 11:24 ULEMISTE KESKUS INFOLA\\SUUR-SOJAMAE 4\\TALLINN\\11415        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[67]"
@@ -2323,10 +2323,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "0.74",
+        "abs": "0.78",
         "currency": "EUR",
-        "raw": "-0.74",
-        "signed": "-0.74"
+        "raw": "-0.78",
+        "signed": "-0.78"
       },
       "booking_date": "2024-10-13",
       "counterparty": {
@@ -2336,8 +2336,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "b6709180190bc7ac",
-      "remittance": "(..4271) 2024-10-12 11:30 KODUEKSTRA ULEMISTE\\SUUR-SOJAMAE 4\\TALLINN\\11415        EST",
+      "record_id": "ad8b77cd1f1c696b",
+      "remittance": "(..8164) 2024-10-12 11:30 KODUEKSTRA ULEMISTE\\SUUR-SOJAMAE 4\\TALLINN\\11415        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[68]"
@@ -2349,21 +2349,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "2",
+        "abs": "1.9",
         "currency": "EUR",
-        "raw": "-2.00",
-        "signed": "-2"
+        "raw": "-1.90",
+        "signed": "-1.9"
       },
       "booking_date": "2024-10-14",
       "counterparty": {
-        "iban": "EE207700771005384950",
-        "name": "Kaspar Mägi",
+        "iban": "EE637700771004718362",
+        "name": "Karl Paju",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "20cb1a3ead25f38d",
-      "remittance": "Jasper NÄDALARAHA",
+      "record_id": "ffa47f2866adf3ef",
+      "remittance": "K NÄDALARAHA",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[69]"
@@ -2375,21 +2375,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "2",
+        "abs": "2.1",
         "currency": "EUR",
-        "raw": "-2.00",
-        "signed": "-2"
+        "raw": "-2.10",
+        "signed": "-2.1"
       },
       "booking_date": "2024-10-14",
       "counterparty": {
-        "iban": "EE577700771002384960",
-        "name": "Riku Mägi",
+        "iban": "EE897700771007461823",
+        "name": "Siim Paju",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "39d4a0eed3e1ba01",
-      "remittance": "Ruben NÄDALARAHA",
+      "record_id": "3e3e7a0ac2d0829c",
+      "remittance": "S NÄDALARAHA",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[70]"
@@ -2401,10 +2401,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "0.49",
+        "abs": "0.43",
         "currency": "EUR",
-        "raw": "-0.49",
-        "signed": "-0.49"
+        "raw": "-0.43",
+        "signed": "-0.43"
       },
       "booking_date": "2024-10-14",
       "counterparty": {
@@ -2414,8 +2414,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "15ad3408d1fcc6aa",
-      "remittance": "(..9786) 2024-10-12 19:34 pargi.ee              \\\\Tallinn      \\15033     ESTEST",
+      "record_id": "e8a2f775b48369a2",
+      "remittance": "(..5923) 2024-10-12 19:34 pargi.ee              \\\\Tallinn      \\15033     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[71]"
@@ -2427,10 +2427,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "8",
+        "abs": "9.18",
         "currency": "EUR",
-        "raw": "-8.00",
-        "signed": "-8"
+        "raw": "-9.18",
+        "signed": "-9.18"
       },
       "booking_date": "2024-10-14",
       "counterparty": {
@@ -2440,8 +2440,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "b6878931d7c20d32",
-      "remittance": "(..9786) 2024-10-12 19:34 pargi.ee              \\\\Tallinn      \\15033     ESTEST",
+      "record_id": "e561ae2761acffd2",
+      "remittance": "(..5923) 2024-10-12 19:34 pargi.ee              \\\\Tallinn      \\15033     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[72]"
@@ -2453,10 +2453,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "5.73",
+        "abs": "6.02",
         "currency": "EUR",
-        "raw": "-5.73",
-        "signed": "-5.73"
+        "raw": "-6.02",
+        "signed": "-6.02"
       },
       "booking_date": "2024-10-15",
       "counterparty": {
@@ -2466,8 +2466,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "08076c94be9cb67b",
-      "remittance": "(..4271) 2024-10-14 18:58 epood.grano.ee-pood   \\\\Tallinn      \\10143     ESTEST",
+      "record_id": "b121a26372fcd829",
+      "remittance": "(..8164) 2024-10-14 18:58 epood.grano.ee-pood   \\\\Tallinn      \\10143     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[73]"
@@ -2479,10 +2479,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "18.48",
+        "abs": "21.14",
         "currency": "EUR",
-        "raw": "-18.48",
-        "signed": "-18.48"
+        "raw": "-21.14",
+        "signed": "-21.14"
       },
       "booking_date": "2024-10-15",
       "counterparty": {
@@ -2492,8 +2492,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "205cf8aa713d8349",
-      "remittance": "(..9786) 2024-10-14 05:42 Sudameapteek Lennujaam\\Tartu mnt. 101\\TALLINN\\10112        EST",
+      "record_id": "2d59181c7b74d9f6",
+      "remittance": "(..5923) 2024-10-14 05:42 Sudameapteek Lennujaam\\Tartu mnt. 101\\TALLINN\\10112        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[74]"
@@ -2505,10 +2505,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "5.9",
+        "abs": "6.52",
         "currency": "EUR",
-        "raw": "-5.90",
-        "signed": "-5.9"
+        "raw": "-6.52",
+        "signed": "-6.52"
       },
       "booking_date": "2024-10-16",
       "counterparty": {
@@ -2518,8 +2518,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "dd9c69dfb7f4a20c",
-      "remittance": "(..9786) 2024-10-14 08:44 Heberer FFM Flgh Squa\\Ebene3 West  5180302\\Frankfurt am\\60549        DEU",
+      "record_id": "ab4041101add4bed",
+      "remittance": "(..5923) 2024-10-14 08:44 Heberer FFM Flgh Squa\\Ebene3 West  5180302\\Frankfurt am\\60549        DEU",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[75]"
@@ -2531,10 +2531,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "3.5",
+        "abs": "3.23",
         "currency": "EUR",
-        "raw": "-3.50",
-        "signed": "-3.5"
+        "raw": "-3.23",
+        "signed": "-3.23"
       },
       "booking_date": "2024-10-16",
       "counterparty": {
@@ -2544,8 +2544,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "57bc7692bcaff7ec",
-      "remittance": "(..9786) 2024-10-15 17:08 DB Automaten\\Bonnstr\\K?ln\\50858        DEU",
+      "record_id": "2c01518dc42b0592",
+      "remittance": "(..5923) 2024-10-15 17:08 DB Automaten\\Bonnstr\\K?ln\\50858        DEU",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[76]"
@@ -2557,10 +2557,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "3.66",
+        "abs": "4.1",
         "currency": "EUR",
-        "raw": "-3.66",
-        "signed": "-3.66"
+        "raw": "-4.10",
+        "signed": "-4.1"
       },
       "booking_date": "2024-10-16",
       "counterparty": {
@@ -2570,8 +2570,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "dd8cd132c86d5698",
-      "remittance": "(..9786) 2024-10-15 08:31 Lindner City Plaza    \\Magnusstrasse 20                             \\Koeln        \\50672     DEUDEU",
+      "record_id": "ea7cac4582115d44",
+      "remittance": "(..5923) 2024-10-15 08:31 Lindner City Plaza    \\Magnusstrasse 20                             \\Koeln        \\50672     DEUDEU",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[77]"
@@ -2583,10 +2583,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "9.95",
+        "abs": "11.41",
         "currency": "EUR",
-        "raw": "-9.95",
-        "signed": "-9.95"
+        "raw": "-11.41",
+        "signed": "-11.41"
       },
       "booking_date": "2024-10-16",
       "counterparty": {
@@ -2596,8 +2596,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "a68fe7326bbea32c",
-      "remittance": "(..9786) 2024-10-15 20:11 MEYER FEINKOST GMBH   \\FLUGHAFEN FRANKFURT                          \\Frankfurt    \\60594     DEUDEU",
+      "record_id": "758813efc63b7726",
+      "remittance": "(..5923) 2024-10-15 20:11 MEYER FEINKOST GMBH   \\FLUGHAFEN FRANKFURT                          \\Frankfurt    \\60594     DEUDEU",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[78]"
@@ -2609,10 +2609,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "8.47",
+        "abs": "9.26",
         "currency": "EUR",
-        "raw": "-8.47",
-        "signed": "-8.47"
+        "raw": "-9.26",
+        "signed": "-9.26"
       },
       "booking_date": "2024-10-16",
       "counterparty": {
@@ -2622,8 +2622,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "fad6ef2445fe66b0",
-      "remittance": "(..4271) 2024-10-13 17:53 Maxima T282\\Parnu mnt 390b\\TALLINN\\11612        EST",
+      "record_id": "f2a65b0f22957252",
+      "remittance": "(..8164) 2024-10-13 17:53 Maxima T282\\Parnu mnt 390b\\TALLINN\\11612        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[79]"
@@ -2635,21 +2635,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "5.5",
+        "abs": "5.22",
         "currency": "EUR",
-        "raw": "-5.50",
-        "signed": "-5.5"
+        "raw": "-5.22",
+        "signed": "-5.22"
       },
       "booking_date": "2024-10-17",
       "counterparty": {
         "iban": null,
-        "name": "ELERINGI KOHVIK",
+        "name": "KONTORI KOHVIK",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "2695d197c182171c",
-      "remittance": "(..9786) 2024-10-16 10:58 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+      "record_id": "ec0bc10ae1cd0e30",
+      "remittance": "(..5923) 2024-10-16 10:58 KONTORI KOHVIK\\PARNU MNT 130\\TALLINN\\12915        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[80]"
@@ -2661,10 +2661,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "8",
+        "abs": "7.36",
         "currency": "EUR",
-        "raw": "-8.00",
-        "signed": "-8"
+        "raw": "-7.36",
+        "signed": "-7.36"
       },
       "booking_date": "2024-10-18",
       "counterparty": {
@@ -2674,8 +2674,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "dda7246106b97d37",
-      "remittance": "(..4271) 2024-10-17 11:44 SUSHI PLAZA           \\Narva mnt 6-M50       \\TALLINN      \\10117     ESTEST",
+      "record_id": "5e51e356a92f7193",
+      "remittance": "(..8164) 2024-10-17 11:44 SUSHI PLAZA           \\Narva mnt 6-M50       \\TALLINN      \\10117     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[81]"
@@ -2687,21 +2687,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "6.7",
+        "abs": "7.15",
         "currency": "EUR",
-        "raw": "-6.70",
-        "signed": "-6.7"
+        "raw": "-7.15",
+        "signed": "-7.15"
       },
       "booking_date": "2024-10-18",
       "counterparty": {
         "iban": null,
-        "name": "ELERINGI KOHVIK",
+        "name": "KONTORI KOHVIK",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "f118f95c6214481b",
-      "remittance": "(..9786) 2024-10-17 11:31 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+      "record_id": "39301e8fcae7ce2b",
+      "remittance": "(..5923) 2024-10-17 11:31 KONTORI KOHVIK\\PARNU MNT 130\\TALLINN\\12915        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[82]"
@@ -2713,10 +2713,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "63.46",
+        "abs": "60.29",
         "currency": "EUR",
-        "raw": "-63.46",
-        "signed": "-63.46"
+        "raw": "-60.29",
+        "signed": "-60.29"
       },
       "booking_date": "2024-10-18",
       "counterparty": {
@@ -2726,8 +2726,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "caba9a54847730d0",
-      "remittance": "(..9786) 2024-10-17 17:17 MERIMETSA SELVERI ISET\\PALDISKI MNT 56           \\TALLINN      \\10617     ESTEST",
+      "record_id": "4ec059aacc873ba9",
+      "remittance": "(..5923) 2024-10-17 17:17 MERIMETSA SELVERI ISET\\PALDISKI MNT 56           \\TALLINN      \\10617     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[83]"
@@ -2739,10 +2739,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "3.3",
+        "abs": "3.13",
         "currency": "EUR",
-        "raw": "-3.30",
-        "signed": "-3.3"
+        "raw": "-3.13",
+        "signed": "-3.13"
       },
       "booking_date": "2024-10-18",
       "counterparty": {
@@ -2752,8 +2752,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "d38775539056c870",
-      "remittance": "(..4271) 2024-10-17 08:45 KOHVIPAUS             \\NARVA MNT 7               \\TALLINN      \\10117     ESTEST",
+      "record_id": "183ae12c9a7e6136",
+      "remittance": "(..8164) 2024-10-17 08:45 KOHVIPAUS             \\NARVA MNT 7               \\TALLINN      \\10117     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[84]"
@@ -2765,21 +2765,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "7.8",
+        "abs": "8.19",
         "currency": "EUR",
-        "raw": "-7.80",
-        "signed": "-7.8"
+        "raw": "-8.19",
+        "signed": "-8.19"
       },
       "booking_date": "2024-10-19",
       "counterparty": {
         "iban": null,
-        "name": "ELERINGI KOHVIK",
+        "name": "KONTORI KOHVIK",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "687d64ea0df6f5e6",
-      "remittance": "(..9786) 2024-10-18 11:02 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+      "record_id": "e609025cbcc9a73b",
+      "remittance": "(..5923) 2024-10-18 11:02 KONTORI KOHVIK\\PARNU MNT 130\\TALLINN\\12915        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[85]"
@@ -2791,10 +2791,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "10",
+        "abs": "11.44",
         "currency": "EUR",
-        "raw": "-10.00",
-        "signed": "-10"
+        "raw": "-11.44",
+        "signed": "-11.44"
       },
       "booking_date": "2024-10-20",
       "counterparty": {
@@ -2804,8 +2804,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "f6957aa6181c3cc0",
-      "remittance": "(..4271) 2024-10-18 11:52 IT KOLLEDZ            \\RAJA TN 4                 \\HARJUMAA, TAL\\12616     ESTEST",
+      "record_id": "448f74d71bdc2117",
+      "remittance": "(..8164) 2024-10-18 11:52 IT KOLLEDZ            \\RAJA TN 4                 \\HARJUMAA, TAL\\12616     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[86]"
@@ -2817,10 +2817,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "32.81",
+        "abs": "31.03",
         "currency": "EUR",
-        "raw": "-32.81",
-        "signed": "-32.81"
+        "raw": "-31.03",
+        "signed": "-31.03"
       },
       "booking_date": "2024-10-20",
       "counterparty": {
@@ -2830,8 +2830,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "cdfaa564450fd0ef",
-      "remittance": "(..9786) 2024-10-19 13:20 KADAKA SELVERI ISETEEN\\KADAKA TEE 56A            \\TALLINN      \\12915     ESTEST",
+      "record_id": "4ff053d74f345592",
+      "remittance": "(..5923) 2024-10-19 13:20 KADAKA SELVERI ISETEEN\\PARNU MNT 132            \\TALLINN      \\12915     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[87]"
@@ -2843,10 +2843,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "51.71",
+        "abs": "46.67",
         "currency": "EUR",
-        "raw": "-51.71",
-        "signed": "-51.71"
+        "raw": "-46.67",
+        "signed": "-46.67"
       },
       "booking_date": "2024-10-20",
       "counterparty": {
@@ -2856,8 +2856,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "2ed35ceaeb398229",
-      "remittance": "(..9786) 2024-10-19 13:25 NESTE KADAKA          \\KADAKA TEE 60             \\TALLINN      \\12915     ESTEST",
+      "record_id": "d241436e327bf3de",
+      "remittance": "(..5923) 2024-10-19 13:25 NESTE KADAKA          \\KADAKA TEE 60             \\TALLINN      \\12915     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[88]"
@@ -2869,21 +2869,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "2",
+        "abs": "1.8",
         "currency": "EUR",
-        "raw": "-2.00",
-        "signed": "-2"
+        "raw": "-1.80",
+        "signed": "-1.8"
       },
       "booking_date": "2024-10-21",
       "counterparty": {
-        "iban": "EE207700771005384950",
-        "name": "Kaspar Mägi",
+        "iban": "EE637700771004718362",
+        "name": "Karl Paju",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "7f73bca8ede72486",
-      "remittance": "Jasper NÄDALARAHA",
+      "record_id": "7d5f5e8f0b58b6d9",
+      "remittance": "K NÄDALARAHA",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[89]"
@@ -2895,21 +2895,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "2",
+        "abs": "1.9",
         "currency": "EUR",
-        "raw": "-2.00",
-        "signed": "-2"
+        "raw": "-1.90",
+        "signed": "-1.9"
       },
       "booking_date": "2024-10-21",
       "counterparty": {
-        "iban": "EE577700771002384960",
-        "name": "Riku Mägi",
+        "iban": "EE897700771007461823",
+        "name": "Siim Paju",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "91f0fe95351cc4d4",
-      "remittance": "Ruben NÄDALARAHA",
+      "record_id": "2b84b941276afe4f",
+      "remittance": "S NÄDALARAHA",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[90]"
@@ -2921,10 +2921,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "40",
+        "abs": "34.91",
         "currency": "EUR",
-        "raw": "-40.00",
-        "signed": "-40"
+        "raw": "-34.91",
+        "signed": "-34.91"
       },
       "booking_date": "2024-10-22",
       "counterparty": {
@@ -2934,8 +2934,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "6b1d44bb38f1bf78",
-      "remittance": "(..9786) 2024-10-21 09:44 LAANEVARAV 3          \\\\TALLINN      \\13522     ESTEST",
+      "record_id": "e24eb4fe01e99e26",
+      "remittance": "(..5923) 2024-10-21 09:44 LAANEVARAV 3          \\\\TALLINN      \\13522     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[91]"
@@ -2947,10 +2947,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "4.55",
+        "abs": "4.85",
         "currency": "EUR",
-        "raw": "-4.55",
-        "signed": "-4.55"
+        "raw": "-4.85",
+        "signed": "-4.85"
       },
       "booking_date": "2024-10-22",
       "counterparty": {
@@ -2960,8 +2960,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "707bba0aef8eee9b",
-      "remittance": "(..9786) 2024-10-21 17:02 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
+      "record_id": "48ba0a37620c17ad",
+      "remittance": "(..5923) 2024-10-21 17:02 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[92]"
@@ -2973,21 +2973,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "5.5",
+        "abs": "5.04",
         "currency": "EUR",
-        "raw": "-5.50",
-        "signed": "-5.5"
+        "raw": "-5.04",
+        "signed": "-5.04"
       },
       "booking_date": "2024-10-22",
       "counterparty": {
         "iban": null,
-        "name": "ELERINGI KOHVIK",
+        "name": "KONTORI KOHVIK",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "5755c478efe94fac",
-      "remittance": "(..9786) 2024-10-21 11:04 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+      "record_id": "b3efb929196bb308",
+      "remittance": "(..5923) 2024-10-21 11:04 KONTORI KOHVIK\\PARNU MNT 130\\TALLINN\\12915        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[93]"
@@ -2999,10 +2999,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "3.99",
+        "abs": "3.79",
         "currency": "EUR",
-        "raw": "-3.99",
-        "signed": "-3.99"
+        "raw": "-3.79",
+        "signed": "-3.79"
       },
       "booking_date": "2024-10-22",
       "counterparty": {
@@ -3012,8 +3012,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "07c47b1fec67ed19",
-      "remittance": "(..4271) 2024-10-22 03:08 Google Payment IE LTD\\Sir John Rogerson's Quay\\Dublin\\2         IRLIRL",
+      "record_id": "56ac4c3aa8afc6de",
+      "remittance": "(..8164) 2024-10-22 03:08 Google Payment IE LTD\\Sir John Rogerson's Quay\\Dublin\\2         IRLIRL",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[94]"
@@ -3025,10 +3025,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "6",
+        "abs": "6.3",
         "currency": "EUR",
-        "raw": "-6.00",
-        "signed": "-6"
+        "raw": "-6.30",
+        "signed": "-6.3"
       },
       "booking_date": "2024-10-22",
       "counterparty": {
@@ -3038,8 +3038,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "17f3eeca1ea9ebe3",
-      "remittance": "(..4271) 2024-10-21 10:23 RAVALA PARKIMISMAJA   \\RAVALA PST.5              \\TALLINN      \\10143     ESTEST",
+      "record_id": "2fe03dea6a22df64",
+      "remittance": "(..8164) 2024-10-21 10:23 RAVALA PARKIMISMAJA   \\RAVALA PST.5              \\TALLINN      \\10143     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[95]"
@@ -3051,10 +3051,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "28.21",
+        "abs": "26.74",
         "currency": "EUR",
-        "raw": "-28.21",
-        "signed": "-28.21"
+        "raw": "-26.74",
+        "signed": "-26.74"
       },
       "booking_date": "2024-10-22",
       "counterparty": {
@@ -3064,7 +3064,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "645d2d1d92fdb7e0",
+      "record_id": "05d5b88451ef0d70",
       "remittance": "MADARACOSMETICS.COM/LV, st, EE000066703",
       "source": {
         "input_file": "transactions_2.json",
@@ -3077,20 +3077,20 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "300",
+        "abs": "267.79",
         "currency": "EUR",
-        "raw": "300.00",
-        "signed": "300"
+        "raw": "267.79",
+        "signed": "267.79"
       },
       "booking_date": "2024-10-23",
       "counterparty": {
-        "iban": "EE387700771001449271",
-        "name": "Ana Tamm",
+        "iban": "EE517700771002836491",
+        "name": "Tiiu Lepp",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "b111718992eeb5eb",
+      "record_id": "9eb56e2df74a8228",
       "remittance": "Oktoober",
       "source": {
         "input_file": "transactions_2.json",
@@ -3103,10 +3103,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "210",
+        "abs": "231.09",
         "currency": "EUR",
-        "raw": "-210.00",
-        "signed": "-210"
+        "raw": "-231.09",
+        "signed": "-231.09"
       },
       "booking_date": "2024-10-23",
       "counterparty": {
@@ -3116,7 +3116,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "44fa991248b79205",
+      "record_id": "fe1f6ce49ce1825f",
       "remittance": "salong",
       "source": {
         "input_file": "transactions_2.json",
@@ -3129,10 +3129,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "7.9",
+        "abs": "8.4",
         "currency": "EUR",
-        "raw": "-7.90",
-        "signed": "-7.9"
+        "raw": "-8.40",
+        "signed": "-8.4"
       },
       "booking_date": "2024-10-23",
       "counterparty": {
@@ -3142,8 +3142,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "83fd7c2a2ecb55e3",
-      "remittance": "(..4271) 2024-10-22 12:38 R-14                  \\ROTERMANNI 14             \\HARJUMAA, TAL\\10111     ESTEST",
+      "record_id": "bfec07f15e7f9d30",
+      "remittance": "(..8164) 2024-10-22 12:38 R-14                  \\ROTERMANNI 14             \\HARJUMAA, TAL\\10111     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[99]"
@@ -3155,10 +3155,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "6.55",
+        "abs": "6.94",
         "currency": "EUR",
-        "raw": "-6.55",
-        "signed": "-6.55"
+        "raw": "-6.94",
+        "signed": "-6.94"
       },
       "booking_date": "2024-10-24",
       "counterparty": {
@@ -3168,8 +3168,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "20c13bd23713a257",
-      "remittance": "(..9786) 2024-10-23 17:17 MARIENTHALI SELVERI IS\\MUSTAMAE TEE 16           \\TALLINN      \\10617     ESTEST",
+      "record_id": "8a733736e5f4e93e",
+      "remittance": "(..5923) 2024-10-23 17:17 MARIENTHALI SELVERI IS\\TONISMAGI 8           \\TALLINN      \\10617     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[100]"
@@ -3181,10 +3181,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "6.97",
+        "abs": "7.52",
         "currency": "EUR",
-        "raw": "-6.97",
-        "signed": "-6.97"
+        "raw": "-7.52",
+        "signed": "-7.52"
       },
       "booking_date": "2024-10-24",
       "counterparty": {
@@ -3194,8 +3194,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "5f7294aed2900bc7",
-      "remittance": "(..4271) 2024-10-23 19:26 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
+      "record_id": "7187ac0db1728a03",
+      "remittance": "(..8164) 2024-10-23 19:26 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[101]"
@@ -3207,21 +3207,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "6.7",
+        "abs": "6.24",
         "currency": "EUR",
-        "raw": "-6.70",
-        "signed": "-6.7"
+        "raw": "-6.24",
+        "signed": "-6.24"
       },
       "booking_date": "2024-10-24",
       "counterparty": {
         "iban": null,
-        "name": "ELERINGI KOHVIK",
+        "name": "KONTORI KOHVIK",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "028c65941e6f00c8",
-      "remittance": "(..9786) 2024-10-23 11:01 ELERINGI KOHVIK\\KADAKA TEE 42\\TALLINN\\12915        EST",
+      "record_id": "5b056febaf924185",
+      "remittance": "(..5923) 2024-10-23 11:01 KONTORI KOHVIK\\PARNU MNT 130\\TALLINN\\12915        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[102]"
@@ -3233,21 +3233,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "85",
+        "abs": "95.97",
         "currency": "EUR",
-        "raw": "-85.00",
-        "signed": "-85"
+        "raw": "-95.97",
+        "signed": "-95.97"
       },
       "booking_date": "2024-10-24",
       "counterparty": {
-        "iban": "EE937700771001384940",
-        "name": "Mart Mägi",
+        "iban": "EE157700771008593741",
+        "name": "Toomas Paju",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "52aa4498c64c9eb6",
-      "remittance": "Riku malering",
+      "record_id": "30b9b118e6550fc7",
+      "remittance": "Malering",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[103]"
@@ -3259,21 +3259,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "45",
+        "abs": "42.75",
         "currency": "EUR",
-        "raw": "-45.00",
-        "signed": "-45"
+        "raw": "-42.75",
+        "signed": "-42.75"
       },
       "booking_date": "2024-10-24",
       "counterparty": {
-        "iban": "EE937700771001384940",
-        "name": "Mart Mägi",
+        "iban": "EE157700771008593741",
+        "name": "Toomas Paju",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "9a73cde3c80e930c",
-      "remittance": "Riku kergejõustik",
+      "record_id": "e5d930ad8379a11b",
+      "remittance": "Kergejõustik",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[104]"
@@ -3285,10 +3285,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "5.89",
+        "abs": "5.6",
         "currency": "EUR",
-        "raw": "-5.89",
-        "signed": "-5.89"
+        "raw": "-5.60",
+        "signed": "-5.6"
       },
       "booking_date": "2024-10-25",
       "counterparty": {
@@ -3298,8 +3298,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "5ce3a6507c326dfe",
-      "remittance": "(..9786) 2024-10-24 09:12 Marienthali Sudameapte\\Mustamae tee 16\\TALLINN\\10617        EST",
+      "record_id": "6ed2cb5b2ddce428",
+      "remittance": "(..5923) 2024-10-24 09:12 Marienthali Sudameapte\\Tonismagi 8\\TALLINN\\10617        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[105]"
@@ -3311,10 +3311,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "3",
+        "abs": "3.36",
         "currency": "EUR",
-        "raw": "-3.00",
-        "signed": "-3"
+        "raw": "-3.36",
+        "signed": "-3.36"
       },
       "booking_date": "2024-10-25",
       "counterparty": {
@@ -3324,8 +3324,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "78ff995a30985985",
-      "remittance": "(..4271) 2024-10-23 19:18 KUNST - HOBI - ROCCA A\\Paldiski mnt 102                             \\TALLINN      \\13522     ESTEST",
+      "record_id": "d11a3e5175b404f8",
+      "remittance": "(..8164) 2024-10-23 19:18 KUNST - HOBI - ROCCA A\\Paldiski mnt 102                             \\TALLINN      \\13522     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[106]"
@@ -3337,10 +3337,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "20.36",
+        "abs": "21.38",
         "currency": "EUR",
-        "raw": "-20.36",
-        "signed": "-20.36"
+        "raw": "-21.38",
+        "signed": "-21.38"
       },
       "booking_date": "2024-10-26",
       "counterparty": {
@@ -3350,8 +3350,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "f46d10cf6a87caf8",
-      "remittance": "(..9786) 2024-10-25 18:24 Marienthali Sudameapte\\Mustamae tee 16\\TALLINN\\10617        EST",
+      "record_id": "82f028d459f5d3bd",
+      "remittance": "(..5923) 2024-10-25 18:24 Marienthali Sudameapte\\Tonismagi 8\\TALLINN\\10617        EST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[107]"
@@ -3363,10 +3363,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "21.39",
+        "abs": "22.72",
         "currency": "EUR",
-        "raw": "-21.39",
-        "signed": "-21.39"
+        "raw": "-22.72",
+        "signed": "-22.72"
       },
       "booking_date": "2024-10-26",
       "counterparty": {
@@ -3376,8 +3376,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "40eb6eaa59f62a8b",
-      "remittance": "(..9786) 2024-10-25 18:36 MARIENTHALI SELVERI IS\\MUSTAMAE TEE 16           \\TALLINN      \\10617     ESTEST",
+      "record_id": "1551d996827d941b",
+      "remittance": "(..5923) 2024-10-25 18:36 MARIENTHALI SELVERI IS\\TONISMAGI 8           \\TALLINN      \\10617     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[108]"
@@ -3389,20 +3389,20 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "200",
+        "abs": "177.22",
         "currency": "EUR",
-        "raw": "200.00",
-        "signed": "200"
+        "raw": "177.22",
+        "signed": "177.22"
       },
       "booking_date": "2024-10-27",
       "counterparty": {
-        "iban": "EE387700771001449271",
-        "name": "Ana Tamm",
+        "iban": "EE517700771002836491",
+        "name": "Tiiu Lepp",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "014c887523e98505",
+      "record_id": "003a801219e8ba5c",
       "remittance": "Oktoober",
       "source": {
         "input_file": "transactions_2.json",
@@ -3415,10 +3415,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "150",
+        "abs": "142.5",
         "currency": "EUR",
-        "raw": "-150.00",
-        "signed": "-150"
+        "raw": "-142.50",
+        "signed": "-142.5"
       },
       "booking_date": "2024-10-27",
       "counterparty": {
@@ -3428,7 +3428,7 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "e3d2fed9a6e22ff0",
+      "record_id": "cee53449abe65d65",
       "remittance": "INV/2024/0061 White table",
       "source": {
         "input_file": "transactions_2.json",
@@ -3441,21 +3441,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "2",
+        "abs": "2.23",
         "currency": "EUR",
-        "raw": "-2.00",
-        "signed": "-2"
+        "raw": "-2.23",
+        "signed": "-2.23"
       },
       "booking_date": "2024-10-28",
       "counterparty": {
-        "iban": "EE207700771005384950",
-        "name": "Kaspar Mägi",
+        "iban": "EE637700771004718362",
+        "name": "Karl Paju",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "ba6c0123e0f44583",
-      "remittance": "Jasper NÄDALARAHA",
+      "record_id": "07b538c0013029ae",
+      "remittance": "K NÄDALARAHA",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[111]"
@@ -3467,21 +3467,21 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "2",
+        "abs": "1.9",
         "currency": "EUR",
-        "raw": "-2.00",
-        "signed": "-2"
+        "raw": "-1.90",
+        "signed": "-1.9"
       },
       "booking_date": "2024-10-28",
       "counterparty": {
-        "iban": "EE577700771002384960",
-        "name": "Riku Mägi",
+        "iban": "EE897700771007461823",
+        "name": "Siim Paju",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "8d7d886b39b6425a",
-      "remittance": "Ruben NÄDALARAHA",
+      "record_id": "1c487a3cfd8550bf",
+      "remittance": "S NÄDALARAHA",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[112]"
@@ -3493,10 +3493,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "13.69",
+        "abs": "14.37",
         "currency": "EUR",
-        "raw": "-13.69",
-        "signed": "-13.69"
+        "raw": "-14.37",
+        "signed": "-14.37"
       },
       "booking_date": "2024-10-28",
       "counterparty": {
@@ -3506,8 +3506,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "70acbfb38c4ae06a",
-      "remittance": "(..4271) 2024-10-27 17:35 Merimetsa  Selver     \\Partner app           \\Tallinn      \\11624     ESTEST",
+      "record_id": "ac89809c75b1e6ed",
+      "remittance": "(..8164) 2024-10-27 17:35 Merimetsa  Selver     \\Partner app           \\Tallinn      \\11624     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[113]"
@@ -3519,10 +3519,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "1.99",
+        "abs": "2.13",
         "currency": "EUR",
-        "raw": "-1.99",
-        "signed": "-1.99"
+        "raw": "-2.13",
+        "signed": "-2.13"
       },
       "booking_date": "2024-10-28",
       "counterparty": {
@@ -3532,8 +3532,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "5d59bb4160940931",
-      "remittance": "(..4271) 2024-10-27 15:00 RAHVA RAAMAT AS KRISTI\\ENDLA 45                  \\HARJUMAA, TAL\\10615     ESTEST",
+      "record_id": "045f1ddd21ea66e0",
+      "remittance": "(..8164) 2024-10-27 15:00 RAHVA RAAMAT AS KRISTI\\ENDLA 45                  \\HARJUMAA, TAL\\10615     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[114]"
@@ -3545,10 +3545,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "20.48",
+        "abs": "19.46",
         "currency": "EUR",
-        "raw": "-20.48",
-        "signed": "-20.48"
+        "raw": "-19.46",
+        "signed": "-19.46"
       },
       "booking_date": "2024-10-28",
       "counterparty": {
@@ -3558,8 +3558,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "c8f2554fa6b68c3f",
-      "remittance": "(..4271) 2024-10-27 14:57 KRISTIINE KESKUSE APOL\\ENDLA 45                  \\HARJUMAA, TAL\\10615     ESTEST",
+      "record_id": "7898f491646f9250",
+      "remittance": "(..8164) 2024-10-27 14:57 KRISTIINE KESKUSE APOL\\ENDLA 45                  \\HARJUMAA, TAL\\10615     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[115]"
@@ -3571,10 +3571,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "50.35",
+        "abs": "47.83",
         "currency": "EUR",
-        "raw": "-50.35",
-        "signed": "-50.35"
+        "raw": "-47.83",
+        "signed": "-47.83"
       },
       "booking_date": "2024-10-28",
       "counterparty": {
@@ -3584,8 +3584,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "42b55721da3e3260",
-      "remittance": "(..4271) 2024-10-26 12:10 ECO TANKLA            \\MUSTAMAE TEE 12C          \\TALLINN      \\10621     ESTEST",
+      "record_id": "aa1c8ed8d4113ebc",
+      "remittance": "(..8164) 2024-10-26 12:10 ECO TANKLA            \\MUSTAMAE TEE 12C          \\TALLINN      \\10621     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[116]"
@@ -3597,10 +3597,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "6.68",
+        "abs": "7.01",
         "currency": "EUR",
-        "raw": "-6.68",
-        "signed": "-6.68"
+        "raw": "-7.01",
+        "signed": "-7.01"
       },
       "booking_date": "2024-10-29",
       "counterparty": {
@@ -3610,8 +3610,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "1c661b8b2b00da81",
-      "remittance": "(..9786) 2024-10-28 17:19 STOCKMANN RIGA        \\13. JANVARA IELA 8        \\RIGALATVIA   \\01050     LVALVA",
+      "record_id": "56a472605117d21a",
+      "remittance": "(..5923) 2024-10-28 17:19 STOCKMANN RIGA        \\13. JANVARA IELA 8        \\RIGALATVIA   \\01050     LVALVA",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[117]"
@@ -3623,10 +3623,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "3",
+        "abs": "2.62",
         "currency": "EUR",
-        "raw": "-3.00",
-        "signed": "-3"
+        "raw": "-2.62",
+        "signed": "-2.62"
       },
       "booking_date": "2024-10-29",
       "counterparty": {
@@ -3636,8 +3636,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "f022e86fa3978e5d",
-      "remittance": "(..9786) 2024-10-28 08:18 OLEREX PARNU LAKI     \\LAKI 8                    \\PARNUMAA, PAR\\80010     ESTEST",
+      "record_id": "407ccd291f452dbe",
+      "remittance": "(..5923) 2024-10-28 08:18 OLEREX PARNU LAKI     \\LAKI 8                    \\PARNUMAA, PAR\\80010     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[118]"
@@ -3649,20 +3649,20 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "200",
+        "abs": "190",
         "currency": "EUR",
-        "raw": "200.00",
-        "signed": "200"
+        "raw": "190.00",
+        "signed": "190"
       },
       "booking_date": "2024-10-29",
       "counterparty": {
-        "iban": "EE387700771001449271",
-        "name": "Ana Tamm",
+        "iban": "EE517700771002836491",
+        "name": "Tiiu Lepp",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "b5421e20afe8b0ab",
+      "record_id": "95751f3d9f6134a9",
       "remittance": "Oktoober",
       "source": {
         "input_file": "transactions_2.json",
@@ -3675,10 +3675,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "6.5",
+        "abs": "6.17",
         "currency": "EUR",
-        "raw": "-6.50",
-        "signed": "-6.5"
+        "raw": "-6.17",
+        "signed": "-6.17"
       },
       "booking_date": "2024-10-30",
       "counterparty": {
@@ -3688,8 +3688,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "3013b9fd32cb0be2",
-      "remittance": "(..4271) 2024-10-29 12:14 ST.PATRICK'S          \\NARVA MNT 5               \\HARJUMAA, TAL\\10117     ESTEST",
+      "record_id": "4555fa7aa9cce65c",
+      "remittance": "(..8164) 2024-10-29 12:14 ST.PATRICK'S          \\NARVA MNT 5               \\HARJUMAA, TAL\\10117     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[120]"
@@ -3701,10 +3701,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "17.16",
+        "abs": "15.22",
         "currency": "EUR",
-        "raw": "-17.16",
-        "signed": "-17.16"
+        "raw": "-15.22",
+        "signed": "-15.22"
       },
       "booking_date": "2024-10-30",
       "counterparty": {
@@ -3714,8 +3714,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "28e9f12fdd2677ba",
-      "remittance": "(..9786) 2024-10-29 17:40 LIDL/LIDL 610 TALLINN \\KARJAVALJA TN 12          \\HARJUMAA, TAL\\12918     ESTEST",
+      "record_id": "e594851613f9023e",
+      "remittance": "(..5923) 2024-10-29 17:40 LIDL/LIDL 610 TALLINN \\KARJAVALJA TN 12          \\HARJUMAA, TAL\\12918     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[121]"
@@ -3727,10 +3727,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "101.86",
+        "abs": "94.58",
         "currency": "EUR",
-        "raw": "-101.86",
-        "signed": "-101.86"
+        "raw": "-94.58",
+        "signed": "-94.58"
       },
       "booking_date": "2024-10-30",
       "counterparty": {
@@ -3740,8 +3740,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "8921fca821bbc2d2",
-      "remittance": "(..9786) 2024-10-29 17:21 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
+      "record_id": "669139312291490a",
+      "remittance": "(..5923) 2024-10-29 17:21 PRISMA ROCCA AL MARE  \\ROCCA AL MARE PRISMA      \\TALLINNVIRO  \\13522     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[122]"
@@ -3753,20 +3753,20 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "100",
+        "abs": "95",
         "currency": "EUR",
-        "raw": "100.00",
-        "signed": "100"
+        "raw": "95.00",
+        "signed": "95"
       },
       "booking_date": "2024-10-30",
       "counterparty": {
-        "iban": "EE387700771001449271",
-        "name": "Ana Tamm",
+        "iban": "EE517700771002836491",
+        "name": "Tiiu Lepp",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "45ac40f838b57252",
+      "record_id": "bacea6bef992daa0",
       "remittance": "Oktoober",
       "source": {
         "input_file": "transactions_2.json",
@@ -3779,20 +3779,20 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "55",
+        "abs": "46.83",
         "currency": "EUR",
-        "raw": "-55.00",
-        "signed": "-55"
+        "raw": "-46.83",
+        "signed": "-46.83"
       },
       "booking_date": "2024-10-30",
       "counterparty": {
-        "iban": "EE502200221015384969",
-        "name": "JAANIKA KUKK",
+        "iban": "EE712200221049873562",
+        "name": "MERLE SAAR",
         "role": "CREDITOR"
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "ed775461b36261f9",
+      "record_id": "9fceacdad59a5df0",
       "remittance": "Konverents",
       "source": {
         "input_file": "transactions_2.json",
@@ -3805,10 +3805,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "100",
+        "abs": "105",
         "currency": "EUR",
-        "raw": "-100.00",
-        "signed": "-100"
+        "raw": "-105.00",
+        "signed": "-105"
       },
       "booking_date": "2024-10-31",
       "counterparty": {
@@ -3818,8 +3818,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "11908328199d8dbe",
-      "remittance": "(..4271) 2024-10-30 21:06 TRAMPOLINO            \\\\TALLINN      \\11415     ESTEST",
+      "record_id": "38a54512fa5ad424",
+      "remittance": "(..8164) 2024-10-30 21:06 TRAMPOLINO            \\\\TALLINN      \\11415     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[125]"
@@ -3831,20 +3831,20 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "25",
+        "abs": "27.71",
         "currency": "EUR",
-        "raw": "25.00",
-        "signed": "25"
+        "raw": "27.71",
+        "signed": "27.71"
       },
       "booking_date": "2024-10-31",
       "counterparty": {
-        "iban": "EE387700771001449271",
-        "name": "Ana Tamm",
+        "iban": "EE517700771002836491",
+        "name": "Tiiu Lepp",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "33ba71349b1d41e4",
+      "record_id": "8dc1b3205fbf2fa4",
       "remittance": "Ravimid",
       "source": {
         "input_file": "transactions_2.json",
@@ -3857,10 +3857,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "5.89",
+        "abs": "6.37",
         "currency": "EUR",
-        "raw": "-5.89",
-        "signed": "-5.89"
+        "raw": "-6.37",
+        "signed": "-6.37"
       },
       "booking_date": "2024-10-31",
       "counterparty": {
@@ -3870,8 +3870,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "196fae8d7991f13e",
-      "remittance": "(..4271) 2024-10-30 16:09 MERIMETSA TERVISEKESKU\\PALDISKI MNT 68A          \\HARJUMAA, TAL\\10617     ESTEST",
+      "record_id": "68a4f5e218ab112b",
+      "remittance": "(..8164) 2024-10-30 16:09 MERIMETSA TERVISEKESKU\\PALDISKI MNT 68A          \\HARJUMAA, TAL\\10617     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[127]"
@@ -3883,10 +3883,10 @@
     {
       "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
       "amount": {
-        "abs": "28.04",
+        "abs": "25.32",
         "currency": "EUR",
-        "raw": "-28.04",
-        "signed": "-28.04"
+        "raw": "-25.32",
+        "signed": "-25.32"
       },
       "booking_date": "2024-10-31",
       "counterparty": {
@@ -3896,8 +3896,8 @@
       },
       "direction": "OUT",
       "flags": [],
-      "record_id": "b0e385490e286f96",
-      "remittance": "(..9786) 2024-10-30 18:17 RIMI/ULEMISTE RIMI HM \\SUUR-SOJAMAE 4            \\TALLINN      \\11415     ESTEST",
+      "record_id": "706579063b13155f",
+      "remittance": "(..5923) 2024-10-30 18:17 RIMI/ULEMISTE RIMI HM \\SUUR-SOJAMAE 4            \\TALLINN      \\11415     ESTEST",
       "source": {
         "input_file": "transactions_2.json",
         "input_path": "$.transactions.booked[128]"
