@@ -7,8 +7,8 @@
  */
 
 const DATASETS = [
-  { id: 'D1', name: 'D1_public_valid_small', records: 7 },
-  { id: 'D2', name: 'D2_public_mixed_large', records: 66 },
+  { id: 'D1', name: 'D1_synth_valid_small', records: 7 },
+  { id: 'D2', name: 'D2_synth_mixed_large', records: 66 },
   { id: 'D3', name: 'D3_synth_valid_seed42', records: 150, accounts: 2 },
   { id: 'D4', name: 'D4_synth_errors_seed42', records: 39 },
   { id: 'D5', name: 'D5_synth_edges_seed99', records: 33 },

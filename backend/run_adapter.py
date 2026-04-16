@@ -3,9 +3,9 @@ Entry point for the adapter pipeline.
 
 Usage:
     python run_adapter.py --data D4
-    python run_adapter.py --data D1_public_valid_small
+    python run_adapter.py --data D1_synth_valid_small
     python run_adapter.py --data ../datasets/D4_synth_errors_seed42
-    python run_adapter.py                          # defaults to D1_public_valid_small
+    python run_adapter.py                          # defaults to D1_synth_valid_small
 """
 import argparse
 from pathlib import Path
@@ -61,7 +61,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Run the adapter pipeline.")
     parser.add_argument("--data", "-d", default=None,
                         help="Dataset name (e.g. D1, D4) or path. "
-                             "Default: D1_public_valid_small")
+                             "Default: D1_synth_valid_small")
     parser.add_argument("--out", "-o", default=None,
                         help="Output directory (relative to repo root unless "
                              "absolute). Default: .backend/out/")
@@ -85,7 +85,7 @@ def main() -> None:
     if args.data:
         data_dir = _resolve_data_dir(args.data)
     else:
-        data_dir = _resolve_data_dir("D1_public_valid_small")
+        data_dir = _resolve_data_dir("D1_synth_valid_small")
 
     if args.out:
         out_path = Path(args.out)

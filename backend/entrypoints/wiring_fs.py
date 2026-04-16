@@ -9,7 +9,7 @@ Usage::
     from entrypoints.wiring_fs import run_pipeline_fs
 
     summary = run_pipeline_fs(
-        data_dir="datasets/D1_public_valid_small",
+        data_dir="datasets/D1_synth_valid_small",
         output_dir="out",
         spec_dir="spec",
     )

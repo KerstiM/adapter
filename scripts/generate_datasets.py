@@ -311,7 +311,7 @@ def _build_transactions_json(account_iban: str, booked: list, pending: list) -> 
 
 
 def generate_d1(gen: DatasetGenerator, start_date: date, end_date: date, n: int | None) -> dict:
-    """D1_public_valid_small: small smoke-test, all valid, 0 drops, 0 WARNs → SUCCESS."""
+    """D1_synth_valid_small: small smoke-test, all valid, 0 drops, 0 WARNs → SUCCESS."""
     n_booked = n or 5
     n_pending = max(2, n_booked // 3)
     acct = gen.generate_account(country="DE", name="D1 Smoke Test Account")
@@ -320,7 +320,7 @@ def generate_d1(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
         match_sign=True,
     )
     return {
-        "name": "D1_public_valid_small",
+        "name": "D1_synth_valid_small",
         "description": "Clean happy-path smoke test. All transactions valid, amounts "
                         "sign-match direction, every required field present. "
                         "Adapter should produce SUCCESS with 0 drops and 0 WARNs.",
@@ -337,7 +337,7 @@ def generate_d1(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
 
 
 def generate_d2(gen: DatasetGenerator, start_date: date, end_date: date, n: int | None) -> dict:
-    """D2_public_mixed_large: large mixed set, pending without bookingDate,
+    """D2_synth_mixed_large: large mixed set, pending without bookingDate,
     some sign/direction mismatches for INV-05 WARNs, drop=0."""
     n_booked = n or 50
     n_pending = max(15, n_booked // 3)
@@ -361,7 +361,7 @@ def generate_d2(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
             variations.append(f"WARN_INV05: booked[{idx}] sign mismatch (IN with negative amount)")
 
     return {
-        "name": "D2_public_mixed_large",
+        "name": "D2_synth_mixed_large",
         "description": "Large mixed dataset with natural Berlin Group sign convention "
                         "(positive amounts on OUT) causing INV-05 WARNs. Pending "
                         "transactions omit bookingDate. No drops expected.",

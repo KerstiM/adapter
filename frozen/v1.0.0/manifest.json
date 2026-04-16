@@ -21,7 +21,7 @@
       }
     },
     {
-      "dataset_id": "D1_public_valid_small",
+      "dataset_id": "D1_synth_valid_small",
       "expected_outcome": "SUCCESS",
       "golden": {
         "sv.json": {
@@ -39,7 +39,7 @@
       }
     },
     {
-      "dataset_id": "D2_public_mixed_large",
+      "dataset_id": "D2_synth_mixed_large",
       "expected_outcome": "PARTIAL_SUCCESS",
       "golden": {
         "sv.json": {

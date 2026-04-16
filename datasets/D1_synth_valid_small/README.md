@@ -1,4 +1,4 @@
-# D1_public_valid_small
+# D1_synth_valid_small
 
 Puhas happy-path suitsutestimine. Kõik tehingud on kehtivad, summade märgid vastavad suunale, kõik kohustuslikud väljad on olemas. Adapter peab andma tulemuse SUCCESS: 0 droppi ja 0 WARN-i.
 

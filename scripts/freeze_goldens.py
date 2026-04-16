@@ -10,7 +10,7 @@ frozen/<version>/manifest.json with the following structure:
       "spec_lock_sha256": "<sha256(spec.lock.json)>",
       "datasets": [
         {
-          "dataset_id": "D1_public_valid_small",
+          "dataset_id": "D1_synth_valid_small",
           "expected_outcome": "SUCCESS",
           "golden": {
             "sv.json":              {"sha256": "..."},
@@ -47,8 +47,8 @@ GOLDEN_FILES = {
 # Fallback mapping: dataset_id -> expected outcome.
 # Used only when the README.md cannot be parsed.
 EXPECTED_OUTCOME_FALLBACK = {
-    "D1_public_valid_small":     "SUCCESS",
-    "D2_public_mixed_large":     "PARTIAL_SUCCESS",
+    "D1_synth_valid_small":     "SUCCESS",
+    "D2_synth_mixed_large":     "PARTIAL_SUCCESS",
     "D3_synth_valid_seed42":     "SUCCESS",
     "D4_synth_errors_seed42":    "FAILED",
     "D5_synth_edges_seed99":     "SUCCESS",
