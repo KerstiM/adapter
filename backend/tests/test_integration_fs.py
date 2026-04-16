@@ -1216,17 +1216,16 @@ class TestScalingTiming:
         python -m pytest tests/tests.py::TestScalingTiming -v -s
     """
 
-    @pytest.mark.parametrize("dataset,label", [
-        ("D1_synth_valid_small",   "D1 (7 tx)"),
-        ("D3_synth_valid_seed42",   "D3 (150 tx)"),
-        ("D9_synth_perf_seed9",     "D9 (1 000 tx)"),
-        ("D8_load_test_10k_seed88", "D8 (10 000 tx)"),
+    @pytest.mark.parametrize("dataset,label,ceiling_ms", [
+        ("D1_synth_valid_small",   "D1 (7 tx)",        2_000),
+        ("D3_synth_valid_seed42",   "D3 (150 tx)",      3_000),
+        ("D9_synth_perf_seed9",     "D9 (1 000 tx)",    8_000),
+        ("D8_load_test_10k_seed88", "D8 (10 000 tx)",  40_000),
     ])
-    def test_pipeline_timing(self, tmp_path: Path, dataset: str, label: str) -> None:
-        """Mõõdab pipeline'i täielikku töötlusaega päris andmestikul.
-
-        Tulemused on nähtavad pytest -s lipuga.
-        """
+    def test_pipeline_timing(
+        self, tmp_path: Path, dataset: str, label: str, ceiling_ms: int,
+    ) -> None:
+        """Mõõdab pipeline'i täielikku töötlusaega ja tagab lae regressioonide vastu."""
         data_dir = DATASETS_DIR / dataset
 
         t0 = time.perf_counter()
@@ -1241,6 +1240,9 @@ class TestScalingTiming:
         throughput = tx_count / elapsed_ms if elapsed_ms > 0 else 0
 
         print(f"\n[TIMING] {label}: {tx_count} tx | {elapsed_ms:.1f} ms | {throughput:.3f} tx/ms")
+        assert elapsed_ms <= ceiling_ms, (
+            f"{label} took {elapsed_ms:.0f} ms, ceiling is {ceiling_ms} ms"
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -1261,12 +1263,17 @@ class TestBenchmarkD9D8:
     WARMUP_RUNS = 1
     MEASURED_RUNS = 5
 
-    @pytest.mark.parametrize("dataset,label,expected_tx", [
-        ("D9_synth_perf_seed9",     "D9 (1 000 tx)",  1_000),
-        ("D8_load_test_10k_seed88", "D8 (10 000 tx)", 10_000),
+    @pytest.mark.parametrize("dataset,label,expected_tx,median_ceiling_ms", [
+        ("D9_synth_perf_seed9",     "D9 (1 000 tx)",  1_000,  4_000),
+        ("D8_load_test_10k_seed88", "D8 (10 000 tx)", 10_000, 30_000),
     ])
     def test_benchmark(
-        self, tmp_path_factory, dataset: str, label: str, expected_tx: int,
+        self,
+        tmp_path_factory,
+        dataset: str,
+        label: str,
+        expected_tx: int,
+        median_ceiling_ms: int,
     ) -> None:
         """Mõõdab pipeline'i jõudlust päris andmestikul mitme jooksuga."""
         data_dir = DATASETS_DIR / dataset
@@ -1314,6 +1321,10 @@ class TestBenchmarkD9D8:
         print(f"  Läbilaskevõime:   {throughput:.3f} tx/ms")
         print(f"{'='*60}")
 
+        assert median_ms <= median_ceiling_ms, (
+            f"{label} median {median_ms:.0f} ms exceeds ceiling {median_ceiling_ms} ms"
+        )
+
 
 # ---------------------------------------------------------------------------
 # D11 — Real anonymised 2024 dataset (2 accounts) → SUCCESS
@@ -1321,10 +1332,6 @@ class TestBenchmarkD9D8:
 DATA_D11 = DATASETS_DIR / "D11_real_anon_2024"
 
 
-@pytest.mark.skipif(
-    not (DATA_D11 / "accounts.json").exists(),
-    reason="D11 dataset not built yet (run: python scripts/build_d11.py)",
-)
 class TestD11RealAnon2024:
     """Tests for D11: 2 real anonymised accounts, ~380 booked, 0 pending, SUCCESS."""
 
@@ -1408,3 +1415,71 @@ class TestD11RealAnon2024:
         summary, _ = d11_output
         counts = summary["counts"]
         assert counts["transactions_total"] == counts["transactions_emitted_sv"] + counts["transactions_dropped"]
+
+
+# ---------------------------------------------------------------------------
+# Schema validation sweep across every dataset
+# ---------------------------------------------------------------------------
+
+ALL_DATASETS: list[str] = [
+    "D1_synth_valid_small",
+    "D2_synth_mixed_large",
+    "D3_synth_valid_seed42",
+    "D4_synth_errors_seed42",
+    "D5_synth_edges_seed99",
+    "D6_synth_dupes_seed99",
+    "D7_standing_orders_seed77",
+    "D8_load_test_10k_seed88",
+    "D9_synth_perf_seed9",
+    "D10_real_anon_oct16",
+    "D11_real_anon_2024",
+]
+
+
+@pytest.mark.parametrize("dataset_name", ALL_DATASETS)
+class TestSchemaValidationAllDatasets:
+    """Valideerib iga andmestiku sv.json / ml_v1.csv / llm_context_v1.json / report.json."""
+
+    @pytest.fixture()
+    def run_folder(self, tmp_path: Path, dataset_name: str) -> Path:
+        data_dir = DATASETS_DIR / dataset_name
+        summary = run_pipeline_fs(
+            data_dir=data_dir,
+            output_dir=tmp_path,
+            spec_dir=SPEC_DIR,
+            run_id=f"schema-sweep-{dataset_name}",
+            created_at_utc=FIXED_TS,
+        )
+        return Path(summary["run_folder"])
+
+    def test_sv_conforms_to_s01(self, run_folder: Path) -> None:
+        with open(run_folder / "sv.json", encoding="utf-8") as f:
+            sv = json.load(f)
+        jsonschema.validate(sv, _load_schema("S-01_sv_schema.json"))
+
+    def test_ml_conforms_to_s02(self, run_folder: Path) -> None:
+        schema = _load_schema("S-02_ml_projection_schema.json")
+        with open(run_folder / "projections" / "ml_v1.csv", encoding="utf-8") as f:
+            rows = list(csv.DictReader(f))
+        for raw_row in rows:
+            row: dict = {**raw_row}
+            row["row_id"] = int(row["row_id"])
+            for field in ("booking_date", "counterparty_name", "remittance"):
+                if row.get(field) == "":
+                    row[field] = None
+            jsonschema.validate(row, schema)
+
+    def test_llm_conforms_to_s03(self, run_folder: Path) -> None:
+        schema = _load_schema("S-03_llm_context_schema.json")
+        with open(run_folder / "projections" / "llm_context_v1.json", encoding="utf-8") as f:
+            ctx = json.load(f)
+        if isinstance(ctx, list):
+            for one in ctx:
+                jsonschema.validate(one, schema)
+        else:
+            jsonschema.validate(ctx, schema)
+
+    def test_report_conforms_to_s05(self, run_folder: Path) -> None:
+        with open(run_folder / "report.json", encoding="utf-8") as f:
+            report = json.load(f)
+        jsonschema.validate(report, _load_schema("S-05_collected_report_schema.json"))

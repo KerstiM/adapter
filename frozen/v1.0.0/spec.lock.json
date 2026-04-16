@@ -22,10 +22,17 @@
       "version": "1.0.0"
     },
     {
+      "id": "C-04",
+      "kind": "contract",
+      "path": "spec/contracts/C-04_model_formatters.yaml",
+      "sha256": "c2023b1bc0e184baba12e21fcae12cd7c49dd95f9913b7868e26a05bf6080602",
+      "version": "1.0.0"
+    },
+    {
       "id": "R-01",
       "kind": "ruleset",
       "path": "spec/rulesets/R-01_sv_invariants.yaml",
-      "sha256": "69cf689dca516c868582efd17b4a32627b954e2ecb0bb335c279b68321a34282",
+      "sha256": "5ec0d25870325fe7fe8ce475adef766ed78388373f7ae147c930431bb834b465",
       "version": "1.1.0"
     },
     {
@@ -53,7 +60,7 @@
       "id": "S-01",
       "kind": "schema",
       "path": "spec/schemas/S-01_sv_schema.json",
-      "sha256": "cadfe0b77232022233a3e3b622d6d98d26f013b058947f54580f82cfcc08953e",
+      "sha256": "d21bffe2b527ffef340af389046837f2785f4baf7a7419b019a7fd49167eccd6",
       "version": "1.0.0"
     },
     {
@@ -74,15 +81,15 @@
       "id": "S-05",
       "kind": "schema",
       "path": "spec/schemas/S-05_collected_report_schema.json",
-      "sha256": "6be409577113a232a19c7fa28f3158e34f28f7fab1798357d40bccb3421b65dd",
-      "version": "1.1.0"
+      "sha256": "9e0358f96e1cf75ee384fdbd7c9977c5ccdd22a5b7e3a014c7c48846731092e4",
+      "version": "1.3.0"
     }
   ],
   "lock_version": "1.0.0",
   "profile": {
     "id": "default",
     "path": "spec/profiles/default.yaml",
-    "sha256": "1d27f853a998a0f1cfb016b28b90e568b6df85098a2314874fe2cefcd22ea8b8",
+    "sha256": "b5ce30acff8e487f46a70aeff3bcde625ba82469ba46d2a4a0a3f9c1ae7e775f",
     "version": "1.0.0"
   }
 }

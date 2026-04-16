@@ -1,7 +1,7 @@
 {
   "frozen_version": "v1.0.0",
-  "frozen_at": "2026-04-16T20:17:56Z",
-  "spec_lock_sha256": "4114b0079d21116aea04b7c2f989f8a0e88791255aab80f9836c25842c1f30f2",
+  "frozen_at": "2026-04-16T19:15:35Z",
+  "spec_lock_sha256": "cf7e876e056bf4249a1d350e1c425e0aeb195ab626d03c55feac06a0ad81cf22",
   "datasets": [
     {
       "dataset_id": "D10_real_anon_oct16",
@@ -157,8 +157,7 @@
         "transactions_dropped": 4,
         "ml_rows": 35,
         "llm_contexts": 1
-      },
-      "expected_raw_validation": "FAIL"
+      }
     },
     {
       "dataset_id": "D5_synth_edges_seed99",

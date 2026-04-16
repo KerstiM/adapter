@@ -145,6 +145,60 @@ class TestSLI1SchemaCoverage:
         assert summary["metrics"]["sli1"]["sli1_coverage_ratio"] >= 0.95
 
 
+class TestSLI1RuntimeCoverage:
+    """SLI-1 runtime-katvus: C-01 päriselt emissiooni kontroll tegeliku SV pealt.
+
+    Erinevalt ``SLI1_FIELD_COVERAGE`` deklaratsioonist loeb see reaalsetest
+    väljundist — kui C-01 lakkab mõnda prioriteetset välja emiteerimast,
+    siis runtime-katvus langeb ja test kukub. Deklaratiivne SLI-1
+    jääks 1.0 peale, ei avastaks regressiooni.
+    """
+
+    @pytest.fixture(scope="class")
+    def sv_output(self) -> dict:
+        booked = [
+            _tx(
+                transaction_id="RT-001",
+                amount="100.00",
+                value_date="2025-06-01",
+                booking_date="2025-06-01",
+                debtor_name="Sender AS",
+            ),
+            _tx(
+                transaction_id="RT-002",
+                amount="50.25",
+                value_date="2025-06-02",
+                booking_date=None,
+                debtor_name=None,
+                creditor_name="Shop OÜ",
+            ),
+        ]
+        _, out = _run(booked=booked)
+        return out.sv
+
+    def test_all_priority_fields_covered(self, sv_output: dict) -> None:
+        from domain.report.ops import SLI1_FIELD_COVERAGE, derive_sli1_coverage_from_sv
+
+        runtime = derive_sli1_coverage_from_sv(sv_output)
+        uncovered = [f for f, ok in runtime.items() if not ok]
+        assert not uncovered, (
+            f"C-01 ei emiteeri neid prioriteetseid välju üheski tehingus: {uncovered}"
+        )
+        assert set(runtime.keys()) == set(SLI1_FIELD_COVERAGE.keys())
+
+    def test_coverage_drops_when_field_removed(self, sv_output: dict) -> None:
+        from domain.report.ops import derive_sli1_coverage_from_sv
+
+        mutated = {
+            **sv_output,
+            "transactions": [
+                {**tx, "record_id": None} for tx in sv_output["transactions"]
+            ],
+        }
+        runtime = derive_sli1_coverage_from_sv(mutated)
+        assert runtime["record_id"] is False
+
+
 # ---------------------------------------------------------------------------
 # Struktuurne väljundi terviklikkus (varem SLI-1 struktuurikontrollid)
 # ---------------------------------------------------------------------------
@@ -745,6 +799,78 @@ class TestSLI4Determinism:
 
 
 # ---------------------------------------------------------------------------
+# SLI-4: Determinism — byte-level via FS adapter
+# ---------------------------------------------------------------------------
+#
+# Sama SLO, aga mõõdetud serialiseeritud failide SHA-256 võrdlusega. See testib
+# ka FS-adaptereid (kirjutamise kanooniline järjestus, reavahetused, kodeering),
+# mida in-memory dict-võrdlus ei kata.
+# ---------------------------------------------------------------------------
+
+import hashlib
+from pathlib import Path as _Path
+
+from entrypoints.wiring_fs import run_pipeline_fs as _run_pipeline_fs
+
+_SLI4_FS_DATASET = "D1_synth_valid_small"
+_SLI4_FS_ARTIFACTS = [
+    "sv.json",
+    "report.json",
+    "projections/ml_v1.csv",
+    "projections/llm_context_v1.json",
+]
+
+
+def _sha256(path: _Path) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+class TestSLI4DeterminismBytes:
+    """SLI-4 bait-tasemel: 5 FS-baasilist jooksu, võrreldakse SHA-256 räsisid."""
+
+    @pytest.fixture(scope="class")
+    def run_hashes(self, tmp_path_factory: pytest.TempPathFactory) -> list[dict[str, str]]:
+        project_root = _Path(__file__).resolve().parents[3]
+        data_dir = project_root / "datasets" / _SLI4_FS_DATASET
+        spec_dir = project_root / "spec"
+
+        hashes: list[dict[str, str]] = []
+        for i in range(_SLI4_N_RUNS):
+            out_dir = tmp_path_factory.mktemp(f"sli4_fs_run_{i}")
+            summary = _run_pipeline_fs(
+                data_dir=data_dir,
+                output_dir=out_dir,
+                spec_dir=spec_dir,
+                run_id="sli4-byte-run",
+                created_at_utc="2026-03-01T12:00:00Z",
+            )
+            run_folder = _Path(summary["run_folder"])
+            hashes.append({
+                art: _sha256(run_folder / art)
+                for art in _SLI4_FS_ARTIFACTS
+            })
+        return hashes
+
+    @pytest.mark.parametrize("artifact", _SLI4_FS_ARTIFACTS)
+    def test_artifact_byte_identical_across_runs(
+        self, run_hashes: list[dict[str, str]], artifact: str,
+    ) -> None:
+        baseline = run_hashes[0][artifact]
+        for i, run in enumerate(run_hashes[1:], start=2):
+            assert run[artifact] == baseline, (
+                f"{artifact} baidi-tasemel erineb jooksus {i} (run1={baseline[:12]}..., "
+                f"run{i}={run[artifact][:12]}...)"
+            )
+
+    def test_five_runs_executed(self, run_hashes: list[dict[str, str]]) -> None:
+        assert len(run_hashes) == _SLI4_N_RUNS
+
+
+# ---------------------------------------------------------------------------
 # SLI-5: Auditijälje täielikkus
 # SLO: 100 % jooksudest sisaldab kõiki nõutud auditivälju
 # ---------------------------------------------------------------------------
@@ -922,7 +1048,7 @@ class TestSLI5AuditTrailCompleteness:
 # Kui soovitakse regressioonilävendit, tuleks see kalibreerida konkreetse
 # keskkonna ja I/O kihi alusel. Näiteks FS-adapteritega mõistlik lävend
 # oleks ~1000 ms (2× mõõdetud mediaanist 300–500 ms).
-_SLI6_THRESHOLD_MS: float | None = None
+_SLI6_THRESHOLD_MS: float | None = 500.0
 
 
 def run_sli6_benchmark(
@@ -1005,9 +1131,14 @@ class TestSLI6ReferencePerformance:
         ]
         return booked, pending
 
-    def test_sli6_reference_benchmark(
+    @pytest.fixture(scope="class")
+    def benchmark_result(
         self, reference_dataset: tuple[list[dict], list[dict]],
-    ) -> None:
+    ) -> dict:
+        booked, pending = reference_dataset
+        return run_sli6_benchmark(booked, pending, proovijooksud=1, measured_runs=5)
+
+    def test_sli6_reference_benchmark(self, benchmark_result: dict) -> None:
         """SLI-6: mõõdab referentsjõudlust 1000 tehinguga andmestikul.
 
         Metoodika: 1 proovijooks + 5 mõõdetud jooksu; tulemus on mediaan.
@@ -1017,32 +1148,21 @@ class TestSLI6ReferencePerformance:
         I/O kihist (in-memory ~5 ms vs FS ~400 ms). Kui _SLI6_THRESHOLD_MS
         on seadistatud, kontrollitakse seda.
         """
-        booked, pending = reference_dataset
-        result = run_sli6_benchmark(booked, pending, proovijooksud=1, measured_runs=5)
-
-        median = result["median_ms"]
+        median = benchmark_result["median_ms"]
         print(f"\nSLI-6 referentsjõudlus (informatiivne):")
         print(f"  Mediaan:        {median:.2f} ms")
-        print(f"  Mõõdetud ajad:  {result['all_times_ms']} ms")
-        print(f"  Proovijooks:    {result['proovijooksu_ms']:.2f} ms")
+        print(f"  Mõõdetud ajad:  {benchmark_result['all_times_ms']} ms")
+        print(f"  Proovijooks:    {benchmark_result['proovijooksu_ms']:.2f} ms")
 
         if _SLI6_THRESHOLD_MS is not None:
             assert median <= _SLI6_THRESHOLD_MS, (
                 f"SLI-6 mediaan {median:.2f} ms ületab lävendi {_SLI6_THRESHOLD_MS} ms"
             )
 
-    def test_sli6_median_is_positive(
-        self, reference_dataset: tuple[list[dict], list[dict]],
-    ) -> None:
+    def test_sli6_median_is_positive(self, benchmark_result: dict) -> None:
         """Mediaan peab olema positiivne arv."""
-        booked, pending = reference_dataset
-        result = run_sli6_benchmark(booked, pending, proovijooksud=1, measured_runs=5)
-        assert result["median_ms"] > 0
+        assert benchmark_result["median_ms"] > 0
 
-    def test_sli6_five_measured_runs(
-        self, reference_dataset: tuple[list[dict], list[dict]],
-    ) -> None:
+    def test_sli6_five_measured_runs(self, benchmark_result: dict) -> None:
         """Mõõtmistulemus peab sisaldama täpselt 5 mõõdetud aega."""
-        booked, pending = reference_dataset
-        result = run_sli6_benchmark(booked, pending, proovijooksud=1, measured_runs=5)
-        assert len(result["all_times_ms"]) == 5
+        assert len(benchmark_result["all_times_ms"]) == 5

@@ -565,8 +565,11 @@ def verify_goldens(datasets: list[Path]) -> tuple[bool, list[str]]:
 # ═══════════════════════════════════════════════════════════════════════════
 
 
+DETERMINISM_RUNS: int = 5
+
+
 def check_determinism(dataset_dir: Path) -> tuple[bool, list[str]]:
-    """Run pipeline twice with same metadata, compare output hashes.
+    """Run pipeline ``DETERMINISM_RUNS`` times and require byte-identical outputs.
 
     Returns (passed, messages).
     """
@@ -574,10 +577,11 @@ def check_determinism(dataset_dir: Path) -> tuple[bool, list[str]]:
     run_id = f"GOLDEN_{ds_name}"
     msgs: list[str] = []
 
-    hashes_a: dict[str, str] = {}
-    hashes_b: dict[str, str] = {}
+    runs: list[dict[str, str]] = []
 
-    for label, target in [("run-A", hashes_a), ("run-B", hashes_b)]:
+    for idx in range(DETERMINISM_RUNS):
+        label = f"run-{idx + 1}"
+        hashes: dict[str, str] = {}
         with tempfile.TemporaryDirectory() as tmp:
             output_dir = Path(tmp)
             try:
@@ -589,22 +593,29 @@ def check_determinism(dataset_dir: Path) -> tuple[bool, list[str]]:
             for run_path, manifest_key in ARTIFACT_MAP:
                 f = run_folder / run_path
                 if f.exists():
-                    target[manifest_key] = sha256_file(f)
+                    hashes[manifest_key] = sha256_file(f)
+        runs.append(hashes)
 
+    baseline = runs[0]
     mismatches: list[str] = []
-    for key in hashes_a:
-        if hashes_a[key] != hashes_b.get(key, ""):
-            mismatches.append(
-                f"{key}: run-A={hashes_a[key][:12]}... run-B={hashes_b.get(key, 'MISSING')[:12]}..."
-            )
+    for idx, hashes in enumerate(runs[1:], start=2):
+        for key in baseline:
+            if hashes.get(key) != baseline[key]:
+                mismatches.append(
+                    f"{key}: run-1={baseline[key][:12]}... "
+                    f"run-{idx}={hashes.get(key, 'MISSING')[:12]}..."
+                )
 
     if mismatches:
-        msgs.append(f"  {ds_name}: NON-DETERMINISTIC")
+        msgs.append(f"  {ds_name}: NON-DETERMINISTIC across {DETERMINISM_RUNS} runs")
         for m in mismatches:
             msgs.append(f"    {m}")
         return False, msgs
     else:
-        msgs.append(f"  {ds_name}: deterministic (all {len(hashes_a)} artifacts match)")
+        msgs.append(
+            f"  {ds_name}: deterministic "
+            f"(all {len(baseline)} artifacts match across {DETERMINISM_RUNS} runs)"
+        )
         return True, msgs
 
 
@@ -780,20 +791,15 @@ def main() -> None:
     print("DETERMINISM SMOKE CHECK")
     print("=" * 60)
 
-    # Use D1 by default; if D1 not in selected datasets, use first available
-    det_ds = None
+    det_all_ok = True
     for ds in datasets:
-        if ds.name.upper().startswith("D1"):
-            det_ds = ds
-            break
-    if det_ds is None:
-        det_ds = datasets[0]
-
-    det_ok, det_msgs = check_determinism(det_ds)
-    for m in det_msgs:
-        print(m)
-    section_results["DETERMINISM"] = "PASS" if det_ok else "FAIL"
-    if not det_ok:
+        det_ok, det_msgs = check_determinism(ds)
+        for m in det_msgs:
+            print(m)
+        if not det_ok:
+            det_all_ok = False
+    section_results["DETERMINISM"] = "PASS" if det_all_ok else "FAIL"
+    if not det_all_ok:
         overall_pass = False
     print()
 
