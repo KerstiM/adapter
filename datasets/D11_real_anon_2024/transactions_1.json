@@ -13,7 +13,7 @@
         "creditorName": "AS Pensionikeskus",
         "remittanceInformationUnstructured": "30101119828,",
         "transactionAmount": {
-          "amount": "-500.00",
+          "amount": "-562.93",
           "currency": "EUR"
         },
         "transactionId": "980694098",
@@ -27,7 +27,7 @@
         "creditorName": "AS Pensionikeskus",
         "remittanceInformationUnstructured": "30101119828,",
         "transactionAmount": {
-          "amount": "-500.00",
+          "amount": "-432.38",
           "currency": "EUR"
         },
         "transactionId": "980694099",
@@ -41,7 +41,7 @@
         "creditorName": "Tiiu Lepp",
         "remittanceInformationUnstructured": "Oktoober",
         "transactionAmount": {
-          "amount": "-500.00",
+          "amount": "-458.81",
           "currency": "EUR"
         },
         "transactionId": "980958849",
@@ -55,7 +55,7 @@
         "debtorName": "MAIE LEPP",
         "remittanceInformationUnstructured": "raha",
         "transactionAmount": {
-          "amount": "30.00",
+          "amount": "32.48",
           "currency": "EUR"
         },
         "transactionId": "983112081",
@@ -65,7 +65,7 @@
         "bookingDate": "2024-10-05",
         "remittanceInformationUnstructured": "Kodulaenu põhiosa tagasimakse (laenuleping nr ANON-20240226XX)",
         "transactionAmount": {
-          "amount": "-363.51",
+          "amount": "-343.54",
           "currency": "EUR"
         },
         "transactionId": "983777602",
@@ -75,7 +75,7 @@
         "bookingDate": "2024-10-05",
         "remittanceInformationUnstructured": "Kodulaenu intressimakse (laenuleping nr ANON-20240226XX)",
         "transactionAmount": {
-          "amount": "-1233.10",
+          "amount": "-1404.49",
           "currency": "EUR"
         },
         "transactionId": "983777603",
@@ -89,7 +89,7 @@
         "debtorName": "HELEN RAND",
         "remittanceInformationUnstructured": "Sünnipäevaks",
         "transactionAmount": {
-          "amount": "50.00",
+          "amount": "43.43",
           "currency": "EUR"
         },
         "transactionId": "984734962",
@@ -103,7 +103,7 @@
         "debtorName": "KATRIN RAND",
         "remittanceInformationUnstructured": "Sünnipäevaks perelt",
         "transactionAmount": {
-          "amount": "30.00",
+          "amount": "28.03",
           "currency": "EUR"
         },
         "transactionId": "984745492",
@@ -117,7 +117,7 @@
         "creditorName": "Siim Paju",
         "remittanceInformationUnstructured": "Sünnipäev",
         "transactionAmount": {
-          "amount": "-110.00",
+          "amount": "-120.52",
           "currency": "EUR"
         },
         "transactionId": "984839437",
@@ -131,7 +131,7 @@
         "debtorName": "SOTSIAALKINDLUSTUSAMET",
         "remittanceInformationUnstructured": "Peretoetus",
         "transactionAmount": {
-          "amount": "160.00",
+          "amount": "152.00",
           "currency": "EUR"
         },
         "transactionId": "985788820",
@@ -143,9 +143,9 @@
           "iban": "EE671010010083472956"
         },
         "debtorName": "KATRIN RAND",
-        "remittanceInformationUnstructured": "Nf (märts, aprill, mai, juuni, juuli, august, september, oktoober)",
+        "remittanceInformationUnstructured": "Nf",
         "transactionAmount": {
-          "amount": "40.00",
+          "amount": "44.79",
           "currency": "EUR"
         },
         "transactionId": "987255037",
@@ -155,7 +155,7 @@
         "bookingDate": "2024-10-13",
         "remittanceInformationUnstructured": "Kodukindlustuse makse (laenuleping nr ANON-20240226XX, poliis nr 105089654)",
         "transactionAmount": {
-          "amount": "-15.75",
+          "amount": "-14.06",
           "currency": "EUR"
         },
         "transactionId": "989562063",
@@ -169,7 +169,7 @@
         "creditorName": "Tiiu Lepp",
         "remittanceInformationUnstructured": "Oktoober",
         "transactionAmount": {
-          "amount": "-300.00",
+          "amount": "-315.00",
           "currency": "EUR"
         },
         "transactionId": "996237801",
@@ -183,7 +183,7 @@
         "creditorName": "Tiiu Lepp",
         "remittanceInformationUnstructured": "Oktoober",
         "transactionAmount": {
-          "amount": "-200.00",
+          "amount": "-171.68",
           "currency": "EUR"
         },
         "transactionId": "998855476",
@@ -197,7 +197,7 @@
         "creditorName": "Sandra Kiisk",
         "remittanceInformationUnstructured": "ülekanne",
         "transactionAmount": {
-          "amount": "-250.00",
+          "amount": "-262.50",
           "currency": "EUR"
         },
         "transactionId": "999531336",
@@ -211,7 +211,7 @@
         "creditorName": "Tiiu Lepp",
         "remittanceInformationUnstructured": "Oktoober",
         "transactionAmount": {
-          "amount": "-200.00",
+          "amount": "-213.57",
           "currency": "EUR"
         },
         "transactionId": "999971611",
@@ -225,7 +225,7 @@
         "creditorName": "Tiiu Lepp",
         "remittanceInformationUnstructured": "Oktoober",
         "transactionAmount": {
-          "amount": "-100.00",
+          "amount": "-92.48",
           "currency": "EUR"
         },
         "transactionId": "1000772958",
@@ -239,7 +239,7 @@
         "creditorName": "Tiiu Lepp",
         "remittanceInformationUnstructured": "Ravimid",
         "transactionAmount": {
-          "amount": "-25.00",
+          "amount": "-22.69",
           "currency": "EUR"
         },
         "transactionId": "1001095538",
@@ -251,9 +251,9 @@
           "iban": "EE582200001145697823"
         },
         "debtorName": "AS Digipartner",
-        "remittanceInformationUnstructured": "oktoobri tasu/october payment",
+        "remittanceInformationUnstructured": "kuutasu/monthly payment",
         "transactionAmount": {
-          "amount": "3120.00",
+          "amount": "2908.77",
           "currency": "EUR"
         },
         "transactionId": "1001337382",

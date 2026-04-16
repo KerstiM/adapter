@@ -10,7 +10,7 @@
         "bookingDate": "2016-10-01",
         "valueDate": "2016-10-01",
         "transactionAmount": {
-          "amount": "6.60",
+          "amount": "7.37",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-09-29 09:41 Toits City   Tallinn  10145 ESTEST",
@@ -21,7 +21,7 @@
         "bookingDate": "2016-10-01",
         "valueDate": "2016-10-01",
         "transactionAmount": {
-          "amount": "2.25",
+          "amount": "2.54",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-09-29 10:18 Tornimae Rimi   Tallinn  10145 ESTEST",
@@ -32,7 +32,7 @@
         "bookingDate": "2016-10-02",
         "valueDate": "2016-10-02",
         "transactionAmount": {
-          "amount": "1.41",
+          "amount": "1.34",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-10-01 10:46 Laagri Maksimarketi ap  Harjumaa  76401 ESTEST",
@@ -43,7 +43,7 @@
         "bookingDate": "2016-10-02",
         "valueDate": "2016-10-02",
         "transactionAmount": {
-          "amount": "3.30",
+          "amount": "2.99",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-09-30 12:04 Raamatukogu kohvik   Tallinn  12618 ESTEST",
@@ -54,7 +54,7 @@
         "bookingDate": "2016-10-02",
         "valueDate": "2016-10-02",
         "transactionAmount": {
-          "amount": "6.93",
+          "amount": "6.55",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-10-01 10:42 Laagri Maksimarket   Saue vald  76401 ESTEST",
@@ -65,7 +65,7 @@
         "bookingDate": "2016-10-03",
         "valueDate": "2016-10-03",
         "transactionAmount": {
-          "amount": "200.00",
+          "amount": "210.00",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "raha",
@@ -79,7 +79,7 @@
         "bookingDate": "2016-10-04",
         "valueDate": "2016-10-04",
         "transactionAmount": {
-          "amount": "59.22",
+          "amount": "67.53",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Selver AS, selver.ee, 2113000584123 (1093432)",
@@ -94,7 +94,7 @@
         "bookingDate": "2016-10-05",
         "valueDate": "2016-10-05",
         "transactionAmount": {
-          "amount": "9.44",
+          "amount": "8.97",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-10-03 15:44 Torupilli Selver   Tallinn  10126 ESTEST",
@@ -105,7 +105,7 @@
         "bookingDate": "2016-10-06",
         "valueDate": "2016-10-06",
         "transactionAmount": {
-          "amount": "2.99",
+          "amount": "3.35",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Refund/Payment 1093432 (selver.ee, ref. 2113000584123)",
@@ -120,7 +120,7 @@
         "bookingDate": "2016-10-06",
         "valueDate": "2016-10-06",
         "transactionAmount": {
-          "amount": "4.30",
+          "amount": "4.51",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-10-04 12:27 Raamatukogu kohvik   Tallinn  12618 ESTEST",
@@ -131,7 +131,7 @@
         "bookingDate": "2016-10-06",
         "valueDate": "2016-10-06",
         "transactionAmount": {
-          "amount": "2.80",
+          "amount": "2.61",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-10-04 16:14 Raamatukogu kohvik   Tallinn  12618 ESTEST",
@@ -142,7 +142,7 @@
         "bookingDate": "2016-10-07",
         "valueDate": "2016-10-07",
         "transactionAmount": {
-          "amount": "6.85",
+          "amount": "7.19",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-10-05 17:29 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
@@ -153,7 +153,7 @@
         "bookingDate": "2016-10-07",
         "valueDate": "2016-10-07",
         "transactionAmount": {
-          "amount": "2.25",
+          "amount": "2.48",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-10-06 22:08 Statoil Kristiine   Tallinn  10613 ESTEST",
@@ -164,7 +164,7 @@
         "bookingDate": "2016-10-08",
         "valueDate": "2016-10-08",
         "transactionAmount": {
-          "amount": "2.90",
+          "amount": "3.33",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-10-06 18:07 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
@@ -175,7 +175,7 @@
         "bookingDate": "2016-10-09",
         "valueDate": "2016-10-09",
         "transactionAmount": {
-          "amount": "30.00",
+          "amount": "33.81",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-10-08 15:54 Pelgulinna huvikool  Tallinn  10614 ESTEST",
@@ -186,7 +186,7 @@
         "bookingDate": "2016-10-10",
         "valueDate": "2016-10-10",
         "transactionAmount": {
-          "amount": "3.30",
+          "amount": "3.46",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-10-09 18:03 Staap   Tallinn  13425 ESTEST",
@@ -197,7 +197,7 @@
         "bookingDate": "2016-10-10",
         "valueDate": "2016-10-10",
         "transactionAmount": {
-          "amount": "9.50",
+          "amount": "10.80",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-10-08 17:26 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
@@ -208,7 +208,7 @@
         "bookingDate": "2016-10-11",
         "valueDate": "2016-10-11",
         "transactionAmount": {
-          "amount": "4.50",
+          "amount": "3.91",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-10-10 19:32 Staap   Tallinn  13425 ESTEST",
@@ -219,7 +219,7 @@
         "bookingDate": "2016-10-12",
         "valueDate": "2016-10-12",
         "transactionAmount": {
-          "amount": "22.50",
+          "amount": "21.38",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-10-11 13:43 Pelgulinna huvikool  Tallinn  10614 ESTEST",
@@ -230,7 +230,7 @@
         "bookingDate": "2016-10-13",
         "valueDate": "2016-10-13",
         "transactionAmount": {
-          "amount": "22.89",
+          "amount": "25.11",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-10-11 13:19 Kristiine Prisma isete  Tallinn  10615 ESTEST",
@@ -241,7 +241,7 @@
         "bookingDate": "2016-10-14",
         "valueDate": "2016-10-14",
         "transactionAmount": {
-          "amount": "11.76",
+          "amount": "12.35",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-10-13 15:21 Laagri Rimi apteek   Laagri  76401 ESTEST",
@@ -252,7 +252,7 @@
         "bookingDate": "2016-10-14",
         "valueDate": "2016-10-14",
         "transactionAmount": {
-          "amount": "50.00",
+          "amount": "54.86",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Ulekanne",
@@ -266,7 +266,7 @@
         "bookingDate": "2016-10-15",
         "valueDate": "2016-10-15",
         "transactionAmount": {
-          "amount": "20.19",
+          "amount": "22.99",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-10-14 21:21 BUS & TOG MOBILBILLET TELEGADE 2 TAASTRUP 2630 DNK (150 DKK)",
@@ -277,7 +277,7 @@
         "bookingDate": "2016-10-17",
         "valueDate": "2016-10-17",
         "transactionAmount": {
-          "amount": "5.85",
+          "amount": "6.54",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Arve nr: 121716034",
@@ -292,10 +292,10 @@
         "bookingDate": "2016-10-17",
         "valueDate": "2016-10-17",
         "transactionAmount": {
-          "amount": "50.00",
+          "amount": "46.49",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "Ulekanne kommud",
+        "remittanceInformationUnstructured": "Ülekanne",
         "debtorName": "Kersti Pärn",
         "debtorAccount": {
           "iban": "EE887700771006729384"
@@ -306,10 +306,10 @@
         "bookingDate": "2016-10-17",
         "valueDate": "2016-10-17",
         "transactionAmount": {
-          "amount": "56.15",
+          "amount": "59.65",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "Tamme 42-12 September",
+        "remittanceInformationUnstructured": "Kase 15-4 September",
         "creditorName": "Kase tn. 15 KU",
         "creditorAccount": {
           "iban": "EE122200221020804298"
@@ -320,7 +320,7 @@
         "bookingDate": "2016-10-17",
         "valueDate": "2016-10-17",
         "transactionAmount": {
-          "amount": "40.40",
+          "amount": "42.42",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..3847) 2016-10-14 18:43 DANSKE BANK  416075  KOBENHAVN NV  2400 DNKDNK (300 DKK)",
@@ -331,7 +331,7 @@
         "bookingDate": "2016-10-17",
         "valueDate": "2016-10-17",
         "transactionAmount": {
-          "amount": "1.00",
+          "amount": "1.07",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Sularaha valjamakse tasu: (..3847) 2016-10-14 18:43 DANSKE BANK  416075  KOBENHAVN NV  2400 DNKDNK (300 DKK)",
@@ -342,7 +342,7 @@
         "bookingDate": "2016-10-20",
         "valueDate": "2016-10-20",
         "transactionAmount": {
-          "amount": "65.00",
+          "amount": "72.00",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Ulekanne",
@@ -356,7 +356,7 @@
         "bookingDate": "2016-10-20",
         "valueDate": "2016-10-20",
         "transactionAmount": {
-          "amount": "38.95",
+          "amount": "37.00",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "81501010",
@@ -371,7 +371,7 @@
         "bookingDate": "2016-10-20",
         "valueDate": "2016-10-20",
         "transactionAmount": {
-          "amount": "160.00",
+          "amount": "174.25",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Kutusetoetus Tallinna linnalt",
@@ -386,7 +386,7 @@
         "bookingDate": "2016-10-20",
         "valueDate": "2016-10-20",
         "transactionAmount": {
-          "amount": "160.00",
+          "amount": "152.00",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "TLN 160",
@@ -400,7 +400,7 @@
         "bookingDate": "2016-10-21",
         "valueDate": "2016-10-21",
         "transactionAmount": {
-          "amount": "4.90",
+          "amount": "4.25",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-10-20 13:08 Taxify 16.10.20 1054 Tammsaare tee 47 Viimsi 74008 ESTEST",
@@ -411,7 +411,7 @@
         "bookingDate": "2016-10-21",
         "valueDate": "2016-10-21",
         "transactionAmount": {
-          "amount": "4.10",
+          "amount": "3.57",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-10-20 15:26 Taxify 16.10.20 1307 Tammsaare tee 47 Viimsi 74008 ESTEST",
@@ -422,7 +422,7 @@
         "bookingDate": "2016-10-21",
         "valueDate": "2016-10-21",
         "transactionAmount": {
-          "amount": "40.00",
+          "amount": "42.00",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Ulekanne",
@@ -436,7 +436,7 @@
         "bookingDate": "2016-10-21",
         "valueDate": "2016-10-21",
         "transactionAmount": {
-          "amount": "40.17",
+          "amount": "37.45",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Selver AS, selver.ee, 2113000632839 (1185082)",
@@ -451,7 +451,7 @@
         "bookingDate": "2016-10-21",
         "valueDate": "2016-10-21",
         "transactionAmount": {
-          "amount": "16.00",
+          "amount": "15.20",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Ulekanne",
@@ -465,7 +465,7 @@
         "bookingDate": "2016-10-21",
         "valueDate": "2016-10-21",
         "transactionAmount": {
-          "amount": "40.00",
+          "amount": "38.00",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Kampsun",
@@ -479,7 +479,7 @@
         "bookingDate": "2016-10-23",
         "valueDate": "2016-10-23",
         "transactionAmount": {
-          "amount": "40.00",
+          "amount": "42.00",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Ulekanne",
@@ -493,7 +493,7 @@
         "bookingDate": "2016-10-24",
         "valueDate": "2016-10-24",
         "transactionAmount": {
-          "amount": "4.14",
+          "amount": "3.87",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-10-23 18:03 Ylikooli Apteegi YA Kr  Tallinn  10615 ESTEST",
@@ -504,7 +504,7 @@
         "bookingDate": "2016-10-24",
         "valueDate": "2016-10-24",
         "transactionAmount": {
-          "amount": "4.60",
+          "amount": "4.85",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-10-23 17:49 Kristiine Kaubanduskes  Tallinn  10615 ESTEST",
@@ -515,7 +515,7 @@
         "bookingDate": "2016-10-24",
         "valueDate": "2016-10-24",
         "transactionAmount": {
-          "amount": "5.60",
+          "amount": "6.30",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-10-23 17:59 Knopka Kristiine kesk  Tallinn  10615 ESTEST",
@@ -526,7 +526,7 @@
         "bookingDate": "2016-10-24",
         "valueDate": "2016-10-24",
         "transactionAmount": {
-          "amount": "475.00",
+          "amount": "451.25",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Ulekanne 2",
@@ -540,7 +540,7 @@
         "bookingDate": "2016-10-24",
         "valueDate": "2016-10-24",
         "transactionAmount": {
-          "amount": "450.00",
+          "amount": "472.50",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "ulekanne",
@@ -554,10 +554,10 @@
         "bookingDate": "2016-10-24",
         "valueDate": "2016-10-24",
         "transactionAmount": {
-          "amount": "210.00",
+          "amount": "228.82",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "Ulekanne matilt",
+        "remittanceInformationUnstructured": "Ülekanne",
         "debtorName": "Kersti Pärn",
         "debtorAccount": {
           "iban": "EE567700771005284961"
@@ -568,10 +568,10 @@
         "bookingDate": "2016-10-24",
         "valueDate": "2016-10-24",
         "transactionAmount": {
-          "amount": "210.00",
+          "amount": "198.33",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "Matilt",
+        "remittanceInformationUnstructured": "Ülekanne",
         "creditorName": "Jaanus Kuusk",
         "creditorAccount": {
           "iban": "EE787700771009617382"
@@ -582,7 +582,7 @@
         "bookingDate": "2016-10-25",
         "valueDate": "2016-10-25",
         "transactionAmount": {
-          "amount": "23.18",
+          "amount": "24.60",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-10-24 14:48 Ylikooli Apteegi YA Kr  Tallinn  10615 ESTEST",
@@ -593,7 +593,7 @@
         "bookingDate": "2016-10-26",
         "valueDate": "2016-10-26",
         "transactionAmount": {
-          "amount": "2.51",
+          "amount": "2.64",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Refund/Payment 1185082 (selver.ee, ref. 2113000632839)",
@@ -608,10 +608,10 @@
         "bookingDate": "2016-10-26",
         "valueDate": "2016-10-26",
         "transactionAmount": {
-          "amount": "30.00",
+          "amount": "26.32",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "Matilt",
+        "remittanceInformationUnstructured": "Ülekanne",
         "creditorName": "Jaanus Kuusk",
         "creditorAccount": {
           "iban": "EE787700771009617382"
@@ -622,7 +622,7 @@
         "bookingDate": "2016-10-27",
         "valueDate": "2016-10-27",
         "transactionAmount": {
-          "amount": "40.00",
+          "amount": "37.59",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Ulekanne",
@@ -636,7 +636,7 @@
         "bookingDate": "2016-10-27",
         "valueDate": "2016-10-27",
         "transactionAmount": {
-          "amount": "40.42",
+          "amount": "38.40",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Selver AS, selver.ee, 2113000649424 (1201030)",
@@ -651,7 +651,7 @@
         "bookingDate": "2016-10-27",
         "valueDate": "2016-10-27",
         "transactionAmount": {
-          "amount": "15.00",
+          "amount": "16.36",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Ulekanne",
@@ -665,7 +665,7 @@
         "bookingDate": "2016-10-28",
         "valueDate": "2016-10-28",
         "transactionAmount": {
-          "amount": "3.70",
+          "amount": "3.35",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-10-27 17:50 Taxify 16.10.27 1536 Tammsaare tee 47 Viimsi 74008 ESTEST",
@@ -676,7 +676,7 @@
         "bookingDate": "2016-10-28",
         "valueDate": "2016-10-28",
         "transactionAmount": {
-          "amount": "200.00",
+          "amount": "178.22",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "raha",
@@ -690,7 +690,7 @@
         "bookingDate": "2016-10-29",
         "valueDate": "2016-10-29",
         "transactionAmount": {
-          "amount": "4.40",
+          "amount": "4.62",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-10-28 13:03 Taxify 16.10.28 1047 Tammsaare tee 47 Viimsi 74008 ESTEST",
@@ -701,7 +701,7 @@
         "bookingDate": "2016-10-30",
         "valueDate": "2016-10-30",
         "transactionAmount": {
-          "amount": "10.00",
+          "amount": "10.50",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "ulekanne",
@@ -715,7 +715,7 @@
         "bookingDate": "2016-10-31",
         "valueDate": "2016-10-31",
         "transactionAmount": {
-          "amount": "0.22",
+          "amount": "0.21",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Refund/Payment 1201030 (selver.ee, ref. 2113000649424)",
@@ -730,10 +730,10 @@
         "bookingDate": "2016-11-02",
         "valueDate": "2016-11-02",
         "transactionAmount": {
-          "amount": "10.00",
+          "amount": "10.50",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "Ulekanne Liina tagasi",
+        "remittanceInformationUnstructured": "Ülekanne tagasi",
         "debtorName": "Kersti Pärn",
         "debtorAccount": {
           "iban": "EE237700771008163749"
@@ -744,7 +744,7 @@
         "bookingDate": "2016-11-02",
         "valueDate": "2016-11-02",
         "transactionAmount": {
-          "amount": "46.04",
+          "amount": "43.74",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Selver AS, selver.ee, 2113000667338 (1220238)",
@@ -759,7 +759,7 @@
         "bookingDate": "2016-11-03",
         "valueDate": "2016-11-03",
         "transactionAmount": {
-          "amount": "15.95",
+          "amount": "16.75",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-02 19:25 Mosaic Kristiine   Tallinn  10615 ESTEST",
@@ -770,7 +770,7 @@
         "bookingDate": "2016-11-03",
         "valueDate": "2016-11-03",
         "transactionAmount": {
-          "amount": "5.50",
+          "amount": "5.78",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-02 19:15 Happy Socks   Tallinn  10615 ESTEST",
@@ -781,7 +781,7 @@
         "bookingDate": "2016-11-03",
         "valueDate": "2016-11-03",
         "transactionAmount": {
-          "amount": "3.90",
+          "amount": "3.70",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-02 19:12 Sokisahtel   Tallinn  10116 ESTEST",
@@ -792,7 +792,7 @@
         "bookingDate": "2016-11-03",
         "valueDate": "2016-11-03",
         "transactionAmount": {
-          "amount": "75.00",
+          "amount": "78.75",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Oppelaen",
@@ -806,7 +806,7 @@
         "bookingDate": "2016-11-04",
         "valueDate": "2016-11-04",
         "transactionAmount": {
-          "amount": "3.38",
+          "amount": "3.68",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Refund/Payment 1220238 (selver.ee, ref. 2113000667338)",
@@ -821,7 +821,7 @@
         "bookingDate": "2016-11-05",
         "valueDate": "2016-11-05",
         "transactionAmount": {
-          "amount": "35.17",
+          "amount": "30.63",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-04 20:58 403 H&M Kristiine   Tallinn  10615 ESTEST",
@@ -832,10 +832,10 @@
         "bookingDate": "2016-11-05",
         "valueDate": "2016-11-05",
         "transactionAmount": {
-          "amount": "450.00",
+          "amount": "427.50",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "Ulekanne madrats",
+        "remittanceInformationUnstructured": "Ülekanne",
         "debtorName": "Kersti Pärn",
         "debtorAccount": {
           "iban": "EE567700771005284961"
@@ -846,7 +846,7 @@
         "bookingDate": "2016-11-06",
         "valueDate": "2016-11-06",
         "transactionAmount": {
-          "amount": "385.60",
+          "amount": "428.29",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-05 12:15 Mooblimaja   Tallinn  10611 ESTEST",
@@ -857,7 +857,7 @@
         "bookingDate": "2016-11-06",
         "valueDate": "2016-11-06",
         "transactionAmount": {
-          "amount": "7.98",
+          "amount": "7.58",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-04 20:41 Jysk Linnenn Furniture  Tallinn  10615 ESTEST",
@@ -868,7 +868,7 @@
         "bookingDate": "2016-11-06",
         "valueDate": "2016-11-06",
         "transactionAmount": {
-          "amount": "12.50",
+          "amount": "11.82",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-05 12:22 Mooblimaja   Tallinn  10611 ESTEST",
@@ -879,7 +879,7 @@
         "bookingDate": "2016-11-08",
         "valueDate": "2016-11-08",
         "transactionAmount": {
-          "amount": "500.00",
+          "amount": "540.31",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "raha",
@@ -893,7 +893,7 @@
         "bookingDate": "2016-11-08",
         "valueDate": "2016-11-08",
         "transactionAmount": {
-          "amount": "8.00",
+          "amount": "8.40",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Arve nr: 121741865",
@@ -908,7 +908,7 @@
         "bookingDate": "2016-11-08",
         "valueDate": "2016-11-08",
         "transactionAmount": {
-          "amount": "40.00",
+          "amount": "42.28",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "A-28650768",
@@ -923,10 +923,10 @@
         "bookingDate": "2016-11-08",
         "valueDate": "2016-11-08",
         "transactionAmount": {
-          "amount": "130.00",
+          "amount": "116.62",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "11206 Jaanus Kuusk",
+        "remittanceInformationUnstructured": "11206",
         "remittanceInformationStructured": "11206",
         "creditorName": "KU Lepa tee 8",
         "creditorAccount": {
@@ -938,7 +938,7 @@
         "bookingDate": "2016-11-09",
         "valueDate": "2016-11-09",
         "transactionAmount": {
-          "amount": "5.80",
+          "amount": "6.09",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-08 09:20 Taxify 16.11.08 0803 Tammsaare tee 47 Viimsi 74008 ESTEST",
@@ -949,7 +949,7 @@
         "bookingDate": "2016-11-09",
         "valueDate": "2016-11-09",
         "transactionAmount": {
-          "amount": "3.80",
+          "amount": "3.34",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-08 10:35 Taxify 16.11.08 0923 Tammsaare tee 47 Viimsi 74008 ESTEST",
@@ -960,7 +960,7 @@
         "bookingDate": "2016-11-09",
         "valueDate": "2016-11-09",
         "transactionAmount": {
-          "amount": "13.00",
+          "amount": "13.65",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Arve nr 642352775672",
@@ -975,7 +975,7 @@
         "bookingDate": "2016-11-11",
         "valueDate": "2016-11-11",
         "transactionAmount": {
-          "amount": "16.29",
+          "amount": "15.48",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-10 12:09 Maxima X T205   Tallinn  11312 ESTEST",
@@ -986,7 +986,7 @@
         "bookingDate": "2016-11-12",
         "valueDate": "2016-11-12",
         "transactionAmount": {
-          "amount": "5.90",
+          "amount": "5.27",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-11 22:23 Sesoon kohvik   Tallinn  10414 ESTEST",
@@ -997,7 +997,7 @@
         "bookingDate": "2016-11-12",
         "valueDate": "2016-11-12",
         "transactionAmount": {
-          "amount": "41.60",
+          "amount": "35.66",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Selver AS, selver.ee, 2113000700648 (1257213)",
@@ -1012,7 +1012,7 @@
         "bookingDate": "2016-11-13",
         "valueDate": "2016-11-13",
         "transactionAmount": {
-          "amount": "12.70",
+          "amount": "10.93",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-12 12:48 Kristiine Kaubanduskes  Tallinn  10615 ESTEST",
@@ -1023,7 +1023,7 @@
         "bookingDate": "2016-11-14",
         "valueDate": "2016-11-14",
         "transactionAmount": {
-          "amount": "5.38",
+          "amount": "4.96",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Refund/Payment 1257213 (selver.ee, ref. 2113000700648)",
@@ -1038,7 +1038,7 @@
         "bookingDate": "2016-11-15",
         "valueDate": "2016-11-15",
         "transactionAmount": {
-          "amount": "3.50",
+          "amount": "3.32",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-14 20:33 Kehrwieder   Tallinn  10146 ESTEST",
@@ -1049,7 +1049,7 @@
         "bookingDate": "2016-11-16",
         "valueDate": "2016-11-16",
         "transactionAmount": {
-          "amount": "6.10",
+          "amount": "6.78",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-15 13:26 Antalya restoran   Tallinn  11315 ESTEST",
@@ -1060,7 +1060,7 @@
         "bookingDate": "2016-11-17",
         "valueDate": "2016-11-17",
         "transactionAmount": {
-          "amount": "36.00",
+          "amount": "40.24",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-16 13:38 Mooblimaja   Tallinn  10611 ESTEST",
@@ -1071,7 +1071,7 @@
         "bookingDate": "2016-11-17",
         "valueDate": "2016-11-17",
         "transactionAmount": {
-          "amount": "18.90",
+          "amount": "17.52",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-16 12:25 Sky Mobile Kristiine   Tallinn  10615 ESTEST",
@@ -1082,7 +1082,7 @@
         "bookingDate": "2016-11-20",
         "valueDate": "2016-11-20",
         "transactionAmount": {
-          "amount": "6.00",
+          "amount": "6.30",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-19 14:11 Kristiine postkontor   Tallinn  10701 ESTEST",
@@ -1093,7 +1093,7 @@
         "bookingDate": "2016-11-20",
         "valueDate": "2016-11-20",
         "transactionAmount": {
-          "amount": "41.52",
+          "amount": "38.67",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Selver AS, selver.ee, 2113000727317 (1284342)",
@@ -1108,7 +1108,7 @@
         "bookingDate": "2016-11-21",
         "valueDate": "2016-11-21",
         "transactionAmount": {
-          "amount": "5.30",
+          "amount": "6.01",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-19 14:22 Taxify 16.11.19 1305 Tammsaare tee 47 Viimsi 74008 ESTEST",
@@ -1119,7 +1119,7 @@
         "bookingDate": "2016-11-21",
         "valueDate": "2016-11-21",
         "transactionAmount": {
-          "amount": "6.10",
+          "amount": "6.57",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-20 16:19 Taxify 16.11.20 1455 Tammsaare tee 47 Viimsi 74008 ESTEST",
@@ -1130,10 +1130,10 @@
         "bookingDate": "2016-11-21",
         "valueDate": "2016-11-21",
         "transactionAmount": {
-          "amount": "5.00",
+          "amount": "4.69",
           "currency": "EUR"
         },
-        "remittanceInformationUnstructured": "matilt",
+        "remittanceInformationUnstructured": "ülekanne",
         "creditorName": "Jaanus Kuusk",
         "creditorAccount": {
           "iban": "EE787700771009617382"
@@ -1144,7 +1144,7 @@
         "bookingDate": "2016-11-22",
         "valueDate": "2016-11-22",
         "transactionAmount": {
-          "amount": "20.14",
+          "amount": "19.13",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-21 12:47 Kristiine Prisma isete  Tallinn  10615 ESTEST",
@@ -1155,7 +1155,7 @@
         "bookingDate": "2016-11-22",
         "valueDate": "2016-11-22",
         "transactionAmount": {
-          "amount": "10.00",
+          "amount": "10.80",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "RAHA",
@@ -1169,7 +1169,7 @@
         "bookingDate": "2016-11-22",
         "valueDate": "2016-11-22",
         "transactionAmount": {
-          "amount": "38.95",
+          "amount": "40.90",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "81501010",
@@ -1184,7 +1184,7 @@
         "bookingDate": "2016-11-23",
         "valueDate": "2016-11-23",
         "transactionAmount": {
-          "amount": "4.81",
+          "amount": "4.37",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Refund/Payment 1284342 (selver.ee, ref. 2113000727317)",
@@ -1199,7 +1199,7 @@
         "bookingDate": "2016-11-24",
         "valueDate": "2016-11-24",
         "transactionAmount": {
-          "amount": "12.72",
+          "amount": "14.48",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-22 16:11 ALI*aliexpress.com No.699, Wangshang Road HANGZHOU 310099 CHN (13.4 USD)",
@@ -1210,7 +1210,7 @@
         "bookingDate": "2016-11-26",
         "valueDate": "2016-11-26",
         "transactionAmount": {
-          "amount": "9.00",
+          "amount": "9.67",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-25 16:16 Pelgulinna Huvikool  Tallinn  10614 ESTEST",
@@ -1221,7 +1221,7 @@
         "bookingDate": "2016-11-26",
         "valueDate": "2016-11-26",
         "transactionAmount": {
-          "amount": "15.00",
+          "amount": "16.39",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Kino!",
@@ -1235,7 +1235,7 @@
         "bookingDate": "2016-11-29",
         "valueDate": "2016-11-29",
         "transactionAmount": {
-          "amount": "42.03",
+          "amount": "35.82",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "Selver AS, selver.ee, 2113000756922 (1316602)",
@@ -1265,7 +1265,7 @@
         "bookingDate": "2016-11-30",
         "valueDate": "2016-11-30",
         "transactionAmount": {
-          "amount": "3.50",
+          "amount": "3.09",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "(..6291) 2016-11-29 12:57 Antalya restoran   Tallinn  11315 ESTEST",
@@ -1276,7 +1276,7 @@
         "bookingDate": "2016-11-30",
         "valueDate": "2016-11-30",
         "transactionAmount": {
-          "amount": "200.00",
+          "amount": "176.16",
           "currency": "EUR"
         },
         "remittanceInformationUnstructured": "raha",

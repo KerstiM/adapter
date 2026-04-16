@@ -126,18 +126,18 @@ DSR iteratsioonid on märgistatud tsükliga: **ehita → hinda → õpi → koha
 ## Iteratsioon 6: Reaalne anonümiseeritud andmestik (04.03)
 - **D10 reaalne anonümiseeritud andmestik:** 90 tehingut (okt–nov 2016), parsitud pangaväljavõttest
 - **Eesmärk:** Valideerida pipeline'i käitumist pärisandmetega; tõendada, et süsteem töötab ka väljaspool sünteetilisi datasette (UK2 auditeeritav kvaliteeditõendus)
-- **Anonümiseerimine:**
+- **Anonümiseerimine (täiendatud 16.04):**
   - Isikute nimed asendatud väljamõeldud nimedega (4 isikut)
   - Isiklikud IBANid asendatud (11 unikaalset kontot)
   - Kaardi viimased 4 numbrit muudetud (2 kaarti)
-  - Aadressid anonümiseeritud (KÜ nimed, tänavanimed)
-  - Remittance-tekstid puhastatud identifitseerivatest viidetest
+  - POS-aadressid anonümiseeritud (töökoha ja elukoha tuvastamine välistatud)
+  - Remittance-tekstid puhastatud identifitseerivatest viidetest (perekondlikud viited eemaldatud)
+  - Summad perturbeeritud (±5–15%), palgasumma normaliseeritud
   - Ettevõtete nimed ja avalikud IBANid jäetud muutmata (avalik info)
 - **Huvitavad äärjuhud:**
   - Duplikaat-transactionId 47210131 (ATM väljavõte + teenustasu — erinev sisu, sama ID)
   - `creditorName: "nan"` (pandas NaN→string artefakt)
   - Teaduslik notatsioon `remittanceInformationStructured`-is (Excel/pandas artefakt)
-  - Kõik summad positiivsed (Berlin Group konventsioon)
 - **Tulemused:**
   - Pipeline tulemus: PARTIAL_SUCCESS (oodatud — pärisandmetes tekivad WARN-lipud)
   - 101 väljundrida (90 booked + 11 tuletatud)
