@@ -1,7 +1,7 @@
 {
   "account": {
     "currency": "EUR",
-    "iban": "EE387700771001449271"
+    "iban": "EE517700771002836491"
   },
   "transactions": {
     "booked": [
@@ -13,7 +13,7 @@
         "creditorName": "AS Pensionikeskus",
         "remittanceInformationUnstructured": "30101119828,",
         "transactionAmount": {
-          "amount": "-500.00",
+          "amount": "-562.93",
           "currency": "EUR"
         },
         "transactionId": "980694098",
@@ -27,7 +27,7 @@
         "creditorName": "AS Pensionikeskus",
         "remittanceInformationUnstructured": "30101119828,",
         "transactionAmount": {
-          "amount": "-500.00",
+          "amount": "-432.38",
           "currency": "EUR"
         },
         "transactionId": "980694099",
@@ -36,12 +36,12 @@
       {
         "bookingDate": "2024-10-01",
         "creditorAccount": {
-          "iban": "EE127700771001384912"
+          "iban": "EE347700771003958274"
         },
-        "creditorName": "Ana Tamm",
+        "creditorName": "Tiiu Lepp",
         "remittanceInformationUnstructured": "Oktoober",
         "transactionAmount": {
-          "amount": "-500.00",
+          "amount": "-458.81",
           "currency": "EUR"
         },
         "transactionId": "980958849",
@@ -50,12 +50,12 @@
       {
         "bookingDate": "2024-10-04",
         "debtorAccount": {
-          "iban": "EE672200221010384902"
+          "iban": "EE832200221045729168"
         },
-        "debtorName": "LIINA TAMM",
+        "debtorName": "MAIE LEPP",
         "remittanceInformationUnstructured": "raha",
         "transactionAmount": {
-          "amount": "30.00",
+          "amount": "32.48",
           "currency": "EUR"
         },
         "transactionId": "983112081",
@@ -65,7 +65,7 @@
         "bookingDate": "2024-10-05",
         "remittanceInformationUnstructured": "Kodulaenu põhiosa tagasimakse (laenuleping nr ANON-20240226XX)",
         "transactionAmount": {
-          "amount": "-363.51",
+          "amount": "-343.54",
           "currency": "EUR"
         },
         "transactionId": "983777602",
@@ -75,7 +75,7 @@
         "bookingDate": "2024-10-05",
         "remittanceInformationUnstructured": "Kodulaenu intressimakse (laenuleping nr ANON-20240226XX)",
         "transactionAmount": {
-          "amount": "-1233.10",
+          "amount": "-1404.49",
           "currency": "EUR"
         },
         "transactionId": "983777603",
@@ -84,12 +84,12 @@
       {
         "bookingDate": "2024-10-06",
         "debtorAccount": {
-          "iban": "EE791010010043384918"
+          "iban": "EE431010010078562934"
         },
-        "debtorName": "KRISTEL KASK",
-        "remittanceInformationUnstructured": "Rikule 8.ndaks sünnipäevaks",
+        "debtorName": "HELEN RAND",
+        "remittanceInformationUnstructured": "Sünnipäevaks",
         "transactionAmount": {
-          "amount": "50.00",
+          "amount": "43.43",
           "currency": "EUR"
         },
         "transactionId": "984734962",
@@ -98,12 +98,12 @@
       {
         "bookingDate": "2024-10-06",
         "debtorAccount": {
-          "iban": "EE201010010409384918"
+          "iban": "EE671010010083472956"
         },
-        "debtorName": "PIRET KASK",
-        "remittanceInformationUnstructured": "Rikule 8. sünnipaevaks  Tädi Piret, onu Kert ja väike Orm",
+        "debtorName": "KATRIN RAND",
+        "remittanceInformationUnstructured": "Sünnipäevaks perelt",
         "transactionAmount": {
-          "amount": "30.00",
+          "amount": "28.03",
           "currency": "EUR"
         },
         "transactionId": "984745492",
@@ -112,12 +112,12 @@
       {
         "bookingDate": "2024-10-06",
         "creditorAccount": {
-          "iban": "EE577700771002384960"
+          "iban": "EE897700771007461823"
         },
-        "creditorName": "Riku Mägi",
-        "remittanceInformationUnstructured": "Riku sünnipäev",
+        "creditorName": "Siim Paju",
+        "remittanceInformationUnstructured": "Sünnipäev",
         "transactionAmount": {
-          "amount": "-110.00",
+          "amount": "-120.52",
           "currency": "EUR"
         },
         "transactionId": "984839437",
@@ -131,7 +131,7 @@
         "debtorName": "SOTSIAALKINDLUSTUSAMET",
         "remittanceInformationUnstructured": "Peretoetus",
         "transactionAmount": {
-          "amount": "160.00",
+          "amount": "152.00",
           "currency": "EUR"
         },
         "transactionId": "985788820",
@@ -140,12 +140,12 @@
       {
         "bookingDate": "2024-10-10",
         "debtorAccount": {
-          "iban": "EE201010010409384918"
+          "iban": "EE671010010083472956"
         },
-        "debtorName": "PIRET KASK",
-        "remittanceInformationUnstructured": "Nf (märts, aprill, mai, juuni, juuli, august, september, oktoober)",
+        "debtorName": "KATRIN RAND",
+        "remittanceInformationUnstructured": "Nf",
         "transactionAmount": {
-          "amount": "40.00",
+          "amount": "44.79",
           "currency": "EUR"
         },
         "transactionId": "987255037",
@@ -155,7 +155,7 @@
         "bookingDate": "2024-10-13",
         "remittanceInformationUnstructured": "Kodukindlustuse makse (laenuleping nr ANON-20240226XX, poliis nr 105089654)",
         "transactionAmount": {
-          "amount": "-15.75",
+          "amount": "-14.06",
           "currency": "EUR"
         },
         "transactionId": "989562063",
@@ -164,12 +164,12 @@
       {
         "bookingDate": "2024-10-23",
         "creditorAccount": {
-          "iban": "EE127700771001384912"
+          "iban": "EE347700771003958274"
         },
-        "creditorName": "Ana Tamm",
+        "creditorName": "Tiiu Lepp",
         "remittanceInformationUnstructured": "Oktoober",
         "transactionAmount": {
-          "amount": "-300.00",
+          "amount": "-315.00",
           "currency": "EUR"
         },
         "transactionId": "996237801",
@@ -178,12 +178,12 @@
       {
         "bookingDate": "2024-10-27",
         "creditorAccount": {
-          "iban": "EE127700771001384912"
+          "iban": "EE347700771003958274"
         },
-        "creditorName": "Ana Tamm",
+        "creditorName": "Tiiu Lepp",
         "remittanceInformationUnstructured": "Oktoober",
         "transactionAmount": {
-          "amount": "-200.00",
+          "amount": "-171.68",
           "currency": "EUR"
         },
         "transactionId": "998855476",
@@ -192,12 +192,12 @@
       {
         "bookingDate": "2024-10-28",
         "creditorAccount": {
-          "iban": "EE041010010433384915"
+          "iban": "EE281010010067584913"
         },
-        "creditorName": "Annika Lepik",
+        "creditorName": "Sandra Kiisk",
         "remittanceInformationUnstructured": "ülekanne",
         "transactionAmount": {
-          "amount": "-250.00",
+          "amount": "-262.50",
           "currency": "EUR"
         },
         "transactionId": "999531336",
@@ -206,12 +206,12 @@
       {
         "bookingDate": "2024-10-29",
         "creditorAccount": {
-          "iban": "EE127700771001384912"
+          "iban": "EE347700771003958274"
         },
-        "creditorName": "Ana Tamm",
+        "creditorName": "Tiiu Lepp",
         "remittanceInformationUnstructured": "Oktoober",
         "transactionAmount": {
-          "amount": "-200.00",
+          "amount": "-213.57",
           "currency": "EUR"
         },
         "transactionId": "999971611",
@@ -220,12 +220,12 @@
       {
         "bookingDate": "2024-10-30",
         "creditorAccount": {
-          "iban": "EE127700771001384912"
+          "iban": "EE347700771003958274"
         },
-        "creditorName": "Ana Tamm",
+        "creditorName": "Tiiu Lepp",
         "remittanceInformationUnstructured": "Oktoober",
         "transactionAmount": {
-          "amount": "-100.00",
+          "amount": "-92.48",
           "currency": "EUR"
         },
         "transactionId": "1000772958",
@@ -234,12 +234,12 @@
       {
         "bookingDate": "2024-10-31",
         "creditorAccount": {
-          "iban": "EE127700771001384912"
+          "iban": "EE347700771003958274"
         },
-        "creditorName": "Ana Tamm",
+        "creditorName": "Tiiu Lepp",
         "remittanceInformationUnstructured": "Ravimid",
         "transactionAmount": {
-          "amount": "-25.00",
+          "amount": "-22.69",
           "currency": "EUR"
         },
         "transactionId": "1001095538",
@@ -248,12 +248,12 @@
       {
         "bookingDate": "2024-10-31",
         "debtorAccount": {
-          "iban": "EE322200001120384980"
+          "iban": "EE582200001145697823"
         },
-        "debtorName": "AS Tehnogrupp",
-        "remittanceInformationUnstructured": "oktoobri tasu/october payment",
+        "debtorName": "AS Digipartner",
+        "remittanceInformationUnstructured": "kuutasu/monthly payment",
         "transactionAmount": {
-          "amount": "3120.00",
+          "amount": "2908.77",
           "currency": "EUR"
         },
         "transactionId": "1001337382",

@@ -1370,8 +1370,8 @@ class TestD11RealAnon2024:
         with open(run_folder / "sv.json", encoding="utf-8") as f:
             sv = json.load(f)
         ibans = {a["iban"] for a in sv["accounts"]}
-        assert "EE387700771001449271" in ibans
-        assert "EE127700771001384912" in ibans
+        assert "EE517700771002836491" in ibans
+        assert "EE347700771003958274" in ibans
 
     def test_d11_sv_transactions_from_both_accounts(self, d11_output: tuple) -> None:
         """SV transactions should reference both accounts."""

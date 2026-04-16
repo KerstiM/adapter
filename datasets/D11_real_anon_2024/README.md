@@ -2,8 +2,9 @@
 
 Pärisandmed anonümiseeritud kahelt seotud Eesti pangakontolt.
 Periood: 2024-10-01 – 2024-10-31.  Kõik isikuandmed (nimed, IBAN-id,
-isikukoodid, laenulepingu viited) on asendatud; äripartnerid ja summad
-on säilitatud (v.a palgasumma, mis on normaliseeritud).
+isikukoodid, laenulepingu viited) on asendatud; summad on perturbeeritud
+(±5–15%); POS-aadressid ja kaarditerminali numbrid on muudetud;
+perekondlikku konteksti sisaldavad remittance-tekstid on üldistatud.
 
 ## Omadused
 

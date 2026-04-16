@@ -3,7 +3,7 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "currency": "EUR",
-      "iban": "EE387700771001292847",
+      "iban": "EE617700771003845912",
       "name": "D10 Anonymised Real Account"
     }
   ],
@@ -25,10 +25,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "6.6",
+        "abs": "7.37",
         "currency": "EUR",
-        "raw": "6.60",
-        "signed": "-6.6"
+        "raw": "7.37",
+        "signed": "-7.37"
       },
       "booking_date": "2016-10-01",
       "counterparty": {
@@ -44,8 +44,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "e4272b3737efbdbf",
-      "remittance": "(..7821) 2016-09-29 09:41 Toits City   Tallinn  10145 ESTEST",
+      "record_id": "bf7a57a02d669696",
+      "remittance": "(..3847) 2016-09-29 09:41 Toits City   Tallinn  10145 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[0]"
@@ -57,10 +57,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "2.25",
+        "abs": "2.54",
         "currency": "EUR",
-        "raw": "2.25",
-        "signed": "-2.25"
+        "raw": "2.54",
+        "signed": "-2.54"
       },
       "booking_date": "2016-10-01",
       "counterparty": {
@@ -76,8 +76,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "eea9a46e3e1ec0f8",
-      "remittance": "(..7821) 2016-09-29 10:18 Tornimae Rimi   Tallinn  10145 ESTEST",
+      "record_id": "883a67c7e7778833",
+      "remittance": "(..3847) 2016-09-29 10:18 Tornimae Rimi   Tallinn  10145 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[1]"
@@ -89,10 +89,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "1.41",
+        "abs": "1.34",
         "currency": "EUR",
-        "raw": "1.41",
-        "signed": "-1.41"
+        "raw": "1.34",
+        "signed": "-1.34"
       },
       "booking_date": "2016-10-02",
       "counterparty": {
@@ -108,8 +108,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "4615552ed7ff208a",
-      "remittance": "(..4536) 2016-10-01 10:46 Laagri Maksimarketi ap  Harjumaa  76401 ESTEST",
+      "record_id": "ade8abbd23a4e6eb",
+      "remittance": "(..6291) 2016-10-01 10:46 Laagri Maksimarketi ap  Harjumaa  76401 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[2]"
@@ -121,10 +121,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "3.3",
+        "abs": "2.99",
         "currency": "EUR",
-        "raw": "3.30",
-        "signed": "-3.3"
+        "raw": "2.99",
+        "signed": "-2.99"
       },
       "booking_date": "2016-10-02",
       "counterparty": {
@@ -140,8 +140,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "1fac17aa96009f4a",
-      "remittance": "(..7821) 2016-09-30 12:04 Raamatukogu kohvik   Tallinn  12618 ESTEST",
+      "record_id": "3f405da079997658",
+      "remittance": "(..3847) 2016-09-30 12:04 Raamatukogu kohvik   Tallinn  12618 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[3]"
@@ -153,10 +153,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "6.93",
+        "abs": "6.55",
         "currency": "EUR",
-        "raw": "6.93",
-        "signed": "-6.93"
+        "raw": "6.55",
+        "signed": "-6.55"
       },
       "booking_date": "2016-10-02",
       "counterparty": {
@@ -172,8 +172,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "88f0960e738ec316",
-      "remittance": "(..4536) 2016-10-01 10:42 Laagri Maksimarket   Saue vald  76401 ESTEST",
+      "record_id": "47a073733192b59c",
+      "remittance": "(..6291) 2016-10-01 10:42 Laagri Maksimarket   Saue vald  76401 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[4]"
@@ -185,20 +185,20 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "200",
+        "abs": "210",
         "currency": "EUR",
-        "raw": "200.00",
-        "signed": "200"
+        "raw": "210.00",
+        "signed": "210"
       },
       "booking_date": "2016-10-03",
       "counterparty": {
-        "iban": "EE192200221056439871",
-        "name": "Marten Koppel",
+        "iban": "EE342200221078561234",
+        "name": "Jaanus Kuusk",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "309520c85de28e77",
+      "record_id": "adf37eb3abfa0a03",
       "remittance": "raha",
       "source": {
         "input_file": "transactions.json",
@@ -211,10 +211,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "59.22",
+        "abs": "67.53",
         "currency": "EUR",
-        "raw": "59.22",
-        "signed": "-59.22"
+        "raw": "67.53",
+        "signed": "-67.53"
       },
       "booking_date": "2016-10-04",
       "counterparty": {
@@ -230,7 +230,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "8bca81a20a05c9e7",
+      "record_id": "649a5afadc470d74",
       "remittance": "Selver AS, selver.ee, 2113000584123 (1093432)",
       "source": {
         "input_file": "transactions.json",
@@ -243,10 +243,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "9.44",
+        "abs": "8.97",
         "currency": "EUR",
-        "raw": "9.44",
-        "signed": "-9.44"
+        "raw": "8.97",
+        "signed": "-8.97"
       },
       "booking_date": "2016-10-05",
       "counterparty": {
@@ -262,8 +262,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "186fd08dee093015",
-      "remittance": "(..7821) 2016-10-03 15:44 Torupilli Selver   Tallinn  10126 ESTEST",
+      "record_id": "450d4346de4735fb",
+      "remittance": "(..3847) 2016-10-03 15:44 Torupilli Selver   Tallinn  10126 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[7]"
@@ -275,10 +275,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "2.99",
+        "abs": "3.35",
         "currency": "EUR",
-        "raw": "2.99",
-        "signed": "2.99"
+        "raw": "3.35",
+        "signed": "3.35"
       },
       "booking_date": "2016-10-06",
       "counterparty": {
@@ -288,7 +288,7 @@
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "a63b2539047d0dbc",
+      "record_id": "bde60fc073da0dac",
       "remittance": "Refund/Payment 1093432 (selver.ee, ref. 2113000584123)",
       "source": {
         "input_file": "transactions.json",
@@ -301,10 +301,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "4.3",
+        "abs": "4.51",
         "currency": "EUR",
-        "raw": "4.30",
-        "signed": "-4.3"
+        "raw": "4.51",
+        "signed": "-4.51"
       },
       "booking_date": "2016-10-06",
       "counterparty": {
@@ -320,8 +320,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "d11f941710e62244",
-      "remittance": "(..7821) 2016-10-04 12:27 Raamatukogu kohvik   Tallinn  12618 ESTEST",
+      "record_id": "4118decac9d5c1d4",
+      "remittance": "(..3847) 2016-10-04 12:27 Raamatukogu kohvik   Tallinn  12618 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[9]"
@@ -333,10 +333,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "2.8",
+        "abs": "2.61",
         "currency": "EUR",
-        "raw": "2.80",
-        "signed": "-2.8"
+        "raw": "2.61",
+        "signed": "-2.61"
       },
       "booking_date": "2016-10-06",
       "counterparty": {
@@ -352,8 +352,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "6a030e2518bfc823",
-      "remittance": "(..7821) 2016-10-04 16:14 Raamatukogu kohvik   Tallinn  12618 ESTEST",
+      "record_id": "86536bafdbd9510d",
+      "remittance": "(..3847) 2016-10-04 16:14 Raamatukogu kohvik   Tallinn  12618 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[10]"
@@ -365,10 +365,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "6.85",
+        "abs": "7.19",
         "currency": "EUR",
-        "raw": "6.85",
-        "signed": "-6.85"
+        "raw": "7.19",
+        "signed": "-7.19"
       },
       "booking_date": "2016-10-07",
       "counterparty": {
@@ -384,8 +384,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "b3bc38666e173a76",
-      "remittance": "(..7821) 2016-10-05 17:29 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
+      "record_id": "4001d4f813296b1e",
+      "remittance": "(..3847) 2016-10-05 17:29 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[11]"
@@ -397,10 +397,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "2.25",
+        "abs": "2.48",
         "currency": "EUR",
-        "raw": "2.25",
-        "signed": "-2.25"
+        "raw": "2.48",
+        "signed": "-2.48"
       },
       "booking_date": "2016-10-07",
       "counterparty": {
@@ -416,8 +416,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "b134b295cd06c926",
-      "remittance": "(..7821) 2016-10-06 22:08 Statoil Kristiine   Tallinn  10613 ESTEST",
+      "record_id": "10b017554523c982",
+      "remittance": "(..3847) 2016-10-06 22:08 Statoil Kristiine   Tallinn  10613 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[12]"
@@ -429,10 +429,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "2.9",
+        "abs": "3.33",
         "currency": "EUR",
-        "raw": "2.90",
-        "signed": "-2.9"
+        "raw": "3.33",
+        "signed": "-3.33"
       },
       "booking_date": "2016-10-08",
       "counterparty": {
@@ -448,8 +448,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "3f7e0e5027782794",
-      "remittance": "(..7821) 2016-10-06 18:07 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
+      "record_id": "5eadf33d4cd090cc",
+      "remittance": "(..3847) 2016-10-06 18:07 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[13]"
@@ -461,10 +461,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "30",
+        "abs": "33.81",
         "currency": "EUR",
-        "raw": "30.00",
-        "signed": "-30"
+        "raw": "33.81",
+        "signed": "-33.81"
       },
       "booking_date": "2016-10-09",
       "counterparty": {
@@ -480,8 +480,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "ad8926da56d1f807",
-      "remittance": "(..7821) 2016-10-08 15:54 Pelgulinna huvikool  Tallinn  10614 ESTEST",
+      "record_id": "e17bbc0e10b6fa34",
+      "remittance": "(..3847) 2016-10-08 15:54 Pelgulinna huvikool  Tallinn  10614 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[14]"
@@ -493,10 +493,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "3.3",
+        "abs": "3.46",
         "currency": "EUR",
-        "raw": "3.30",
-        "signed": "-3.3"
+        "raw": "3.46",
+        "signed": "-3.46"
       },
       "booking_date": "2016-10-10",
       "counterparty": {
@@ -512,8 +512,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "1fb692fd9e787902",
-      "remittance": "(..7821) 2016-10-09 18:03 Staap   Tallinn  13425 ESTEST",
+      "record_id": "4b9c0caa93dfe9aa",
+      "remittance": "(..3847) 2016-10-09 18:03 Staap   Tallinn  13425 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[15]"
@@ -525,10 +525,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "9.5",
+        "abs": "10.8",
         "currency": "EUR",
-        "raw": "9.50",
-        "signed": "-9.5"
+        "raw": "10.80",
+        "signed": "-10.8"
       },
       "booking_date": "2016-10-10",
       "counterparty": {
@@ -544,8 +544,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "d4777901c8871a92",
-      "remittance": "(..7821) 2016-10-08 17:26 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
+      "record_id": "068be13938ea5cc3",
+      "remittance": "(..3847) 2016-10-08 17:26 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[16]"
@@ -557,10 +557,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "4.5",
+        "abs": "3.91",
         "currency": "EUR",
-        "raw": "4.50",
-        "signed": "-4.5"
+        "raw": "3.91",
+        "signed": "-3.91"
       },
       "booking_date": "2016-10-11",
       "counterparty": {
@@ -576,8 +576,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "04e4d75363a54e6d",
-      "remittance": "(..7821) 2016-10-10 19:32 Staap   Tallinn  13425 ESTEST",
+      "record_id": "3e320f46375f1505",
+      "remittance": "(..3847) 2016-10-10 19:32 Staap   Tallinn  13425 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[17]"
@@ -589,10 +589,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "22.5",
+        "abs": "21.38",
         "currency": "EUR",
-        "raw": "22.50",
-        "signed": "-22.5"
+        "raw": "21.38",
+        "signed": "-21.38"
       },
       "booking_date": "2016-10-12",
       "counterparty": {
@@ -608,8 +608,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "1a9e02a7806aafbc",
-      "remittance": "(..7821) 2016-10-11 13:43 Pelgulinna huvikool  Tallinn  10614 ESTEST",
+      "record_id": "986ec7f29d2a272c",
+      "remittance": "(..3847) 2016-10-11 13:43 Pelgulinna huvikool  Tallinn  10614 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[18]"
@@ -621,10 +621,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "22.89",
+        "abs": "25.11",
         "currency": "EUR",
-        "raw": "22.89",
-        "signed": "-22.89"
+        "raw": "25.11",
+        "signed": "-25.11"
       },
       "booking_date": "2016-10-13",
       "counterparty": {
@@ -640,8 +640,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "7b7e8a8e4b12c487",
-      "remittance": "(..7821) 2016-10-11 13:19 Kristiine Prisma isete  Tallinn  10615 ESTEST",
+      "record_id": "50a64bd717d2584c",
+      "remittance": "(..3847) 2016-10-11 13:19 Kristiine Prisma isete  Tallinn  10615 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[19]"
@@ -653,10 +653,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "11.76",
+        "abs": "12.35",
         "currency": "EUR",
-        "raw": "11.76",
-        "signed": "-11.76"
+        "raw": "12.35",
+        "signed": "-12.35"
       },
       "booking_date": "2016-10-14",
       "counterparty": {
@@ -672,8 +672,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "9e35b2d8a0c9e980",
-      "remittance": "(..4536) 2016-10-13 15:21 Laagri Rimi apteek   Laagri  76401 ESTEST",
+      "record_id": "24d39ecb92e7ccc5",
+      "remittance": "(..6291) 2016-10-13 15:21 Laagri Rimi apteek   Laagri  76401 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[20]"
@@ -685,20 +685,20 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "50",
+        "abs": "54.86",
         "currency": "EUR",
-        "raw": "50.00",
-        "signed": "50"
+        "raw": "54.86",
+        "signed": "54.86"
       },
       "booking_date": "2016-10-14",
       "counterparty": {
-        "iban": "EE467700771009183456",
-        "name": "Liina Rebane",
+        "iban": "EE887700771006729384",
+        "name": "Kersti Pärn",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "ef800ba4719070bb",
+      "record_id": "792a7613f4968d30",
       "remittance": "Ulekanne",
       "source": {
         "input_file": "transactions.json",
@@ -711,10 +711,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "20.19",
+        "abs": "22.99",
         "currency": "EUR",
-        "raw": "20.19",
-        "signed": "-20.19"
+        "raw": "22.99",
+        "signed": "-22.99"
       },
       "booking_date": "2016-10-15",
       "counterparty": {
@@ -730,8 +730,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "8ad883ebe30fb8a8",
-      "remittance": "(..7821) 2016-10-14 21:21 BUS & TOG MOBILBILLET TELEGADE 2 TAASTRUP 2630 DNK (150 DKK)",
+      "record_id": "95465ca67c0b410c",
+      "remittance": "(..3847) 2016-10-14 21:21 BUS & TOG MOBILBILLET TELEGADE 2 TAASTRUP 2630 DNK (150 DKK)",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[22]"
@@ -743,10 +743,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "5.85",
+        "abs": "6.54",
         "currency": "EUR",
-        "raw": "5.85",
-        "signed": "-5.85"
+        "raw": "6.54",
+        "signed": "-6.54"
       },
       "booking_date": "2016-10-17",
       "counterparty": {
@@ -762,7 +762,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "294cbf1395d14df6",
+      "record_id": "8bf290cbb2ece5d7",
       "remittance": "Arve nr: 121716034",
       "source": {
         "input_file": "transactions.json",
@@ -775,21 +775,21 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "50",
+        "abs": "46.49",
         "currency": "EUR",
-        "raw": "50.00",
-        "signed": "50"
+        "raw": "46.49",
+        "signed": "46.49"
       },
       "booking_date": "2016-10-17",
       "counterparty": {
-        "iban": "EE467700771009183456",
-        "name": "Liina Rebane",
+        "iban": "EE887700771006729384",
+        "name": "Kersti Pärn",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "30fe6eddfaa39320",
-      "remittance": "Ulekanne kommud",
+      "record_id": "ab7e0fcc1e38b80c",
+      "remittance": "Ülekanne",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[24]"
@@ -801,15 +801,15 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "56.15",
+        "abs": "59.65",
         "currency": "EUR",
-        "raw": "56.15",
-        "signed": "-56.15"
+        "raw": "59.65",
+        "signed": "-59.65"
       },
       "booking_date": "2016-10-17",
       "counterparty": {
         "iban": "EE122200221020804298",
-        "name": "Tamme tn. 42 KU",
+        "name": "Kase tn. 15 KU",
         "role": "CREDITOR"
       },
       "direction": "OUT",
@@ -820,8 +820,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "d58cd579898178a6",
-      "remittance": "Tamme 42-12 September",
+      "record_id": "bee203959010f0d4",
+      "remittance": "Kase 15-4 September",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[25]"
@@ -833,10 +833,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "40.4",
+        "abs": "42.42",
         "currency": "EUR",
-        "raw": "40.40",
-        "signed": "-40.4"
+        "raw": "42.42",
+        "signed": "-42.42"
       },
       "booking_date": "2016-10-17",
       "counterparty": {
@@ -852,8 +852,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "d9322c75472c2921",
-      "remittance": "(..7821) 2016-10-14 18:43 DANSKE BANK  416075  KOBENHAVN NV  2400 DNKDNK (300 DKK)",
+      "record_id": "09a3237b67923419",
+      "remittance": "(..3847) 2016-10-14 18:43 DANSKE BANK  416075  KOBENHAVN NV  2400 DNKDNK (300 DKK)",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[26]"
@@ -865,10 +865,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "1",
+        "abs": "1.07",
         "currency": "EUR",
-        "raw": "1.00",
-        "signed": "-1"
+        "raw": "1.07",
+        "signed": "-1.07"
       },
       "booking_date": "2016-10-17",
       "counterparty": {
@@ -884,8 +884,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "216c30c3021e7d28",
-      "remittance": "Sularaha valjamakse tasu: (..7821) 2016-10-14 18:43 DANSKE BANK  416075  KOBENHAVN NV  2400 DNKDNK (300 DKK)",
+      "record_id": "ee2df2bf1a5ac9ef",
+      "remittance": "Sularaha valjamakse tasu: (..3847) 2016-10-14 18:43 DANSKE BANK  416075  KOBENHAVN NV  2400 DNKDNK (300 DKK)",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[27]"
@@ -897,20 +897,20 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "65",
+        "abs": "72",
         "currency": "EUR",
-        "raw": "65.00",
-        "signed": "65"
+        "raw": "72.00",
+        "signed": "72"
       },
       "booking_date": "2016-10-20",
       "counterparty": {
-        "iban": "EE527700771003847261",
-        "name": "Liina Rebane",
+        "iban": "EE447700771004592817",
+        "name": "Kersti Pärn",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "78d9509d111c00b0",
+      "record_id": "4fa695df763e5556",
       "remittance": "Ulekanne",
       "source": {
         "input_file": "transactions.json",
@@ -923,10 +923,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "38.95",
+        "abs": "37",
         "currency": "EUR",
-        "raw": "38.95",
-        "signed": "-38.95"
+        "raw": "37.00",
+        "signed": "-37"
       },
       "booking_date": "2016-10-20",
       "counterparty": {
@@ -942,7 +942,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "d702c36a38748add",
+      "record_id": "456aea9428260859",
       "remittance": "81501010",
       "source": {
         "input_file": "transactions.json",
@@ -955,10 +955,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "160",
+        "abs": "174.25",
         "currency": "EUR",
-        "raw": "160.00",
-        "signed": "160"
+        "raw": "174.25",
+        "signed": "174.25"
       },
       "booking_date": "2016-10-20",
       "counterparty": {
@@ -968,7 +968,7 @@
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "16c851ecf31a1994",
+      "record_id": "4f062c48ade366f0",
       "remittance": "Kutusetoetus Tallinna linnalt",
       "source": {
         "input_file": "transactions.json",
@@ -981,15 +981,15 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "160",
+        "abs": "152",
         "currency": "EUR",
-        "raw": "160.00",
-        "signed": "-160"
+        "raw": "152.00",
+        "signed": "-152"
       },
       "booking_date": "2016-10-20",
       "counterparty": {
-        "iban": "EE747700771002938471",
-        "name": "Liina Rebane",
+        "iban": "EE567700771005284961",
+        "name": "Kersti Pärn",
         "role": "CREDITOR"
       },
       "direction": "OUT",
@@ -1000,7 +1000,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "78dd1fc1eab028dd",
+      "record_id": "e623ebe80ee5d080",
       "remittance": "TLN 160",
       "source": {
         "input_file": "transactions.json",
@@ -1013,10 +1013,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "4.9",
+        "abs": "4.25",
         "currency": "EUR",
-        "raw": "4.90",
-        "signed": "-4.9"
+        "raw": "4.25",
+        "signed": "-4.25"
       },
       "booking_date": "2016-10-21",
       "counterparty": {
@@ -1032,8 +1032,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "3dae591293c4e4a4",
-      "remittance": "(..4536) 2016-10-20 13:08 Taxify 16.10.20 1054 Altmetsa poik 1 Viimsi 74008 ESTEST",
+      "record_id": "4d5e83a5a24f95c4",
+      "remittance": "(..6291) 2016-10-20 13:08 Taxify 16.10.20 1054 Tammsaare tee 47 Viimsi 74008 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[32]"
@@ -1045,10 +1045,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "4.1",
+        "abs": "3.57",
         "currency": "EUR",
-        "raw": "4.10",
-        "signed": "-4.1"
+        "raw": "3.57",
+        "signed": "-3.57"
       },
       "booking_date": "2016-10-21",
       "counterparty": {
@@ -1064,8 +1064,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "44de2d14293c3c5e",
-      "remittance": "(..4536) 2016-10-20 15:26 Taxify 16.10.20 1307 Altmetsa poik 1 Viimsi 74008 ESTEST",
+      "record_id": "9e2b4203d27abab4",
+      "remittance": "(..6291) 2016-10-20 15:26 Taxify 16.10.20 1307 Tammsaare tee 47 Viimsi 74008 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[33]"
@@ -1077,20 +1077,20 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "40",
+        "abs": "42",
         "currency": "EUR",
-        "raw": "40.00",
-        "signed": "40"
+        "raw": "42.00",
+        "signed": "42"
       },
       "booking_date": "2016-10-21",
       "counterparty": {
-        "iban": "EE467700771009183456",
-        "name": "Liina Rebane",
+        "iban": "EE887700771006729384",
+        "name": "Kersti Pärn",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "1b05cf7498bc050c",
+      "record_id": "31fe589c67662617",
       "remittance": "Ulekanne",
       "source": {
         "input_file": "transactions.json",
@@ -1103,10 +1103,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "40.17",
+        "abs": "37.45",
         "currency": "EUR",
-        "raw": "40.17",
-        "signed": "-40.17"
+        "raw": "37.45",
+        "signed": "-37.45"
       },
       "booking_date": "2016-10-21",
       "counterparty": {
@@ -1122,7 +1122,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "32f56f44883864e3",
+      "record_id": "0aa5767efc578377",
       "remittance": "Selver AS, selver.ee, 2113000632839 (1185082)",
       "source": {
         "input_file": "transactions.json",
@@ -1135,20 +1135,20 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "16",
+        "abs": "15.2",
         "currency": "EUR",
-        "raw": "16.00",
-        "signed": "16"
+        "raw": "15.20",
+        "signed": "15.2"
       },
       "booking_date": "2016-10-21",
       "counterparty": {
-        "iban": "EE467700771009183456",
-        "name": "Liina Rebane",
+        "iban": "EE887700771006729384",
+        "name": "Kersti Pärn",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "8b23561559142706",
+      "record_id": "8d30c7862b140f99",
       "remittance": "Ulekanne",
       "source": {
         "input_file": "transactions.json",
@@ -1161,15 +1161,15 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "40",
+        "abs": "38",
         "currency": "EUR",
-        "raw": "40.00",
-        "signed": "-40"
+        "raw": "38.00",
+        "signed": "-38"
       },
       "booking_date": "2016-10-21",
       "counterparty": {
-        "iban": "EE222200221045839271",
-        "name": "KADRI Lepik",
+        "iban": "EE462200221034678512",
+        "name": "MARIKA Kivi",
         "role": "CREDITOR"
       },
       "direction": "OUT",
@@ -1180,7 +1180,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "10ac87d2f10118ed",
+      "record_id": "de319fa658b5f3c6",
       "remittance": "Kampsun",
       "source": {
         "input_file": "transactions.json",
@@ -1193,20 +1193,20 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "40",
+        "abs": "42",
         "currency": "EUR",
-        "raw": "40.00",
-        "signed": "40"
+        "raw": "42.00",
+        "signed": "42"
       },
       "booking_date": "2016-10-23",
       "counterparty": {
-        "iban": "EE467700771009183456",
-        "name": "Liina Rebane",
+        "iban": "EE887700771006729384",
+        "name": "Kersti Pärn",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "3c3039abdc93f0f9",
+      "record_id": "ce07d33eab9e012e",
       "remittance": "Ulekanne",
       "source": {
         "input_file": "transactions.json",
@@ -1219,10 +1219,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "4.14",
+        "abs": "3.87",
         "currency": "EUR",
-        "raw": "4.14",
-        "signed": "-4.14"
+        "raw": "3.87",
+        "signed": "-3.87"
       },
       "booking_date": "2016-10-24",
       "counterparty": {
@@ -1238,8 +1238,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "29aadc386f7a1c03",
-      "remittance": "(..4536) 2016-10-23 18:03 Ylikooli Apteegi YA Kr  Tallinn  10615 ESTEST",
+      "record_id": "744bf25b4eb20403",
+      "remittance": "(..6291) 2016-10-23 18:03 Ylikooli Apteegi YA Kr  Tallinn  10615 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[39]"
@@ -1251,10 +1251,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "4.6",
+        "abs": "4.85",
         "currency": "EUR",
-        "raw": "4.60",
-        "signed": "-4.6"
+        "raw": "4.85",
+        "signed": "-4.85"
       },
       "booking_date": "2016-10-24",
       "counterparty": {
@@ -1270,8 +1270,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "dcf2fa9ac6a2843c",
-      "remittance": "(..4536) 2016-10-23 17:49 Kristiine Kaubanduskes  Tallinn  10615 ESTEST",
+      "record_id": "54b45eea775b01f4",
+      "remittance": "(..6291) 2016-10-23 17:49 Kristiine Kaubanduskes  Tallinn  10615 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[40]"
@@ -1283,10 +1283,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "5.6",
+        "abs": "6.3",
         "currency": "EUR",
-        "raw": "5.60",
-        "signed": "-5.6"
+        "raw": "6.30",
+        "signed": "-6.3"
       },
       "booking_date": "2016-10-24",
       "counterparty": {
@@ -1302,8 +1302,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "ec015c636a7996fe",
-      "remittance": "(..4536) 2016-10-23 17:59 Knopka Kristiine kesk  Tallinn  10615 ESTEST",
+      "record_id": "8a20f5b5aed491cd",
+      "remittance": "(..6291) 2016-10-23 17:59 Knopka Kristiine kesk  Tallinn  10615 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[41]"
@@ -1315,20 +1315,20 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "475",
+        "abs": "451.25",
         "currency": "EUR",
-        "raw": "475.00",
-        "signed": "475"
+        "raw": "451.25",
+        "signed": "451.25"
       },
       "booking_date": "2016-10-24",
       "counterparty": {
-        "iban": "EE617700771007293845",
-        "name": "Liina Rebane",
+        "iban": "EE237700771008163749",
+        "name": "Kersti Pärn",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "35526d218e97620c",
+      "record_id": "bed183be22921e37",
       "remittance": "Ulekanne 2",
       "source": {
         "input_file": "transactions.json",
@@ -1341,15 +1341,15 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "450",
+        "abs": "472.5",
         "currency": "EUR",
-        "raw": "450.00",
-        "signed": "-450"
+        "raw": "472.50",
+        "signed": "-472.5"
       },
       "booking_date": "2016-10-24",
       "counterparty": {
-        "iban": "EE827700771008461293",
-        "name": "Marten Koppel",
+        "iban": "EE787700771009617382",
+        "name": "Jaanus Kuusk",
         "role": "CREDITOR"
       },
       "direction": "OUT",
@@ -1360,7 +1360,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "14f67d6126f859b1",
+      "record_id": "97eeef2b495b04c8",
       "remittance": "ulekanne",
       "source": {
         "input_file": "transactions.json",
@@ -1373,21 +1373,21 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "210",
+        "abs": "228.82",
         "currency": "EUR",
-        "raw": "210.00",
-        "signed": "210"
+        "raw": "228.82",
+        "signed": "228.82"
       },
       "booking_date": "2016-10-24",
       "counterparty": {
-        "iban": "EE747700771002938471",
-        "name": "Liina Rebane",
+        "iban": "EE567700771005284961",
+        "name": "Kersti Pärn",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "aac2a95f2dd9ae32",
-      "remittance": "Ulekanne matilt",
+      "record_id": "c084447bf5c9caa9",
+      "remittance": "Ülekanne",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[44]"
@@ -1399,15 +1399,15 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "210",
+        "abs": "198.33",
         "currency": "EUR",
-        "raw": "210.00",
-        "signed": "-210"
+        "raw": "198.33",
+        "signed": "-198.33"
       },
       "booking_date": "2016-10-24",
       "counterparty": {
-        "iban": "EE827700771008461293",
-        "name": "Marten Koppel",
+        "iban": "EE787700771009617382",
+        "name": "Jaanus Kuusk",
         "role": "CREDITOR"
       },
       "direction": "OUT",
@@ -1418,8 +1418,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "d15a0ab674b42031",
-      "remittance": "Matilt",
+      "record_id": "6a193d7651277394",
+      "remittance": "Ülekanne",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[45]"
@@ -1431,10 +1431,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "23.18",
+        "abs": "24.6",
         "currency": "EUR",
-        "raw": "23.18",
-        "signed": "-23.18"
+        "raw": "24.60",
+        "signed": "-24.6"
       },
       "booking_date": "2016-10-25",
       "counterparty": {
@@ -1450,8 +1450,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "abcc8f45cad14ccc",
-      "remittance": "(..4536) 2016-10-24 14:48 Ylikooli Apteegi YA Kr  Tallinn  10615 ESTEST",
+      "record_id": "01cedee4c27a5c32",
+      "remittance": "(..6291) 2016-10-24 14:48 Ylikooli Apteegi YA Kr  Tallinn  10615 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[46]"
@@ -1463,10 +1463,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "2.51",
+        "abs": "2.64",
         "currency": "EUR",
-        "raw": "2.51",
-        "signed": "2.51"
+        "raw": "2.64",
+        "signed": "2.64"
       },
       "booking_date": "2016-10-26",
       "counterparty": {
@@ -1476,7 +1476,7 @@
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "416db3424df7de4a",
+      "record_id": "a1598f0e07db5487",
       "remittance": "Refund/Payment 1185082 (selver.ee, ref. 2113000632839)",
       "source": {
         "input_file": "transactions.json",
@@ -1489,15 +1489,15 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "30",
+        "abs": "26.32",
         "currency": "EUR",
-        "raw": "30.00",
-        "signed": "-30"
+        "raw": "26.32",
+        "signed": "-26.32"
       },
       "booking_date": "2016-10-26",
       "counterparty": {
-        "iban": "EE827700771008461293",
-        "name": "Marten Koppel",
+        "iban": "EE787700771009617382",
+        "name": "Jaanus Kuusk",
         "role": "CREDITOR"
       },
       "direction": "OUT",
@@ -1508,8 +1508,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "329bfbab407eabbf",
-      "remittance": "Matilt",
+      "record_id": "828108e0b232bc74",
+      "remittance": "Ülekanne",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[48]"
@@ -1521,20 +1521,20 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "40",
+        "abs": "37.59",
         "currency": "EUR",
-        "raw": "40.00",
-        "signed": "40"
+        "raw": "37.59",
+        "signed": "37.59"
       },
       "booking_date": "2016-10-27",
       "counterparty": {
-        "iban": "EE747700771002938471",
-        "name": "Liina Rebane",
+        "iban": "EE567700771005284961",
+        "name": "Kersti Pärn",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "d8fce85a144efd59",
+      "record_id": "f71e06e9c679ae03",
       "remittance": "Ulekanne",
       "source": {
         "input_file": "transactions.json",
@@ -1547,10 +1547,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "40.42",
+        "abs": "38.4",
         "currency": "EUR",
-        "raw": "40.42",
-        "signed": "-40.42"
+        "raw": "38.40",
+        "signed": "-38.4"
       },
       "booking_date": "2016-10-27",
       "counterparty": {
@@ -1566,7 +1566,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "347a2fc1065511fc",
+      "record_id": "41dfbffca589e684",
       "remittance": "Selver AS, selver.ee, 2113000649424 (1201030)",
       "source": {
         "input_file": "transactions.json",
@@ -1579,20 +1579,20 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "15",
+        "abs": "16.36",
         "currency": "EUR",
-        "raw": "15.00",
-        "signed": "15"
+        "raw": "16.36",
+        "signed": "16.36"
       },
       "booking_date": "2016-10-27",
       "counterparty": {
-        "iban": "EE747700771002938471",
-        "name": "Liina Rebane",
+        "iban": "EE567700771005284961",
+        "name": "Kersti Pärn",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "8789bc86857bf3de",
+      "record_id": "f79e5b1f848d4b89",
       "remittance": "Ulekanne",
       "source": {
         "input_file": "transactions.json",
@@ -1605,10 +1605,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "3.7",
+        "abs": "3.35",
         "currency": "EUR",
-        "raw": "3.70",
-        "signed": "-3.7"
+        "raw": "3.35",
+        "signed": "-3.35"
       },
       "booking_date": "2016-10-28",
       "counterparty": {
@@ -1624,8 +1624,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "5a92a725645ab8b9",
-      "remittance": "(..4536) 2016-10-27 17:50 Taxify 16.10.27 1536 Altmetsa poik 1 Viimsi 74008 ESTEST",
+      "record_id": "ab0c3e69dfd15051",
+      "remittance": "(..6291) 2016-10-27 17:50 Taxify 16.10.27 1536 Tammsaare tee 47 Viimsi 74008 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[52]"
@@ -1637,20 +1637,20 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "200",
+        "abs": "178.22",
         "currency": "EUR",
-        "raw": "200.00",
-        "signed": "200"
+        "raw": "178.22",
+        "signed": "178.22"
       },
       "booking_date": "2016-10-28",
       "counterparty": {
-        "iban": "EE192200221056439871",
-        "name": "Marten Koppel",
+        "iban": "EE342200221078561234",
+        "name": "Jaanus Kuusk",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "a57a79a290ea9628",
+      "record_id": "318efb7e9fc0011f",
       "remittance": "raha",
       "source": {
         "input_file": "transactions.json",
@@ -1663,10 +1663,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "4.4",
+        "abs": "4.62",
         "currency": "EUR",
-        "raw": "4.40",
-        "signed": "-4.4"
+        "raw": "4.62",
+        "signed": "-4.62"
       },
       "booking_date": "2016-10-29",
       "counterparty": {
@@ -1682,8 +1682,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "2cbdfd7d2928bb68",
-      "remittance": "(..4536) 2016-10-28 13:03 Taxify 16.10.28 1047 Altmetsa poik 1 Viimsi 74008 ESTEST",
+      "record_id": "26028ca7ab03ee12",
+      "remittance": "(..6291) 2016-10-28 13:03 Taxify 16.10.28 1047 Tammsaare tee 47 Viimsi 74008 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[54]"
@@ -1695,15 +1695,15 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "10",
+        "abs": "10.5",
         "currency": "EUR",
-        "raw": "10.00",
-        "signed": "-10"
+        "raw": "10.50",
+        "signed": "-10.5"
       },
       "booking_date": "2016-10-30",
       "counterparty": {
-        "iban": "EE363300335812478956",
-        "name": "Mari Tamm",
+        "iban": "EE513300335847291685",
+        "name": "Epp Saare",
         "role": "CREDITOR"
       },
       "direction": "OUT",
@@ -1714,7 +1714,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "ffbe1ac148563191",
+      "record_id": "83458ab423e7ae1c",
       "remittance": "ulekanne",
       "source": {
         "input_file": "transactions.json",
@@ -1727,10 +1727,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "0.22",
+        "abs": "0.21",
         "currency": "EUR",
-        "raw": "0.22",
-        "signed": "0.22"
+        "raw": "0.21",
+        "signed": "0.21"
       },
       "booking_date": "2016-10-31",
       "counterparty": {
@@ -1740,7 +1740,7 @@
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "f8f06d89b0157ad8",
+      "record_id": "df4db1e2f8ee74cf",
       "remittance": "Refund/Payment 1201030 (selver.ee, ref. 2113000649424)",
       "source": {
         "input_file": "transactions.json",
@@ -1753,21 +1753,21 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "10",
+        "abs": "10.5",
         "currency": "EUR",
-        "raw": "10.00",
-        "signed": "10"
+        "raw": "10.50",
+        "signed": "10.5"
       },
       "booking_date": "2016-11-02",
       "counterparty": {
-        "iban": "EE617700771007293845",
-        "name": "Liina Rebane",
+        "iban": "EE237700771008163749",
+        "name": "Kersti Pärn",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "74f7ff1de6dd4ced",
-      "remittance": "Ulekanne Liina tagasi",
+      "record_id": "cc86920a073f1f51",
+      "remittance": "Ülekanne tagasi",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[57]"
@@ -1779,10 +1779,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "46.04",
+        "abs": "43.74",
         "currency": "EUR",
-        "raw": "46.04",
-        "signed": "-46.04"
+        "raw": "43.74",
+        "signed": "-43.74"
       },
       "booking_date": "2016-11-02",
       "counterparty": {
@@ -1798,7 +1798,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "0dc471d308670754",
+      "record_id": "671ce7ada1e81bb4",
       "remittance": "Selver AS, selver.ee, 2113000667338 (1220238)",
       "source": {
         "input_file": "transactions.json",
@@ -1811,10 +1811,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "15.95",
+        "abs": "16.75",
         "currency": "EUR",
-        "raw": "15.95",
-        "signed": "-15.95"
+        "raw": "16.75",
+        "signed": "-16.75"
       },
       "booking_date": "2016-11-03",
       "counterparty": {
@@ -1830,8 +1830,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "c71eb9461193999f",
-      "remittance": "(..4536) 2016-11-02 19:25 Mosaic Kristiine   Tallinn  10615 ESTEST",
+      "record_id": "ddff7975c9d2f8f4",
+      "remittance": "(..6291) 2016-11-02 19:25 Mosaic Kristiine   Tallinn  10615 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[59]"
@@ -1843,10 +1843,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "5.5",
+        "abs": "5.78",
         "currency": "EUR",
-        "raw": "5.50",
-        "signed": "-5.5"
+        "raw": "5.78",
+        "signed": "-5.78"
       },
       "booking_date": "2016-11-03",
       "counterparty": {
@@ -1862,8 +1862,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "207ba1b61abe82aa",
-      "remittance": "(..4536) 2016-11-02 19:15 Happy Socks   Tallinn  10615 ESTEST",
+      "record_id": "57edb1ccaea3c6ec",
+      "remittance": "(..6291) 2016-11-02 19:15 Happy Socks   Tallinn  10615 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[60]"
@@ -1875,10 +1875,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "3.9",
+        "abs": "3.7",
         "currency": "EUR",
-        "raw": "3.90",
-        "signed": "-3.9"
+        "raw": "3.70",
+        "signed": "-3.7"
       },
       "booking_date": "2016-11-03",
       "counterparty": {
@@ -1894,8 +1894,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "437a184cb274ad9c",
-      "remittance": "(..4536) 2016-11-02 19:12 Sokisahtel   Tallinn  10116 ESTEST",
+      "record_id": "065f269dff24ef44",
+      "remittance": "(..6291) 2016-11-02 19:12 Sokisahtel   Tallinn  10116 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[61]"
@@ -1907,15 +1907,15 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "75",
+        "abs": "78.75",
         "currency": "EUR",
-        "raw": "75.00",
-        "signed": "-75"
+        "raw": "78.75",
+        "signed": "-78.75"
       },
       "booking_date": "2016-11-03",
       "counterparty": {
-        "iban": "EE552200221067128934",
-        "name": "Liina Rebane",
+        "iban": "EE682200221089345671",
+        "name": "Kersti Pärn",
         "role": "CREDITOR"
       },
       "direction": "OUT",
@@ -1926,7 +1926,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "af0a9a02a790def5",
+      "record_id": "0703d48b59312883",
       "remittance": "Oppelaen",
       "source": {
         "input_file": "transactions.json",
@@ -1939,10 +1939,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "3.38",
+        "abs": "3.68",
         "currency": "EUR",
-        "raw": "3.38",
-        "signed": "3.38"
+        "raw": "3.68",
+        "signed": "3.68"
       },
       "booking_date": "2016-11-04",
       "counterparty": {
@@ -1952,7 +1952,7 @@
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "a0e855af883cd995",
+      "record_id": "07365e3a232e8a00",
       "remittance": "Refund/Payment 1220238 (selver.ee, ref. 2113000667338)",
       "source": {
         "input_file": "transactions.json",
@@ -1965,10 +1965,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "35.17",
+        "abs": "30.63",
         "currency": "EUR",
-        "raw": "35.17",
-        "signed": "-35.17"
+        "raw": "30.63",
+        "signed": "-30.63"
       },
       "booking_date": "2016-11-05",
       "counterparty": {
@@ -1984,8 +1984,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "01fdd74488947e8d",
-      "remittance": "(..4536) 2016-11-04 20:58 403 H&M Kristiine   Tallinn  10615 ESTEST",
+      "record_id": "716ba3ddb898b1d5",
+      "remittance": "(..6291) 2016-11-04 20:58 403 H&M Kristiine   Tallinn  10615 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[64]"
@@ -1997,21 +1997,21 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "450",
+        "abs": "427.5",
         "currency": "EUR",
-        "raw": "450.00",
-        "signed": "450"
+        "raw": "427.50",
+        "signed": "427.5"
       },
       "booking_date": "2016-11-05",
       "counterparty": {
-        "iban": "EE747700771002938471",
-        "name": "Liina Rebane",
+        "iban": "EE567700771005284961",
+        "name": "Kersti Pärn",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "2a23285c6567b969",
-      "remittance": "Ulekanne madrats",
+      "record_id": "0eaf44858b7e3082",
+      "remittance": "Ülekanne",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[65]"
@@ -2023,10 +2023,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "385.6",
+        "abs": "428.29",
         "currency": "EUR",
-        "raw": "385.60",
-        "signed": "-385.6"
+        "raw": "428.29",
+        "signed": "-428.29"
       },
       "booking_date": "2016-11-06",
       "counterparty": {
@@ -2042,8 +2042,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "fa31ded078d154fd",
-      "remittance": "(..4536) 2016-11-05 12:15 Mooblimaja   Tallinn  10611 ESTEST",
+      "record_id": "b574f7c3684f6f94",
+      "remittance": "(..6291) 2016-11-05 12:15 Mooblimaja   Tallinn  10611 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[66]"
@@ -2055,10 +2055,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "7.98",
+        "abs": "7.58",
         "currency": "EUR",
-        "raw": "7.98",
-        "signed": "-7.98"
+        "raw": "7.58",
+        "signed": "-7.58"
       },
       "booking_date": "2016-11-06",
       "counterparty": {
@@ -2074,8 +2074,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "f19048a3f2d9d0f5",
-      "remittance": "(..4536) 2016-11-04 20:41 Jysk Linnenn Furniture  Tallinn  10615 ESTEST",
+      "record_id": "a5fc40baf8558b93",
+      "remittance": "(..6291) 2016-11-04 20:41 Jysk Linnenn Furniture  Tallinn  10615 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[67]"
@@ -2087,10 +2087,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "12.5",
+        "abs": "11.82",
         "currency": "EUR",
-        "raw": "12.50",
-        "signed": "-12.5"
+        "raw": "11.82",
+        "signed": "-11.82"
       },
       "booking_date": "2016-11-06",
       "counterparty": {
@@ -2106,8 +2106,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "8ed01c65b1a73baf",
-      "remittance": "(..4536) 2016-11-05 12:22 Mooblimaja   Tallinn  10611 ESTEST",
+      "record_id": "4d1d408b0c0e5815",
+      "remittance": "(..6291) 2016-11-05 12:22 Mooblimaja   Tallinn  10611 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[68]"
@@ -2119,20 +2119,20 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "500",
+        "abs": "540.31",
         "currency": "EUR",
-        "raw": "500.00",
-        "signed": "500"
+        "raw": "540.31",
+        "signed": "540.31"
       },
       "booking_date": "2016-11-08",
       "counterparty": {
-        "iban": "EE192200221056439871",
-        "name": "Marten Koppel",
+        "iban": "EE342200221078561234",
+        "name": "Jaanus Kuusk",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "6223888008060412",
+      "record_id": "dbe16905a12d2377",
       "remittance": "raha",
       "source": {
         "input_file": "transactions.json",
@@ -2145,10 +2145,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "8",
+        "abs": "8.4",
         "currency": "EUR",
-        "raw": "8.00",
-        "signed": "-8"
+        "raw": "8.40",
+        "signed": "-8.4"
       },
       "booking_date": "2016-11-08",
       "counterparty": {
@@ -2164,7 +2164,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "b4c8c8db4e1e64ad",
+      "record_id": "0160827d74203761",
       "remittance": "Arve nr: 121741865",
       "source": {
         "input_file": "transactions.json",
@@ -2177,10 +2177,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "40",
+        "abs": "42.28",
         "currency": "EUR",
-        "raw": "40.00",
-        "signed": "-40"
+        "raw": "42.28",
+        "signed": "-42.28"
       },
       "booking_date": "2016-11-08",
       "counterparty": {
@@ -2196,7 +2196,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "4badddc7d48a95e4",
+      "record_id": "4060d8cd48456c70",
       "remittance": "A-28650768",
       "source": {
         "input_file": "transactions.json",
@@ -2209,15 +2209,15 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "130",
+        "abs": "116.62",
         "currency": "EUR",
-        "raw": "130.00",
-        "signed": "-130"
+        "raw": "116.62",
+        "signed": "-116.62"
       },
       "booking_date": "2016-11-08",
       "counterparty": {
         "iban": "EE772200221019373057",
-        "name": "KU Kase tee 23",
+        "name": "KU Lepa tee 8",
         "role": "CREDITOR"
       },
       "direction": "OUT",
@@ -2228,8 +2228,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "9d0b1dee8b17536b",
-      "remittance": "11206 Marten Koppel",
+      "record_id": "f0bd11e8b3c0b925",
+      "remittance": "11206",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[72]"
@@ -2241,10 +2241,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "5.8",
+        "abs": "6.09",
         "currency": "EUR",
-        "raw": "5.80",
-        "signed": "-5.8"
+        "raw": "6.09",
+        "signed": "-6.09"
       },
       "booking_date": "2016-11-09",
       "counterparty": {
@@ -2260,8 +2260,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "e6c88b29a6680e59",
-      "remittance": "(..4536) 2016-11-08 09:20 Taxify 16.11.08 0803 Altmetsa poik 1 Viimsi 74008 ESTEST",
+      "record_id": "77493d9d1e2ff3c1",
+      "remittance": "(..6291) 2016-11-08 09:20 Taxify 16.11.08 0803 Tammsaare tee 47 Viimsi 74008 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[73]"
@@ -2273,10 +2273,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "3.8",
+        "abs": "3.34",
         "currency": "EUR",
-        "raw": "3.80",
-        "signed": "-3.8"
+        "raw": "3.34",
+        "signed": "-3.34"
       },
       "booking_date": "2016-11-09",
       "counterparty": {
@@ -2292,8 +2292,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "52b604c07c65826a",
-      "remittance": "(..4536) 2016-11-08 10:35 Taxify 16.11.08 0923 Altmetsa poik 1 Viimsi 74008 ESTEST",
+      "record_id": "3cabfbec79e841a8",
+      "remittance": "(..6291) 2016-11-08 10:35 Taxify 16.11.08 0923 Tammsaare tee 47 Viimsi 74008 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[74]"
@@ -2305,10 +2305,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "13",
+        "abs": "13.65",
         "currency": "EUR",
-        "raw": "13.00",
-        "signed": "-13"
+        "raw": "13.65",
+        "signed": "-13.65"
       },
       "booking_date": "2016-11-09",
       "counterparty": {
@@ -2324,7 +2324,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "757a09b925af1bb2",
+      "record_id": "d0eb42b19bfbd9d9",
       "remittance": "Arve nr 642352775672",
       "source": {
         "input_file": "transactions.json",
@@ -2337,10 +2337,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "16.29",
+        "abs": "15.48",
         "currency": "EUR",
-        "raw": "16.29",
-        "signed": "-16.29"
+        "raw": "15.48",
+        "signed": "-15.48"
       },
       "booking_date": "2016-11-11",
       "counterparty": {
@@ -2356,8 +2356,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "1c2c9234760fa7cd",
-      "remittance": "(..4536) 2016-11-10 12:09 Maxima X T205   Tallinn  11312 ESTEST",
+      "record_id": "f71f9d3ef22f0f26",
+      "remittance": "(..6291) 2016-11-10 12:09 Maxima X T205   Tallinn  11312 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[76]"
@@ -2369,10 +2369,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "5.9",
+        "abs": "5.27",
         "currency": "EUR",
-        "raw": "5.90",
-        "signed": "-5.9"
+        "raw": "5.27",
+        "signed": "-5.27"
       },
       "booking_date": "2016-11-12",
       "counterparty": {
@@ -2388,8 +2388,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "04c831e726bcbe2c",
-      "remittance": "(..4536) 2016-11-11 22:23 Sesoon kohvik   Tallinn  10414 ESTEST",
+      "record_id": "75e0df7085ff05f4",
+      "remittance": "(..6291) 2016-11-11 22:23 Sesoon kohvik   Tallinn  10414 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[77]"
@@ -2401,10 +2401,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "41.6",
+        "abs": "35.66",
         "currency": "EUR",
-        "raw": "41.60",
-        "signed": "-41.6"
+        "raw": "35.66",
+        "signed": "-35.66"
       },
       "booking_date": "2016-11-12",
       "counterparty": {
@@ -2420,7 +2420,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "35fe05452c11c866",
+      "record_id": "91556249a853440f",
       "remittance": "Selver AS, selver.ee, 2113000700648 (1257213)",
       "source": {
         "input_file": "transactions.json",
@@ -2433,10 +2433,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "12.7",
+        "abs": "10.93",
         "currency": "EUR",
-        "raw": "12.70",
-        "signed": "-12.7"
+        "raw": "10.93",
+        "signed": "-10.93"
       },
       "booking_date": "2016-11-13",
       "counterparty": {
@@ -2452,8 +2452,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "f12af74d9446ada5",
-      "remittance": "(..4536) 2016-11-12 12:48 Kristiine Kaubanduskes  Tallinn  10615 ESTEST",
+      "record_id": "764c5775ceacd8bd",
+      "remittance": "(..6291) 2016-11-12 12:48 Kristiine Kaubanduskes  Tallinn  10615 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[79]"
@@ -2465,10 +2465,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "5.38",
+        "abs": "4.96",
         "currency": "EUR",
-        "raw": "5.38",
-        "signed": "5.38"
+        "raw": "4.96",
+        "signed": "4.96"
       },
       "booking_date": "2016-11-14",
       "counterparty": {
@@ -2478,7 +2478,7 @@
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "2f07ba36281c96d9",
+      "record_id": "f4ec159f977abd1e",
       "remittance": "Refund/Payment 1257213 (selver.ee, ref. 2113000700648)",
       "source": {
         "input_file": "transactions.json",
@@ -2491,10 +2491,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "3.5",
+        "abs": "3.32",
         "currency": "EUR",
-        "raw": "3.50",
-        "signed": "-3.5"
+        "raw": "3.32",
+        "signed": "-3.32"
       },
       "booking_date": "2016-11-15",
       "counterparty": {
@@ -2510,8 +2510,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "94d7a169e6b02b20",
-      "remittance": "(..4536) 2016-11-14 20:33 Kehrwieder   Tallinn  10146 ESTEST",
+      "record_id": "c78172e1d0fc05f3",
+      "remittance": "(..6291) 2016-11-14 20:33 Kehrwieder   Tallinn  10146 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[81]"
@@ -2523,10 +2523,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "6.1",
+        "abs": "6.78",
         "currency": "EUR",
-        "raw": "6.10",
-        "signed": "-6.1"
+        "raw": "6.78",
+        "signed": "-6.78"
       },
       "booking_date": "2016-11-16",
       "counterparty": {
@@ -2542,8 +2542,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "27792db3ad235146",
-      "remittance": "(..4536) 2016-11-15 13:26 Antalya restoran   Tallinn  11315 ESTEST",
+      "record_id": "1ab15911dd81e5c7",
+      "remittance": "(..6291) 2016-11-15 13:26 Antalya restoran   Tallinn  11315 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[82]"
@@ -2555,10 +2555,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "36",
+        "abs": "40.24",
         "currency": "EUR",
-        "raw": "36.00",
-        "signed": "-36"
+        "raw": "40.24",
+        "signed": "-40.24"
       },
       "booking_date": "2016-11-17",
       "counterparty": {
@@ -2574,8 +2574,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "5df5dad4e213f04a",
-      "remittance": "(..4536) 2016-11-16 13:38 Mooblimaja   Tallinn  10611 ESTEST",
+      "record_id": "363a0d09233f853b",
+      "remittance": "(..6291) 2016-11-16 13:38 Mooblimaja   Tallinn  10611 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[83]"
@@ -2587,10 +2587,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "18.9",
+        "abs": "17.52",
         "currency": "EUR",
-        "raw": "18.90",
-        "signed": "-18.9"
+        "raw": "17.52",
+        "signed": "-17.52"
       },
       "booking_date": "2016-11-17",
       "counterparty": {
@@ -2606,8 +2606,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "d9fdd1a7ea7228e4",
-      "remittance": "(..4536) 2016-11-16 12:25 Sky Mobile Kristiine   Tallinn  10615 ESTEST",
+      "record_id": "cad54535e732a7d0",
+      "remittance": "(..6291) 2016-11-16 12:25 Sky Mobile Kristiine   Tallinn  10615 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[84]"
@@ -2619,10 +2619,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "6",
+        "abs": "6.3",
         "currency": "EUR",
-        "raw": "6.00",
-        "signed": "-6"
+        "raw": "6.30",
+        "signed": "-6.3"
       },
       "booking_date": "2016-11-20",
       "counterparty": {
@@ -2638,8 +2638,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "496c546abe4742ff",
-      "remittance": "(..4536) 2016-11-19 14:11 Kristiine postkontor   Tallinn  10701 ESTEST",
+      "record_id": "0ea94d020b831b1c",
+      "remittance": "(..6291) 2016-11-19 14:11 Kristiine postkontor   Tallinn  10701 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[85]"
@@ -2651,10 +2651,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "41.52",
+        "abs": "38.67",
         "currency": "EUR",
-        "raw": "41.52",
-        "signed": "-41.52"
+        "raw": "38.67",
+        "signed": "-38.67"
       },
       "booking_date": "2016-11-20",
       "counterparty": {
@@ -2670,7 +2670,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "ed69435330262da8",
+      "record_id": "5fc3a18549e9e29c",
       "remittance": "Selver AS, selver.ee, 2113000727317 (1284342)",
       "source": {
         "input_file": "transactions.json",
@@ -2683,10 +2683,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "5.3",
+        "abs": "6.01",
         "currency": "EUR",
-        "raw": "5.30",
-        "signed": "-5.3"
+        "raw": "6.01",
+        "signed": "-6.01"
       },
       "booking_date": "2016-11-21",
       "counterparty": {
@@ -2702,8 +2702,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "581341da2249056e",
-      "remittance": "(..4536) 2016-11-19 14:22 Taxify 16.11.19 1305 Altmetsa poik 1 Viimsi 74008 ESTEST",
+      "record_id": "aafd4fb00f0b4531",
+      "remittance": "(..6291) 2016-11-19 14:22 Taxify 16.11.19 1305 Tammsaare tee 47 Viimsi 74008 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[87]"
@@ -2715,10 +2715,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "6.1",
+        "abs": "6.57",
         "currency": "EUR",
-        "raw": "6.10",
-        "signed": "-6.1"
+        "raw": "6.57",
+        "signed": "-6.57"
       },
       "booking_date": "2016-11-21",
       "counterparty": {
@@ -2734,8 +2734,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "1ad04e8f1c613d2e",
-      "remittance": "(..4536) 2016-11-20 16:19 Taxify 16.11.20 1455 Altmetsa poik 1 Viimsi 74008 ESTEST",
+      "record_id": "36cae0106ee515ac",
+      "remittance": "(..6291) 2016-11-20 16:19 Taxify 16.11.20 1455 Tammsaare tee 47 Viimsi 74008 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[88]"
@@ -2747,15 +2747,15 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "5",
+        "abs": "4.69",
         "currency": "EUR",
-        "raw": "5.00",
-        "signed": "-5"
+        "raw": "4.69",
+        "signed": "-4.69"
       },
       "booking_date": "2016-11-21",
       "counterparty": {
-        "iban": "EE827700771008461293",
-        "name": "Marten Koppel",
+        "iban": "EE787700771009617382",
+        "name": "Jaanus Kuusk",
         "role": "CREDITOR"
       },
       "direction": "OUT",
@@ -2766,8 +2766,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "74e40786c2f09f82",
-      "remittance": "matilt",
+      "record_id": "952d8afb666762aa",
+      "remittance": "ülekanne",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[89]"
@@ -2779,10 +2779,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "20.14",
+        "abs": "19.13",
         "currency": "EUR",
-        "raw": "20.14",
-        "signed": "-20.14"
+        "raw": "19.13",
+        "signed": "-19.13"
       },
       "booking_date": "2016-11-22",
       "counterparty": {
@@ -2798,8 +2798,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "1b13247545d812b0",
-      "remittance": "(..4536) 2016-11-21 12:47 Kristiine Prisma isete  Tallinn  10615 ESTEST",
+      "record_id": "a36e318dd47b1a71",
+      "remittance": "(..6291) 2016-11-21 12:47 Kristiine Prisma isete  Tallinn  10615 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[90]"
@@ -2811,15 +2811,15 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "10",
+        "abs": "10.8",
         "currency": "EUR",
-        "raw": "10.00",
-        "signed": "-10"
+        "raw": "10.80",
+        "signed": "-10.8"
       },
       "booking_date": "2016-11-22",
       "counterparty": {
-        "iban": "EE482200221098127643",
-        "name": "Mari Tamm",
+        "iban": "EE292200221064583712",
+        "name": "Epp Saare",
         "role": "CREDITOR"
       },
       "direction": "OUT",
@@ -2830,7 +2830,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "be9efb868ffff815",
+      "record_id": "f7f690c4b140ea20",
       "remittance": "RAHA",
       "source": {
         "input_file": "transactions.json",
@@ -2843,10 +2843,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "38.95",
+        "abs": "40.9",
         "currency": "EUR",
-        "raw": "38.95",
-        "signed": "-38.95"
+        "raw": "40.90",
+        "signed": "-40.9"
       },
       "booking_date": "2016-11-22",
       "counterparty": {
@@ -2862,7 +2862,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "a7db82bbc885e9c4",
+      "record_id": "8b0bc94cecd30a26",
       "remittance": "81501010",
       "source": {
         "input_file": "transactions.json",
@@ -2875,10 +2875,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "4.81",
+        "abs": "4.37",
         "currency": "EUR",
-        "raw": "4.81",
-        "signed": "4.81"
+        "raw": "4.37",
+        "signed": "4.37"
       },
       "booking_date": "2016-11-23",
       "counterparty": {
@@ -2888,7 +2888,7 @@
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "2fcc0278942fd2c5",
+      "record_id": "1a015f5dde1891eb",
       "remittance": "Refund/Payment 1284342 (selver.ee, ref. 2113000727317)",
       "source": {
         "input_file": "transactions.json",
@@ -2901,10 +2901,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "12.72",
+        "abs": "14.48",
         "currency": "EUR",
-        "raw": "12.72",
-        "signed": "-12.72"
+        "raw": "14.48",
+        "signed": "-14.48"
       },
       "booking_date": "2016-11-24",
       "counterparty": {
@@ -2920,8 +2920,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "dc26db06b55b95cc",
-      "remittance": "(..4536) 2016-11-22 16:11 ALI*aliexpress.com No.699, Wangshang Road HANGZHOU 310099 CHN (13.4 USD)",
+      "record_id": "1bcdf9161d6c2a9a",
+      "remittance": "(..6291) 2016-11-22 16:11 ALI*aliexpress.com No.699, Wangshang Road HANGZHOU 310099 CHN (13.4 USD)",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[94]"
@@ -2933,10 +2933,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "9",
+        "abs": "9.67",
         "currency": "EUR",
-        "raw": "9.00",
-        "signed": "-9"
+        "raw": "9.67",
+        "signed": "-9.67"
       },
       "booking_date": "2016-11-26",
       "counterparty": {
@@ -2952,8 +2952,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "33645af9ee39a35c",
-      "remittance": "(..4536) 2016-11-25 16:16 Pelgulinna Huvikool  Tallinn  10614 ESTEST",
+      "record_id": "982f7c98a87528cd",
+      "remittance": "(..6291) 2016-11-25 16:16 Pelgulinna Huvikool  Tallinn  10614 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[95]"
@@ -2965,15 +2965,15 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "15",
+        "abs": "16.39",
         "currency": "EUR",
-        "raw": "15.00",
-        "signed": "-15"
+        "raw": "16.39",
+        "signed": "-16.39"
       },
       "booking_date": "2016-11-26",
       "counterparty": {
-        "iban": "EE482200221098127643",
-        "name": "Mari Tamm",
+        "iban": "EE292200221064583712",
+        "name": "Epp Saare",
         "role": "CREDITOR"
       },
       "direction": "OUT",
@@ -2984,7 +2984,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "5d470600c854755a",
+      "record_id": "14f2e3d6f996d549",
       "remittance": "Kino!",
       "source": {
         "input_file": "transactions.json",
@@ -2997,10 +2997,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "42.03",
+        "abs": "35.82",
         "currency": "EUR",
-        "raw": "42.03",
-        "signed": "-42.03"
+        "raw": "35.82",
+        "signed": "-35.82"
       },
       "booking_date": "2016-11-29",
       "counterparty": {
@@ -3016,7 +3016,7 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "fd3c46dd45686e1f",
+      "record_id": "79fa687511a600f4",
       "remittance": "Selver AS, selver.ee, 2113000756922 (1316602)",
       "source": {
         "input_file": "transactions.json",
@@ -3055,10 +3055,10 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "3.5",
+        "abs": "3.09",
         "currency": "EUR",
-        "raw": "3.50",
-        "signed": "-3.5"
+        "raw": "3.09",
+        "signed": "-3.09"
       },
       "booking_date": "2016-11-30",
       "counterparty": {
@@ -3074,8 +3074,8 @@
           "severity": "WARN"
         }
       ],
-      "record_id": "03fae4217366205f",
-      "remittance": "(..4536) 2016-11-29 12:57 Antalya restoran   Tallinn  11315 ESTEST",
+      "record_id": "9421df654557e83c",
+      "remittance": "(..6291) 2016-11-29 12:57 Antalya restoran   Tallinn  11315 ESTEST",
       "source": {
         "input_file": "transactions.json",
         "input_path": "$.transactions.booked[99]"
@@ -3087,20 +3087,20 @@
     {
       "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
       "amount": {
-        "abs": "200",
+        "abs": "176.16",
         "currency": "EUR",
-        "raw": "200.00",
-        "signed": "200"
+        "raw": "176.16",
+        "signed": "176.16"
       },
       "booking_date": "2016-11-30",
       "counterparty": {
-        "iban": "EE192200221056439871",
-        "name": "Marten Koppel",
+        "iban": "EE342200221078561234",
+        "name": "Jaanus Kuusk",
         "role": "DEBTOR"
       },
       "direction": "IN",
       "flags": [],
-      "record_id": "30a4d1b9b088a75f",
+      "record_id": "bd6059fb53e486eb",
       "remittance": "raha",
       "source": {
         "input_file": "transactions.json",
