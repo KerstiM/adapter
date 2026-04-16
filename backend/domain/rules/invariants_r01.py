@@ -154,6 +154,12 @@ def deduplicate_transactions(
     )
     if inv09 is None:
         raise RuntimeError("R-01 ruleset missing INV-09_DUPLICATE_RECORD_ID")
+    if inv09.get("action") != "DROP_RECORD":
+        raise RuntimeError(
+            f"INV-09 action must be DROP_RECORD for dedupe logic, "
+            f"got {inv09.get('action')!r}. Deduplication inherently requires "
+            f"dropping losers — if the action changes, update the code."
+        )
 
     def _sort_key(tx: dict) -> tuple:
         src = tx.get("source", {})
