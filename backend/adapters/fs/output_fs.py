@@ -10,10 +10,9 @@ configurable base output directory:
             ml_v1.csv
             llm_context_v1.json
 
-All JSON files are serialised with ``json.dumps(sort_keys=True, indent=2,
-ensure_ascii=False)`` (identical to the existing pipeline's ``_stable_json``)
-and terminated with a trailing newline so that golden SHA-256 hashes remain
-unchanged.
+All JSON files are serialised deterministically with
+``json.dumps(sort_keys=True, indent=2, ensure_ascii=False)`` and terminated
+with a trailing newline so that golden SHA-256 hashes remain unchanged.
 
 Usage::
 
