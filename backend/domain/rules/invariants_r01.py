@@ -100,14 +100,24 @@ def check_invariants(
     handled_ids = set(TX_PREDICATES.keys()) | EXTERNALLY_HANDLED
     assert_registry_matches_yaml(handled_ids, set(rules_by_id.keys()), "R-01")
 
-    drop_rules = [
-        r for r in rules
-        if r["id"] in TX_PREDICATES and r.get("action") == "DROP_RECORD"
-    ]
-    flag_rules = [
-        r for r in rules
-        if r["id"] in TX_PREDICATES and r.get("action") == "FLAG_ONLY"
-    ]
+    drop_rules: list[dict] = []
+    flag_rules: list[dict] = []
+    unknown: list[dict] = []
+    for r in rules:
+        if r["id"] not in TX_PREDICATES:
+            continue
+        action = r.get("action")
+        if action == "DROP_RECORD":
+            drop_rules.append(r)
+        elif action == "FLAG_ONLY":
+            flag_rules.append(r)
+        else:
+            unknown.append(r)
+    if unknown:
+        raise RuntimeError(
+            "R-01: rules with unsupported action: "
+            f"{[(r['id'], r.get('action')) for r in unknown]}"
+        )
 
     valid: list[dict] = []
     dropped: list[dict] = []
