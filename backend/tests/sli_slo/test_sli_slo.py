@@ -658,6 +658,27 @@ class TestGateFailPolicy:
         summary, _ = _run(booked=good + [bad])
         assert summary["outcome"] == "FAIL"
 
+    def test_exactly_5pct_error_rate_is_partial_success(self) -> None:
+        """Piirijuhtum: 1 vigane 20-st = täpselt 5,00 % → PARTIAL_SUCCESS.
+
+        See pinnutab gate'i semantika: fail-lävend on **range** (`> 5 %`),
+        mitte inklusiivne. Täpselt lävendil olev jooks loetakse osaliselt
+        õnnestunuks.
+        """
+        bad = _tx(currency="xx", transaction_id="BAD")
+        good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(19)]
+        summary, _ = _run(booked=good + [bad])
+        assert summary["outcome"] == "PARTIAL_SUCCESS"
+        assert summary["metrics"]["gate"]["error_drop_ratio"] == 0.05
+
+    def test_just_above_5pct_error_rate_is_fail(self) -> None:
+        """Piirijuhtum: 1 vigane 19-st ≈ 5,26 % → FAIL (> 5 % range)."""
+        bad = _tx(currency="xx", transaction_id="BAD")
+        good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(18)]
+        summary, _ = _run(booked=good + [bad])
+        assert summary["outcome"] == "FAIL"
+        assert summary["metrics"]["gate"]["error_drop_ratio"] > 0.05
+
     def test_above_5pct_with_bad_currency(self) -> None:
         """INV-01: 1 vigane tehing 11-st on ~9 % → FAIL (gate error_drop_ratio > 5 %)."""
         bad = _tx(currency="xx", transaction_id="BAD")

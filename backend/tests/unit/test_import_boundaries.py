@@ -26,7 +26,16 @@ BACKEND_DIR = Path(__file__).resolve().parents[2]          # backend/
 DOMAIN_DIR = BACKEND_DIR / "domain"
 
 # Top-level module names that domain code must never import.
-FORBIDDEN_STDLIB = {"pathlib", "os", "sys"}
+# Rationale: I/O layer (pathlib, os, sys) belongs in adapters; non-deterministic
+# sources (uuid, random, secrets, time) violate the determinism guarantee —
+# any clock or id generation must go through ClockPort / explicit run_id input.
+# `datetime` is intentionally allowed because domain parses ISO date strings
+# via `datetime.strptime`; `datetime.now()` / `.utcnow()` must not be used
+# (convention; not automatically enforced here).
+FORBIDDEN_STDLIB = {
+    "pathlib", "os", "sys",
+    "uuid", "random", "secrets", "time",
+}
 FORBIDDEN_EXTERNAL = {"requests", "pandas"}
 
 # Internal packages that domain must never reach into.

@@ -202,7 +202,7 @@ kus:
 - `invariant_correct_total` (lugeja) = invariant_checked_total väheneb järgmiste komponentide võrra:
   - ERROR-taseme invariantrikkumistega langetatud kirjed,
   - deduplikatsioonis (INV-09) eemaldatud kirjed,
-  - WARN-lipuga alles jäävad kirjed (nt INV-04, INV-05, INV-10).
+  - WARN-lipuga alles jäävad kirjed (nt INV-04, INV-05).
 - `critical_invariant_violations_total` = kirjed ERROR-taseme invariantrikkumistega (v.a. mapping drops, dedupe, WARN)
 
 ### Mida testitakse

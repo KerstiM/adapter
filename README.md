@@ -219,7 +219,7 @@ Kogu normatiivne käitumine on versioonitud `spec/` kataloogis:
 | Leping | C-04 | Mudelispetsiifilised formaatijad (LLM promptimallid + ML kodeeringud) |
 | Leping | C-05 | SV → statistika (kontode ja tehingute kokkuvõtted) |
 | Leping | C-06 | SV → kuubilanss (kuu kaupa saldod) |
-| Reeglistik | R-01 | Invariandid (INV-01..INV-10) + dedupe |
+| Reeglistik | R-01 | Invariandid (INV-01..INV-05, INV-09) + dedupe (INV-09) + QC-1 kvaliteedikontroll |
 
 Täpsem spetsifikatsioonide indeks: [`docs/SPETSIFIKATSIOONID.md`](docs/SPETSIFIKATSIOONID.md).
 
@@ -293,7 +293,7 @@ cd backend && python -m pytest tests/ -v
 
 ## Reprodutseerimise juhend
 
-Sammhaaval juhend pipeline tulemuste reprodutseerimiseks. Täpsem LaTeX-versioon: [`docs/lisa_reprodutseerimise_juhend.tex`](docs/lisa_reprodutseerimise_juhend.tex).
+Sammhaaval juhend pipeline tulemuste reprodutseerimiseks.
 
 ### Eeldused
 
@@ -307,7 +307,7 @@ Sammhaaval juhend pipeline tulemuste reprodutseerimiseks. Täpsem LaTeX-versioon
    ```bash
    git clone https://github.com/KerstiM/adapter.git
    cd adapter
-   git checkout 653ceea9d735904b3ac4f1dd6a8b7c6579cff7b8
+   git checkout d3f0a1326bb14dd261eaac2f62282d97e673fa39
    ```
 
 2. **Paigalda sõltuvused**
