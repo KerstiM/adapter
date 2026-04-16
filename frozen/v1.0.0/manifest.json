@@ -157,7 +157,8 @@
         "transactions_dropped": 4,
         "ml_rows": 35,
         "llm_contexts": 1
-      }
+      },
+      "expected_raw_validation": "FAIL"
     },
     {
       "dataset_id": "D5_synth_edges_seed99",

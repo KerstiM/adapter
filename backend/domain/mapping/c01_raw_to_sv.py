@@ -132,15 +132,8 @@ def map_single_transaction(
             "message": f"valueDate missing; fell back to {fallback_src}.",
         })
 
-    # INV-05: check if raw sign mismatches derived direction -> flag
-    raw_is_negative = amount_raw.strip().startswith("-")
-    if (direction == "OUT" and not raw_is_negative and amt != 0) or \
-       (direction == "IN" and raw_is_negative):
-        flags.append({
-            "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
-            "severity": "WARN",
-            "message": "raw amount sign mismatched derived direction; normalized signed amount.",
-        })
+    # INV-05 sign-mismatch is emitted later by domain.rules.invariants_r01,
+    # which reads the flag metadata from the R-01 ruleset.
 
     counterparty = pick_counterparty(raw_tx, direction)
     remittance = raw_tx.get("remittanceInformationUnstructured")

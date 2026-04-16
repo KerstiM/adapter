@@ -1,8 +1,10 @@
-"""In-memory fake of SpecPort — loads real schemas/contracts/rulesets.
+"""In-memory fake of SpecPort — loads real schemas, contracts and rulesets.
 
-The fake reads JSON Schemas, contract YAMLs and ruleset YAMLs from the repo at
-instantiation time so that unit tests validate pipeline output against the
-same specs as production. Override via *profile_override* to plug in
+The fake reads JSON Schemas, contract YAMLs and ruleset YAMLs (R-01, QC)
+from the repo at instantiation time so that unit tests validate pipeline
+output against the same specs as production.  There is one source of truth
+for all spec metadata — registry/YAML mismatches surface in tests just as
+they would in production.  Override via *profile_override* to plug in
 permissive dicts where a test intentionally exercises malformed input.
 """
 
@@ -37,6 +39,7 @@ _CONTRACT_FILES: dict[str, str] = {
 
 _RULESET_FILES: dict[str, str] = {
     "R-01": "R-01_sv_invariants.yaml",
+    "QC":   "QC_quality_checks.yaml",
 }
 
 
@@ -57,6 +60,11 @@ def _load_real_yaml(base: Path, files: dict[str, str]) -> dict[str, dict[str, An
             out[key] = yaml.safe_load(f)
     return out
 
+  
+def load_spec_rulesets() -> dict[str, dict[str, Any]]:
+    """Return rulesets loaded from canonical YAML (for test profiles)."""
+    return _load_real_yaml(_RULESETS_DIR, _RULESET_FILES)
+  
 
 def _default_profile() -> dict[str, Any]:
     """Return a profile that mirrors production schemas, contracts and rulesets."""

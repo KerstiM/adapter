@@ -339,14 +339,17 @@ def run_pipeline(
     # before dedupe.  Excludes mapping drops (Stage 2).
     invariant_checked_total = len(sv_bundle.get("transactions", []))
 
-    valid_txs, dropped_txs = _check_invariants(sv_bundle)
+    r01_ruleset = profile["rulesets"]["R-01"]
+    qc_ruleset = profile["rulesets"]["QC"]
+
+    valid_txs, dropped_txs = _check_invariants(sv_bundle, r01_ruleset)
 
     # Stage 4b: Deduplicate by (account_id, record_id) — INV-09
-    deduped_txs, dedupe_drops = _deduplicate_transactions(valid_txs)
+    deduped_txs, dedupe_drops = _deduplicate_transactions(valid_txs, r01_ruleset)
     sv_bundle["transactions"] = deduped_txs
 
     # Stage 4c: Quality / completeness checks (INFO-level diagnostics)
-    _check_quality(deduped_txs)
+    _check_quality(deduped_txs, qc_ruleset)
 
     # Count flags from invariants (on valid + dropped + dedupe-dropped txs)
     # and promote them into the issues list so the frontend can display details
@@ -559,10 +562,10 @@ def run_pipeline(
     # violations only.  Excludes mapping drops, dedupe drops, WARN-only records.
     critical_invariant_violations_total = len(dropped_txs)
 
-    # Count kept records that have WARN-level invariant flags (INV-04/05/10).
+    # Count kept records that have WARN-level invariant flags (INV-04, INV-05).
     # These are non-compliant for SLI-3 even though they were not dropped.
-    # Only count WARN-level invariant flags (INV-04/05/10); ERROR-level
-    # invariants already caused drops and are counted via len(dropped_txs).
+    # ERROR-level invariants already caused drops and are counted via
+    # len(dropped_txs).
     warn_flagged_kept = sum(
         1 for tx in deduped_txs
         if any(
