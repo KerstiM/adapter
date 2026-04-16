@@ -223,7 +223,7 @@ class Handler(BaseHTTPRequestHandler):
                 elapsed_ms = round((time.perf_counter() - t0) * 1000)
                 traceback.print_exc()
                 self._json_response({
-                    "error": f"Pipeline failed: {exc}",
+                    "error": "Pipeline processing failed",
                     "elapsed_ms": elapsed_ms,
                 }, 500)
                 return
@@ -251,7 +251,7 @@ class Handler(BaseHTTPRequestHandler):
         else:
             self._json_response({"error": "Not found"}, 404)
 
-    def log_message(self, format, *args):
+    def log_message(self, fmt, *args):
         print(f"[api] {args[0]}")
 
 

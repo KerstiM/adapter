@@ -741,9 +741,9 @@
       "direction": "OUT",
       "flags": [
         {
-          "id": "INV-10_COUNTERPARTY_ALL_NULL",
-          "message": "counterparty present but all fields null.",
-          "severity": "WARN"
+          "id": "QC-1_COUNTERPARTY_MISSING",
+          "message": "counterparty name and IBAN both absent.",
+          "severity": "INFO"
         }
       ],
       "record_id": "551fae9aad34a874",

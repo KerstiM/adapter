@@ -56,16 +56,12 @@ _ML_FIELDNAMES: list[str] = [
 
 
 def _stable_json(obj: Any) -> str:
-    """Deterministic JSON serialisation — identical to ``application.pipeline._stable_json``."""
+    """Deterministic JSON serialisation (sorted keys, 2-space indent)."""
     return json.dumps(obj, indent=2, sort_keys=True, ensure_ascii=False)
 
 
 def _ts_prefix(created_at_utc: str) -> str:
     """Derive a filesystem-safe timestamp prefix from an ISO-8601 UTC string.
-
-    Replicates ``application.pipeline._ts_prefix`` exactly so that run-folder
-    names produced by this adapter are identical to those produced by the
-    existing pipeline.
 
     Example::
 
@@ -75,7 +71,6 @@ def _ts_prefix(created_at_utc: str) -> str:
         created_at_utc
         .replace("-", "")
         .replace(":", "")
-        .replace("T", "T")   # no-op; preserved for parity with original
         .split(".")[0]
     )
 
@@ -112,7 +107,8 @@ class FsOutputAdapter:
     def write_sv(self, bundle: dict[str, Any]) -> None:
         """Write *bundle* to ``sv.json`` (stable JSON, trailing newline)."""
         self._require_init()
-        path = self._run_folder / "sv.json"  # type: ignore[operator]
+        assert self._run_folder is not None
+        path = self._run_folder / "sv.json"
         with open(path, "w", encoding="utf-8") as f:
             f.write(_stable_json(bundle))
             f.write("\n")
@@ -120,7 +116,8 @@ class FsOutputAdapter:
     def write_ml(self, rows: list[dict[str, Any]]) -> None:
         """Write *rows* to ``projections/ml_v1.csv`` (DictWriter, fixed column order)."""
         self._require_init()
-        path = self._proj_folder / "ml_v1.csv"  # type: ignore[operator]
+        assert self._proj_folder is not None
+        path = self._proj_folder / "ml_v1.csv"
         with open(path, "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=_ML_FIELDNAMES)
             writer.writeheader()
@@ -129,7 +126,8 @@ class FsOutputAdapter:
     def write_llm(self, context: dict[str, Any] | list[dict[str, Any]]) -> None:
         """Write *context* to ``projections/llm_context_v1.json`` (stable JSON, trailing newline)."""
         self._require_init()
-        path = self._proj_folder / "llm_context_v1.json"  # type: ignore[operator]
+        assert self._proj_folder is not None
+        path = self._proj_folder / "llm_context_v1.json"
         with open(path, "w", encoding="utf-8") as f:
             f.write(_stable_json(context))
             f.write("\n")
@@ -137,7 +135,8 @@ class FsOutputAdapter:
     def write_report(self, report: dict[str, Any]) -> None:
         """Write *report* to ``report.json`` (stable JSON, trailing newline)."""
         self._require_init()
-        path = self._run_folder / "report.json"  # type: ignore[operator]
+        assert self._run_folder is not None
+        path = self._run_folder / "report.json"
         with open(path, "w", encoding="utf-8") as f:
             f.write(_stable_json(report))
             f.write("\n")
@@ -145,7 +144,8 @@ class FsOutputAdapter:
     def write_ml_model(self, output: dict[str, Any], model_suffix: str) -> None:
         """Write model-specific ML projection to ``projections/ml_v1_{suffix}.json``."""
         self._require_init()
-        path = self._proj_folder / f"ml_v1_{model_suffix}.json"  # type: ignore[operator]
+        assert self._proj_folder is not None
+        path = self._proj_folder / f"ml_v1_{model_suffix}.json"
         with open(path, "w", encoding="utf-8") as f:
             f.write(_stable_json(output))
             f.write("\n")
@@ -153,7 +153,8 @@ class FsOutputAdapter:
     def write_llm_model(self, output: list[dict[str, Any]], model_suffix: str) -> None:
         """Write model-specific LLM projection to ``projections/llm_context_v1_{suffix}.json``."""
         self._require_init()
-        path = self._proj_folder / f"llm_context_v1_{model_suffix}.json"  # type: ignore[operator]
+        assert self._proj_folder is not None
+        path = self._proj_folder / f"llm_context_v1_{model_suffix}.json"
         with open(path, "w", encoding="utf-8") as f:
             f.write(_stable_json(output))
             f.write("\n")
@@ -161,7 +162,8 @@ class FsOutputAdapter:
     def write_extra_projection(self, data: list[dict[str, Any]], filename: str) -> None:
         """Write extra projection to ``projections/<filename>`` (stable JSON, trailing newline)."""
         self._require_init()
-        path = self._proj_folder / filename  # type: ignore[operator]
+        assert self._proj_folder is not None
+        path = self._proj_folder / filename
         with open(path, "w", encoding="utf-8") as f:
             f.write(_stable_json(data))
             f.write("\n")

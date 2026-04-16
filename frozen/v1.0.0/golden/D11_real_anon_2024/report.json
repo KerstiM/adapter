@@ -5,10 +5,58 @@
       "code": "QC-1_COUNTERPARTY_MISSING",
       "message": "counterparty name and IBAN both absent.",
       "refs": {
-        "account_id": "9974d75b-3338-44fe-a179-0134676b1b69",
+        "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
         "field_path": null,
-        "record_id": "551fae9aad34a874",
-        "source_lineage": "transactions.json"
+        "record_id": "a11627f11a86bdf8",
+        "source_lineage": "transactions_1.json"
+      },
+      "severity": "INFO",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "QC-1_COUNTERPARTY_MISSING",
+      "message": "counterparty name and IBAN both absent.",
+      "refs": {
+        "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
+        "field_path": null,
+        "record_id": "94d3286583fb0dfb",
+        "source_lineage": "transactions_1.json"
+      },
+      "severity": "INFO",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "QC-1_COUNTERPARTY_MISSING",
+      "message": "counterparty name and IBAN both absent.",
+      "refs": {
+        "account_id": "c3a1b2d0-5f3e-4901-bcde-234567890100",
+        "field_path": null,
+        "record_id": "4524a1830bf6682d",
+        "source_lineage": "transactions_1.json"
+      },
+      "severity": "INFO",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "QC-1_COUNTERPARTY_MISSING",
+      "message": "counterparty name and IBAN both absent.",
+      "refs": {
+        "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
+        "field_path": null,
+        "record_id": "bf32e1f516548200",
+        "source_lineage": "transactions_2.json"
+      },
+      "severity": "INFO",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "QC-1_COUNTERPARTY_MISSING",
+      "message": "counterparty name and IBAN both absent.",
+      "refs": {
+        "account_id": "d4b2c3e1-6041-4a12-cdef-345678901200",
+        "field_path": null,
+        "record_id": "a8dc6957ffb57543",
+        "source_lineage": "transactions_2.json"
       },
       "severity": "INFO",
       "stage": "CHECK_INVARIANTS"
@@ -36,9 +84,9 @@
     },
     "sli3": {
       "critical_invariant_violations_total": 0,
-      "invariant_checked_total": 33,
+      "invariant_checked_total": 148,
       "invariant_compliance_ratio": 1.0,
-      "invariant_correct_total": 33
+      "invariant_correct_total": 148
     }
   },
   "outcome": {
@@ -49,12 +97,12 @@
   "run": {
     "adapter_version": "0.1.0",
     "created_at_utc": "2000-01-01T00:00:00Z",
-    "dataset_id": "D5_synth_edges_seed99",
-    "input_dir": "datasets/D5_synth_edges_seed99",
+    "dataset_id": "D11_real_anon_2024",
+    "input_dir": "datasets/D11_real_anon_2024",
     "mapping_version": "1.0.0",
     "profile_id": "default",
     "ruleset_version": "1.1.0",
-    "run_id": "GOLDEN_D5_synth_edges_seed99",
+    "run_id": "GOLDEN_D11_real_anon_2024",
     "sv_schema_version": "1.0.0"
   },
   "run_flags": [],
@@ -62,7 +110,7 @@
     "by_severity": {
       "CRITICAL": 0,
       "ERROR": 0,
-      "INFO": 1,
+      "INFO": 5,
       "WARN": 0
     },
     "by_stage": [
@@ -116,12 +164,12 @@
       }
     ],
     "counts": {
-      "accounts_total": 1,
-      "llm_contexts": 1,
-      "ml_rows": 33,
+      "accounts_total": 2,
+      "llm_contexts": 2,
+      "ml_rows": 148,
       "transactions_dropped": 0,
-      "transactions_emitted_sv": 33,
-      "transactions_total": 33
+      "transactions_emitted_sv": 148,
+      "transactions_total": 148
     }
   }
 }

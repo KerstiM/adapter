@@ -30,7 +30,11 @@ FORBIDDEN_STDLIB = {"pathlib", "os", "sys"}
 FORBIDDEN_EXTERNAL = {"requests", "pandas"}
 
 # Internal packages that domain must never reach into.
-FORBIDDEN_INTERNAL = {"adapters", "cli", "backend.adapters", "backend.cli"}
+FORBIDDEN_INTERNAL = {
+    "adapters", "cli", "backend.adapters", "backend.cli",
+    "ports", "application", "entrypoints",
+    "backend.ports", "backend.application", "backend.entrypoints",
+}
 
 FORBIDDEN_ALL = FORBIDDEN_STDLIB | FORBIDDEN_EXTERNAL | FORBIDDEN_INTERNAL
 

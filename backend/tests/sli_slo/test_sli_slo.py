@@ -48,69 +48,8 @@ import time
 import pytest
 
 from application.pipeline import run_pipeline
-from tests.fakes import FakeDatasetPort, FakeOutputPort, FakeSpecPort, FixedClock
-
-
-# ---------------------------------------------------------------------------
-# Jagatud abifunktsioonid
-# ---------------------------------------------------------------------------
-
-def _accounts(
-    resource_id: str = "acct-001",
-    iban: str = "DE89370400440532013000",
-    currency: str = "EUR",
-    name: str = "Test Account",
-) -> dict:
-    return {
-        "accounts": [
-            {
-                "resourceId": resource_id,
-                "iban": iban,
-                "currency": currency,
-                "name": name,
-            }
-        ]
-    }
-
-
-def _tx(
-    *,
-    amount: str = "100.00",
-    currency: str = "EUR",
-    value_date: str = "2025-06-01",
-    booking_date: str | None = "2025-06-01",
-    debtor_name: str | None = "Alice",
-    creditor_name: str | None = None,
-    transaction_id: str | None = "TX001",
-    remittance: str | None = "Test payment",
-) -> dict:
-    t: dict = {
-        "transactionAmount": {"amount": amount, "currency": currency},
-        "valueDate": value_date,
-    }
-    if booking_date is not None:
-        t["bookingDate"] = booking_date
-    if debtor_name is not None:
-        t["debtorName"] = debtor_name
-        t["debtorAccount"] = {"iban": "NL91ABNA0417164300"}
-    if creditor_name is not None:
-        t["creditorName"] = creditor_name
-        t["creditorAccount"] = {"iban": "GB29NWBK60161331926819"}
-    if transaction_id is not None:
-        t["transactionId"] = transaction_id
-    if remittance is not None:
-        t["remittanceInformationUnstructured"] = remittance
-    return t
-
-
-def _report(iban: str = "DE89370400440532013000", booked: list | None = None, pending: list | None = None) -> dict:
-    return {
-        "account": {"iban": iban},
-        "transactions": {
-            "booked": booked or [],
-            "pending": pending or [],
-        },
-    }
+from tests.fakes import FakeDatasetPort, FakeOutputPort, FakeSpecPort, FakeValidationPort, FixedClock
+from tests.fakes.builders import make_accounts as _accounts, make_tx as _tx, make_report as _report
 
 
 def _run(*, accounts: dict | None = None, booked: list | None = None, pending: list | None = None, clock: FixedClock | None = None) -> tuple[dict, FakeOutputPort]:
@@ -127,6 +66,7 @@ def _run(*, accounts: dict | None = None, booked: list | None = None, pending: l
         out=out,
         spec=spec,
         clock=_clock,
+        validator=FakeValidationPort(),
         dataset_id="sli-slo-test",
         input_dir="<memory>",
     )

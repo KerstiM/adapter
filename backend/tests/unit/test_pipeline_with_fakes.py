@@ -9,76 +9,8 @@ from __future__ import annotations
 import pytest
 
 from application.pipeline import run_pipeline
-from tests.fakes import FakeDatasetPort, FakeOutputPort, FakeSpecPort, FixedClock
-
-
-# ---------------------------------------------------------------------------
-# Reusable test data builders
-# ---------------------------------------------------------------------------
-
-def _minimal_accounts(
-    resource_id: str = "acct-001",
-    iban: str = "DE89370400440532013000",
-    currency: str = "EUR",
-    name: str = "Test Account",
-) -> dict:
-    """Return the smallest valid accounts.json payload."""
-    return {
-        "accounts": [
-            {
-                "resourceId": resource_id,
-                "iban": iban,
-                "currency": currency,
-                "name": name,
-            },
-        ],
-    }
-
-
-def _make_transaction(
-    *,
-    amount: str = "100.00",
-    currency: str = "EUR",
-    value_date: str = "2025-03-15",
-    booking_date: str | None = "2025-03-15",
-    debtor_name: str | None = "Alice Sender",
-    creditor_name: str | None = None,
-    transaction_id: str | None = "TX001",
-    remittance: str | None = "Payment for invoice 42",
-) -> dict:
-    """Build a single Berlin AIS transaction dict."""
-    tx: dict = {
-        "transactionAmount": {"amount": amount, "currency": currency},
-        "valueDate": value_date,
-    }
-    if booking_date is not None:
-        tx["bookingDate"] = booking_date
-    if debtor_name is not None:
-        tx["debtorName"] = debtor_name
-        tx["debtorAccount"] = {"iban": "NL91ABNA0417164300"}
-    if creditor_name is not None:
-        tx["creditorName"] = creditor_name
-        tx["creditorAccount"] = {"iban": "GB29NWBK60161331926819"}
-    if transaction_id is not None:
-        tx["transactionId"] = transaction_id
-    if remittance is not None:
-        tx["remittanceInformationUnstructured"] = remittance
-    return tx
-
-
-def _transactions_report(
-    iban: str = "DE89370400440532013000",
-    booked: list[dict] | None = None,
-    pending: list[dict] | None = None,
-) -> dict:
-    """Build a transactions.json payload."""
-    return {
-        "account": {"iban": iban},
-        "transactions": {
-            "booked": booked or [],
-            "pending": pending or [],
-        },
-    }
+from tests.fakes import FakeDatasetPort, FakeOutputPort, FakeSpecPort, FakeValidationPort, FixedClock
+from tests.fakes.builders import make_accounts as _minimal_accounts, make_tx as _make_transaction, make_report as _transactions_report
 
 
 # ---------------------------------------------------------------------------
@@ -145,6 +77,7 @@ class TestPipelineHappyPath:
             out=out,
             spec=spec,
             clock=clock,
+            validator=FakeValidationPort(),
             dataset_id="unit-test",
             input_dir="<memory>",
         )
@@ -249,6 +182,7 @@ class TestPipelineWithDroppedTransaction:
             out=out,
             spec=spec,
             clock=clock,
+            validator=FakeValidationPort(),
             dataset_id="unit-drop-test",
             input_dir="<memory>",
         )
@@ -271,3 +205,78 @@ class TestPipelineWithDroppedTransaction:
         assert len(result["dropped_details"]) == 1
         detail = result["dropped_details"][0]
         assert "valueDate" in detail.get("drop_reason", "")
+
+
+# ---------------------------------------------------------------------------
+# Real-schema validation: guards against fake-vs-real parity drift
+# ---------------------------------------------------------------------------
+
+class TestPipelineWithRealSchemas:
+    """Run the pipeline with real JSON Schemas and a real validator.
+
+    This catches spec-compliance bugs (e.g. severity enum mismatches) that
+    FakeSpecPort + FakeValidationPort silently ignore.
+    """
+
+    @pytest.fixture()
+    def result(self, clock: FixedClock) -> tuple[dict, FakeOutputPort]:
+        from pathlib import Path
+        from adapters.fs.spec_fs import FsSpecAdapter
+        from adapters.validation.jsonschema_adapter import JsonSchemaValidationAdapter
+
+        spec_dir = Path(__file__).resolve().parents[3] / "spec"
+        spec = FsSpecAdapter(spec_dir)
+        validator = JsonSchemaValidationAdapter()
+
+        booked = [
+            _make_transaction(
+                amount="250.00",
+                value_date="2025-03-10",
+                booking_date="2025-03-10",
+                debtor_name="Alice Sender",
+                transaction_id="TX001",
+                remittance="Salary March",
+            ),
+            _make_transaction(
+                amount="-45.99",
+                value_date="2025-03-12",
+                booking_date="2025-03-12",
+                debtor_name=None,
+                creditor_name="Supermarket GmbH",
+                transaction_id="TX002",
+                remittance="Groceries",
+            ),
+        ]
+
+        dataset = FakeDatasetPort(
+            accounts=_minimal_accounts(),
+            transaction_reports={
+                "transactions.json": _transactions_report(booked=booked),
+            },
+        )
+        out = FakeOutputPort()
+
+        summary = run_pipeline(
+            dataset=dataset,
+            out=out,
+            spec=spec,
+            clock=clock,
+            validator=validator,
+            dataset_id="real-schema-test",
+            input_dir="<memory>",
+        )
+        return summary, out
+
+    def test_outcome_is_success(self, result: tuple[dict, FakeOutputPort]) -> None:
+        summary, _ = result
+        assert summary["outcome"] == "SUCCESS"
+
+    def test_no_schema_errors(self, result: tuple[dict, FakeOutputPort]) -> None:
+        summary, _ = result
+        schema_issues = [i for i in summary["issues"] if "VALIDATION" in i.get("code", "")]
+        assert schema_issues == [], f"Schema validation errors: {schema_issues}"
+
+    def test_sv_output_present(self, result: tuple[dict, FakeOutputPort]) -> None:
+        _, out = result
+        assert out.sv is not None
+        assert len(out.sv["transactions"]) == 2

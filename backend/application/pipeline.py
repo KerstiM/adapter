@@ -19,8 +19,6 @@ from __future__ import annotations
 
 from typing import Any
 
-import jsonschema
-
 from domain.mapping.c01_raw_to_sv import (
     build_sv_bundle as _build_sv_bundle,
 )
@@ -48,6 +46,7 @@ from ports.clock_port import ClockPort
 from ports.dataset_port import DatasetPort
 from ports.output_port import OutputPort
 from ports.spec_port import SpecPort
+from ports.validation_port import ValidationPort
 
 
 # ---------------------------------------------------------------------------
@@ -73,6 +72,7 @@ _EXTRA_PROJECTION_DISPATCH: dict[str, tuple[Any, str]] = {
 # ---------------------------------------------------------------------------
 
 def _validate_against_schema(
+    validator: ValidationPort,
     data: dict,
     schema: dict,
     *,
@@ -80,28 +80,27 @@ def _validate_against_schema(
     stage: str,
     source_lineage: str,
 ) -> list[dict]:
-    """Validate *data* against *schema* and return a list of Issue dicts.
+    """Validate *data* against *schema* via the injected validator and return Issue dicts.
 
     A successful validation returns an empty list.  A failure yields a single
     Issue dict with the given *code*/*stage*/*source_lineage* and the first
-    schema error reported by ``jsonschema``.  This helper backs all four of
+    schema error reported by the validator.  This helper backs all four of
     the pipeline's schema-validation stages (S-00A/B/C on RAW input, S-01 on
     the SV bundle).
     """
+    raw_errors = validator.validate(data, schema)
     errors: list[dict] = []
-    try:
-        jsonschema.validate(data, schema)
-    except jsonschema.ValidationError as e:
+    for raw in raw_errors:
         schema_id = code.split("_", 1)[0]
         errors.append({
             "code": code,
             "severity": "ERROR",
             "stage": stage,
-            "message": f"{schema_id} validation: {e.message}",
+            "message": f"{schema_id} validation: {raw['message']}",
             "refs": {
                 "account_id": None,
                 "record_id": None,
-                "field_path": ".".join(str(p) for p in e.absolute_path) or None,
+                "field_path": raw.get("field_path"),
                 "source_lineage": source_lineage,
             },
         })
@@ -117,6 +116,7 @@ def run_pipeline(
     out: OutputPort,
     spec: SpecPort,
     clock: ClockPort,
+    validator: ValidationPort,
     profile_id: str = "default",
     *,
     dataset_id: str = "",
@@ -202,6 +202,7 @@ def run_pipeline(
 
     accounts_data = dataset.read_accounts()
     acct_errors = _validate_against_schema(
+        validator,
         accounts_data,
         profile["schemas"]["S-00A"],
         code="S-00A_VALIDATION",
@@ -225,6 +226,7 @@ def run_pipeline(
                 stage_warnings_1 += 1
             else:
                 tx_errors = _validate_against_schema(
+                    validator,
                     tx_data,
                     profile["schemas"]["S-00B"],
                     code="S-00B_VALIDATION",
@@ -236,6 +238,7 @@ def run_pipeline(
                 report_files.append((name, tx_data))
         else:
             tx_errors = _validate_against_schema(
+                validator,
                 tx_data,
                 profile["schemas"]["S-00B"],
                 code="S-00B_VALIDATION",
@@ -250,6 +253,7 @@ def run_pipeline(
     so_data = dataset.read_standing_orders_optional()
     if so_data is not None:
         so_errors = _validate_against_schema(
+            validator,
             so_data,
             profile["schemas"]["S-00C"],
             code="S-00C_VALIDATION",
@@ -276,9 +280,17 @@ def run_pipeline(
     # ================================================================
     # Stage 2: STANDARDIZE_TO_SV — map RAW -> SV (C-01)
     # ================================================================
-    sv_bundle, mapping_drops = _build_sv_bundle(
+    sv_bundle, mapping_drops, mapping_run_flags = _build_sv_bundle(
         accounts_data, report_files, run_id, created_at_utc, profile,
     )
+
+    # Forward mapping-stage run flags (e.g. IBAN fallback warnings)
+    for mrf in mapping_run_flags:
+        run_flags.append({
+            "id": mrf["code"],
+            "severity": mrf["severity"],
+            "message": mrf["message"],
+        })
 
     stage2_warnings = len(mapping_drops)
     for md in mapping_drops:
@@ -304,6 +316,7 @@ def run_pipeline(
     # Stage 3: VALIDATE_SCHEMA — validate SV against S-01
     # ================================================================
     sv_errors = _validate_against_schema(
+        validator,
         sv_bundle,
         profile["schemas"]["S-01"],
         code="S-01_VALIDATION",
@@ -393,9 +406,11 @@ def run_pipeline(
     # contributes a named section to the final ``report.json`` under
     # ``"extensions"``. Absent or empty list → byte-identical default behaviour.
     report_extensions_out: dict[str, Any] = {}
+    _projection_cache: dict[str, Any] = {}
     for _ext_name in profile.get("report_extensions", []):
         if _ext_name == "monthly_balance":
-            report_extensions_out["monthly_balance"] = _project_monthly_balance(sv_bundle)
+            _projection_cache["monthly_balance"] = _project_monthly_balance(sv_bundle)
+            report_extensions_out["monthly_balance"] = _projection_cache["monthly_balance"]
 
     # ----------------------------------------------------------------
     # Opt-in extra projections — profile-gated, contract-linked,
@@ -415,25 +430,28 @@ def run_pipeline(
         _output_file = _output_cfg.get("file", f"projections/{_proj_name}_v1.json")
         _output_filename = _output_file.rsplit("/", 1)[-1]
 
-        # Run projection
-        _proj_data = _proj_fn(sv_bundle)
+        # Run projection (reuse cached result if already computed for report_extensions)
+        if _proj_name in _projection_cache:
+            _proj_data = _projection_cache[_proj_name]
+        else:
+            _proj_data = _proj_fn(sv_bundle)
 
         # Runtime schema validation
         _validation_result = "PASS"
         if _schema_key and _schema_key in profile.get("schemas", {}):
-            try:
-                jsonschema.validate(_proj_data, profile["schemas"][_schema_key])
-            except jsonschema.ValidationError as e:
-                _validation_result = f"FAIL: {e.message}"
+            _val_errors = validator.validate(_proj_data, profile["schemas"][_schema_key])
+            if _val_errors:
+                _first = _val_errors[0]
+                _validation_result = f"FAIL: {_first['message']}"
                 issues.append({
                     "code": f"{_schema_key}_VALIDATION",
                     "severity": "WARN",
                     "stage": "WRITE_OUTPUTS",
-                    "message": f"{_schema_key} validation ({_proj_name}): {e.message}",
+                    "message": f"{_schema_key} validation ({_proj_name}): {_first['message']}",
                     "refs": {
                         "account_id": None,
                         "record_id": None,
-                        "field_path": ".".join(str(p) for p in e.absolute_path) or None,
+                        "field_path": _first.get("field_path"),
                         "source_lineage": f"extra_projection:{_proj_name}",
                     },
                 })
@@ -494,6 +512,24 @@ def run_pipeline(
     # ================================================================
     # Stage 8: WRITE_OUTPUTS — persist via OutputPort
     # ================================================================
+
+    # Re-validate sv_bundle against S-01 after Stage 4 mutations
+    # (quality checks may have added flags with new severities).
+    sv_errors_post = _validate_against_schema(
+        validator,
+        sv_bundle,
+        profile["schemas"]["S-01"],
+        code="S-01_VALIDATION",
+        stage="VALIDATE_SCHEMA",
+        source_lineage="sv.json",
+    )
+    issues.extend(sv_errors_post)
+    stage_log["VALIDATE_SCHEMA"] = {
+        "status": "OK" if not sv_errors_post else "ERROR",
+        "errors": len(sv_errors_post),
+        "warnings": 0,
+    }
+
     out.write_sv(sv_bundle)
     out.write_ml(ml_rows)
 
@@ -603,6 +639,9 @@ def run_pipeline(
             "infos": 0,
         })
 
+    # Derive version strings from spec_versions built during C-01 mapping
+    _sv_versions = sv_bundle.get("meta", {}).get("spec_versions", {})
+
     # report.json
     report = _build_report(
         run_id=run_id,
@@ -624,6 +663,9 @@ def run_pipeline(
         issues=issues,
         dropped_details=all_dropped_details,
         metrics=metrics,
+        sv_schema_version=_sv_versions.get("S-01", "1.0.0"),
+        mapping_version=_sv_versions.get("C-01", "1.0.0"),
+        ruleset_version=_sv_versions.get("R-01", "1.1.0"),
         report_extensions=report_extensions_out or None,
         extra_projections_audit=extra_projections_audit or None,
     )

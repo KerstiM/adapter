@@ -27,6 +27,7 @@ from adapters.fs.output_fs import FsOutputAdapter
 from adapters.fs.spec_fs import FsSpecAdapter
 from adapters.system.clock_real import RealClock
 from adapters.testing.clock_fixed import FixedClock
+from adapters.validation.jsonschema_adapter import JsonSchemaValidationAdapter
 from application.pipeline import run_pipeline as _app_run_pipeline
 
 
@@ -91,12 +92,16 @@ def run_pipeline_fs(
     except ValueError:
         input_dir = str(data_dir.resolve().as_posix())
 
+    # --- Construct validation adapter ---
+    validator = JsonSchemaValidationAdapter()
+
     # --- Delegate to the port-based application pipeline ---
     summary = _app_run_pipeline(
         dataset=dataset,
         out=out,
         spec=spec,
         clock=clock,
+        validator=validator,
         profile_id=profile_id,
         dataset_id=dataset_id,
         input_dir=input_dir,

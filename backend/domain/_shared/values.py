@@ -8,7 +8,7 @@ No I/O, no pathlib/os — only stdlib.
 """
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime  # NB: strptime only — datetime.now() / .utcnow() MUST NOT be used in domain layer
 from decimal import Decimal, InvalidOperation
 
 

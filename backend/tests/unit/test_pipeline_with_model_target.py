@@ -8,55 +8,8 @@ from __future__ import annotations
 import pytest
 
 from application.pipeline import run_pipeline
-from tests.fakes import FakeDatasetPort, FakeOutputPort, FakeSpecPort, FixedClock
-
-
-# ---------------------------------------------------------------------------
-# Helpers (same pattern as test_pipeline_with_fakes)
-# ---------------------------------------------------------------------------
-
-def _minimal_accounts() -> dict:
-    return {
-        "accounts": [
-            {
-                "resourceId": "acct-001",
-                "iban": "DE89370400440532013000",
-                "currency": "EUR",
-                "name": "Test Account",
-            },
-        ],
-    }
-
-
-def _make_transaction(
-    *,
-    amount: str = "100.00",
-    currency: str = "EUR",
-    value_date: str = "2025-03-15",
-    booking_date: str = "2025-03-15",
-    debtor_name: str = "Alice Sender",
-    transaction_id: str = "TX001",
-    remittance: str = "Payment for invoice 42",
-) -> dict:
-    return {
-        "transactionAmount": {"amount": amount, "currency": currency},
-        "valueDate": value_date,
-        "bookingDate": booking_date,
-        "debtorName": debtor_name,
-        "debtorAccount": {"iban": "NL91ABNA0417164300"},
-        "transactionId": transaction_id,
-        "remittanceInformationUnstructured": remittance,
-    }
-
-
-def _transactions_report(booked: list[dict] | None = None) -> dict:
-    return {
-        "account": {"iban": "DE89370400440532013000"},
-        "transactions": {
-            "booked": booked or [],
-            "pending": [],
-        },
-    }
+from tests.fakes import FakeDatasetPort, FakeOutputPort, FakeSpecPort, FakeValidationPort, FixedClock
+from tests.fakes.builders import make_accounts as _minimal_accounts, make_tx as _make_transaction, make_report as _transactions_report
 
 
 def _profile_with_target_models() -> dict:
@@ -177,7 +130,7 @@ class TestPipelineWithModelTargets:
         clock = FixedClock()
 
         summary = run_pipeline(
-            dataset=ds, out=out, spec=spec, clock=clock,
+            dataset=ds, out=out, spec=spec, clock=clock, validator=FakeValidationPort(),
             dataset_id="test", input_dir="/test",
         )
         return summary, out
@@ -266,7 +219,7 @@ class TestPipelineWithoutModelTargets:
         clock = FixedClock()
 
         summary = run_pipeline(
-            dataset=ds, out=out, spec=spec, clock=clock,
+            dataset=ds, out=out, spec=spec, clock=clock, validator=FakeValidationPort(),
             dataset_id="test", input_dir="/test",
         )
         assert summary["outcome"] == "SUCCESS"

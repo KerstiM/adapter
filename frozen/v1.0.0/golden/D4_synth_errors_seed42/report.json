@@ -166,7 +166,7 @@
         "warnings": 2
       },
       {
-        "errors": 1,
+        "errors": 0,
         "infos": 0,
         "stage": "VALIDATE_SCHEMA",
         "warnings": 0

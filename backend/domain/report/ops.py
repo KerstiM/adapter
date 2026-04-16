@@ -294,10 +294,11 @@ def compute_metrics(
         qc2_ratio = 1.0
         qc2_all_reported = True
 
-    assert invariant_correct_total >= 0, (
-        f"invariant_correct_total must be >= 0, got {invariant_correct_total} "
-        f"(checked={invariant_checked_total})"
-    )
+    if invariant_correct_total < 0:
+        raise ValueError(
+            f"invariant_correct_total must be >= 0, got {invariant_correct_total} "
+            f"(checked={invariant_checked_total})"
+        )
     sli3_ratio = (
         invariant_correct_total / invariant_checked_total
         if invariant_checked_total > 0
@@ -360,6 +361,9 @@ def build_report(
     dropped_details: list[dict] | None = None,
     metrics: dict | None = None,
     *,
+    sv_schema_version: str = "1.0.0",
+    mapping_version: str = "1.0.0",
+    ruleset_version: str = "1.1.0",
     spec_lock_sha256: str | None = None,
     input_fingerprint: str | None = None,
     output_artifact_hashes: dict[str, str] | None = None,
@@ -394,9 +398,9 @@ def build_report(
         "dataset_id": dataset_id,
         "input_dir": input_dir,
         "adapter_version": ADAPTER_VERSION,
-        "sv_schema_version": "1.0.0",
-        "mapping_version": "1.0.0",
-        "ruleset_version": "1.1.0",
+        "sv_schema_version": sv_schema_version,
+        "mapping_version": mapping_version,
+        "ruleset_version": ruleset_version,
     }
     if spec_lock_sha256 is not None:
         run_section["spec_lock_sha256"] = spec_lock_sha256

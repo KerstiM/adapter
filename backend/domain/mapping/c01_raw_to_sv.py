@@ -31,6 +31,15 @@ def _hash_record_id(parts: list[str]) -> str:
 # ---------------------------------------------------------------------------
 
 def infer_direction(raw_tx: dict, amount_raw: str) -> str:
+    """Infer transaction direction using the following precedence:
+
+    1. debtorName present -> IN
+    2. creditorName present -> OUT
+    3. signed amount starts with "-" -> OUT, otherwise IN
+
+    If both debtorName and creditorName are present, the caller must treat
+    the record as ambiguous and may emit a mapping-stage warning flag.
+    """
     if raw_tx.get("debtorName"):
         return "IN"
     if raw_tx.get("creditorName"):
@@ -81,17 +90,22 @@ def map_single_transaction(
     booking_date = raw_tx.get("bookingDate")
     value_date = raw_tx.get("valueDate")
     value_date_fell_back = False
+    fallback_src: str | None = None
     if not value_date:
         next_exec = raw_tx.get("nextExecutionDate")
         if status == "INFORMATION" and next_exec and is_iso_date(next_exec):
             value_date = next_exec
             value_date_fell_back = True
+            fallback_src = "nextExecutionDate"
         elif booking_date and is_iso_date(booking_date):
             value_date = booking_date
             value_date_fell_back = True
+            fallback_src = "bookingDate"
         else:
             return None
 
+    has_debtor = bool(raw_tx.get("debtorName"))
+    has_creditor = bool(raw_tx.get("creditorName"))
     direction = infer_direction(raw_tx, amount_raw)
 
     amount_abs = _decimal_str(abs(amt))
@@ -100,10 +114,18 @@ def map_single_transaction(
     else:
         amount_signed = amount_abs
 
-    # MAP-01: valueDate fallback flag
     flags: list[dict] = []
+
+    # MAP-02: ambiguous direction when both debtor and creditor are present
+    if has_debtor and has_creditor:
+        flags.append({
+            "id": "MAP-02_AMBIGUOUS_DIRECTION",
+            "severity": "WARN",
+            "message": "Both debtorName and creditorName present; debtorName takes precedence (direction=IN).",
+        })
+
+    # MAP-01: valueDate fallback flag
     if value_date_fell_back:
-        fallback_src = "nextExecutionDate" if raw_tx.get("nextExecutionDate") and status == "INFORMATION" else "bookingDate"
         flags.append({
             "id": "MAP-01_VALUE_DATE_FALLBACK",
             "severity": "WARN",
@@ -227,14 +249,14 @@ def build_sv_bundle(
     run_id: str,
     created_at_utc: str,
     profile: dict,
-) -> tuple[dict, list[dict]]:
+) -> tuple[dict, list[dict], list[dict]]:
     """Build the full SVBundle from accounts + flattened report files.
 
-    Returns (sv_bundle, mapping_drops).
+    Returns (sv_bundle, mapping_drops, mapping_run_flags).
     """
     raw_accounts = accounts_data.get("accounts", [])
     if not raw_accounts:
-        return {"meta": {}, "accounts": [], "transactions": []}, []
+        return {"meta": {}, "accounts": [], "transactions": []}, [], []
 
     sv_accounts = []
     iban_to_account_id: dict[str, str] = {}
@@ -253,9 +275,21 @@ def build_sv_bundle(
 
     all_transactions: list[dict] = []
     all_mapping_drops: list[dict] = []
+    mapping_run_flags: list[dict] = []
     for source_file, tx_data in report_files:
         report_iban = (tx_data.get("account") or {}).get("iban")
-        account_id = iban_to_account_id.get(report_iban, sv_accounts[0]["account_id"])
+        if report_iban not in iban_to_account_id:
+            account_id = sv_accounts[0]["account_id"]
+            mapping_run_flags.append({
+                "code": "MAP-03_REPORT_IBAN_FALLBACK",
+                "severity": "WARN",
+                "message": (
+                    f"report IBAN '{report_iban}' not in accounts list; "
+                    f"fell back to first account '{account_id}'"
+                ),
+            })
+        else:
+            account_id = iban_to_account_id[report_iban]
         sv_txs, mapping_drops = flatten_report_file(tx_data, account_id, source_file)
         all_transactions.extend(sv_txs)
         all_mapping_drops.extend(mapping_drops)
@@ -282,4 +316,4 @@ def build_sv_bundle(
         "meta": meta,
         "accounts": sv_accounts,
         "transactions": all_transactions,
-    }, all_mapping_drops
+    }, all_mapping_drops, mapping_run_flags
