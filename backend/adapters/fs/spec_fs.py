@@ -135,9 +135,16 @@ class FsSpecAdapter:
         Paths in the profile are written relative to the repository root
         (e.g. ``"spec/schemas/S-01_sv_schema.json"``).
 
-        Raises ``FileNotFoundError`` when the file does not exist.
+        Raises ``ValueError`` when the resolved path escapes the repository
+        root (e.g. via ``../``) and ``FileNotFoundError`` when the file does
+        not exist.
         """
-        path = (self._repo_root / relpath).resolve()
+        repo_root = self._repo_root.resolve()
+        path = (repo_root / relpath).resolve()
+        if not path.is_relative_to(repo_root):
+            raise ValueError(
+                f"Spec path escapes repository root: {relpath!r} -> {path}"
+            )
         if not path.exists():
             raise FileNotFoundError(
                 f"Spec file missing (profile points to it): {relpath!r} -> {path}"

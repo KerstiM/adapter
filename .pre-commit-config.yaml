@@ -1,0 +1,36 @@
+# Pre-commit hooks for the adapter repository.
+#
+# Install once:
+#   pip install pre-commit
+#   pre-commit install
+#
+# Run on demand:
+#   pre-commit run --all-files
+#
+# Goal: catch accidental commits of secrets and stray PII (card last-4 patterns
+# outside the explicitly whitelisted real-anonymised datasets D10/D11 and their
+# golden fixtures, which the data subject has consented to publish).
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
+        name: gitleaks (secrets scan)
+
+  - repo: local
+    hooks:
+      - id: forbid-card-last4-outside-d10-d11
+        name: Forbid card last-4 patterns outside D10/D11
+        language: pygrep
+        # Match "(..1234)" — POS-text card-terminal last-4 fingerprint.
+        # Whitelist: D10/D11 real-anon datasets and their golden fixtures
+        # (data subject is the repository author and has consented to publish).
+        entry: '\(\.\.[0-9]{4}\)'
+        exclude: |
+          (?x)^(
+            datasets/D10_real_anon_oct16/.*|
+            datasets/D11_real_anon_2024/.*|
+            golden/D10_real_anon_oct16/.*|
+            golden/D11_real_anon_2024/.*|
+            \.pre-commit-config\.yaml
+          )$

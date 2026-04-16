@@ -14,6 +14,37 @@ from __future__ import annotations
 from domain.projections.model_formatters._common import context_to_json
 
 
+# Chat-template control tokens that must never appear inside an untrusted
+# preamble — otherwise an attacker could close the system turn and inject
+# their own user/assistant messages.
+_CONTROL_TOKENS: dict[str, tuple[str, ...]] = {
+    "llama3": (
+        "<|begin_of_text|>",
+        "<|end_of_text|>",
+        "<|eot_id|>",
+        "<|start_header_id|>",
+        "<|end_header_id|>",
+    ),
+    "mistral": ("<s>", "</s>", "[INST]", "[/INST]"),
+    "chatml": ("<|im_start|>", "<|im_end|>", "<|endoftext|>"),
+}
+
+
+def _strip_chat_control_tokens(text: str, family: str) -> str:
+    """Remove model-family-specific chat control tokens from *text*.
+
+    The preamble is sourced from the profile or the HTTP API, both of which
+    can be untrusted in a multi-tenant setup. Stripping the control tokens
+    here keeps the chat structure under our control.
+    """
+    if not text:
+        return text
+    out = text
+    for token in _CONTROL_TOKENS.get(family, ()):
+        out = out.replace(token, "")
+    return out
+
+
 def format_llama3(
     llm_contexts: list[dict],
     sv_bundle: dict,
@@ -40,11 +71,13 @@ def format_llama3(
     usr_end = tokens.get("user_end", "<|eot_id|>")
     asst_start = tokens.get("assistant_start", "<|start_header_id|>assistant<|end_header_id|>\n\n")
 
+    safe_preamble = _strip_chat_control_tokens(preamble, "llama3")
+
     results = []
     for ctx in llm_contexts:
         ctx_json = context_to_json(ctx)
         prompt = (
-            f"{bos}{sys_start}{preamble}{sys_end}"
+            f"{bos}{sys_start}{safe_preamble}{sys_end}"
             f"{usr_start}{ctx_json}{usr_end}"
             f"{asst_start}"
         )
@@ -76,10 +109,12 @@ def format_mistral(
     inst_start = tokens.get("inst_start", "[INST] ")
     inst_end = tokens.get("inst_end", " [/INST]")
 
+    safe_preamble = _strip_chat_control_tokens(preamble, "mistral")
+
     results = []
     for ctx in llm_contexts:
         ctx_json = context_to_json(ctx)
-        prompt = f"{bos}{inst_start}{preamble}\n\n{ctx_json}{inst_end}"
+        prompt = f"{bos}{inst_start}{safe_preamble}\n\n{ctx_json}{inst_end}"
         results.append({
             "model_id": "mistral-7b-instruct-v0.3",
             "account_id": ctx.get("meta", {}).get("account_id", ""),
@@ -109,11 +144,13 @@ def format_chatml(
     im_start = tokens.get("im_start", "<|im_start|>")
     im_end = tokens.get("im_end", "<|im_end|>")
 
+    safe_preamble = _strip_chat_control_tokens(preamble, "chatml")
+
     results = []
     for ctx in llm_contexts:
         ctx_json = context_to_json(ctx)
         prompt = (
-            f"{im_start}system\n{preamble}{im_end}\n"
+            f"{im_start}system\n{safe_preamble}{im_end}\n"
             f"{im_start}user\n{ctx_json}{im_end}\n"
             f"{im_start}assistant\n"
         )

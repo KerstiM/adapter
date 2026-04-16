@@ -3,7 +3,16 @@
 Usage::
 
     cd backend
-    python -m entrypoints.api          # http://localhost:5000
+    python -m entrypoints.api          # http://127.0.0.1:5000
+
+Environment variables:
+    ADAPTER_HTTP_HOST   bind address (default: 127.0.0.1; set to 0.0.0.0
+                        only when you understand the consequences — the API
+                        returns per-transaction data including, for the
+                        D10/D11 datasets, real bank-statement content).
+    ADAPTER_HTTP_PORT   bind port (default: 5000).
+    ADAPTER_CORS_ORIGINS comma-separated allowlist of allowed Origin headers
+                        (default: http://localhost:5173,http://127.0.0.1:5173).
 """
 
 from __future__ import annotations
@@ -11,6 +20,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import os
 import time
 import traceback
 from http.server import HTTPServer, BaseHTTPRequestHandler
@@ -22,6 +32,15 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 DATASETS_DIR = ROOT / "datasets"
 SPEC_DIR = ROOT / "spec"
 OUTPUT_DIR = ROOT / ".pipeline_out"
+
+MAX_BODY_BYTES = 1_000_000
+MAX_PREAMBLE_CHARS = 2048
+DEFAULT_CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173"
+
+
+def _allowed_origins() -> set[str]:
+    raw = os.environ.get("ADAPTER_CORS_ORIGINS", DEFAULT_CORS_ORIGINS)
+    return {o.strip() for o in raw.split(",") if o.strip()}
 
 
 def _resolve_dataset(dataset_id: str) -> Path | None:
@@ -50,13 +69,17 @@ def _read_ml_preview(run_folder: Path) -> dict | None:
     return {"headers": headers, "rows": rows, "totalRows": len(rows)}
 
 
-def _read_llm_preview(run_folder: Path) -> dict | None:
+def _read_llm_preview(run_folder: Path, *, include_raw: bool = False) -> dict | None:
     """Read LLM context and transform to the shape the frontend expects.
 
     Raw format (single account):  { meta: {...}, tx: [...] }
     Raw format (multi-account):   [ { meta: {...}, tx: [...] }, ... ]
     Frontend:    { narrative, accountSummary: {periodStart, periodEnd, totalIncome,
                    totalExpenses, netFlow}, topCategories: [{category, total, count}] }
+
+    The raw per-transaction context is omitted from the response by default
+    because it can contain counterparty names and remittance text. Pass
+    ``include_raw=True`` only when the caller is trusted (e.g. localhost dev).
     """
     llm_path = run_folder / "projections" / "llm_context_v1.json"
     if not llm_path.exists():
@@ -124,7 +147,7 @@ def _read_llm_preview(run_folder: Path) -> dict | None:
             "netFlow": net_flow,
         },
         "topCategories": top_categories,
-        "rawContexts": raw_contexts,
+        "rawContexts": raw_contexts if include_raw else [],
     }
 
 
@@ -160,9 +183,12 @@ def _read_model_projections(run_folder: Path) -> list[dict]:
 
 class Handler(BaseHTTPRequestHandler):
     def _cors(self):
-        self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        origin = self.headers.get("Origin")
+        if origin and origin in _allowed_origins():
+            self.send_header("Access-Control-Allow-Origin", origin)
+            self.send_header("Vary", "Origin")
+            self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type")
 
     def _json_response(self, data, status=200):
         body = json.dumps(data, ensure_ascii=False).encode()
@@ -171,6 +197,29 @@ class Handler(BaseHTTPRequestHandler):
         self._cors()
         self.end_headers()
         self.wfile.write(body)
+
+    def _read_body(self) -> tuple[dict | None, tuple[dict, int] | None]:
+        """Read and parse the request body.
+
+        Returns ``(body, None)`` on success or ``(None, (error_dict, status))``
+        when the body is too large or not valid JSON.
+        """
+        raw_length = self.headers.get("Content-Length", "0")
+        try:
+            length = int(raw_length)
+        except (TypeError, ValueError):
+            return None, ({"error": "invalid Content-Length"}, 400)
+        if length < 0:
+            return None, ({"error": "invalid Content-Length"}, 400)
+        if length > MAX_BODY_BYTES:
+            return None, ({"error": "payload too large"}, 413)
+        if length == 0:
+            return {}, None
+        raw = self.rfile.read(length)
+        try:
+            return json.loads(raw), None
+        except json.JSONDecodeError:
+            return None, ({"error": "invalid json"}, 400)
 
     def do_OPTIONS(self):
         self.send_response(204)
@@ -190,8 +239,11 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         if self.path == "/api/run":
-            length = int(self.headers.get("Content-Length", 0))
-            body = json.loads(self.rfile.read(length)) if length else {}
+            body, err = self._read_body()
+            if err is not None:
+                error_payload, status = err
+                self._json_response(error_payload, status)
+                return
             dataset_id = body.get("datasetId", "D1")
 
             # Optional model targeting from request body
@@ -199,6 +251,16 @@ class Handler(BaseHTTPRequestHandler):
             target_llm = body.get("targetLlm")
             target_ml = body.get("targetMl")
             llm_preamble = body.get("llmPreamble")
+            if llm_preamble is not None:
+                if not isinstance(llm_preamble, str):
+                    self._json_response({"error": "llmPreamble must be a string"}, 400)
+                    return
+                if len(llm_preamble) > MAX_PREAMBLE_CHARS:
+                    self._json_response(
+                        {"error": f"llmPreamble too long (max {MAX_PREAMBLE_CHARS} chars)"},
+                        400,
+                    )
+                    return
             if target_llm or target_ml or llm_preamble:
                 target_models_override = {}
                 if target_llm:
@@ -207,6 +269,8 @@ class Handler(BaseHTTPRequestHandler):
                     target_models_override["ml"] = target_ml if isinstance(target_ml, list) else [target_ml]
                 if llm_preamble:
                     target_models_override["llm_preamble"] = llm_preamble
+
+            include_raw = bool(body.get("includeRaw", False))
 
             data_dir = _resolve_dataset(dataset_id)
             if data_dir is None:
@@ -235,7 +299,7 @@ class Handler(BaseHTTPRequestHandler):
             report = _read_report(run_folder)
             stage_log = report.get("summary", {}).get("by_stage", [])
             ml_preview = _read_ml_preview(run_folder)
-            llm_preview = _read_llm_preview(run_folder)
+            llm_preview = _read_llm_preview(run_folder, include_raw=include_raw)
 
             # Read model-specific projection files with content
             model_projections = _read_model_projections(run_folder)
@@ -256,6 +320,8 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    server = HTTPServer(("0.0.0.0", 5000), Handler)
-    print("API server running on http://localhost:5000")
+    host = os.environ.get("ADAPTER_HTTP_HOST", "127.0.0.1")
+    port = int(os.environ.get("ADAPTER_HTTP_PORT", "5000"))
+    server = HTTPServer((host, port), Handler)
+    print(f"API server running on http://{host}:{port}")
     server.serve_forever()
