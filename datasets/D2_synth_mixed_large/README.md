@@ -1,4 +1,4 @@
-# D2_public_mixed_large
+# D2_synth_mixed_large
 
 Suur segadataset Berlin Group loomulike märgikonventsioonidega (positiivsed summad OUT-il), mis põhjustavad INV-05 WARN-e. Ootel tehingutel puudub bookingDate. Droppe ei oodata.
 

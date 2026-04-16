@@ -86,7 +86,7 @@ python scripts/qa/run_full_qa.py
 ### QA (üks dataset)
 
 ```bash
-python scripts/qa/run_full_qa.py --dataset D1_public_valid_small
+python scripts/qa/run_full_qa.py --dataset D1_synth_valid_small
 ```
 
 ### QA (kiire režiim — ainult D1 + D3)

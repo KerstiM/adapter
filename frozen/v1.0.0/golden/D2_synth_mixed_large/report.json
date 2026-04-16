@@ -505,12 +505,12 @@
   "run": {
     "adapter_version": "0.1.0",
     "created_at_utc": "2000-01-01T00:00:00Z",
-    "dataset_id": "D2_public_mixed_large",
-    "input_dir": "datasets/D2_public_mixed_large",
+    "dataset_id": "D2_synth_mixed_large",
+    "input_dir": "datasets/D2_synth_mixed_large",
     "mapping_version": "1.0.0",
     "profile_id": "default",
     "ruleset_version": "1.1.0",
-    "run_id": "GOLDEN_D2_public_mixed_large",
+    "run_id": "GOLDEN_D2_synth_mixed_large",
     "sv_schema_version": "1.0.0"
   },
   "run_flags": [],

@@ -13,7 +13,7 @@ that identical datasets always produce the same run output.
 Usage::
 
     from adapters.fs.dataset_fs import FsDatasetAdapter
-    ds = FsDatasetAdapter(data_dir=Path("datasets/D1_public_valid_small"))
+    ds = FsDatasetAdapter(data_dir=Path("datasets/D1_synth_valid_small"))
     accounts = ds.read_accounts()
     for name in ds.list_transaction_reports():
         report = ds.read_transactions_report(name)
