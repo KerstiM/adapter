@@ -191,7 +191,8 @@ const llmContextJson = computed(() => {
   const r = projectionSourceResult.value
   if (!r?.llmPreview) return ''
   const raw = r.llmPreview.rawContexts
-  return JSON.stringify(raw ?? r.llmPreview, null, 2)
+  const useRaw = Array.isArray(raw) && raw.length > 0
+  return JSON.stringify(useRaw ? raw : r.llmPreview, null, 2)
 })
 
 const hasProjectionData = computed(() => {

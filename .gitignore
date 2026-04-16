@@ -51,6 +51,7 @@ __screenshots__/
 backend/out/
 out/
 .pipeline_out/
+.backend/
 # Pipeline outputs (tracked for thesis reference)
 # backend/out/
 # out/

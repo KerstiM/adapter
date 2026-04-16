@@ -61,7 +61,10 @@ function buildModelPayload(selectedModelIds) {
  * Returns { result, elapsed_ms } — all real data from the backend.
  */
 export async function runPipeline(datasetId, selectedModelIds) {
-  const body = { datasetId, ...buildModelPayload(selectedModelIds) }
+  // includeRaw: opt-in for the per-transaction LLM context. The dev frontend
+  // displays it in the LLM viewer; production / non-localhost callers should
+  // omit this flag so the backend strips counterparty/remittance text.
+  const body = { datasetId, includeRaw: true, ...buildModelPayload(selectedModelIds) }
 
   const res = await fetch('/api/run', {
     method: 'POST',
