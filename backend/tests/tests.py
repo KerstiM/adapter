@@ -2,7 +2,7 @@
 Happy-path tests for the adapter pipeline.
 
 Tests verify the full RAW -> SV -> ML/LLM projection flow
-using datasets/D1_public_valid_small Berlin AIS fixtures against specs:
+using datasets/D1_synth_valid_small Berlin AIS fixtures against specs:
   S-01 (flat transactions, amount object, IN/OUT direction)
   C-02 (BOOKED+PENDING, row_id as int)
   C-03 (LLM context with short field names)
@@ -28,7 +28,7 @@ from entrypoints.wiring_fs import run_pipeline_fs
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SPEC_DIR = PROJECT_ROOT / "spec"
 DATASETS_DIR = PROJECT_ROOT / "datasets"
-DATA_D1 = DATASETS_DIR / "D1_public_valid_small"
+DATA_D1 = DATASETS_DIR / "D1_synth_valid_small"
 
 FIXED_RUN_ID = "test-run-001"
 FIXED_TS = "2026-01-01T00:00:00Z"
@@ -739,7 +739,7 @@ class TestD4FailGate:
 # D2 — Mixed large dataset with INV-05 WARNs → PARTIAL_SUCCESS
 # ---------------------------------------------------------------------------
 
-DATA_D2 = DATASETS_DIR / "D2_public_mixed_large"
+DATA_D2 = DATASETS_DIR / "D2_synth_mixed_large"
 
 
 class TestD2MixedLarge:
@@ -1217,7 +1217,7 @@ class TestScalingTiming:
     """
 
     @pytest.mark.parametrize("dataset,label", [
-        ("D1_public_valid_small",   "D1 (7 tx)"),
+        ("D1_synth_valid_small",   "D1 (7 tx)"),
         ("D3_synth_valid_seed42",   "D3 (150 tx)"),
         ("D9_synth_perf_seed9",     "D9 (1 000 tx)"),
         ("D8_load_test_10k_seed88", "D8 (10 000 tx)"),

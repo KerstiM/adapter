@@ -4,8 +4,8 @@ import specsRaw    from '../../../../docs/SPETSIFIKATSIOONID.md?raw'
 import archRaw     from '../../../../docs/ARHITEKTUUR.md?raw'
 import runbookRaw  from '../../../../docs/runbook.md?raw'
 
-import d1Raw  from '../../../../datasets/D1_public_valid_small/README.md?raw'
-import d2Raw  from '../../../../datasets/D2_public_mixed_large/README.md?raw'
+import d1Raw  from '../../../../datasets/D1_synth_valid_small/README.md?raw'
+import d2Raw  from '../../../../datasets/D2_synth_mixed_large/README.md?raw'
 import d3Raw  from '../../../../datasets/D3_synth_valid_seed42/README.md?raw'
 import d4Raw  from '../../../../datasets/D4_synth_errors_seed42/README.md?raw'
 import d5Raw  from '../../../../datasets/D5_synth_edges_seed99/README.md?raw'
@@ -37,8 +37,8 @@ export const CORE_DOCS = [
 ]
 
 export const DATASET_DOCS = [
-  { id: 'd1',  datasetId: 'D1',  title: 'D1 – Public, valid, small',     content: d1Raw  },
-  { id: 'd2',  datasetId: 'D2',  title: 'D2 – Public, mixed, large',     content: d2Raw  },
+  { id: 'd1',  datasetId: 'D1',  title: 'D1 – Synth, valid, small',     content: d1Raw  },
+  { id: 'd2',  datasetId: 'D2',  title: 'D2 – Synth, mixed, large',     content: d2Raw  },
   { id: 'd3',  datasetId: 'D3',  title: 'D3 – Synth, valid',             content: d3Raw  },
   { id: 'd4',  datasetId: 'D4',  title: 'D4 – Synth, with errors',       content: d4Raw  },
   { id: 'd5',  datasetId: 'D5',  title: 'D5 – Edge cases',               content: d5Raw  },

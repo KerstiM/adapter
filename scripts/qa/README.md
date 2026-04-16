@@ -19,7 +19,7 @@ Jooksutab kõik kontrollietapid järjest:
 python scripts/qa/run_full_qa.py
 
 # Üks dataset
-python scripts/qa/run_full_qa.py --dataset D1_public_valid_small
+python scripts/qa/run_full_qa.py --dataset D1_synth_valid_small
 
 # Mitu datasetti
 python scripts/qa/run_full_qa.py --dataset D1,D2
@@ -38,7 +38,7 @@ python scripts/qa/run_full_qa.py --skip-golden
 python scripts\qa\run_full_qa.py
 
 # Üks dataset
-python scripts\qa\run_full_qa.py --dataset D1_public_valid_small
+python scripts\qa\run_full_qa.py --dataset D1_synth_valid_small
 
 # Kiire režiim
 python scripts\qa\run_full_qa.py --fast

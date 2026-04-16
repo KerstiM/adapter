@@ -36,12 +36,12 @@
   "run": {
     "adapter_version": "0.1.0",
     "created_at_utc": "2000-01-01T00:00:00Z",
-    "dataset_id": "D1_public_valid_small",
-    "input_dir": "datasets/D1_public_valid_small",
+    "dataset_id": "D1_synth_valid_small",
+    "input_dir": "datasets/D1_synth_valid_small",
     "mapping_version": "1.0.0",
     "profile_id": "default",
     "ruleset_version": "1.1.0",
-    "run_id": "GOLDEN_D1_public_valid_small",
+    "run_id": "GOLDEN_D1_synth_valid_small",
     "sv_schema_version": "1.0.0"
   },
   "run_flags": [],

@@ -11,7 +11,7 @@ Normatiivne käitumine on kirjeldatud `spec/` kataloogi versioonitud skeemide, l
 # Eeldused: Python 3.11+, sõltuvused paigaldatud
 cd backend && pip install -r requirements.txt
 
-# Üks dataset (prefix-match: D1 → D1_public_valid_small)
+# Üks dataset (prefix-match: D1 → D1_synth_valid_small)
 python backend/run_adapter.py --data D1 --out backend/out
 
 # Konkreetsete mudelitega
@@ -31,7 +31,7 @@ for d in datasets/D*; do python backend/run_adapter.py --data "$d" --out backend
 ```
 
 CLI argumendid:
-- `--data / -d` — dataseti nimi (nt `D1`, `D4`) või kaustatee. Vaikimisi: `D1_public_valid_small`.
+- `--data / -d` — dataseti nimi (nt `D1`, `D4`) või kaustatee. Vaikimisi: `D1_synth_valid_small`.
 - `--out / -o` — väljundi juurkaust. Vaikimisi: `<repo>/.backend/out/`.
 - `--profile / -p` — jooksuprofiil (nt `extensions_eval`). Vaikimisi: `default`. Profiil määrab, millised skeemid, lepingud ja reeglistikud on aktiivsed ning kas on lubatud lisaprojektsioonid (nt `extra_projections`).
 - `--target-llm MODEL [MODEL ...]` — LLM mudel(id), millele genereerida projektsioonid. Valikud: `llama3.1-8b-instruct`, `mistral-7b-instruct-v0.3`, `qwen2.5-7b-instruct`, `gemma-2-2b-it`.
