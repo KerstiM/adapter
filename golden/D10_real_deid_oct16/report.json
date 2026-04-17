@@ -961,12 +961,12 @@
   "run": {
     "adapter_version": "0.1.0",
     "created_at_utc": "2000-01-01T00:00:00Z",
-    "dataset_id": "D10_real_anon_oct16",
-    "input_dir": "datasets/D10_real_anon_oct16",
+    "dataset_id": "D10_real_deid_oct16",
+    "input_dir": "datasets/D10_real_deid_oct16",
     "mapping_version": "1.0.0",
     "profile_id": "default",
     "ruleset_version": "1.1.0",
-    "run_id": "GOLDEN_D10_real_anon_oct16",
+    "run_id": "GOLDEN_D10_real_deid_oct16",
     "sv_schema_version": "1.0.0"
   },
   "run_flags": [],

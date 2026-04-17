@@ -123,17 +123,18 @@ DSR iteratsioonid on märgistatud tsükliga: **ehita → hinda → õpi → koha
 
 ---
 
-## Iteratsioon 6: Reaalne anonümiseeritud andmestik (04.03)
-- **D10 reaalne anonümiseeritud andmestik:** 90 tehingut (okt–nov 2016), parsitud pangaväljavõttest
+## Iteratsioon 6: Reaalne de-identifitseeritud andmestik (04.03)
+- **D10 reaalne de-identifitseeritud andmestik:** 90 tehingut (okt–nov 2016), parsitud pangaväljavõttest
 - **Eesmärk:** Valideerida pipeline'i käitumist pärisandmetega; tõendada, et süsteem töötab ka väljaspool sünteetilisi datasette (UK2 auditeeritav kvaliteeditõendus)
-- **Anonümiseerimine (täiendatud 16.04):**
-  - Isikute nimed asendatud väljamõeldud nimedega (4 isikut)
-  - Isiklikud IBANid asendatud (11 unikaalset kontot)
-  - Kaardi viimased 4 numbrit muudetud (2 kaarti)
-  - POS-aadressid anonümiseeritud (töökoha ja elukoha tuvastamine välistatud)
-  - Remittance-tekstid puhastatud identifitseerivatest viidetest (perekondlikud viited eemaldatud)
-  - Summad perturbeeritud (±5–15%), palgasumma normaliseeritud
-  - Ettevõtete nimed ja avalikud IBANid jäetud muutmata (avalik info)
+- **Töötlusaste:** osaliselt pseudonümiseeritud ja perturbeeritud (vt täiendav selgitus iteratsioonis 7)
+- **Kasutatud tehnikad (täiendatud 16.04):**
+  - Pseudonümiseerimine: isikute nimed asendatud väljamõeldud nimedega (4 isikut)
+  - Pseudonümiseerimine: isiklikud IBANid asendatud (11 unikaalset kontot)
+  - Pseudonümiseerimine: kaardi viimased 4 numbrit muudetud (2 kaarti)
+  - Üldistamine: POS-aadressid (töökoha ja elukoha tuvastamine välistatud)
+  - Üldistamine: remittance-tekstid puhastatud identifitseerivatest viidetest (perekondlikud viited eemaldatud)
+  - Perturbatsioon: summad ±5–15%, palgasumma normaliseeritud
+  - Säilitatud: ettevõtete nimed ja avalikud IBANid (avalik info)
 - **Huvitavad äärjuhud:**
   - Duplikaat-transactionId 47210131 (ATM väljavõte + teenustasu — erinev sisu, sama ID)
   - `creditorName: "nan"` (pandas NaN→string artefakt)
@@ -144,3 +145,42 @@ DSR iteratsioonid on märgistatud tsükliga: **ehita → hinda → õpi → koha
   - Determinism: 100% — kõik 4 artefakti baidilt identsed
   - Kõik skeemid valideeruvad
 - **Uuendused:** D10 golden-väljundid lisatud, frozen/v1.0.0/manifest.json uuendatud (10 andmestikku)
+
+---
+
+## Iteratsioon 7: Terminoloogia täpsustus ja andmestike ümbernimetamine (17.04)
+
+- **Põhjus:** Senised nimetused `D10_real_anon_oct16` ja `D11_real_anon_2024`
+  viitasid "anonümiseerimisele", kuid kasutatud tehnikad (identifikaatorite
+  asendamine + kvaasi-identifikaatorite säilitamine + summade perturbatsioon)
+  ei vasta ei GDPR art 4(5) pseudonümiseerimise täisnõuetele ega
+  anonümiseerimise nõuetele. Auditeeritav kvaliteeditõendus (UK2) nõuab, et
+  kaustanimi ja dokumentatsioon peegeldaksid tegelikku töötlusastet.
+- **Täpsem termin:** **osaliselt pseudonümiseeritud ja perturbeeritud**
+  (ingl *de-identified test dataset*). Puudub eraldi turvaliselt hoitud
+  võtmehoidla, mistõttu ei ole tegemist täieliku pseudonümiseerimisega
+  GDPR mõttes. Säilivad kvaasi-identifikaatorid (kuupäevad, tehingumustrid,
+  avalikud IBAN-id, firmanimed) võimaldavad korrelatsiooniga
+  re-identifitseerimist — seega pole tegemist ka anonümiseerimisega.
+- **Muudatused:**
+  - Kaustad ümber nimetatud:
+    `datasets/D10_real_anon_oct16` → `datasets/D10_real_deid_oct16`
+    `datasets/D11_real_anon_2024` → `datasets/D11_real_deid_2024`
+    (sama `golden/`-is)
+  - Koodi-viited uuendatud: `.pre-commit-config.yaml`, `.gitignore`,
+    `scripts/freeze_goldens.py`, `scripts/reanonymise_pii.py`,
+    `frontend/vue-project/src/services/api.js`,
+    `frontend/vue-project/src/data/docs.js`,
+    `backend/tests/test_integration_fs.py`
+  - D10 ja D11 README-desse lisatud sektsioon **"Töötlusaste ja GDPR-staatus"**
+    viitega GDPR art 4(5)-le
+  - Live goldenid `golden/D10_real_deid_oct16/` ja
+    `golden/D11_real_deid_2024/` regenereeritud pipeline'i kaudu (uued
+    `dataset_id`, `input_dir`, `run_id` väljad)
+  - Uus `frozen/v1.1.0/` snapshot loodud uute nimedega ja värskelt arvutatud
+    SHA-256 hash'idega; `frozen/v1.0.0/` jääb ajaloolise auditeeritava
+    snapshot'ina **puutumata**
+- **Tulemused:**
+  - `grep -r "real_anon"` (v.a `frozen/v1.0.0/`) tagastab tühja
+  - Kõik integratsioonitestid läbivad uute andmestikunimedega
+  - Terminoloogia GDPR-vastavalt täpsem, auditi-jälgitavus säilitatud

@@ -8,7 +8,7 @@
 #   pre-commit run --all-files
 #
 # Goal: catch accidental commits of secrets and stray PII (card last-4 patterns
-# outside the explicitly whitelisted real-anonymised datasets D10/D11 and their
+# outside the explicitly whitelisted de-identified datasets D10/D11 and their
 # golden fixtures, which the data subject has consented to publish).
 repos:
   - repo: https://github.com/gitleaks/gitleaks
@@ -23,14 +23,14 @@ repos:
         name: Forbid card last-4 patterns outside D10/D11
         language: pygrep
         # Match "(..1234)" — POS-text card-terminal last-4 fingerprint.
-        # Whitelist: D10/D11 real-anon datasets and their golden fixtures
+        # Whitelist: D10/D11 de-identified datasets and their golden fixtures
         # (data subject is the repository author and has consented to publish).
         entry: '\(\.\.[0-9]{4}\)'
         exclude: |
           (?x)^(
-            datasets/D10_real_anon_oct16/.*|
-            datasets/D11_real_anon_2024/.*|
-            golden/D10_real_anon_oct16/.*|
-            golden/D11_real_anon_2024/.*|
+            datasets/D10_real_deid_oct16/.*|
+            datasets/D11_real_deid_2024/.*|
+            golden/D10_real_deid_oct16/.*|
+            golden/D11_real_deid_2024/.*|
             \.pre-commit-config\.yaml
           )$

@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "account_id": "cd613e30-d8f1-4adf-91b7-584a2265b1f5",
+    "created_at_utc": "2000-01-01T00:00:00Z",
+    "currency": "EUR",
+    "iban": "DE14177763170669074391",
+    "run_id": "GOLDEN_D1_synth_valid_small"
+  },
+  "tx": [
+    {
+      "a": "9655.66",
+      "c": "EUR",
+      "cp": "Luca Tamm",
+      "d": "2024-05-09",
+      "dir": "IN",
+      "id": "f003251df1d4c77b",
+      "r": "Donation to charity",
+      "s": "BOOKED"
+    },
+    {
+      "a": "1570.49",
+      "c": "EUR",
+      "cp": "Elena Saar",
+      "d": "2024-05-24",
+      "dir": "IN",
+      "id": "7a229491c41a65cd",
+      "r": "Grocery store purchase",
+      "s": "PENDING"
+    },
+    {
+      "a": "-7438.67",
+      "c": "EUR",
+      "cp": "Luca Smith",
+      "d": "2024-06-07",
+      "dir": "OUT",
+      "id": "2700787d62cecca4",
+      "r": "Refund order YPGDXKRL",
+      "s": "PENDING"
+    },
+    {
+      "a": "255.43",
+      "c": "EUR",
+      "cp": "Markus Tamm",
+      "d": "2024-06-11",
+      "dir": "IN",
+      "id": "f5c96c85975bd694",
+      "r": "Rent payment June",
+      "s": "BOOKED"
+    },
+    {
+      "a": "4045.14",
+      "c": "EUR",
+      "cp": "Carlos Kowalski",
+      "d": "2024-10-03",
+      "dir": "IN",
+      "id": "0d46b1c1ecdf0027",
+      "r": "Utility bill October",
+      "s": "BOOKED"
+    },
+    {
+      "a": "8610.22",
+      "c": "EUR",
+      "cp": "Markus Smith",
+      "d": "2024-11-21",
+      "dir": "IN",
+      "id": "c271c2d070399275",
+      "r": "Donation to charity",
+      "s": "BOOKED"
+    },
+    {
+      "a": "-2842.31",
+      "c": "EUR",
+      "cp": "Henrik Berg",
+      "d": "2024-12-09",
+      "dir": "OUT",
+      "id": "7e57bf2432b8b643",
+      "r": "Invoice L4WUXGIA",
+      "s": "BOOKED"
+    }
+  ]
+}
