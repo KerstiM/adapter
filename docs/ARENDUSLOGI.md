@@ -96,12 +96,12 @@ DSR iteratsioonid on märgistatud tsükliga: **ehita → hinda → õpi → koha
 - **D8 koormustesti andmestik:** 10 000 tehingut (8 000 booked + 2 000 pending), seed 88
 - **Eesmärk:** Tõendada pipeline'i käitumist tootmismahtudel — determinism, jõudlus, mäluhaldus
 - **Tulemused:**
-  - Jõudlus: ~3 100 ms (10 000 tehingut) — lineaarne skaleerumine kinnitatud
+  - Jõudlus: mediaan 3 381,40 ms (stddev 77,07 ms, läbilaskevõime 2,957 tx/ms) SLI-6 metoodikaga (1 proovijooks + 5 mõõdetud jooksu)
   - Determinism: 100% — kõik 4 artefakti (sv.json, report.json, ml_v1.csv, llm_context_v1.json) baidilt identsed kahe jooksu vahel
   - Tulemus: SUCCESS (0 droppi, 0 hoiatust)
   - LLM aknastamine N=200 töötas korrektselt ka 10 000 tehinguga
 - **Järeldused:**
-  - SLI-6 viitejõudluse SLO (D9, 1000 tx, mediaan ≤ 500 ms) mõõdetakse `FakeOutputPort`-iga (in-memory, ilma FS I/O-ta); 10 000 tehinguga reaalse FS-iga on ~3 100 ms — see on eraldi mõõtmismeetod, mitte SLO rikkumine
+  - SLI-6 viitejõudluse SLO (D9, 1000 tx, mediaan ≤ 500 ms) mõõdetakse `FakeOutputPort`-iga (in-memory, ilma FS I/O-ta); 10 000 tehinguga reaalse FS-iga on 3 381,40 ms — see on eraldi mõõtmismeetod, mitte SLO rikkumine
   - SHA-256 record_id (16 hex-märki / 64 bitti) kokkupõrkeid ei tekkinud 10 000 kirje juures
   - Pipeline skaleerub lineaarselt — pudelikaelaks on JSON serialiseerimine ja sortimine
 - **Uuendused:** D8 golden-väljundid lisatud, frozen/v1.0.0/manifest.json uuendatud (8 andmestikku)
@@ -112,12 +112,12 @@ DSR iteratsioonid on märgistatud tsükliga: **ehita → hinda → õpi → koha
 - **D9 standardmahu andmestik:** 1 000 tehingut (800 booked + 200 pending), seed 9
 - **Eesmärk:** Valideerida MF6 nõue (≤ 500 ms standardse testandmestiku jaoks, ~kuue kuu kontoväljavõte) ning täiendada skaleeruvusanalüüsi vahepunktiga (D1: 7 tx → D9: 1 000 tx → D8: 10 000 tx)
 - **Tulemused:**
-  - Jõudlus: ~200–300 ms (1 000 tehingut) — MF6 SLO (≤ 500 ms) täidetud
+  - Jõudlus: mediaan 373,71 ms (stddev 4,41 ms, läbilaskevõime 2,676 tx/ms) — MF6 SLO (≤ 500 ms) täidetud
   - Tulemus: SUCCESS (0 droppi, 0 hoiatust)
-  - Kolme punkti skaleeruvustabel: D1 (7 tx, ~55 ms), D9 (1 000 tx, mõõdetud), D8 (10 000 tx, ~1 830 ms)
+  - Kolme punkti skaleeruvustabel: D1 (7 tx, ~55 ms), D9 (1 000 tx, 373,71 ms), D8 (10 000 tx, 3 381,40 ms)
 - **Järeldused:**
   - MF6 SLO (≤ 500 ms) kehtib kinnitatult kuni 1 000 tehinguni
-  - Kolme andmepunkti põhjal on tulemus kooskõlas O(n) keerukusega püsikuludega (~50 ms startup)
+  - Kolme andmepunkti põhjal on tulemus kooskõlas O(n) keerukusega püsikuludega (~50 ms startup); D8/D9 läbilaskevõime (2,957 vs 2,676 tx/ms) on samas suurusjärgus, mis kinnitab ligikaudu lineaarset skaleerumist ja fikseeritud püsikulude amortiseerumist suurema mahu juures
   - TestDeterminism uuendatud N=5 jooksule (varasem N=2 oli ebapiisav)
 - **Uuendused:** D9 golden-väljundid lisatud, frozen/v1.0.0/manifest.json uuendatud (9 andmestikku)
 
