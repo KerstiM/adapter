@@ -33,7 +33,7 @@ Adapteri käitumine on määratud versioonitud spetsifikatsioonifailidega. Pära
 
 | ID | Fail | Kirjeldus |
 |----|------|-----------|
-| R-01 | `R-01_sv_invariants.yaml` | SV invariandid (ERROR/WARN + tegevus). Määrab, millal kirje dropitakse, millal flagitakse ja kuidas kujuneb jooksu staatus. INV-01..INV-10. |
+| R-01 | `R-01_sv_invariants.yaml` | SV invariandid (ERROR/WARN + tegevus). Määrab, millal kirje dropitakse, millal flagitakse ja kuidas kujuneb jooksu staatus. INV-01..INV-05, INV-09. |
 | — | `error_catalog.yaml` | Veakoodide kataloog: loetleb kõik pipeline'i emiteeritavad `issues[].code` väärtused koos vaikimisi tõsiduse, etapi ja kirjeldusega. Toetab raporti auditeeritavust. |
 
 ## Profiilid (`spec/profiles/`) — komplekt jooksuks

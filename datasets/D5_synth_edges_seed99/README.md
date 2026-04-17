@@ -1,6 +1,6 @@
 # D5_synth_edges_seed99
 
-Schema-valid edge cases testing boundary conditions: zero amount, large amount, integer amount, sign conventions, same dates, long remittance, and missing counterparty (INV-10 WARN).
+Schema-valid edge cases testing boundary conditions: zero amount, large amount, integer amount, sign conventions, same dates, long remittance, and missing counterparty (QC-1 INFO).
 
 ## Properties
 
@@ -15,7 +15,7 @@ Schema-valid edge cases testing boundary conditions: zero amount, large amount, 
 
 ## What this dataset tests
 
-Schema-valid edge cases testing boundary conditions: zero amount, large amount, integer amount, sign conventions, same dates, long remittance, and missing counterparty (INV-10 WARN).
+Schema-valid edge cases testing boundary conditions: zero amount, large amount, integer amount, sign conventions, same dates, long remittance, and missing counterparty (QC-1 INFO).
 
 ## Variations / injected codes
 
@@ -26,7 +26,7 @@ Schema-valid edge cases testing boundary conditions: zero amount, large amount, 
   - `EDGE-05_POSITIVE_IN: amount='100.50' + debtorName → IN, no INV-05`
   - `EDGE-06_SAME_DATES: bookingDate == valueDate == 2024-07-10`
   - `EDGE-07_LONG_REMITTANCE: 308 chars — valid, LLM projection truncates to 160`
-  - `EDGE-08_NO_COUNTERPARTY: no creditor/debtor → direction by sign, INV-10 WARN`
+  - `EDGE-08_NO_COUNTERPARTY: no creditor/debtor → direction by sign, QC-1 INFO`
 
 ## Quality gate warnings
 

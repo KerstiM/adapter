@@ -241,3 +241,39 @@ Pipeline käsitleb uut finantsinstrumendi tüüpi (püsikorraldused) ilma pipeli
 - valueDate fallback nextExecutionDate'ist
 
 Pipeline'i orkestreerimiskoodi (`application/pipeline.py`), olemasolevaid projektsioone ega adaptereid ei muudetud. INFORMATION tehingud läbivad SV standardiseerimise, aga jäetakse korrektselt välja ML ja LLM projektsioonidest.
+
+---
+
+## Piirangud (Threats to validity)
+
+Käesolev jaotis loetleb metodoloogilised piirangud ja väited, mille empiiriline katvus on tahtlikult piiratud. Eesmärk on olla läbipaistev selle suhtes, mida töö tõestab, ja mida mitte.
+
+### Reprodutseeritavus ja korrektsus
+
+- **Golden-kontroll on regressiooni-tuvastus, mitte korrektsuse oraakel.** `frozen/v1.0.0/golden/`-is olevad artefaktid on genereeritud sama pipeline'iga, mida nad valideerivad (`scripts/qa/freeze_goldens.py`). Kui pipeline produtseeriks vale väljundi, talletuks vale vastus goldeniks ja `verify_goldens.py` raporteeriks PASS. Golden-võrdlus tuvastab muutusi jooksude vahel, aga ei ole sõltumatu tõend väljundi tähendusliku õigsuse kohta.
+- **Determinism on empiiriline, mitte formaalne tõend.** SLI-4 ja QA skript jooksutavad pipeline'i 5 korda 11 andmestiku peal ja nõuavad baidi-identseid väljundeid. See on tugev empiiriline kinnitus, aga mitte formaalne tõestus, et pipeline on kõikide võimalike sisendite ja keskkondade korral deterministlik.
+- **`frozen/v1.0.0/spec.lock.json` on staatiline artefakt.** Fail on repo-s olemas, aga `scripts/qa/build_spec_lock.py` ei ole automaatselt käivitatav ühegi CI-etapi ega entrypoint'i poolt. `report.run.spec_lock_sha256` väli skeemis S-05 on valikuline ega täideta jooksuaegselt. Spec-triivi tuvastamine eeldab käsitsi `build_spec_lock.py` kutsumist ja hashi võrdlust.
+
+### Mõõtmise metoodika
+
+- **SLI-1 on C-01 katvuse manifest, mitte refleksiivne mõõt.** `SLI1_FIELD_COVERAGE` on käsitsi hooldatav sõnastik, kus kõik väärtused on konstruktsioonilt `True`, ja `compute_sli1_coverage()` tagastab alati 1.0 (v.a. sünteetiliste ülekirjutustega unit-testides). Refleksiivne skaneering — skeemis S-01 deklareeritud väljade võrdlus C-01 kaardistuse tegeliku väljundiga — on edasine töö.
+- **SLI-5 mõõdab nelja staatilist profiili-konstanti.** `sv_schema_version`, `mapping_version`, `ruleset_version`, `adapter_version` on kõik YAML-ist loetavad versioonistringid, mitte jooksuaegsed audit-jäljed. Valikulised `input_fingerprint`, `output_artifact_hashes`, `spec_lock_sha256` väljad (S-05) pole vaikimisi populaatitud. Seega SLI-5 = 1.0 tõestab ainult seda, et neli versiooni-stringi on kirjas, mitte et jooksu on võimalik täielikult reprodutseerida.
+- **SLI-6 viitejõudlus mõõdetakse `FakeOutputPort`-iga.** Ajakulud on domeeniloogika + in-memory hashing + JSON-serialiseerimine, ilma reaalse FS I/O-ta. Reaalse failisüsteemiga on jõudlus ~2 suurusjärku aeglasem (~400 ms vs ~5 ms). 500 ms mediaani SLO D9-l (1000 tx) iseloomustab pipeline'i algoritmilist keerukust, mitte reaalse süsteemi otspunkt-jõudlust.
+- **Skaleeruvus on üks mõõtepunkt dataseti kohta, mitte kompleksusanalüüs.** D1 (7 tx), D9 (1000 tx) ja D8 (10 000 tx) jooksu-ajad on mõõdetud ühekordselt (üks warmup + üks mõõdetud jooks) ühe arendaja masina peal. Väide "lineaarne skaleerumine" põhineb kolmel punktil ilma dispersiooni, p95 või O(·) sobitamiseta.
+
+### Andmestikud ja lävendid
+
+- **D10/D11 "reaalsed anonüümistatud" andmestikud on ühe allika omad.** 101 ja 148 tehingut ühe panga ühe kliendi kontojaotustest. Need ei ole populatsiooniliselt esinduslikud ja ei kata pangatoodete variatsiooni (erinevad IBAN-formaadid, transiitkontod, välisvaluutad, korrektsioonikanded).
+- **5 % vea-lävend on inseneri hinnang, mitte rikkerežiimi-analüüsist tuletatud.** `partial_success` ja `fail` vahe 5 %-s on valitud mõistliku kokkuleppena (vt `spec/profiles/default.yaml`), mitte kvantitatiivsest analüüsist rikete mõjude kohta. Piir on inclusive (`≥ 5 % → FAIL`), testitud täpselt piiril (5,00 %) ja piiri ümber (4,76 %, 5,26 %).
+
+### Arhitektuurilised kontrollid
+
+- **Pordi-piiride test katab ainult `domain/` kihti.** `backend/tests/unit/test_import_boundaries.py` skaneerib `domain/` kausta ja keelab `pathlib`, `os`, `sys`, `uuid`, `random`, `secrets`, `time`, `requests`, `pandas` ning sisemiste pakettide (`adapters`, `application`, `entrypoints`) importi. `application/` kihi I/O-distsipliin on dokumenteeritud konventsioon, aga ei ole automaatselt jõustatud. `datetime` on `domain/`-s lubatud ISO-kuupäeva parsimiseks (`strptime`), aga `datetime.now()` / `.utcnow()` kasutus on keelatud konventsioonina, mitte AST-kontrolliga.
+
+### Standardid ja viited
+
+- **Berlin Group AIS versioon ei ole skeemides fikseeritud.** S-00A/B/C skeemid kasutavad Berlin Group NextGenPSD2 tavakokkulepete pragmaatilist alamhulka (2025. aasta avalike konventsioonide põhjal), aga konkreetne spetsifikatsiooni versioon (nt v1.3.13) ei ole skeemide `title` ega `$comment` väljades kirjas. ISO 20022 element-nimede tabel puudub C-01 lepingust. See on teadlik scope-piirang: töö eesmärk oli demonstreerida standardiseerimise ja reeglistiku arhitektuuri, mitte implementeerida täielik Berlin Group AIS klient.
+
+### UK3 laiendatavuse tõendid
+
+- **Tõendid 1–5 on demonstratsioonid, mitte formaalselt falsifitseeritavad väited.** "Pipeline'i ei muudetud" tähendus sõltub sellest, millist faili loetakse pipeline'i osaks. Selle asemel, et formuleerida operatiivne predikaat ("muudetud failide hulk ⊂ {X}") ning seda git-log'ist automaatselt tuletada, on iga tõend narratiivne enesekirjeldus. Edasiseks tööks oleks iga laiendi puhul fikseerida "muudetud failide valge nimekiri" ja siduda see testiga.

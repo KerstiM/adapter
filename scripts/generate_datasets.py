@@ -596,7 +596,7 @@ def generate_d5(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
     booked.append(edge07)
     variations.append("EDGE-07_LONG_REMITTANCE: 308 chars — valid, LLM projection truncates to 160")
 
-    # EDGE-08: no counterparty at all (INV-10 WARN)
+    # EDGE-08: no counterparty at all (QC-1 INFO)
     edge08 = gen.generate_transaction(
         acct["iban"], start_date, end_date,
         omit_counterparty=True,
@@ -604,13 +604,13 @@ def generate_d5(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
         remittance="EDGE-08 no counterparty",
     )
     booked.append(edge08)
-    variations.append("EDGE-08_NO_COUNTERPARTY: no creditor/debtor → direction by sign, INV-10 WARN")
+    variations.append("EDGE-08_NO_COUNTERPARTY: no creditor/debtor → direction by sign, QC-1 INFO")
 
     return {
         "name": "D5_synth_edges_seed99",
         "description": "Schema-valid edge cases testing boundary conditions: zero amount, "
                         "large amount, integer amount, sign conventions, same dates, long "
-                        "remittance, and missing counterparty (INV-10 WARN).",
+                        "remittance, and missing counterparty (QC-1 INFO).",
         "expected_outcome": "PARTIAL_SUCCESS",
         "accounts": _build_accounts_json([acct]),
         "transactions": _build_transactions_json(acct["iban"], booked, pending),

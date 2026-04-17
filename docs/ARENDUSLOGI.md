@@ -101,7 +101,7 @@ DSR iteratsioonid on märgistatud tsükliga: **ehita → hinda → õpi → koha
   - Tulemus: SUCCESS (0 droppi, 0 hoiatust)
   - LLM aknastamine N=200 töötas korrektselt ka 10 000 tehinguga
 - **Järeldused:**
-  - SLI-6 jõudluse SLO (≤ 500 ms) kehtib ainult ≤ 10 tehinguga datasettidele; 10 000 tehinguga on ~3 100 ms aktsepteeritav
+  - SLI-6 viitejõudluse SLO (D9, 1000 tx, mediaan ≤ 500 ms) mõõdetakse `FakeOutputPort`-iga (in-memory, ilma FS I/O-ta); 10 000 tehinguga reaalse FS-iga on ~3 100 ms — see on eraldi mõõtmismeetod, mitte SLO rikkumine
   - SHA-256 record_id (16 hex-märki / 64 bitti) kokkupõrkeid ei tekkinud 10 000 kirje juures
   - Pipeline skaleerub lineaarselt — pudelikaelaks on JSON serialiseerimine ja sortimine
 - **Uuendused:** D8 golden-väljundid lisatud, frozen/v1.0.0/manifest.json uuendatud (8 andmestikku)
