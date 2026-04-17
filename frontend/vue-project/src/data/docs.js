@@ -13,7 +13,7 @@ import d6Raw  from '../../../../datasets/D6_synth_dupes_seed99/README.md?raw'
 import d7Raw  from '../../../../datasets/D7_standing_orders_seed77/README.md?raw'
 import d8Raw  from '../../../../datasets/D8_load_test_10k_seed88/README.md?raw'
 import d9Raw  from '../../../../datasets/D9_synth_perf_seed9/README.md?raw'
-import d10Raw from '../../../../datasets/D10_real_anon_oct16/README.md?raw'
+import d10Raw from '../../../../datasets/D10_real_deid_oct16/README.md?raw'
 
 export const CORE_DOCS = [
   {

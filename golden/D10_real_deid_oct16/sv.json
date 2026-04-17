@@ -10,7 +10,7 @@
   "meta": {
     "created_at_utc": "2000-01-01T00:00:00Z",
     "profile_id": "default",
-    "run_id": "GOLDEN_D10_real_anon_oct16",
+    "run_id": "GOLDEN_D10_real_deid_oct16",
     "spec_versions": {
       "C-01": "1.0.0",
       "C-02": "1.0.0",

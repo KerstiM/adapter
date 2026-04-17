@@ -274,8 +274,8 @@ def main() -> None:
     print("Re-anonymising D10 and D11 datasets...\n")
 
     # ── D10 ──────────────────────────────────────────────────────────────
-    print("D10_real_anon_oct16:")
-    d10_dir = REPO_ROOT / "datasets" / "D10_real_anon_oct16"
+    print("D10_real_deid_oct16:")
+    d10_dir = REPO_ROOT / "datasets" / "D10_real_deid_oct16"
     rng_d10 = random.Random(SEED)
 
     process_accounts_file(d10_dir / "accounts.json", D10_IBANS)
@@ -283,8 +283,8 @@ def main() -> None:
         d10_dir / "transactions.json", D10_NAMES, D10_IBANS, rng_d10)
 
     # ── D11 ──────────────────────────────────────────────────────────────
-    print("\nD11_real_anon_2024:")
-    d11_dir = REPO_ROOT / "datasets" / "D11_real_anon_2024"
+    print("\nD11_real_deid_2024:")
+    d11_dir = REPO_ROOT / "datasets" / "D11_real_deid_2024"
     rng_d11 = random.Random(SEED + 1)
 
     process_accounts_file(d11_dir / "accounts.json", D11_IBANS)

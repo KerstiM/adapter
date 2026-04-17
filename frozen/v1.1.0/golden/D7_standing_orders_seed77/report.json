@@ -1,0 +1,175 @@
+{
+  "dropped_details": [],
+  "issues": [
+    {
+      "code": "MAP-01_VALUE_DATE_FALLBACK",
+      "message": "valueDate missing; fell back to nextExecutionDate.",
+      "refs": {
+        "account_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "field_path": null,
+        "record_id": "f0e0cd60ae69217e",
+        "source_lineage": "standing_orders.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "field_path": null,
+        "record_id": "f0e0cd60ae69217e",
+        "source_lineage": "standing_orders.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "field_path": null,
+        "record_id": "b2c1ccbcc917c5ed",
+        "source_lineage": "standing_orders.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "MAP-01_VALUE_DATE_FALLBACK",
+      "message": "valueDate missing; fell back to nextExecutionDate.",
+      "refs": {
+        "account_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "field_path": null,
+        "record_id": "8765bec1179f7993",
+        "source_lineage": "standing_orders.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    },
+    {
+      "code": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+      "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+      "refs": {
+        "account_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "field_path": null,
+        "record_id": "8765bec1179f7993",
+        "source_lineage": "standing_orders.json"
+      },
+      "severity": "WARN",
+      "stage": "CHECK_INVARIANTS"
+    }
+  ],
+  "metrics": {
+    "gate": {
+      "error_drop_ratio": 0.0,
+      "error_drops": 0
+    },
+    "info": {
+      "ml_emission_ratio": 0.25
+    },
+    "qc2": {
+      "all_drops_reported": true,
+      "drop_reporting_ratio": 1.0
+    },
+    "sli1": {
+      "covered_priority_sv_fields": 17,
+      "priority_sv_fields_total": 17,
+      "sli1_coverage_ratio": 1.0
+    },
+    "sli2": {
+      "validation_pass_through_ratio": 1.0
+    },
+    "sli3": {
+      "critical_invariant_violations_total": 0,
+      "invariant_checked_total": 4,
+      "invariant_compliance_ratio": 0.25,
+      "invariant_correct_total": 1
+    }
+  },
+  "outcome": {
+    "status": "PARTIAL_SUCCESS",
+    "stop_reason": "warnings present"
+  },
+  "report_schema_version": "1.3.0",
+  "run": {
+    "adapter_version": "0.1.0",
+    "created_at_utc": "2000-01-01T00:00:00Z",
+    "dataset_id": "D7_standing_orders_seed77",
+    "input_dir": "datasets/D7_standing_orders_seed77",
+    "mapping_version": "1.0.0",
+    "profile_id": "default",
+    "ruleset_version": "1.1.0",
+    "run_id": "GOLDEN_D7_standing_orders_seed77",
+    "sv_schema_version": "1.0.0"
+  },
+  "run_flags": [],
+  "summary": {
+    "by_severity": {
+      "CRITICAL": 0,
+      "ERROR": 0,
+      "INFO": 0,
+      "WARN": 5
+    },
+    "by_stage": [
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "READ_INPUT",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "STANDARDIZE_TO_SV",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "VALIDATE_SCHEMA",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "CHECK_INVARIANTS",
+        "warnings": 5
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "PROJECT_ML",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "PROJECT_LLM",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "FORMAT_FOR_MODEL",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "WRITE_OUTPUTS",
+        "warnings": 0
+      }
+    ],
+    "counts": {
+      "accounts_total": 1,
+      "llm_contexts": 1,
+      "ml_rows": 1,
+      "transactions_dropped": 0,
+      "transactions_emitted_sv": 4,
+      "transactions_total": 4
+    }
+  }
+}

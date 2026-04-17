@@ -16,8 +16,8 @@ const DATASETS = [
   { id: 'D7', name: 'D7_standing_orders_seed77', records: 4 },
   { id: 'D8', name: 'D8_load_test_10k_seed88', records: 10000 },
   { id: 'D9', name: 'D9_synth_perf_seed9', records: 1000 },
-  { id: 'D10', name: 'D10_real_anon_oct16', records: 101 },
-  { id: 'D11', name: 'D11_real_anon_2024', records: 148, accounts: 2 },
+  { id: 'D10', name: 'D10_real_deid_oct16', records: 101 },
+  { id: 'D11', name: 'D11_real_deid_2024', records: 148, accounts: 2 },
 ]
 
 const MODELS = [

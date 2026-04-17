@@ -1327,13 +1327,13 @@ class TestBenchmarkD9D8:
 
 
 # ---------------------------------------------------------------------------
-# D11 — Real anonymised 2024 dataset (2 accounts) → SUCCESS
+# D11 — Real de-identified 2024 dataset (2 accounts) → SUCCESS
 # ---------------------------------------------------------------------------
-DATA_D11 = DATASETS_DIR / "D11_real_anon_2024"
+DATA_D11 = DATASETS_DIR / "D11_real_deid_2024"
 
 
-class TestD11RealAnon2024:
-    """Tests for D11: 2 real anonymised accounts, ~380 booked, 0 pending, SUCCESS."""
+class TestD11RealDeid2024:
+    """Tests for D11: 2 real de-identified accounts, ~380 booked, 0 pending, SUCCESS."""
 
     @pytest.fixture()
     def d11_output(self, tmp_path: Path) -> tuple[dict, Path]:
@@ -1341,7 +1341,7 @@ class TestD11RealAnon2024:
             data_dir=DATA_D11,
             output_dir=tmp_path,
             spec_dir=SPEC_DIR,
-            run_id="d11-real-anon-test",
+            run_id="d11-real-deid-test",
             created_at_utc=FIXED_TS,
         )
         return summary, Path(summary["run_folder"])
@@ -1431,8 +1431,8 @@ ALL_DATASETS: list[str] = [
     "D7_standing_orders_seed77",
     "D8_load_test_10k_seed88",
     "D9_synth_perf_seed9",
-    "D10_real_anon_oct16",
-    "D11_real_anon_2024",
+    "D10_real_deid_oct16",
+    "D11_real_deid_2024",
 ]
 
 

@@ -1,0 +1,3114 @@
+{
+  "accounts": [
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "currency": "EUR",
+      "iban": "EE617700771003845912",
+      "name": "D10 Anonymised Real Account"
+    }
+  ],
+  "meta": {
+    "created_at_utc": "2000-01-01T00:00:00Z",
+    "profile_id": "default",
+    "run_id": "GOLDEN_D10_real_deid_oct16",
+    "spec_versions": {
+      "C-01": "1.0.0",
+      "C-02": "1.0.0",
+      "C-03": "1.0.0",
+      "R-01": "1.1.0",
+      "S-00A": "1.0.0",
+      "S-00B": "1.0.0",
+      "S-01": "1.0.0"
+    }
+  },
+  "transactions": [
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "7.37",
+        "currency": "EUR",
+        "raw": "7.37",
+        "signed": "-7.37"
+      },
+      "booking_date": "2016-10-01",
+      "counterparty": {
+        "iban": null,
+        "name": "Toits City",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "bf7a57a02d669696",
+      "remittance": "(..3847) 2016-09-29 09:41 Toits City   Tallinn  10145 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[0]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "45909418",
+      "value_date": "2016-10-01"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "2.54",
+        "currency": "EUR",
+        "raw": "2.54",
+        "signed": "-2.54"
+      },
+      "booking_date": "2016-10-01",
+      "counterparty": {
+        "iban": null,
+        "name": "Tornimae Rimi",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "883a67c7e7778833",
+      "remittance": "(..3847) 2016-09-29 10:18 Tornimae Rimi   Tallinn  10145 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[1]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "45916301",
+      "value_date": "2016-10-01"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "1.34",
+        "currency": "EUR",
+        "raw": "1.34",
+        "signed": "-1.34"
+      },
+      "booking_date": "2016-10-02",
+      "counterparty": {
+        "iban": null,
+        "name": "Laagri Maksimarketi ap",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "ade8abbd23a4e6eb",
+      "remittance": "(..6291) 2016-10-01 10:46 Laagri Maksimarketi ap  Harjumaa  76401 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[2]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "45958061",
+      "value_date": "2016-10-02"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "2.99",
+        "currency": "EUR",
+        "raw": "2.99",
+        "signed": "-2.99"
+      },
+      "booking_date": "2016-10-02",
+      "counterparty": {
+        "iban": null,
+        "name": "Raamatukogu kohvik",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "3f405da079997658",
+      "remittance": "(..3847) 2016-09-30 12:04 Raamatukogu kohvik   Tallinn  12618 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[3]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "45962516",
+      "value_date": "2016-10-02"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "6.55",
+        "currency": "EUR",
+        "raw": "6.55",
+        "signed": "-6.55"
+      },
+      "booking_date": "2016-10-02",
+      "counterparty": {
+        "iban": null,
+        "name": "Laagri Maksimarket",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "47a073733192b59c",
+      "remittance": "(..6291) 2016-10-01 10:42 Laagri Maksimarket   Saue vald  76401 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[4]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "45964883",
+      "value_date": "2016-10-02"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "210",
+        "currency": "EUR",
+        "raw": "210.00",
+        "signed": "210"
+      },
+      "booking_date": "2016-10-03",
+      "counterparty": {
+        "iban": "EE342200221078561234",
+        "name": "Jaanus Kuusk",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "adf37eb3abfa0a03",
+      "remittance": "raha",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[5]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "46052144",
+      "value_date": "2016-10-03"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "67.53",
+        "currency": "EUR",
+        "raw": "67.53",
+        "signed": "-67.53"
+      },
+      "booking_date": "2016-10-04",
+      "counterparty": {
+        "iban": "EE947700771001609739",
+        "name": "Maksekeskus AS",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "649a5afadc470d74",
+      "remittance": "Selver AS, selver.ee, 2113000584123 (1093432)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[6]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "46109078",
+      "value_date": "2016-10-04"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "8.97",
+        "currency": "EUR",
+        "raw": "8.97",
+        "signed": "-8.97"
+      },
+      "booking_date": "2016-10-05",
+      "counterparty": {
+        "iban": null,
+        "name": "Torupilli Selver",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "450d4346de4735fb",
+      "remittance": "(..3847) 2016-10-03 15:44 Torupilli Selver   Tallinn  10126 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[7]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "46227641",
+      "value_date": "2016-10-05"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "3.35",
+        "currency": "EUR",
+        "raw": "3.35",
+        "signed": "3.35"
+      },
+      "booking_date": "2016-10-06",
+      "counterparty": {
+        "iban": "EE397700771000921447",
+        "name": "Maksekeskus AS",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "bde60fc073da0dac",
+      "remittance": "Refund/Payment 1093432 (selver.ee, ref. 2113000584123)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[8]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "46293080",
+      "value_date": "2016-10-06"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "4.51",
+        "currency": "EUR",
+        "raw": "4.51",
+        "signed": "-4.51"
+      },
+      "booking_date": "2016-10-06",
+      "counterparty": {
+        "iban": null,
+        "name": "Raamatukogu kohvik",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "4118decac9d5c1d4",
+      "remittance": "(..3847) 2016-10-04 12:27 Raamatukogu kohvik   Tallinn  12618 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[9]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "46321202",
+      "value_date": "2016-10-06"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "2.61",
+        "currency": "EUR",
+        "raw": "2.61",
+        "signed": "-2.61"
+      },
+      "booking_date": "2016-10-06",
+      "counterparty": {
+        "iban": null,
+        "name": "Raamatukogu kohvik",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "86536bafdbd9510d",
+      "remittance": "(..3847) 2016-10-04 16:14 Raamatukogu kohvik   Tallinn  12618 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[10]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "46328218",
+      "value_date": "2016-10-06"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "7.19",
+        "currency": "EUR",
+        "raw": "7.19",
+        "signed": "-7.19"
+      },
+      "booking_date": "2016-10-07",
+      "counterparty": {
+        "iban": null,
+        "name": "R-Kiosk 257 Sole Nest",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "4001d4f813296b1e",
+      "remittance": "(..3847) 2016-10-05 17:29 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[11]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "46402521",
+      "value_date": "2016-10-07"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "2.48",
+        "currency": "EUR",
+        "raw": "2.48",
+        "signed": "-2.48"
+      },
+      "booking_date": "2016-10-07",
+      "counterparty": {
+        "iban": null,
+        "name": "Statoil Kristiine",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "10b017554523c982",
+      "remittance": "(..3847) 2016-10-06 22:08 Statoil Kristiine   Tallinn  10613 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[12]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "46408372",
+      "value_date": "2016-10-07"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "3.33",
+        "currency": "EUR",
+        "raw": "3.33",
+        "signed": "-3.33"
+      },
+      "booking_date": "2016-10-08",
+      "counterparty": {
+        "iban": null,
+        "name": "R-Kiosk 257 Sole Nest",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "5eadf33d4cd090cc",
+      "remittance": "(..3847) 2016-10-06 18:07 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[13]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "46502142",
+      "value_date": "2016-10-08"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "33.81",
+        "currency": "EUR",
+        "raw": "33.81",
+        "signed": "-33.81"
+      },
+      "booking_date": "2016-10-09",
+      "counterparty": {
+        "iban": null,
+        "name": "Pelgulinna huvikool",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "e17bbc0e10b6fa34",
+      "remittance": "(..3847) 2016-10-08 15:54 Pelgulinna huvikool  Tallinn  10614 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[14]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "46540866",
+      "value_date": "2016-10-09"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "3.46",
+        "currency": "EUR",
+        "raw": "3.46",
+        "signed": "-3.46"
+      },
+      "booking_date": "2016-10-10",
+      "counterparty": {
+        "iban": null,
+        "name": "Staap",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "4b9c0caa93dfe9aa",
+      "remittance": "(..3847) 2016-10-09 18:03 Staap   Tallinn  13425 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[15]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "46605079",
+      "value_date": "2016-10-10"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "10.8",
+        "currency": "EUR",
+        "raw": "10.80",
+        "signed": "-10.8"
+      },
+      "booking_date": "2016-10-10",
+      "counterparty": {
+        "iban": null,
+        "name": "R-Kiosk 257 Sole Nest",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "068be13938ea5cc3",
+      "remittance": "(..3847) 2016-10-08 17:26 R-Kiosk 257 Sole Nest  Tallinn  10614 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[16]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "46611804",
+      "value_date": "2016-10-10"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "3.91",
+        "currency": "EUR",
+        "raw": "3.91",
+        "signed": "-3.91"
+      },
+      "booking_date": "2016-10-11",
+      "counterparty": {
+        "iban": null,
+        "name": "Staap",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "3e320f46375f1505",
+      "remittance": "(..3847) 2016-10-10 19:32 Staap   Tallinn  13425 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[17]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "46741724",
+      "value_date": "2016-10-11"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "21.38",
+        "currency": "EUR",
+        "raw": "21.38",
+        "signed": "-21.38"
+      },
+      "booking_date": "2016-10-12",
+      "counterparty": {
+        "iban": null,
+        "name": "Pelgulinna huvikool",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "986ec7f29d2a272c",
+      "remittance": "(..3847) 2016-10-11 13:43 Pelgulinna huvikool  Tallinn  10614 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[18]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "46846589",
+      "value_date": "2016-10-12"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "25.11",
+        "currency": "EUR",
+        "raw": "25.11",
+        "signed": "-25.11"
+      },
+      "booking_date": "2016-10-13",
+      "counterparty": {
+        "iban": null,
+        "name": "Kristiine Prisma isete",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "50a64bd717d2584c",
+      "remittance": "(..3847) 2016-10-11 13:19 Kristiine Prisma isete  Tallinn  10615 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[19]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "46931806",
+      "value_date": "2016-10-13"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "12.35",
+        "currency": "EUR",
+        "raw": "12.35",
+        "signed": "-12.35"
+      },
+      "booking_date": "2016-10-14",
+      "counterparty": {
+        "iban": null,
+        "name": "Laagri Rimi apteek",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "24d39ecb92e7ccc5",
+      "remittance": "(..6291) 2016-10-13 15:21 Laagri Rimi apteek   Laagri  76401 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[20]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47009166",
+      "value_date": "2016-10-14"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "54.86",
+        "currency": "EUR",
+        "raw": "54.86",
+        "signed": "54.86"
+      },
+      "booking_date": "2016-10-14",
+      "counterparty": {
+        "iban": "EE887700771006729384",
+        "name": "Kersti Pärn",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "792a7613f4968d30",
+      "remittance": "Ulekanne",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[21]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47062570",
+      "value_date": "2016-10-14"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "22.99",
+        "currency": "EUR",
+        "raw": "22.99",
+        "signed": "-22.99"
+      },
+      "booking_date": "2016-10-15",
+      "counterparty": {
+        "iban": null,
+        "name": "BUS & TOG MOBILBILLET",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "95465ca67c0b410c",
+      "remittance": "(..3847) 2016-10-14 21:21 BUS & TOG MOBILBILLET TELEGADE 2 TAASTRUP 2630 DNK (150 DKK)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[22]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47102053",
+      "value_date": "2016-10-15"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "6.54",
+        "currency": "EUR",
+        "raw": "6.54",
+        "signed": "-6.54"
+      },
+      "booking_date": "2016-10-17",
+      "counterparty": {
+        "iban": "EE262200221055855869",
+        "name": "220 Energia OU",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "8bf290cbb2ece5d7",
+      "remittance": "Arve nr: 121716034",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[23]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47177536",
+      "value_date": "2016-10-17"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "46.49",
+        "currency": "EUR",
+        "raw": "46.49",
+        "signed": "46.49"
+      },
+      "booking_date": "2016-10-17",
+      "counterparty": {
+        "iban": "EE887700771006729384",
+        "name": "Kersti Pärn",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "ab7e0fcc1e38b80c",
+      "remittance": "Ülekanne",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[24]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47177585",
+      "value_date": "2016-10-17"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "59.65",
+        "currency": "EUR",
+        "raw": "59.65",
+        "signed": "-59.65"
+      },
+      "booking_date": "2016-10-17",
+      "counterparty": {
+        "iban": "EE122200221020804298",
+        "name": "Kase tn. 15 KU",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "bee203959010f0d4",
+      "remittance": "Kase 15-4 September",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[25]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47177607",
+      "value_date": "2016-10-17"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "42.42",
+        "currency": "EUR",
+        "raw": "42.42",
+        "signed": "-42.42"
+      },
+      "booking_date": "2016-10-17",
+      "counterparty": {
+        "iban": null,
+        "name": "DANSKE BANK",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "09a3237b67923419",
+      "remittance": "(..3847) 2016-10-14 18:43 DANSKE BANK  416075  KOBENHAVN NV  2400 DNKDNK (300 DKK)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[26]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47210131",
+      "value_date": "2016-10-17"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "1.07",
+        "currency": "EUR",
+        "raw": "1.07",
+        "signed": "-1.07"
+      },
+      "booking_date": "2016-10-17",
+      "counterparty": {
+        "iban": null,
+        "name": "nan",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "ee2df2bf1a5ac9ef",
+      "remittance": "Sularaha valjamakse tasu: (..3847) 2016-10-14 18:43 DANSKE BANK  416075  KOBENHAVN NV  2400 DNKDNK (300 DKK)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[27]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47210131",
+      "value_date": "2016-10-17"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "72",
+        "currency": "EUR",
+        "raw": "72.00",
+        "signed": "72"
+      },
+      "booking_date": "2016-10-20",
+      "counterparty": {
+        "iban": "EE447700771004592817",
+        "name": "Kersti Pärn",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "4fa695df763e5556",
+      "remittance": "Ulekanne",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[28]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47456146",
+      "value_date": "2016-10-20"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "37",
+        "currency": "EUR",
+        "raw": "37.00",
+        "signed": "-37"
+      },
+      "booking_date": "2016-10-20",
+      "counterparty": {
+        "iban": "EE082200221001181561",
+        "name": "Elisa Eesti AS",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "456aea9428260859",
+      "remittance": "81501010",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[29]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47456417",
+      "value_date": "2016-10-20"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "174.25",
+        "currency": "EUR",
+        "raw": "174.25",
+        "signed": "174.25"
+      },
+      "booking_date": "2016-10-20",
+      "counterparty": {
+        "iban": "EE091010220061008015",
+        "name": "TALLINNA LINNAKANTSELEI",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "4f062c48ade366f0",
+      "remittance": "Kutusetoetus Tallinna linnalt",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[30]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47471953",
+      "value_date": "2016-10-20"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "152",
+        "currency": "EUR",
+        "raw": "152.00",
+        "signed": "-152"
+      },
+      "booking_date": "2016-10-20",
+      "counterparty": {
+        "iban": "EE567700771005284961",
+        "name": "Kersti Pärn",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "e623ebe80ee5d080",
+      "remittance": "TLN 160",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[31]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47476585",
+      "value_date": "2016-10-20"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "4.25",
+        "currency": "EUR",
+        "raw": "4.25",
+        "signed": "-4.25"
+      },
+      "booking_date": "2016-10-21",
+      "counterparty": {
+        "iban": null,
+        "name": "Taxify 16.10.20 1054",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "4d5e83a5a24f95c4",
+      "remittance": "(..6291) 2016-10-20 13:08 Taxify 16.10.20 1054 Tammsaare tee 47 Viimsi 74008 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[32]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47510425",
+      "value_date": "2016-10-21"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "3.57",
+        "currency": "EUR",
+        "raw": "3.57",
+        "signed": "-3.57"
+      },
+      "booking_date": "2016-10-21",
+      "counterparty": {
+        "iban": null,
+        "name": "Taxify 16.10.20 1307",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "9e2b4203d27abab4",
+      "remittance": "(..6291) 2016-10-20 15:26 Taxify 16.10.20 1307 Tammsaare tee 47 Viimsi 74008 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[33]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47517657",
+      "value_date": "2016-10-21"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "42",
+        "currency": "EUR",
+        "raw": "42.00",
+        "signed": "42"
+      },
+      "booking_date": "2016-10-21",
+      "counterparty": {
+        "iban": "EE887700771006729384",
+        "name": "Kersti Pärn",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "31fe589c67662617",
+      "remittance": "Ulekanne",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[34]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47529704",
+      "value_date": "2016-10-21"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "37.45",
+        "currency": "EUR",
+        "raw": "37.45",
+        "signed": "-37.45"
+      },
+      "booking_date": "2016-10-21",
+      "counterparty": {
+        "iban": "EE947700771001609739",
+        "name": "Maksekeskus AS",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "0aa5767efc578377",
+      "remittance": "Selver AS, selver.ee, 2113000632839 (1185082)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[35]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47529812",
+      "value_date": "2016-10-21"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "15.2",
+        "currency": "EUR",
+        "raw": "15.20",
+        "signed": "15.2"
+      },
+      "booking_date": "2016-10-21",
+      "counterparty": {
+        "iban": "EE887700771006729384",
+        "name": "Kersti Pärn",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "8d30c7862b140f99",
+      "remittance": "Ulekanne",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[36]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47530033",
+      "value_date": "2016-10-21"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "38",
+        "currency": "EUR",
+        "raw": "38.00",
+        "signed": "-38"
+      },
+      "booking_date": "2016-10-21",
+      "counterparty": {
+        "iban": "EE462200221034678512",
+        "name": "MARIKA Kivi",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "de319fa658b5f3c6",
+      "remittance": "Kampsun",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[37]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47530451",
+      "value_date": "2016-10-21"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "42",
+        "currency": "EUR",
+        "raw": "42.00",
+        "signed": "42"
+      },
+      "booking_date": "2016-10-23",
+      "counterparty": {
+        "iban": "EE887700771006729384",
+        "name": "Kersti Pärn",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "ce07d33eab9e012e",
+      "remittance": "Ulekanne",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[38]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47643754",
+      "value_date": "2016-10-23"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "3.87",
+        "currency": "EUR",
+        "raw": "3.87",
+        "signed": "-3.87"
+      },
+      "booking_date": "2016-10-24",
+      "counterparty": {
+        "iban": null,
+        "name": "Ylikooli Apteegi YA Kr",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "744bf25b4eb20403",
+      "remittance": "(..6291) 2016-10-23 18:03 Ylikooli Apteegi YA Kr  Tallinn  10615 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[39]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47672559",
+      "value_date": "2016-10-24"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "4.85",
+        "currency": "EUR",
+        "raw": "4.85",
+        "signed": "-4.85"
+      },
+      "booking_date": "2016-10-24",
+      "counterparty": {
+        "iban": null,
+        "name": "Kristiine Kaubanduskes",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "54b45eea775b01f4",
+      "remittance": "(..6291) 2016-10-23 17:49 Kristiine Kaubanduskes  Tallinn  10615 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[40]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47679436",
+      "value_date": "2016-10-24"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "6.3",
+        "currency": "EUR",
+        "raw": "6.30",
+        "signed": "-6.3"
+      },
+      "booking_date": "2016-10-24",
+      "counterparty": {
+        "iban": null,
+        "name": "Knopka Kristiine kesk",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "8a20f5b5aed491cd",
+      "remittance": "(..6291) 2016-10-23 17:59 Knopka Kristiine kesk  Tallinn  10615 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[41]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47683609",
+      "value_date": "2016-10-24"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "451.25",
+        "currency": "EUR",
+        "raw": "451.25",
+        "signed": "451.25"
+      },
+      "booking_date": "2016-10-24",
+      "counterparty": {
+        "iban": "EE237700771008163749",
+        "name": "Kersti Pärn",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "bed183be22921e37",
+      "remittance": "Ulekanne 2",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[42]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47711495",
+      "value_date": "2016-10-24"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "472.5",
+        "currency": "EUR",
+        "raw": "472.50",
+        "signed": "-472.5"
+      },
+      "booking_date": "2016-10-24",
+      "counterparty": {
+        "iban": "EE787700771009617382",
+        "name": "Jaanus Kuusk",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "97eeef2b495b04c8",
+      "remittance": "ulekanne",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[43]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47724728",
+      "value_date": "2016-10-24"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "228.82",
+        "currency": "EUR",
+        "raw": "228.82",
+        "signed": "228.82"
+      },
+      "booking_date": "2016-10-24",
+      "counterparty": {
+        "iban": "EE567700771005284961",
+        "name": "Kersti Pärn",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "c084447bf5c9caa9",
+      "remittance": "Ülekanne",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[44]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47724945",
+      "value_date": "2016-10-24"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "198.33",
+        "currency": "EUR",
+        "raw": "198.33",
+        "signed": "-198.33"
+      },
+      "booking_date": "2016-10-24",
+      "counterparty": {
+        "iban": "EE787700771009617382",
+        "name": "Jaanus Kuusk",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "6a193d7651277394",
+      "remittance": "Ülekanne",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[45]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47724966",
+      "value_date": "2016-10-24"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "24.6",
+        "currency": "EUR",
+        "raw": "24.60",
+        "signed": "-24.6"
+      },
+      "booking_date": "2016-10-25",
+      "counterparty": {
+        "iban": null,
+        "name": "Ylikooli Apteegi YA Kr",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "01cedee4c27a5c32",
+      "remittance": "(..6291) 2016-10-24 14:48 Ylikooli Apteegi YA Kr  Tallinn  10615 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[46]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47750497",
+      "value_date": "2016-10-25"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "2.64",
+        "currency": "EUR",
+        "raw": "2.64",
+        "signed": "2.64"
+      },
+      "booking_date": "2016-10-26",
+      "counterparty": {
+        "iban": "EE397700771000921447",
+        "name": "Maksekeskus AS",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "a1598f0e07db5487",
+      "remittance": "Refund/Payment 1185082 (selver.ee, ref. 2113000632839)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[47]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47839766",
+      "value_date": "2016-10-26"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "26.32",
+        "currency": "EUR",
+        "raw": "26.32",
+        "signed": "-26.32"
+      },
+      "booking_date": "2016-10-26",
+      "counterparty": {
+        "iban": "EE787700771009617382",
+        "name": "Jaanus Kuusk",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "828108e0b232bc74",
+      "remittance": "Ülekanne",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[48]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47867655",
+      "value_date": "2016-10-26"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "37.59",
+        "currency": "EUR",
+        "raw": "37.59",
+        "signed": "37.59"
+      },
+      "booking_date": "2016-10-27",
+      "counterparty": {
+        "iban": "EE567700771005284961",
+        "name": "Kersti Pärn",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "f71e06e9c679ae03",
+      "remittance": "Ulekanne",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[49]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47908972",
+      "value_date": "2016-10-27"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "38.4",
+        "currency": "EUR",
+        "raw": "38.40",
+        "signed": "-38.4"
+      },
+      "booking_date": "2016-10-27",
+      "counterparty": {
+        "iban": "EE947700771001609739",
+        "name": "Maksekeskus AS",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "41dfbffca589e684",
+      "remittance": "Selver AS, selver.ee, 2113000649424 (1201030)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[50]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47909188",
+      "value_date": "2016-10-27"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "16.36",
+        "currency": "EUR",
+        "raw": "16.36",
+        "signed": "16.36"
+      },
+      "booking_date": "2016-10-27",
+      "counterparty": {
+        "iban": "EE567700771005284961",
+        "name": "Kersti Pärn",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "f79e5b1f848d4b89",
+      "remittance": "Ulekanne",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[51]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47929297",
+      "value_date": "2016-10-27"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "3.35",
+        "currency": "EUR",
+        "raw": "3.35",
+        "signed": "-3.35"
+      },
+      "booking_date": "2016-10-28",
+      "counterparty": {
+        "iban": null,
+        "name": "Taxify 16.10.27 1536",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "ab0c3e69dfd15051",
+      "remittance": "(..6291) 2016-10-27 17:50 Taxify 16.10.27 1536 Tammsaare tee 47 Viimsi 74008 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[52]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47961183",
+      "value_date": "2016-10-28"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "178.22",
+        "currency": "EUR",
+        "raw": "178.22",
+        "signed": "178.22"
+      },
+      "booking_date": "2016-10-28",
+      "counterparty": {
+        "iban": "EE342200221078561234",
+        "name": "Jaanus Kuusk",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "318efb7e9fc0011f",
+      "remittance": "raha",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[53]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "47981715",
+      "value_date": "2016-10-28"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "4.62",
+        "currency": "EUR",
+        "raw": "4.62",
+        "signed": "-4.62"
+      },
+      "booking_date": "2016-10-29",
+      "counterparty": {
+        "iban": null,
+        "name": "Taxify 16.10.28 1047",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "26028ca7ab03ee12",
+      "remittance": "(..6291) 2016-10-28 13:03 Taxify 16.10.28 1047 Tammsaare tee 47 Viimsi 74008 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[54]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48028656",
+      "value_date": "2016-10-29"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "10.5",
+        "currency": "EUR",
+        "raw": "10.50",
+        "signed": "-10.5"
+      },
+      "booking_date": "2016-10-30",
+      "counterparty": {
+        "iban": "EE513300335847291685",
+        "name": "Epp Saare",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "83458ab423e7ae1c",
+      "remittance": "ulekanne",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[55]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48080523",
+      "value_date": "2016-10-30"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "0.21",
+        "currency": "EUR",
+        "raw": "0.21",
+        "signed": "0.21"
+      },
+      "booking_date": "2016-10-31",
+      "counterparty": {
+        "iban": "EE397700771000921447",
+        "name": "Maksekeskus AS",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "df4db1e2f8ee74cf",
+      "remittance": "Refund/Payment 1201030 (selver.ee, ref. 2113000649424)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[56]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48094936",
+      "value_date": "2016-10-31"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "10.5",
+        "currency": "EUR",
+        "raw": "10.50",
+        "signed": "10.5"
+      },
+      "booking_date": "2016-11-02",
+      "counterparty": {
+        "iban": "EE237700771008163749",
+        "name": "Kersti Pärn",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "cc86920a073f1f51",
+      "remittance": "Ülekanne tagasi",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[57]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48322475",
+      "value_date": "2016-11-02"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "43.74",
+        "currency": "EUR",
+        "raw": "43.74",
+        "signed": "-43.74"
+      },
+      "booking_date": "2016-11-02",
+      "counterparty": {
+        "iban": "EE947700771001609739",
+        "name": "Maksekeskus AS",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "671ce7ada1e81bb4",
+      "remittance": "Selver AS, selver.ee, 2113000667338 (1220238)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[58]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48330081",
+      "value_date": "2016-11-02"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "16.75",
+        "currency": "EUR",
+        "raw": "16.75",
+        "signed": "-16.75"
+      },
+      "booking_date": "2016-11-03",
+      "counterparty": {
+        "iban": null,
+        "name": "Mosaic Kristiine",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "ddff7975c9d2f8f4",
+      "remittance": "(..6291) 2016-11-02 19:25 Mosaic Kristiine   Tallinn  10615 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[59]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48373023",
+      "value_date": "2016-11-03"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "5.78",
+        "currency": "EUR",
+        "raw": "5.78",
+        "signed": "-5.78"
+      },
+      "booking_date": "2016-11-03",
+      "counterparty": {
+        "iban": null,
+        "name": "Happy Socks",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "57edb1ccaea3c6ec",
+      "remittance": "(..6291) 2016-11-02 19:15 Happy Socks   Tallinn  10615 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[60]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48380127",
+      "value_date": "2016-11-03"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "3.7",
+        "currency": "EUR",
+        "raw": "3.70",
+        "signed": "-3.7"
+      },
+      "booking_date": "2016-11-03",
+      "counterparty": {
+        "iban": null,
+        "name": "Sokisahtel",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "065f269dff24ef44",
+      "remittance": "(..6291) 2016-11-02 19:12 Sokisahtel   Tallinn  10116 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[61]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48382460",
+      "value_date": "2016-11-03"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "78.75",
+        "currency": "EUR",
+        "raw": "78.75",
+        "signed": "-78.75"
+      },
+      "booking_date": "2016-11-03",
+      "counterparty": {
+        "iban": "EE682200221089345671",
+        "name": "Kersti Pärn",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "0703d48b59312883",
+      "remittance": "Oppelaen",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[62]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48425815",
+      "value_date": "2016-11-03"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "3.68",
+        "currency": "EUR",
+        "raw": "3.68",
+        "signed": "3.68"
+      },
+      "booking_date": "2016-11-04",
+      "counterparty": {
+        "iban": "EE397700771000921447",
+        "name": "Maksekeskus AS",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "07365e3a232e8a00",
+      "remittance": "Refund/Payment 1220238 (selver.ee, ref. 2113000667338)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[63]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48497611",
+      "value_date": "2016-11-04"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "30.63",
+        "currency": "EUR",
+        "raw": "30.63",
+        "signed": "-30.63"
+      },
+      "booking_date": "2016-11-05",
+      "counterparty": {
+        "iban": null,
+        "name": "403 H&M Kristiine",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "716ba3ddb898b1d5",
+      "remittance": "(..6291) 2016-11-04 20:58 403 H&M Kristiine   Tallinn  10615 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[64]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48544040",
+      "value_date": "2016-11-05"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "427.5",
+        "currency": "EUR",
+        "raw": "427.50",
+        "signed": "427.5"
+      },
+      "booking_date": "2016-11-05",
+      "counterparty": {
+        "iban": "EE567700771005284961",
+        "name": "Kersti Pärn",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "0eaf44858b7e3082",
+      "remittance": "Ülekanne",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[65]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48564402",
+      "value_date": "2016-11-05"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "428.29",
+        "currency": "EUR",
+        "raw": "428.29",
+        "signed": "-428.29"
+      },
+      "booking_date": "2016-11-06",
+      "counterparty": {
+        "iban": null,
+        "name": "Mooblimaja",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "b574f7c3684f6f94",
+      "remittance": "(..6291) 2016-11-05 12:15 Mooblimaja   Tallinn  10611 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[66]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48592416",
+      "value_date": "2016-11-06"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "7.58",
+        "currency": "EUR",
+        "raw": "7.58",
+        "signed": "-7.58"
+      },
+      "booking_date": "2016-11-06",
+      "counterparty": {
+        "iban": null,
+        "name": "Jysk Linnenn Furniture",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "a5fc40baf8558b93",
+      "remittance": "(..6291) 2016-11-04 20:41 Jysk Linnenn Furniture  Tallinn  10615 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[67]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48597017",
+      "value_date": "2016-11-06"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "11.82",
+        "currency": "EUR",
+        "raw": "11.82",
+        "signed": "-11.82"
+      },
+      "booking_date": "2016-11-06",
+      "counterparty": {
+        "iban": null,
+        "name": "Mooblimaja",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "4d1d408b0c0e5815",
+      "remittance": "(..6291) 2016-11-05 12:22 Mooblimaja   Tallinn  10611 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[68]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48603748",
+      "value_date": "2016-11-06"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "540.31",
+        "currency": "EUR",
+        "raw": "540.31",
+        "signed": "540.31"
+      },
+      "booking_date": "2016-11-08",
+      "counterparty": {
+        "iban": "EE342200221078561234",
+        "name": "Jaanus Kuusk",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "dbe16905a12d2377",
+      "remittance": "raha",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[69]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48805397",
+      "value_date": "2016-11-08"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "8.4",
+        "currency": "EUR",
+        "raw": "8.40",
+        "signed": "-8.4"
+      },
+      "booking_date": "2016-11-08",
+      "counterparty": {
+        "iban": "EE262200221055855869",
+        "name": "220 Energia OU",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "0160827d74203761",
+      "remittance": "Arve nr: 121741865",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[70]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48822546",
+      "value_date": "2016-11-08"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "42.28",
+        "currency": "EUR",
+        "raw": "42.28",
+        "signed": "-42.28"
+      },
+      "booking_date": "2016-11-08",
+      "counterparty": {
+        "iban": "EE882200001180000796",
+        "name": "AS Starman",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "4060d8cd48456c70",
+      "remittance": "A-28650768",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[71]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48822662",
+      "value_date": "2016-11-08"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "116.62",
+        "currency": "EUR",
+        "raw": "116.62",
+        "signed": "-116.62"
+      },
+      "booking_date": "2016-11-08",
+      "counterparty": {
+        "iban": "EE772200221019373057",
+        "name": "KU Lepa tee 8",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "f0bd11e8b3c0b925",
+      "remittance": "11206",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[72]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48822868",
+      "value_date": "2016-11-08"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "6.09",
+        "currency": "EUR",
+        "raw": "6.09",
+        "signed": "-6.09"
+      },
+      "booking_date": "2016-11-09",
+      "counterparty": {
+        "iban": null,
+        "name": "Taxify 16.11.08 0803",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "77493d9d1e2ff3c1",
+      "remittance": "(..6291) 2016-11-08 09:20 Taxify 16.11.08 0803 Tammsaare tee 47 Viimsi 74008 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[73]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48828273",
+      "value_date": "2016-11-09"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "3.34",
+        "currency": "EUR",
+        "raw": "3.34",
+        "signed": "-3.34"
+      },
+      "booking_date": "2016-11-09",
+      "counterparty": {
+        "iban": null,
+        "name": "Taxify 16.11.08 0923",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "3cabfbec79e841a8",
+      "remittance": "(..6291) 2016-11-08 10:35 Taxify 16.11.08 0923 Tammsaare tee 47 Viimsi 74008 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[74]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48828515",
+      "value_date": "2016-11-09"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "13.65",
+        "currency": "EUR",
+        "raw": "13.65",
+        "signed": "-13.65"
+      },
+      "booking_date": "2016-11-09",
+      "counterparty": {
+        "iban": "EE232200001180005555",
+        "name": "Eesti Energia AS",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "d0eb42b19bfbd9d9",
+      "remittance": "Arve nr 642352775672",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[75]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "48880514",
+      "value_date": "2016-11-09"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "15.48",
+        "currency": "EUR",
+        "raw": "15.48",
+        "signed": "-15.48"
+      },
+      "booking_date": "2016-11-11",
+      "counterparty": {
+        "iban": null,
+        "name": "Maxima X T205",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "f71f9d3ef22f0f26",
+      "remittance": "(..6291) 2016-11-10 12:09 Maxima X T205   Tallinn  11312 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[76]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49073958",
+      "value_date": "2016-11-11"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "5.27",
+        "currency": "EUR",
+        "raw": "5.27",
+        "signed": "-5.27"
+      },
+      "booking_date": "2016-11-12",
+      "counterparty": {
+        "iban": null,
+        "name": "Sesoon kohvik",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "75e0df7085ff05f4",
+      "remittance": "(..6291) 2016-11-11 22:23 Sesoon kohvik   Tallinn  10414 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[77]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49153743",
+      "value_date": "2016-11-12"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "35.66",
+        "currency": "EUR",
+        "raw": "35.66",
+        "signed": "-35.66"
+      },
+      "booking_date": "2016-11-12",
+      "counterparty": {
+        "iban": "EE947700771001609739",
+        "name": "Maksekeskus AS",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "91556249a853440f",
+      "remittance": "Selver AS, selver.ee, 2113000700648 (1257213)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[78]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49188350",
+      "value_date": "2016-11-12"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "10.93",
+        "currency": "EUR",
+        "raw": "10.93",
+        "signed": "-10.93"
+      },
+      "booking_date": "2016-11-13",
+      "counterparty": {
+        "iban": null,
+        "name": "Kristiine Kaubanduskes",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "764c5775ceacd8bd",
+      "remittance": "(..6291) 2016-11-12 12:48 Kristiine Kaubanduskes  Tallinn  10615 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[79]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49207659",
+      "value_date": "2016-11-13"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "4.96",
+        "currency": "EUR",
+        "raw": "4.96",
+        "signed": "4.96"
+      },
+      "booking_date": "2016-11-14",
+      "counterparty": {
+        "iban": "EE397700771000921447",
+        "name": "Maksekeskus AS",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "f4ec159f977abd1e",
+      "remittance": "Refund/Payment 1257213 (selver.ee, ref. 2113000700648)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[80]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49241426",
+      "value_date": "2016-11-14"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "3.32",
+        "currency": "EUR",
+        "raw": "3.32",
+        "signed": "-3.32"
+      },
+      "booking_date": "2016-11-15",
+      "counterparty": {
+        "iban": null,
+        "name": "Kehrwieder",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "c78172e1d0fc05f3",
+      "remittance": "(..6291) 2016-11-14 20:33 Kehrwieder   Tallinn  10146 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[81]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49372197",
+      "value_date": "2016-11-15"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "6.78",
+        "currency": "EUR",
+        "raw": "6.78",
+        "signed": "-6.78"
+      },
+      "booking_date": "2016-11-16",
+      "counterparty": {
+        "iban": null,
+        "name": "Antalya restoran",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "1ab15911dd81e5c7",
+      "remittance": "(..6291) 2016-11-15 13:26 Antalya restoran   Tallinn  11315 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[82]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49459411",
+      "value_date": "2016-11-16"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "40.24",
+        "currency": "EUR",
+        "raw": "40.24",
+        "signed": "-40.24"
+      },
+      "booking_date": "2016-11-17",
+      "counterparty": {
+        "iban": null,
+        "name": "Mooblimaja",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "363a0d09233f853b",
+      "remittance": "(..6291) 2016-11-16 13:38 Mooblimaja   Tallinn  10611 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[83]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49525129",
+      "value_date": "2016-11-17"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "17.52",
+        "currency": "EUR",
+        "raw": "17.52",
+        "signed": "-17.52"
+      },
+      "booking_date": "2016-11-17",
+      "counterparty": {
+        "iban": null,
+        "name": "Sky Mobile Kristiine",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "cad54535e732a7d0",
+      "remittance": "(..6291) 2016-11-16 12:25 Sky Mobile Kristiine   Tallinn  10615 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[84]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49527644",
+      "value_date": "2016-11-17"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "6.3",
+        "currency": "EUR",
+        "raw": "6.30",
+        "signed": "-6.3"
+      },
+      "booking_date": "2016-11-20",
+      "counterparty": {
+        "iban": null,
+        "name": "Kristiine postkontor",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "0ea94d020b831b1c",
+      "remittance": "(..6291) 2016-11-19 14:11 Kristiine postkontor   Tallinn  10701 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[85]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49715962",
+      "value_date": "2016-11-20"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "38.67",
+        "currency": "EUR",
+        "raw": "38.67",
+        "signed": "-38.67"
+      },
+      "booking_date": "2016-11-20",
+      "counterparty": {
+        "iban": "EE947700771001609739",
+        "name": "Maksekeskus AS",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "5fc3a18549e9e29c",
+      "remittance": "Selver AS, selver.ee, 2113000727317 (1284342)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[86]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49752103",
+      "value_date": "2016-11-20"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "6.01",
+        "currency": "EUR",
+        "raw": "6.01",
+        "signed": "-6.01"
+      },
+      "booking_date": "2016-11-21",
+      "counterparty": {
+        "iban": null,
+        "name": "Taxify 16.11.19 1305",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "aafd4fb00f0b4531",
+      "remittance": "(..6291) 2016-11-19 14:22 Taxify 16.11.19 1305 Tammsaare tee 47 Viimsi 74008 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[87]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49780652",
+      "value_date": "2016-11-21"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "6.57",
+        "currency": "EUR",
+        "raw": "6.57",
+        "signed": "-6.57"
+      },
+      "booking_date": "2016-11-21",
+      "counterparty": {
+        "iban": null,
+        "name": "Taxify 16.11.20 1455",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "36cae0106ee515ac",
+      "remittance": "(..6291) 2016-11-20 16:19 Taxify 16.11.20 1455 Tammsaare tee 47 Viimsi 74008 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[88]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49786279",
+      "value_date": "2016-11-21"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "4.69",
+        "currency": "EUR",
+        "raw": "4.69",
+        "signed": "-4.69"
+      },
+      "booking_date": "2016-11-21",
+      "counterparty": {
+        "iban": "EE787700771009617382",
+        "name": "Jaanus Kuusk",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "952d8afb666762aa",
+      "remittance": "ülekanne",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[89]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49828816",
+      "value_date": "2016-11-21"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "19.13",
+        "currency": "EUR",
+        "raw": "19.13",
+        "signed": "-19.13"
+      },
+      "booking_date": "2016-11-22",
+      "counterparty": {
+        "iban": null,
+        "name": "Kristiine Prisma isete",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "a36e318dd47b1a71",
+      "remittance": "(..6291) 2016-11-21 12:47 Kristiine Prisma isete  Tallinn  10615 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[90]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49856467",
+      "value_date": "2016-11-22"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "10.8",
+        "currency": "EUR",
+        "raw": "10.80",
+        "signed": "-10.8"
+      },
+      "booking_date": "2016-11-22",
+      "counterparty": {
+        "iban": "EE292200221064583712",
+        "name": "Epp Saare",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "f7f690c4b140ea20",
+      "remittance": "RAHA",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[91]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49888777",
+      "value_date": "2016-11-22"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "40.9",
+        "currency": "EUR",
+        "raw": "40.90",
+        "signed": "-40.9"
+      },
+      "booking_date": "2016-11-22",
+      "counterparty": {
+        "iban": "EE082200221001181561",
+        "name": "Elisa Eesti AS",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "8b0bc94cecd30a26",
+      "remittance": "81501010",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[92]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49888946",
+      "value_date": "2016-11-22"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "4.37",
+        "currency": "EUR",
+        "raw": "4.37",
+        "signed": "4.37"
+      },
+      "booking_date": "2016-11-23",
+      "counterparty": {
+        "iban": "EE397700771000921447",
+        "name": "Maksekeskus AS",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "1a015f5dde1891eb",
+      "remittance": "Refund/Payment 1284342 (selver.ee, ref. 2113000727317)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[93]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "49915430",
+      "value_date": "2016-11-23"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "14.48",
+        "currency": "EUR",
+        "raw": "14.48",
+        "signed": "-14.48"
+      },
+      "booking_date": "2016-11-24",
+      "counterparty": {
+        "iban": null,
+        "name": "ALI*aliexpress.com",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "1bcdf9161d6c2a9a",
+      "remittance": "(..6291) 2016-11-22 16:11 ALI*aliexpress.com No.699, Wangshang Road HANGZHOU 310099 CHN (13.4 USD)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[94]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "50036116",
+      "value_date": "2016-11-24"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "9.67",
+        "currency": "EUR",
+        "raw": "9.67",
+        "signed": "-9.67"
+      },
+      "booking_date": "2016-11-26",
+      "counterparty": {
+        "iban": null,
+        "name": "Pelgulinna Huvikool",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "982f7c98a87528cd",
+      "remittance": "(..6291) 2016-11-25 16:16 Pelgulinna Huvikool  Tallinn  10614 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[95]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "50147774",
+      "value_date": "2016-11-26"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "16.39",
+        "currency": "EUR",
+        "raw": "16.39",
+        "signed": "-16.39"
+      },
+      "booking_date": "2016-11-26",
+      "counterparty": {
+        "iban": "EE292200221064583712",
+        "name": "Epp Saare",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "14f2e3d6f996d549",
+      "remittance": "Kino!",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[96]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "50172205",
+      "value_date": "2016-11-26"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "35.82",
+        "currency": "EUR",
+        "raw": "35.82",
+        "signed": "-35.82"
+      },
+      "booking_date": "2016-11-29",
+      "counterparty": {
+        "iban": "EE947700771001609739",
+        "name": "Maksekeskus AS",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "79fa687511a600f4",
+      "remittance": "Selver AS, selver.ee, 2113000756922 (1316602)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[97]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "50385286",
+      "value_date": "2016-11-29"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "0.01",
+        "currency": "EUR",
+        "raw": "0.01",
+        "signed": "0.01"
+      },
+      "booking_date": "2016-11-30",
+      "counterparty": {
+        "iban": "EE397700771000921447",
+        "name": "Maksekeskus AS",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "a95d9bac14dd8a2e",
+      "remittance": "Refund/Payment 1316602 (selver.ee, ref. 2113000756922)",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[98]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "50404096",
+      "value_date": "2016-11-30"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "3.09",
+        "currency": "EUR",
+        "raw": "3.09",
+        "signed": "-3.09"
+      },
+      "booking_date": "2016-11-30",
+      "counterparty": {
+        "iban": null,
+        "name": "Antalya restoran",
+        "role": "CREDITOR"
+      },
+      "direction": "OUT",
+      "flags": [
+        {
+          "id": "INV-05_AMOUNT_SIGN_MATCHES_DIRECTION",
+          "message": "raw amount sign mismatched derived direction; normalized signed amount.",
+          "severity": "WARN"
+        }
+      ],
+      "record_id": "9421df654557e83c",
+      "remittance": "(..6291) 2016-11-29 12:57 Antalya restoran   Tallinn  11315 ESTEST",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[99]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "50413743",
+      "value_date": "2016-11-30"
+    },
+    {
+      "account_id": "b7a3c1d0-4e2f-4890-abcd-1234567890ab",
+      "amount": {
+        "abs": "176.16",
+        "currency": "EUR",
+        "raw": "176.16",
+        "signed": "176.16"
+      },
+      "booking_date": "2016-11-30",
+      "counterparty": {
+        "iban": "EE342200221078561234",
+        "name": "Jaanus Kuusk",
+        "role": "DEBTOR"
+      },
+      "direction": "IN",
+      "flags": [],
+      "record_id": "bd6059fb53e486eb",
+      "remittance": "raha",
+      "source": {
+        "input_file": "transactions.json",
+        "input_path": "$.transactions.booked[100]"
+      },
+      "status": "BOOKED",
+      "transaction_id": "50458350",
+      "value_date": "2016-11-30"
+    }
+  ]
+}

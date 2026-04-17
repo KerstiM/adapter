@@ -62,8 +62,8 @@ out/
 # Audit review notes (local only)
 docs/CONSISTENCY_REVIEW.md
 
-# D11 – toorandmed ja anonümiseerimistabelid (isikuandmed, ei commitita)
-datasets/D11_real_anon_2024/raw/*.csv
+# D11 – toorandmed ja pseudonümiseerimistabelid (isikuandmed, ei commitita)
+datasets/D11_real_deid_2024/raw/*.csv
 scripts/d11_anon_tables.py
 scripts/build_d11.py
 

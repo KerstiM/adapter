@@ -1,0 +1,127 @@
+{
+  "dropped_details": [],
+  "issues": [
+    {
+      "code": "QC-1_COUNTERPARTY_MISSING",
+      "message": "counterparty name and IBAN both absent.",
+      "refs": {
+        "account_id": "9974d75b-3338-44fe-a179-0134676b1b69",
+        "field_path": null,
+        "record_id": "551fae9aad34a874",
+        "source_lineage": "transactions.json"
+      },
+      "severity": "INFO",
+      "stage": "CHECK_INVARIANTS"
+    }
+  ],
+  "metrics": {
+    "gate": {
+      "error_drop_ratio": 0.0,
+      "error_drops": 0
+    },
+    "info": {
+      "ml_emission_ratio": 1.0
+    },
+    "qc2": {
+      "all_drops_reported": true,
+      "drop_reporting_ratio": 1.0
+    },
+    "sli1": {
+      "covered_priority_sv_fields": 17,
+      "priority_sv_fields_total": 17,
+      "sli1_coverage_ratio": 1.0
+    },
+    "sli2": {
+      "validation_pass_through_ratio": 1.0
+    },
+    "sli3": {
+      "critical_invariant_violations_total": 0,
+      "invariant_checked_total": 33,
+      "invariant_compliance_ratio": 1.0,
+      "invariant_correct_total": 33
+    }
+  },
+  "outcome": {
+    "status": "SUCCESS",
+    "stop_reason": "all validations passed"
+  },
+  "report_schema_version": "1.3.0",
+  "run": {
+    "adapter_version": "0.1.0",
+    "created_at_utc": "2000-01-01T00:00:00Z",
+    "dataset_id": "D5_synth_edges_seed99",
+    "input_dir": "datasets/D5_synth_edges_seed99",
+    "mapping_version": "1.0.0",
+    "profile_id": "default",
+    "ruleset_version": "1.1.0",
+    "run_id": "GOLDEN_D5_synth_edges_seed99",
+    "sv_schema_version": "1.0.0"
+  },
+  "run_flags": [],
+  "summary": {
+    "by_severity": {
+      "CRITICAL": 0,
+      "ERROR": 0,
+      "INFO": 1,
+      "WARN": 0
+    },
+    "by_stage": [
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "READ_INPUT",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "STANDARDIZE_TO_SV",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "VALIDATE_SCHEMA",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "CHECK_INVARIANTS",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "PROJECT_ML",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "PROJECT_LLM",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "FORMAT_FOR_MODEL",
+        "warnings": 0
+      },
+      {
+        "errors": 0,
+        "infos": 0,
+        "stage": "WRITE_OUTPUTS",
+        "warnings": 0
+      }
+    ],
+    "counts": {
+      "accounts_total": 1,
+      "llm_contexts": 1,
+      "ml_rows": 33,
+      "transactions_dropped": 0,
+      "transactions_emitted_sv": 33,
+      "transactions_total": 33
+    }
+  }
+}
