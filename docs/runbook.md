@@ -2,6 +2,27 @@
 
 See dokument koondab **operatiivsed käsud** (üks dataset, kõik datasetid, valideerimine) ning selgitab, kuhu failid kirjutatakse.
 
+## Käivitusrežiimid lühidalt
+
+Adapter toetab kolme tüüpi jookse. Kõigi puhul tekib eraldi
+`<timestamp>_<run_id>/` kaust ja igal juhul toodetakse `sv.json` ja
+`report.json`; erinevus on `projections/` sisus.
+
+| Režiim | Käsk (näide) | Lisanduvad failid kaustas `projections/` |
+|---|---|---|
+| **Baas (mudelita)** | `python backend/run_adapter.py --data D1` | `ml_v1.csv`, `llm_context_v1.json` |
+| **Mudelitega** | `python backend/run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --target-ml xgboost` | baas + mudelispetsiifilised vormindused (`llm_context_v1_<perekond>.json`, `ml_v1_<mudel>.json`) |
+| **Laiendatud profiil** | `python backend/run_adapter.py --data D1 --profile extensions_eval` | baas + `stats_v1.json`, `monthly_balance_v1.json` |
+
+> **NB.** Adapter ei kutsu välja LLM-i ega ML-mudelit — see vaid genereerib
+> deterministlikud sisendfailid (`projections/`), mida saab anda välistele
+> mudelitele. `--target-llm` ja `--target-ml` valivad **vormingu** (vt
+> [`spec/contracts/C-04_model_formatters.yaml`](../spec/contracts/C-04_model_formatters.yaml)),
+> mitte ei käivita inferentsi.
+
+Allpool on iga režiimi täpsem käivitusjuhend ja jaotises **4** kogu
+väljundi kaustastruktuur ning lipp→fail tabel.
+
 ## Eeldused
 
 - Python sõltuvused on paigaldatud (`pip install -r backend/requirements.txt`).
@@ -141,15 +162,34 @@ backend/out/
     sv.json
     report.json
     projections/
-      ml_v1.csv                    # baas-ML projektsioon (alati)
-      llm_context_v1.json          # baas-LLM kontekst (alati)
-      ml_xgboost.csv               # XGBoost-spetsiifiline (kui --target-ml xgboost)
-      ml_catboost.csv              # CatBoost-spetsiifiline (kui --target-ml catboost)
-      llm_llama3.txt               # Llama 3 prompt (kui --target-llm llama3.1-8b-instruct)
-      llm_mistral.txt              # Mistral prompt (kui --target-llm mistral-7b-instruct-v0.3)
-      llm_qwen.txt                 # Qwen prompt (kui --target-llm qwen2.5-7b-instruct)
-      llm_gemma.txt                # Gemma 2 prompt (kui --target-llm gemma-2-2b-it)
+      ml_v1.csv                       # baas-ML projektsioon (alati)
+      llm_context_v1.json             # baas-LLM kontekst (alati)
+      ml_v1_xgboost.json              # XGBoost-vorming (kui --target-ml xgboost)
+      ml_v1_catboost.json             # CatBoost-vorming (kui --target-ml catboost)
+      llm_context_v1_llama3.json      # Llama 3 vorming (kui --target-llm llama3.1-8b-instruct)
+      llm_context_v1_mistral.json     # Mistral vorming (kui --target-llm mistral-7b-instruct-v0.3)
+      llm_context_v1_qwen.json        # Qwen vorming (kui --target-llm qwen2.5-7b-instruct)
+      llm_context_v1_gemma.json       # Gemma 2 vorming (kui --target-llm gemma-2-2b-it)
+      stats_v1.json                   # C-05 statistika (kui --profile extensions_eval)
+      monthly_balance_v1.json         # C-06 kuubilanss (kui --profile extensions_eval)
 ```
+
+### Lipp → tekkiv fail (kokkuvõte)
+
+| Lipp / profiil | Tekkiv fail kaustas `projections/` |
+|---|---|
+| (ilma mudelilippudeta) | `ml_v1.csv`, `llm_context_v1.json` |
+| `--target-ml xgboost` | `ml_v1_xgboost.json` |
+| `--target-ml catboost` | `ml_v1_catboost.json` |
+| `--target-llm llama3.1-8b-instruct` | `llm_context_v1_llama3.json` |
+| `--target-llm mistral-7b-instruct-v0.3` | `llm_context_v1_mistral.json` |
+| `--target-llm qwen2.5-7b-instruct` | `llm_context_v1_qwen.json` |
+| `--target-llm gemma-2-2b-it` | `llm_context_v1_gemma.json` |
+| `--profile extensions_eval` | `stats_v1.json`, `monthly_balance_v1.json` |
+
+Mitme mudeli korraga andmisel (`--target-llm A B C`) tekib iga valitud
+mudeli kohta üks fail. Mudelilipud ei muuda baasprojektsioone — `ml_v1.csv`
+ja `llm_context_v1.json` kirjutatakse alati.
 
 CLI prindib alati:
 
