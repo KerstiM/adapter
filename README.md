@@ -32,7 +32,7 @@ for d in datasets/D*; do python backend/run_adapter.py --data "$d" --out backend
 
 CLI argumendid:
 - `--data / -d` — dataseti nimi (nt `D1`, `D4`) või kaustatee. Vaikimisi: `D1_synth_valid_small`.
-- `--out / -o` — väljundi juurkaust. Vaikimisi: `<repo>/.backend/out/`.
+- `--out / -o` — väljundi juurkaust. Vaikimisi: `<repo>/.pipeline_out/` (gitignoreeritud).
 - `--profile / -p` — jooksuprofiil (nt `extensions_eval`). Vaikimisi: `default`. Profiil määrab, millised skeemid, lepingud ja reeglistikud on aktiivsed ning kas on lubatud lisaprojektsioonid (nt `extra_projections`).
 - `--target-llm MODEL [MODEL ...]` — LLM mudel(id), millele genereerida projektsioonid. Valikud: `llama3.1-8b-instruct`, `mistral-7b-instruct-v0.3`, `qwen2.5-7b-instruct`, `gemma-2-2b-it`.
 - `--target-ml MODEL [MODEL ...]` — ML mudel(id), millele genereerida projektsioonid. Valikud: `xgboost`, `catboost`.
@@ -67,6 +67,25 @@ cd backend && python -m pytest tests/ -v
 ```
 
 Täpsem runbook: [`docs/runbook.md`](docs/runbook.md).
+
+---
+
+## Turvaeeldused ja käitumine
+
+Prototüüp on mõeldud **lokaalseks käivitamiseks** (no-egress, vt lõputöö ptk 1).
+Koodi turvapiirid on joondatud selle eeldusega:
+
+- **HTTP API** (`backend/entrypoints/api.py`) seotakse vaikimisi `127.0.0.1:5000` peale, ilma autentimiseta. Hosti ja porti saab override'ida keskkonnamuutujatega `ADAPTER_HTTP_HOST` ja `ADAPTER_HTTP_PORT` — **ärge seadke `0.0.0.0` ilma eelneva autentimis-proxi ja võrgupiiranguteta**, sest `/api/run` vastuses olev `llmPreview.rawContexts` (kui `includeRaw: true` on päringus) sisaldab tehingutasemel andmeid.
+- **CORS** on vaikimisi kitsendatud päritoludele `http://localhost:5173` ja `http://127.0.0.1:5173` (Vite dev-server). Allowlist'i saab laiendada keskkonnamuutujaga `ADAPTER_CORS_ORIGINS` (komadega eraldatud loetelu). Wildcard (`*`) ei ole toetatud.
+- **`rawContexts` on opt-in**: `POST /api/run` vastus sisaldab täielikke LLM-kontekste ainult siis, kui keha sisaldab `"includeRaw": true`. Ilma selleta näidatakse vaid kokkuvõte (narratiiv, kontoagregatsioon, tippkategooriad) — isikutuvastavad tehingudetailid jäävad kõrvale.
+- **Päringu keha** on piiratud 1 MB-le (`MAX_BODY_BYTES`); vigane JSON, puuduv või negatiivne `Content-Length` tagastatakse 400/413-ga enne allokeerimist.
+- **Veavastused** ei sisalda Python'i stack trace'i ega erandi teksti; täielik trace läheb ainult serveri stderr'i.
+- **LLM preamble** (`--llm-preamble` / `body.llmPreamble`) on käsitletud **untrusted input**'ina: API tasemel on see piiratud 2048 märgile (`MAX_PREAMBLE_CHARS`). Formatter-tasemel eemaldatakse iga toetatud chat-malli kontrolltokenid (`<|eot_id|>`, `[INST]`, `<|im_start|>`, `<start_of_turn>` jm) enne template'i interpoleerimist, et hoida ära downstream-mudeli süsteemvooru kaaperdamist. Sanitiseerimine kehtib kõigile tugetud perekondadele: **llama3, mistral, chatml (Qwen), gemma**.
+- **Profiili-põhised faili-teed** (`FsSpecAdapter`) valideeritakse repo juure sisalduvuse vastu (`is_relative_to`), et profile-YAML'i `../../../etc/passwd` tüüpi tee lükataks tagasi `ValueError`-iga.
+- **Pre-commit** (`.pre-commit-config.yaml`) sisaldab `gitleaks`-i ja regex-hooki, mis keelab kaardinumbri-viimased-4-numbrit mustri (`..XXXX`) väljaspool D10/D11 datasete ja goldeneid.
+- **Jooksu väljund** (`.pipeline_out/` — CLI ja HTTP vaikepath) on gitignoreeritud. **Ära commit'i käsitsi**: väljund võib sisaldada pseudonümiseeritud PII-d sõltuvalt sisendi-datasetist.
+
+Turvaregressioonid on kaetud [`backend/tests/unit/test_api_security.py`](backend/tests/unit/test_api_security.py)-s (API handler, CORS allowlist, `rawContexts` opt-in, preamble pikkuse-kontroll) ja [`backend/tests/unit/test_scalability.py`](backend/tests/unit/test_scalability.py)-s (Gemma chat-token strip).
 
 ---
 

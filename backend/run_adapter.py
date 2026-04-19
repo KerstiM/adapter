@@ -64,7 +64,7 @@ def main() -> None:
                              "Default: D1_synth_valid_small")
     parser.add_argument("--out", "-o", default=None,
                         help="Output directory (relative to repo root unless "
-                             "absolute). Default: .backend/out/")
+                             "absolute). Default: .pipeline_out/ (gitignored)")
     parser.add_argument("--target-llm", nargs="*", default=None,
                         metavar="MODEL",
                         help="LLM model(s) to generate projections for. "
@@ -92,7 +92,7 @@ def main() -> None:
         # Resolve relative --out paths against repo root, not CWD
         output_dir = out_path if out_path.is_absolute() else ROOT / out_path
     else:
-        output_dir = ROOT / ".backend" / "out"
+        output_dir = ROOT / ".pipeline_out"
 
     # Build target_models override from CLI flags
     target_models_override = None

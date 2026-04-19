@@ -37,7 +37,7 @@ CLI entrypoint on [`backend/run_adapter.py`](backend/run_adapter.py:1).
     - täpset kaustanime `datasets/` all
     - *prefix match* loogikat (nt `D6` sobitub `D6_...`), kus `D1` ei sobitu `D10_...` (underscore fence).
 - `--out` / `-o`: väljundi juurkaust (suhteline repo juure suhtes).
-  - Kui jätad andmata, kasutatakse vaikimisi `<repo>/.backend/out/`.
+  - Kui jätad andmata, kasutatakse vaikimisi `<repo>/.pipeline_out/` (gitignoreeritud).
 - `--profile` / `-p`: jooksuprofiil. Vaikimisi: `default`.
   - `default` — baasskeemid + lepingud (S-00A..S-05, C-01..C-04, R-01). Lisaprojektsioone ei luba.
   - `extensions_eval` — lisab S-06, S-07, C-05, C-06 ja lubab `extra_projections` (statistika + kuubilanss).
