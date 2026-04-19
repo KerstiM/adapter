@@ -1,0 +1,41 @@
+requirement_id,test_id,test_artifact,relation,notes
+Ä1,TJ-03,backend/tests/test_integration_fs.py,SUPPORTING,E2E happy-path D1 + skeemivalideerimine
+Ä1,TJ-01,backend/tests/sli_slo/test_sli_slo.py,SUPPORTING,SLI4 determinismi test kinnitab võrreldavad väljundid
+Ä1,TJ-02,scripts/qa/verify_goldens.py,REGRESSION,Golden SHA-256 võrdlus frozen manifesti vastu
+Ä2,-,backend/tests/unit/test_import_boundaries.py,SUPPORTING,Tõendab tuuma eraldatust I/O-st (ADR-03)
+Ä2,-,backend/tests/unit/test_api_security.py,SUPPORTING,Adapteri liidese turvaeeldused
+Ä2,-,backend/tests/unit/test_spec_fs_path_traversal.py,SUPPORTING,Faili-adapteri pathi-traversali kontroll
+Ä3,TJ-01,backend/tests/sli_slo/test_sli_slo.py,PRIMARY_EVIDENCE,SLI1-SLI5 + QC2 + Gate kontroll raportist
+Ä3,TJ-07,backend/tests/unit/test_scalability.py,SUPPORTING,SLI6 referentsjõudluse mõõtmine
+Ä3,TJ-02,scripts/qa/run_full_qa.py,REGRESSION,Täiskontroll + golden-võrdlus + determinismi suitsutest
+F1,TJ-03,backend/tests/test_integration_fs.py,PRIMARY_EVIDENCE,E2E D1 happy-path: RAW -> SV -> ML/LLM -> raport
+F1,TJ-02,scripts/qa/verify_goldens.py,REGRESSION,Golden-võrdlus tagab SV/ML/LLM korrektsuse kõigi datasettide peale
+F1,-,backend/tests/unit/test_model_formatters.py,SUPPORTING,C-04 mudelispetsiifilised formaatijad (XGBoost/CatBoost/Llama/Mistral/Qwen)
+F1,-,backend/tests/unit/test_pipeline_with_model_target.py,SUPPORTING,Pipeline E2E mudelisihtmärgiga (3 LLM + 2 ML)
+F2,TJ-03,backend/tests/test_integration_fs.py,PRIMARY_EVIDENCE,Skeemivalideerimine kinnitab minimaalse SV ulatuse
+F2,-,backend/tests/unit/test_pipeline_with_fakes.py,SUPPORTING,Mapping + projektsioonide minimaalne katvus
+F3,TJ-04,backend/tests/sli_slo/test_sli_slo.py,PRIMARY_EVIDENCE,SLI2 + QC2 + Gate D4 peal (fail_on: error_drop_ratio>=5%)
+F3,TJ-05,backend/tests/unit/test_invariants_r01.py,PRIMARY_EVIDENCE,R-01 invariandid: INV-01..INV-05; INV-09
+F3,-,backend/tests/unit/test_quality_checks.py,SUPPORTING,QC1 INFO-kontrolli käitumine (ei mõjuta staatust)
+F3,-,scripts/validate_error_catalog.py,SUPPORTING,error_catalog.yaml normatiivne terviklikkus
+F4,TJ-01,backend/tests/sli_slo/test_sli_slo.py,PRIMARY_EVIDENCE,SLI4 = 1.0; 5 korduskäitamist annavad identsed räsid
+F4,TJ-02,scripts/qa/verify_goldens.py,REGRESSION,Golden-diff SHA-256 võrdlus frozen/v1.1.0/golden/ vastu
+F4,-,backend/tests/unit/test_adapter_parity.py,SUPPORTING,Adapterite paariskontroll
+F5,TJ-05,backend/tests/unit/test_input_edge_cases.py,PRIMARY_EVIDENCE,Piiripealsete väärtustega sisendid (EDGE-01..EDGE-08)
+F5,-,backend/tests/unit/test_invariants_r01.py,SUPPORTING,INV-09 deduplikatsiooni deterministlik võitja
+F6,TJ-06,backend/tests/unit/test_c05_stats.py,PRIMARY_EVIDENCE,C-05 stats lisaprojektsioon (extensions_eval profiil)
+F6,TJ-08,backend/tests/unit/test_c06_monthly_balance.py,PRIMARY_EVIDENCE,C-06 monthly_balance lisaprojektsioon
+F6,-,backend/tests/unit/test_model_formatters.py,SUPPORTING,C-04 versioonitud formaatijad
+MF1,-,backend/requirements.txt,SUPPORTING,Fikseeritud sõltuvused (jsonschema 4.25.1; PyYAML 6.0.1; pytest 9.0.3)
+MF2,-,backend/tests/unit/test_import_boundaries.py,SUPPORTING,Domain ei impordi võrguga seotud mooduleid
+MF3,TJ-06,backend/tests/unit/test_c05_stats.py,PRIMARY_EVIDENCE,Skeemievolutsioon lokaalse muudatusena (C-05)
+MF3,TJ-08,backend/tests/unit/test_c06_monthly_balance.py,PRIMARY_EVIDENCE,Skeemievolutsioon lokaalse muudatusena (C-06)
+MF4,-,backend/tests/unit/test_import_boundaries.py,SUPPORTING,Tuuma eraldatus I/O-st (K3 testitavus)
+MF4,TJ-01,backend/tests/sli_slo/test_sli_slo.py,PRIMARY_EVIDENCE,Käitamispõhised mõõdikud raportist
+MF4,TJ-04,backend/tests/sli_slo/test_sli_slo.py,PRIMARY_EVIDENCE,Validatsiooni-mõõdikud vigase sisendi peal
+MF4,-,backend/tests/unit/test_pipeline_with_fakes.py,SUPPORTING,In-memory pipeline fake-portidega
+MF5,TJ-01,backend/tests/sli_slo/test_sli_slo.py,PRIMARY_EVIDENCE,SLI4 = 1.0 sama manifesti + sisendi korral
+MF5,TJ-02,scripts/qa/verify_goldens.py,REGRESSION,Versioonide pinning ja golden-võrdlus
+MF5,-,scripts/qa/build_spec_lock.py,SUPPORTING,spec.lock.json genereerimine (SHA-256)
+MF6,TJ-07,backend/tests/unit/test_scalability.py,PRIMARY_EVIDENCE,SLI6 D9 mediaan (+ D8 koormustest)
+MF6,TJ-07,backend/tests/sli_slo/test_sli_slo.py,PRIMARY_EVIDENCE,SLI6 SLO kontroll (_SLI6_THRESHOLD_MS=500.0 ms); tulemus RESULTS.md-s
