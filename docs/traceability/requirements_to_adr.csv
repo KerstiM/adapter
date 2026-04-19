@@ -1,0 +1,41 @@
+requirement_id,adr_id,relation,notes
+Ä1,ADR-03,DECIDES,Tuum eraldatud I/O-st võimaldab võrreldavaid käitusi
+Ä1,ADR-05,DECIDES,SV kui andmeleping + projektsioonid
+Ä1,ADR-06,DECIDES,Versioonitud skeemid/reeglid/konfid käituse pinninguga
+Ä2,ADR-02,DECIDES,Lokaalne CLI/batch; no-egress
+Ä2,ADR-03,DECIDES,Monoliit portide ja adapteritega; tuum eraldatud I/O-st
+Ä2,ADR-08,DECIDES,UI on adapter; ei sisalda transformatsiooniloogikat
+Ä3,ADR-01,DECIDES,Deterministlik väljundpakett (SV+raport+projektsioonid)
+Ä3,ADR-02,INFLUENCES,No-egress toetab auditeeritavust
+Ä3,ADR-03,INFLUENCES,Tuum isoleeritav -> testitav ja mõõdetav
+Ä3,ADR-04,INFLUENCES,Etapiline torustik -> mõõtmispunktid
+Ä3,ADR-05,INFLUENCES,SV + projektsioonid = mõõdetav sisendvoo kvaliteet
+Ä3,ADR-06,INFLUENCES,Versioonid metaandmetes -> auditeeritavus
+Ä3,ADR-07,DECIDES,Kogutud raport + partial_success -> SLI arvutus
+F1,ADR-03,DECIDES,Tuumloogika eraldatud I/O-st
+F1,ADR-05,DECIDES,SV + projektsioonid SV-st
+F1,ADR-06,INFLUENCES,Versioonid metaandmetes
+F2,ADR-05,DECIDES,SV minimaalne ulatus = andmelepingu osa
+F3,ADR-04,DECIDES,Pipeline võimaldab etapipõhist veakäsitlust
+F3,ADR-07,DECIDES,Kogutud raport + fail_on + gate
+F4,ADR-01,DECIDES,Deterministlik väljundpakett
+F4,ADR-03,INFLUENCES,Tuum eraldatud => ei sõltu I/O juhuslikkusest
+F4,ADR-04,INFLUENCES,Pipeline fikseeritud järjekord
+F5,ADR-05,DECIDES,SV säilitusreeglid; dropped_details[] auditijälg
+F6,ADR-03,INFLUENCES,Projektsioonid kui plug-in tuumast sõltumatult
+F6,ADR-06,DECIDES,Versioonitud lepingud + profiilid (C-05/C-06; extensions_eval)
+MF1,ADR-02,DECIDES,Lisa 4 seob MF1 -> Q2 -> ADR-02 (lokaalne CLI/batch; no-egress; sobitumine failipõhise töövooga)
+MF2,ADR-01,INFLUENCES,Deterministlik pakett portitav; ei sõltu keskkonnast
+MF2,ADR-02,DECIDES,No-egress; lokaalne käitus
+MF3,ADR-05,DECIDES,SV + lepingud -> skeemievolutsioon versioonitult
+MF3,ADR-06,DECIDES,Versioonipoliitika + profiilid võimaldavad lokaalset laienemist
+MF4,ADR-01,INFLUENCES,Deterministlik pakett testitav
+MF4,ADR-03,DECIDES,Tuum eraldatud -> isoleeritud testitav
+MF4,ADR-04,INFLUENCES,Pipeline etapid -> mõõtmispunktid
+MF4,ADR-06,INFLUENCES,Versioonid raportis -> jälgitavus
+MF5,ADR-01,INFLUENCES,Deterministlik pakett
+MF5,ADR-03,INFLUENCES,Tuum eraldatud -> korduvad käitused
+MF5,ADR-04,INFLUENCES,Pipeline fikseeritud
+MF5,ADR-05,DECIDES,SV + metaandmed
+MF5,ADR-06,DECIDES,Versioonid lukus + käituse metaandmetes
+MF6,ADR-01,INFLUENCES,Prototüübi deterministlik pakett võimaldab referentsmõõtmist samas mõõtekeskkonnas

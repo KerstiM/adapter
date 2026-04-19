@@ -1,0 +1,44 @@
+requirement_id,artifact_id,artifact_path_or_name,relation,notes
+Ä1,sv.json,.backend/out/<ts>_<run_id>/sv.json,PRIMARY,Standardiseeritud vaheesitus (SV bundle)
+Ä1,report.json,.backend/out/<ts>_<run_id>/report.json,REPORT,Kogutud raport meta+issues+metrics
+Ä1,ml_v1.csv,.backend/out/<ts>_<run_id>/projections/ml_v1.csv,PRIMARY,ML projektsioon
+Ä1,llm_context_v1.json,.backend/out/<ts>_<run_id>/projections/llm_context_v1.json,PRIMARY,LLM kontekst
+Ä1,golden_sv,frozen/v1.1.0/golden/D1_synth_valid_small/sv.json,GOLDEN_REFERENCE,Regressiooni etalon; võrdleb SHA-256
+Ä2,spec.lock.json,frozen/v1.1.0/spec.lock.json,METADATA,Versioonide pinning — tõendab tuuma stabiilsust
+Ä3,report.json,.backend/out/<ts>_<run_id>/report.json,REPORT,SLI-d arvutatakse raportist
+Ä3,spec.lock.json,frozen/v1.1.0/spec.lock.json,METADATA,Versioonide lukustus
+Ä3,manifest.json,frozen/v1.1.0/manifest.json,METADATA,Golden SHA-256 andmestike kaupa
+Ä3,benchmark_log,backend/tests/sli_slo/RESULTS.md,REPORT,SLI6 ja muude mõõdikute tulemused
+F1,sv.json,.backend/out/<ts>_<run_id>/sv.json,PRIMARY,C-01 väljund
+F1,ml_v1.csv,.backend/out/<ts>_<run_id>/projections/ml_v1.csv,PRIMARY,C-02 väljund
+F1,llm_context_v1.json,.backend/out/<ts>_<run_id>/projections/llm_context_v1.json,PRIMARY,C-03 väljund
+F1,golden_sv,frozen/v1.1.0/golden/D1_synth_valid_small/sv.json,GOLDEN_REFERENCE,SV etalon
+F1,golden_ml,frozen/v1.1.0/golden/D1_synth_valid_small/ml_v1.csv,GOLDEN_REFERENCE,ML etalon
+F1,golden_llm,frozen/v1.1.0/golden/D1_synth_valid_small/llm_context_v1.json,GOLDEN_REFERENCE,LLM etalon
+F2,sv.json,.backend/out/<ts>_<run_id>/sv.json,PRIMARY,SV minimaalsete väljade katvus loetav SV-st
+F2,report.json,.backend/out/<ts>_<run_id>/report.json,REPORT,SLI1 raporteeritakse raportis
+F3,report.json,.backend/out/<ts>_<run_id>/report.json,REPORT,issues[] + dropped_details[] + metrics
+F3,error_catalog,spec/rulesets/error_catalog.yaml,METADATA,Normatiivne veakoodide kataloog
+F3,golden_report,frozen/v1.1.0/golden/D4_synth_errors_seed42/report.json,GOLDEN_REFERENCE,D4 FAIL etalon (gate aktiveerub)
+F4,sv.json,.backend/out/<ts>_<run_id>/sv.json,PRIMARY,Deterministliku väljundi kontrollitav fail
+F4,report.json,.backend/out/<ts>_<run_id>/report.json,REPORT,Raportiga koos kontrollitakse hash-võrdlust
+F4,manifest.json,frozen/v1.1.0/manifest.json,METADATA,Kõigi golden-artefaktide SHA-256
+F4,spec.lock.json,frozen/v1.1.0/spec.lock.json,METADATA,Spetsifikatsioonide SHA-256 + versioon
+F5,report.json,.backend/out/<ts>_<run_id>/report.json,REPORT,dropped_details[] ja flags[] tõendavad kontrollitud kadu
+F5,golden_report,frozen/v1.1.0/golden/D6_synth_dupes_seed99/report.json,GOLDEN_REFERENCE,D6 duplikaatide eemaldamine — deterministlik võitja
+F6,stats_v1.json,.backend/out/<ts>_<run_id>/projections/stats_v1.json,PRIMARY,C-05 lisaprojektsioon (ainult extensions_eval)
+F6,monthly_balance_v1.json,.backend/out/<ts>_<run_id>/projections/monthly_balance_v1.json,PRIMARY,C-06 lisaprojektsioon (ainult extensions_eval)
+F6,report.json,.backend/out/<ts>_<run_id>/report.json,REPORT,extra_projections sektsioon raportis (audit trail)
+MF1,requirements.txt,backend/requirements.txt,METADATA,Fikseeritud sõltuvuste versioonid
+MF2,spec.lock.json,frozen/v1.1.0/spec.lock.json,METADATA,Lokaalne lukustus — no-egress kontrollpind
+MF3,stats_v1.json,.backend/out/<ts>_<run_id>/projections/stats_v1.json,PRIMARY,Laienduse tõend (C-05)
+MF3,monthly_balance_v1.json,.backend/out/<ts>_<run_id>/projections/monthly_balance_v1.json,PRIMARY,Laienduse tõend (C-06)
+MF4,report.json,.backend/out/<ts>_<run_id>/report.json,REPORT,Käitamispõhised mõõdikud
+MF4,RESULTS.md,backend/tests/sli_slo/RESULTS.md,REPORT,SLI/SLO automatiseeritud tulemused
+MF5,spec.lock.json,frozen/v1.0.0/spec.lock.json,METADATA,Vanem lukustus (v1.0.0)
+MF5,spec.lock.json,frozen/v1.1.0/spec.lock.json,METADATA,Praegune lukustus (v1.1.0)
+MF5,manifest.json,frozen/v1.0.0/manifest.json,METADATA,Golden SHA-256 (v1.0.0)
+MF5,manifest.json,frozen/v1.1.0/manifest.json,METADATA,Golden SHA-256 (v1.1.0)
+MF5,report.json,.backend/out/<ts>_<run_id>/report.json,METADATA,Raporti meta: sv_schema_version; mapping_version; ruleset_version; adapter_version
+MF6,benchmark_log,backend/tests/sli_slo/RESULTS.md,REPORT,SLI6 mõõtmistulemus (mediaan + stddev)
+MF6,report.json,.backend/out/<ts>_<run_id>/report.json,REPORT,Käitamisaeg fikseeritud raportis
