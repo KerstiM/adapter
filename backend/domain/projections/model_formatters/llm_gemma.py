@@ -11,7 +11,10 @@ Pure function, no I/O.
 """
 from __future__ import annotations
 
-from domain.projections.model_formatters._common import context_to_json
+from domain.projections.model_formatters._common import (
+    context_to_json,
+    strip_chat_control_tokens,
+)
 
 
 def format_gemma(
@@ -39,11 +42,13 @@ def format_gemma(
     turn_end = tokens.get("turn_end", "<end_of_turn>\n")
     turn_start_model = tokens.get("turn_start_model", "<start_of_turn>model\n")
 
+    safe_preamble = strip_chat_control_tokens(preamble, "gemma")
+
     results = []
     for ctx in llm_contexts:
         ctx_json = context_to_json(ctx)
         prompt = (
-            f"{turn_start_user}{preamble}\n\n{ctx_json}{turn_end}"
+            f"{turn_start_user}{safe_preamble}\n\n{ctx_json}{turn_end}"
             f"{turn_start_model}"
         )
         results.append({
