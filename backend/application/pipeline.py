@@ -462,46 +462,52 @@ def run_pipeline(
         if _ext_name in _projection_outputs
     }
 
-    ml_rows = _projection_outputs.get("ml", [])
-    llm_contexts = _projection_outputs.get("llm", [])
+    # Aggregate counts by spec.kind for downstream reporting/metrics
+    # (report schema still exposes scalar ml_rows_count / llm_contexts_count
+    # fields, but the numbers come from kind-based iteration rather than
+    # name lookup).
+    _counts_by_kind: dict[str, int] = {}
+    for _proj_name, _proj_data in _projection_outputs.items():
+        _spec = PROJECTION_REGISTRY.get(_proj_name)
+        if _spec is None:
+            continue
+        _counts_by_kind[_spec.kind] = _counts_by_kind.get(_spec.kind, 0) + len(_proj_data)
+    ml_rows_count = _counts_by_kind.get("ml", 0)
+    llm_contexts_count = _counts_by_kind.get("llm", 0)
 
     # ================================================================
     # Stage 7: FORMAT_FOR_MODEL — model-specific formatting (C-04)
+    # Dispatch by ``spec.kind`` so any projection of a given kind gets the
+    # matching model-formatter treatment without hard-coding its name.
     # ================================================================
     target_models = profile.get("target_models", {})
     if target_models_override:
         target_models = {**target_models, **target_models_override}
-    model_ml_outputs: dict[str, dict] = {}
-    model_llm_outputs: dict[str, list[dict]] = {}
+    model_outputs_by_kind: dict[str, dict[str, Any]] = {}
 
     c04 = profile.get("contracts", {}).get("C-04", {})
     llm_preamble = target_models.get("llm_preamble", "")
 
-    if "ml" in _projection_outputs:
-        for ml_model_id in target_models.get("ml", []):
-            ml_model_config = c04.get("ml_models", {}).get(ml_model_id)
-            if ml_model_config:
-                result = _format_for_model(
-                    ml_rows, sv_bundle, ml_model_id, ml_model_config, "ml",
-                )
-                suffix = ml_model_config.get("output_suffix", ml_model_id)
-                model_ml_outputs[suffix] = result
+    for _proj_name, _proj_data in _projection_outputs.items():
+        _spec = PROJECTION_REGISTRY.get(_proj_name)
+        if _spec is None or _spec.kind not in ("ml", "llm"):
+            continue
+        _models_configs = c04.get(f"{_spec.kind}_models", {})
+        _format_kwargs = {"preamble": llm_preamble} if _spec.kind == "llm" else {}
+        for _model_id in target_models.get(_spec.kind, []):
+            _model_config = _models_configs.get(_model_id)
+            if not _model_config:
+                continue
+            _result = _format_for_model(
+                _proj_data, sv_bundle, _model_id, _model_config, _spec.kind,
+                **_format_kwargs,
+            )
+            _suffix = _model_config.get("output_suffix", _model_id)
+            model_outputs_by_kind.setdefault(_spec.kind, {})[_suffix] = _result
 
-    if "llm" in _projection_outputs:
-        for llm_model_id in target_models.get("llm", []):
-            llm_model_config = c04.get("llm_models", {}).get(llm_model_id)
-            if llm_model_config:
-                result = _format_for_model(
-                    llm_contexts, sv_bundle, llm_model_id, llm_model_config, "llm",
-                    preamble=llm_preamble,
-                )
-                suffix = llm_model_config.get("output_suffix", llm_model_id)
-                model_llm_outputs[suffix] = result
-
-    fmt_errors = 0
     stage_log["FORMAT_FOR_MODEL"] = {
         "status": "OK",
-        "errors": fmt_errors,
+        "errors": 0,
         "warnings": 0,
     }
 
@@ -528,17 +534,22 @@ def run_pipeline(
 
     out.write_sv(sv_bundle)
 
-    if "ml" in _projection_outputs:
-        out.write_ml(ml_rows)
+    # Dispatch writes by spec.kind — no hard-coded projection name lookups.
+    for _proj_name, _proj_data in _projection_outputs.items():
+        _spec = PROJECTION_REGISTRY.get(_proj_name)
+        if _spec is None:
+            continue
+        if _spec.kind == "ml":
+            out.write_ml(_proj_data)
+        elif _spec.kind == "llm":
+            _llm_output = _proj_data[0] if len(_proj_data) == 1 else _proj_data
+            out.write_llm(_llm_output)
+        # generic kinds are already persisted in the unified dispatch loop.
 
-    if "llm" in _projection_outputs:
-        llm_output = llm_contexts[0] if len(llm_contexts) == 1 else llm_contexts
-        out.write_llm(llm_output)
-
-    for suffix, ml_model_data in model_ml_outputs.items():
+    for suffix, ml_model_data in model_outputs_by_kind.get("ml", {}).items():
         out.write_ml_model(ml_model_data, suffix)
 
-    for suffix, llm_model_data in model_llm_outputs.items():
+    for suffix, llm_model_data in model_outputs_by_kind.get("llm", {}).items():
         out.write_llm_model(llm_model_data, suffix)
 
     # Count flag severities across all transactions for report
@@ -597,7 +608,7 @@ def run_pipeline(
         passed_validation_total=len(deduped_txs),
         dropped_total=total_dropped,
         dropped_details_count=len(all_dropped_details),
-        ml_rows_count=len(ml_rows),
+        ml_rows_count=ml_rows_count,
         invariant_checked_total=invariant_checked_total,
         invariant_correct_total=invariant_correct_total,
         critical_invariant_violations_total=critical_invariant_violations_total,
@@ -654,8 +665,8 @@ def run_pipeline(
         transactions_total=total_raw,
         transactions_emitted_sv=len(deduped_txs),
         transactions_dropped=total_dropped,
-        ml_rows_count=len(ml_rows),
-        llm_contexts_count=len(llm_contexts),
+        ml_rows_count=ml_rows_count,
+        llm_contexts_count=llm_contexts_count,
         by_severity=by_severity,
         stage_log=stage_log_array,
         run_flags=run_flags,
@@ -680,8 +691,8 @@ def run_pipeline(
             "transactions_total": total_raw,
             "transactions_emitted_sv": len(deduped_txs),
             "transactions_dropped": total_dropped,
-            "ml_rows": len(ml_rows),
-            "llm_contexts": len(llm_contexts),
+            "ml_rows": ml_rows_count,
+            "llm_contexts": llm_contexts_count,
         },
         "by_severity": by_severity,
         "run_flags": run_flags,
