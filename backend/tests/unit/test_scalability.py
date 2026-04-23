@@ -671,15 +671,17 @@ class TestC06ReportIntegration:
 # Integratsioon: C-05 & C-06 extra_projections pipeline
 # ===================================================================
 
-def _profile_with_extra_projections(*names: str) -> dict[str, Any]:
-    """Default fake profile plus ``extra_projections`` opt-in gate.
+def _profile_with_projections(*extra_names: str) -> dict[str, Any]:
+    """Default fake profile with ``projections`` opt-in gate.
 
-    Adds permissive schemas for S-06/S-07 and minimal contracts for C-05/C-06
-    with ``output.file`` and ``output.schema`` fields so that the pipeline can
-    derive the output filename and validation schema from the contract.
+    The base profile always runs ``ml`` and ``llm`` projections; callers supply
+    additional projection names (e.g. ``"stats"``, ``"monthly_balance"``) that
+    the unified dispatch loop picks up from ``PROJECTION_REGISTRY``.  Adds
+    permissive schemas for S-06/S-07 and minimal contracts for C-05/C-06 so
+    the pipeline can derive output filenames and schemas from contracts.
     """
     profile = copy.deepcopy(_default_profile())
-    profile["extra_projections"] = list(names)
+    profile["projections"] = ["ml", "llm", *extra_names]
     profile["schemas"]["S-06"] = {}
     profile["schemas"]["S-07"] = {}
     profile["contracts"]["C-05"] = {
@@ -752,7 +754,7 @@ class TestExtraProjectionsIntegration:
 
     def test_stats_written_when_enabled(self) -> None:
         """extra_projections: [stats] tekitab stats_v1.json väljundi."""
-        profile = _profile_with_extra_projections("stats")
+        profile = _profile_with_projections("stats")
         _, out = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
 
         assert "stats_v1.json" in out.extra_projections
@@ -761,7 +763,7 @@ class TestExtraProjectionsIntegration:
 
     def test_monthly_balance_written_when_enabled(self) -> None:
         """extra_projections: [monthly_balance] tekitab monthly_balance_v1.json."""
-        profile = _profile_with_extra_projections("monthly_balance")
+        profile = _profile_with_projections("monthly_balance")
         _, out = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
 
         assert "monthly_balance_v1.json" in out.extra_projections
@@ -770,7 +772,7 @@ class TestExtraProjectionsIntegration:
 
     def test_both_projections_enabled(self) -> None:
         """Mõlemad projektsioonid aktiveerituna tekitavad mõlemad väljundid."""
-        profile = _profile_with_extra_projections("stats", "monthly_balance")
+        profile = _profile_with_projections("stats", "monthly_balance")
         _, out = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
 
         assert "stats_v1.json" in out.extra_projections
@@ -778,7 +780,7 @@ class TestExtraProjectionsIntegration:
 
     def test_audit_trail_in_report(self) -> None:
         """Raport sisaldab extra_projections auditijälge."""
-        profile = _profile_with_extra_projections("stats", "monthly_balance")
+        profile = _profile_with_projections("stats", "monthly_balance")
         _, out = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
 
         assert "extra_projections" in out.report
@@ -801,7 +803,7 @@ class TestExtraProjectionsIntegration:
         """Piiratud skeemiga valideerimistulemus on FAIL ja issue tekib."""
         from adapters.validation.jsonschema_adapter import JsonSchemaValidationAdapter
 
-        profile = _profile_with_extra_projections("stats")
+        profile = _profile_with_projections("stats")
         # Override S-06 with a schema that rejects the actual output
         profile["schemas"]["S-06"] = {
             "type": "object",
@@ -825,7 +827,7 @@ class TestExtraProjectionsIntegration:
 
     def test_contract_drives_output_filename(self) -> None:
         """Lepingu output.file väli määrab väljundfaili nime."""
-        profile = _profile_with_extra_projections("stats")
+        profile = _profile_with_projections("stats")
         profile["contracts"]["C-05"]["output"]["file"] = "projections/custom_stats.json"
         _, out = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
 
@@ -836,7 +838,7 @@ class TestExtraProjectionsIntegration:
         """Extra projections sisselülitamine ei mõjuta ML ja LLM väljundeid."""
         _, out_disabled = _run_with_profile(booked=self._FIXED_BOOKED)
         _, out_enabled = _run_with_profile(
-            profile=_profile_with_extra_projections("stats", "monthly_balance"),
+            profile=_profile_with_projections("stats", "monthly_balance"),
             booked=self._FIXED_BOOKED,
         )
 
@@ -846,7 +848,7 @@ class TestExtraProjectionsIntegration:
 
     def test_report_extensions_coexist(self) -> None:
         """report_extensions ja extra_projections töötavad koos."""
-        profile = _profile_with_extra_projections("monthly_balance")
+        profile = _profile_with_projections("monthly_balance")
         profile["report_extensions"] = ["monthly_balance"]
 
         _, out = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
@@ -882,7 +884,7 @@ class TestExtraProjectionsIntegration:
         jsonschema.validate(out_disabled.report, s05)
 
         # Enabled
-        profile = _profile_with_extra_projections("stats", "monthly_balance")
+        profile = _profile_with_projections("stats", "monthly_balance")
         _, out_enabled = _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
         jsonschema.validate(out_enabled.report, s05)
         assert "extra_projections" in out_enabled.report
@@ -1122,3 +1124,150 @@ class TestStandingOrdersExtensibility:
         assert out_a.llm == out_b.llm, (
             "LLM projection must be identical with and without standing orders"
         )
+
+
+# ===================================================================
+# Tõend 6: Ühtne dispatch — uue projektsiooni lokaalne lisamine
+# ===================================================================
+
+class TestUnifiedDispatchExtensibility:
+    """UK3 lokaalse laiendatavuse tugevaim tõend.
+
+    Näitab, et uue projektsiooni (fiktiivne C-07) lisamine ühtsesse
+    PROJECTION_REGISTRY-sse aktiveerib selle pipeline'is ilma ühegi
+    pipeline'i koodi muudatuseta.  Muudatus on **lokaalne**:
+    - üks puhas funktsioon (uues failis või siin testis)
+    - üks kirje registrisse
+    - üks nimi profiili faili
+
+    See kaotab varasema eristuse "põhi" (C-02/C-03) vs "extra" (C-05/C-06)
+    projektsioonide vahel — kõik on nüüd võrdsed kodanikud.
+    """
+
+    _FIXED_BOOKED = [
+        _tx(amount="100.00", transaction_id="UD-TX1",
+            value_date="2025-01-10", booking_date="2025-01-10"),
+        _tx(amount="-40.00", transaction_id="UD-TX2",
+            value_date="2025-02-15", booking_date="2025-02-15"),
+    ]
+
+    def _run_with_registered_projection(
+        self, monkeypatch: pytest.MonkeyPatch, proj_name: str, proj_fn: Any,
+        contract_key: str, kind: str = "generic",
+    ) -> tuple[dict, FakeOutputPort]:
+        """Register a new projection in PROJECTION_REGISTRY and run pipeline."""
+        from application.projection_registry import PROJECTION_REGISTRY, ProjectionSpec
+
+        spec = ProjectionSpec(
+            name=proj_name, fn=proj_fn, contract_key=contract_key, kind=kind,
+        )
+        monkeypatch.setitem(PROJECTION_REGISTRY, proj_name, spec)
+
+        profile = copy.deepcopy(_default_profile())
+        profile["projections"] = ["ml", "llm", proj_name]
+        profile["contracts"][contract_key] = {
+            "id": f"{contract_key}_QUARTERLY_SUMMARY",
+            "version": "1.0.0",
+            "output": {
+                "format": "JSON",
+                "file": f"projections/{proj_name}_v1.json",
+            },
+        }
+        return _run_with_profile(profile=profile, booked=self._FIXED_BOOKED)
+
+    def test_new_projection_runs_without_pipeline_changes(
+        self, monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        """Uue projektsiooni lisamine registrisse aktiveerib selle pipeline'is.
+
+        Fiktiivne C-07 "quarterly_summary" projektsioon:
+        - on puhas funktsioon (sv_bundle -> list[dict])
+        - registreeritakse ainult PROJECTION_REGISTRY kaudu
+        - aktiveeritakse profiili projections: [..., quarterly_summary]
+
+        Tõend: pipeline.py ei muutu, aga uus projektsioon töötab.
+        """
+        def project_quarterly_summary(sv_bundle: dict) -> list[dict]:
+            accounts = sv_bundle.get("accounts", [])
+            transactions = sv_bundle.get("transactions", [])
+            return [
+                {
+                    "account_id": acct["account_id"],
+                    "quarter": "2025-Q1",
+                    "transaction_count": sum(
+                        1 for t in transactions if t.get("account_id") == acct["account_id"]
+                    ),
+                }
+                for acct in accounts
+            ]
+
+        _, out = self._run_with_registered_projection(
+            monkeypatch, "quarterly_summary", project_quarterly_summary, "C-07",
+        )
+
+        assert "quarterly_summary_v1.json" in out.extra_projections, (
+            "New projection must produce its standalone output file."
+        )
+        output = out.extra_projections["quarterly_summary_v1.json"]
+        assert len(output) == 1
+        assert output[0]["quarter"] == "2025-Q1"
+        assert output[0]["transaction_count"] == 2
+
+    def test_new_projection_appears_in_audit_trail(
+        self, monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        """Uus projektsioon peab ilmuma extra_projections auditijäljesse
+        sama struktuuriga nagu C-05/C-06."""
+        def project_noop(sv_bundle: dict) -> list[dict]:
+            return [{"stub": True}]
+
+        _, out = self._run_with_registered_projection(
+            monkeypatch, "stub_projection", project_noop, "C-99",
+        )
+
+        assert "extra_projections" in out.report
+        audit = out.report["extra_projections"]
+        stub_entries = [a for a in audit if a["name"] == "stub_projection"]
+        assert len(stub_entries) == 1
+        entry = stub_entries[0]
+        assert entry["enabled"] is True
+        assert entry["contract_id"] == "C-99_QUARTERLY_SUMMARY"
+        assert entry["contract_version"] == "1.0.0"
+
+    def test_ml_llm_and_new_projection_coexist(
+        self, monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        """Pipeline ei erista "põhi" ja "extra" — ml, llm ja uus projektsioon
+        kõik jooksevad sama dispatch-tsükli kaudu."""
+        def project_stub(sv_bundle: dict) -> list[dict]:
+            return [{"ok": True}]
+
+        _, out = self._run_with_registered_projection(
+            monkeypatch, "coexist_stub", project_stub, "C-99",
+        )
+
+        assert out.ml is not None, "ML must still run"
+        assert out.llm is not None, "LLM must still run"
+        assert "coexist_stub_v1.json" in out.extra_projections, (
+            "New projection must also run in the same dispatch loop"
+        )
+
+    def test_pipeline_source_unchanged_by_new_projection(self) -> None:
+        """Arhitektuuriline invariant: pipeline.py ei sisalda uute
+        projektsioonide nimesid — need peavad olema registris, mitte koodis.
+
+        Kõvasti kirjutatud kutsed konkreetsetele projektsioonidele
+        (v.a ml/llm kindlad meetodid OutputPort-is) näitaksid, et
+        refaktor on regresseerunud.
+        """
+        import application.pipeline as pipeline_mod
+
+        source = inspect.getsource(pipeline_mod)
+        # Registry nimed on lubatud ("ml", "llm" kind-kontrolli jaoks);
+        # keelatud on konkreetne viide C-05/C-06/quarterly_summary-le koodis.
+        forbidden = ["stats", "monthly_balance", "quarterly_summary"]
+        for name in forbidden:
+            assert f'"{name}"' not in source, (
+                f'pipeline.py must not hardcode projection name "{name}". '
+                "All projection names must live in PROJECTION_REGISTRY."
+            )

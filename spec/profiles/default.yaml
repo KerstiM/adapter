@@ -20,6 +20,10 @@ rulesets:
   R-01: "spec/rulesets/R-01_sv_invariants.yaml"
   QC:   "spec/rulesets/QC_quality_checks.yaml"
 
+projections:
+  - ml
+  - llm
+
 run_policy:
   partial_success_policy:
     fail_on:

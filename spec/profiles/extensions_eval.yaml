@@ -24,12 +24,14 @@ rulesets:
   R-01: "spec/rulesets/R-01_sv_invariants.yaml"
   QC:   "spec/rulesets/QC_quality_checks.yaml"
 
+projections:
+  - ml
+  - llm
+  - stats
+  - monthly_balance
+
 run_policy:
   partial_success_policy:
     fail_on:
       any_severity: ERROR
       ratio_over_records: 0.05
-
-extra_projections:
-  - stats
-  - monthly_balance
