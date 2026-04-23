@@ -30,6 +30,7 @@ from domain.report.ops import (
     compute_metrics as _compute_metrics,
     count_error_drops as _count_error_drops,
     count_flags_by_severity as _count_flags_by_severity,
+    count_issues_by_severity as _count_issues_by_severity,
     determine_outcome as _determine_outcome,
 )
 from domain.rules.invariants_r01 import (
@@ -555,6 +556,9 @@ def run_pipeline(
     # Count flag severities across all transactions for report
     all_dropped_for_severity = dropped_txs + dedupe_drops
     by_severity = _count_flags_by_severity(deduped_txs, all_dropped_for_severity)
+    # Count all report-level issues[] by severity (complements by_severity —
+    # covers pre-tx stages like READ_INPUT, mapping_drops, VALIDATE_SCHEMA)
+    by_severity_issues = _count_issues_by_severity(issues)
 
     # Combine invariant drops + mapping drops + dedupe drops for total dropped count
     total_dropped = len(dropped_txs) + len(mapping_drops) + len(dedupe_drops)
@@ -668,6 +672,7 @@ def run_pipeline(
         ml_rows_count=ml_rows_count,
         llm_contexts_count=llm_contexts_count,
         by_severity=by_severity,
+        by_severity_issues=by_severity_issues,
         stage_log=stage_log_array,
         run_flags=run_flags,
         issues=issues,
@@ -695,6 +700,7 @@ def run_pipeline(
             "llm_contexts": llm_contexts_count,
         },
         "by_severity": by_severity,
+        "by_severity_issues": by_severity_issues,
         "run_flags": run_flags,
         "issues": issues,
         "dropped_details": all_dropped_details,

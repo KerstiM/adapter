@@ -129,6 +129,7 @@ class TestPipelineHappyPath:
         summary, _ = result
         for sev in ("CRITICAL", "ERROR", "WARN", "INFO"):
             assert summary["by_severity"][sev] == 0, f"{sev} should be 0"
+            assert summary["by_severity_issues"][sev] == 0, f"by_severity_issues[{sev}] should be 0"
 
     def test_output_port_received_sv(self, result: tuple[dict, FakeOutputPort]) -> None:
         _, out = result

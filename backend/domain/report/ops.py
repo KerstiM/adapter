@@ -160,6 +160,21 @@ def count_flags_by_severity(
     return counts
 
 
+def count_issues_by_severity(issues: list[dict]) -> dict[str, int]:
+    """Count severity levels across the full issues[] report array.
+
+    Unlike count_flags_by_severity (which only counts tx-level flags),
+    this covers all pipeline-level issues including READ_INPUT schema
+    errors, STANDARDIZE_TO_SV mapping drops, and VALIDATE_SCHEMA errors.
+    """
+    counts: dict[str, int] = {"CRITICAL": 0, "ERROR": 0, "WARN": 0, "INFO": 0}
+    for issue in issues:
+        sev = issue.get("severity", "")
+        if sev in counts:
+            counts[sev] += 1
+    return counts
+
+
 def build_dropped_details(
     dropped_txs: list[dict],
     dedupe_drops: list[dict],
@@ -387,6 +402,7 @@ def build_report(
     ml_rows_count: int,
     llm_contexts_count: int,
     by_severity: dict[str, int],
+    by_severity_issues: dict[str, int],
     stage_log: list[dict],
     run_flags: list[dict],
     issues: list[dict],
@@ -440,7 +456,7 @@ def build_report(
         run_section["input_fingerprint"] = input_fingerprint
 
     report: dict = {
-        "report_schema_version": "1.3.0",
+        "report_schema_version": "1.4.0",
         "run": run_section,
         "outcome": {
             "status": outcome,
@@ -457,6 +473,7 @@ def build_report(
             },
             "by_stage": stage_log,
             "by_severity": by_severity,
+            "by_severity_issues": by_severity_issues,
         },
         "run_flags": run_flags,
         "issues": issues,

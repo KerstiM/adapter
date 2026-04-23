@@ -278,6 +278,23 @@ class TestStructuralOutputIntegrity:
         for level in ("CRITICAL", "ERROR", "WARN", "INFO"):
             assert level in by_sev, f"by_severity missing '{level}'"
 
+    def test_report_has_by_severity_issues(self, result: tuple[dict, FakeOutputPort]) -> None:
+        """Raport peab sisaldama issues[]-põhist tõsiduse jaotust by_severity_issues."""
+        _, out = result
+        by_sev_issues = out.report["summary"]["by_severity_issues"]
+        for level in ("CRITICAL", "ERROR", "WARN", "INFO"):
+            assert level in by_sev_issues, f"by_severity_issues missing '{level}'"
+
+    def test_by_severity_issues_matches_issues_array(self, result: tuple[dict, FakeOutputPort]) -> None:
+        """by_severity_issues peab kattuma issues[] massiivi severity-jaotusega."""
+        _, out = result
+        issues = out.report["issues"]
+        bsi = out.report["summary"]["by_severity_issues"]
+        for sev in ("CRITICAL", "ERROR", "WARN", "INFO"):
+            expected = sum(1 for i in issues if i.get("severity") == sev)
+            assert bsi[sev] == expected, f"by_severity_issues[{sev}] = {bsi[sev]}, expected {expected}"
+        assert sum(bsi.values()) == len(issues), "by_severity_issues summa ei kattu len(issues)-ga"
+
     def test_report_has_issues_list(self, result: tuple[dict, FakeOutputPort]) -> None:
         """Raportil peab olema issues[] nimekiri (võib olla tühi)."""
         _, out = result
