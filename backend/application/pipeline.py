@@ -19,14 +19,9 @@ from __future__ import annotations
 
 from typing import Any
 
+from application.projection_registry import PROJECTION_REGISTRY
 from domain.mapping.c01_raw_to_sv import (
     build_sv_bundle as _build_sv_bundle,
-)
-from domain.projections.c02_sv_to_ml import project_ml as _project_ml
-from domain.projections.c03_sv_to_llm import project_llm as _project_llm
-from domain.projections.c05_sv_to_stats import project_stats as _project_stats
-from domain.projections.c06_sv_to_monthly_balance import (
-    project_monthly_balance as _project_monthly_balance,
 )
 from domain.projections.model_formatters import format_for_model as _format_for_model
 from domain.report.ops import (
@@ -56,15 +51,6 @@ from ports.validation_port import ValidationPort
 def _is_download_only(data: dict) -> bool:
     """Check if a transaction response is download-only (C-01 rule)."""
     return bool((data.get("_links") or {}).get("download", {}).get("href"))
-
-
-# ---------------------------------------------------------------------------
-# Extra-projection dispatch: name -> (pure function, contract key)
-# ---------------------------------------------------------------------------
-_EXTRA_PROJECTION_DISPATCH: dict[str, tuple[Any, str]] = {
-    "stats": (_project_stats, "C-05"),
-    "monthly_balance": (_project_monthly_balance, "C-06"),
-}
 
 
 # ---------------------------------------------------------------------------
@@ -381,65 +367,56 @@ def run_pipeline(
     }
 
     # ================================================================
-    # Stage 5: PROJECT_ML — ML projection (C-02)
+    # Stages 5-6 + report_extensions + extra_projections:
+    # Unified projection dispatch — one loop over profile["projections"].
+    #
+    # Each registered projection runs once.  Kind "ml" / "llm" get their
+    # result stored under _projection_outputs for Stage 7 formatting and
+    # Stage 8 writing via dedicated OutputPort methods.  Kind "generic"
+    # gets schema-validated, written as a standalone file, and recorded
+    # in the audit trail.  Any projection whose name also appears in
+    # profile["report_extensions"] is embedded in report.json["extensions"].
     # ================================================================
-    ml_rows = _project_ml(sv_bundle)
-
-    stage_log["PROJECT_ML"] = {
-        "status": "OK",
-        "errors": 0,
-        "warnings": 0,
-    }
-
-    # ================================================================
-    # Stage 6: PROJECT_LLM — LLM context projection (C-03)
-    # ================================================================
-    llm_contexts = _project_llm(sv_bundle, profile)
-
-    stage_log["PROJECT_LLM"] = {
-        "status": "OK",
-        "errors": 0,
-        "warnings": 0,
-    }
-
-    # ----------------------------------------------------------------
-    # Opt-in report extensions — additive, gated by profile
-    # ----------------------------------------------------------------
-    # Profile-level extension hook: each entry in ``profile["report_extensions"]``
-    # contributes a named section to the final ``report.json`` under
-    # ``"extensions"``. Absent or empty list → byte-identical default behaviour.
-    report_extensions_out: dict[str, Any] = {}
-    _projection_cache: dict[str, Any] = {}
-    for _ext_name in profile.get("report_extensions", []):
-        if _ext_name == "monthly_balance":
-            _projection_cache["monthly_balance"] = _project_monthly_balance(sv_bundle)
-            report_extensions_out["monthly_balance"] = _projection_cache["monthly_balance"]
-
-    # ----------------------------------------------------------------
-    # Opt-in extra projections — profile-gated, contract-linked,
-    # schema-validated, written as standalone output artefacts
-    # ----------------------------------------------------------------
+    _projection_outputs: dict[str, Any] = {}
     extra_projections_audit: list[dict] = []
-    for _proj_name in profile.get("extra_projections", []):
-        _dispatch = _EXTRA_PROJECTION_DISPATCH.get(_proj_name)
-        if _dispatch is None:
-            continue
-        _proj_fn, _contract_key = _dispatch
+    projection_names = list(profile.get("projections", ["ml", "llm"]))
+    report_extension_names = list(profile.get("report_extensions", []))
 
-        # Read contract for output path and schema reference
-        _contract = profile.get("contracts", {}).get(_contract_key, {})
+    # Compute every projection needed for writing, audit, or report embedding.
+    # Report-extension-only projections are computed once and cached so they
+    # can be embedded without triggering the generic write + audit path.
+    _names_to_compute: list[str] = []
+    for _name in projection_names + report_extension_names:
+        if _name not in _names_to_compute:
+            _names_to_compute.append(_name)
+
+    for _proj_name in _names_to_compute:
+        _spec = PROJECTION_REGISTRY.get(_proj_name)
+        if _spec is None:
+            continue
+        _proj_args = (sv_bundle, profile) if _spec.needs_profile else (sv_bundle,)
+        _projection_outputs[_proj_name] = _spec.fn(*_proj_args)
+
+    # Write + audit only for projections explicitly listed in `projections`.
+    for _proj_name in projection_names:
+        _spec = PROJECTION_REGISTRY.get(_proj_name)
+        if _spec is None or _proj_name not in _projection_outputs:
+            continue
+        _proj_data = _projection_outputs[_proj_name]
+
+        if _spec.kind == "ml":
+            stage_log["PROJECT_ML"] = {"status": "OK", "errors": 0, "warnings": 0}
+            continue
+        if _spec.kind == "llm":
+            stage_log["PROJECT_LLM"] = {"status": "OK", "errors": 0, "warnings": 0}
+            continue
+
+        _contract = profile.get("contracts", {}).get(_spec.contract_key, {})
         _output_cfg = _contract.get("output") or {}
         _schema_key = _output_cfg.get("schema")
         _output_file = _output_cfg.get("file", f"projections/{_proj_name}_v1.json")
         _output_filename = _output_file.rsplit("/", 1)[-1]
 
-        # Run projection (reuse cached result if already computed for report_extensions)
-        if _proj_name in _projection_cache:
-            _proj_data = _projection_cache[_proj_name]
-        else:
-            _proj_data = _proj_fn(sv_bundle)
-
-        # Runtime schema validation
         _validation_result = "PASS"
         if _schema_key and _schema_key in profile.get("schemas", {}):
             _val_errors = validator.validate(_proj_data, profile["schemas"][_schema_key])
@@ -459,14 +436,12 @@ def run_pipeline(
                     },
                 })
 
-        # Write standalone output artefact
         out.write_extra_projection(_proj_data, _output_filename)
 
-        # Audit trail entry
         extra_projections_audit.append({
             "name": _proj_name,
             "enabled": True,
-            "contract_id": _contract.get("id", _contract_key),
+            "contract_id": _contract.get("id", _spec.contract_key),
             "contract_version": _contract.get("version", "unknown"),
             "schema_id": _schema_key,
             "output_file": f"projections/{_output_filename}",
@@ -474,41 +449,65 @@ def run_pipeline(
             "validation_result": _validation_result,
         })
 
+    # Ensure stage_log has entries for PROJECT_ML / PROJECT_LLM even when
+    # the corresponding projection is absent from profile["projections"].
+    stage_log.setdefault("PROJECT_ML", {"status": "OK", "errors": 0, "warnings": 0})
+    stage_log.setdefault("PROJECT_LLM", {"status": "OK", "errors": 0, "warnings": 0})
+
+    # report_extensions — embed cached projection outputs in report.json.
+    # Absent or empty list → byte-identical default behaviour.
+    report_extensions_out: dict[str, Any] = {
+        _ext_name: _projection_outputs[_ext_name]
+        for _ext_name in report_extension_names
+        if _ext_name in _projection_outputs
+    }
+
+    # Aggregate counts by spec.kind for downstream reporting/metrics
+    # (report schema still exposes scalar ml_rows_count / llm_contexts_count
+    # fields, but the numbers come from kind-based iteration rather than
+    # name lookup).
+    _counts_by_kind: dict[str, int] = {}
+    for _proj_name, _proj_data in _projection_outputs.items():
+        _spec = PROJECTION_REGISTRY.get(_proj_name)
+        if _spec is None:
+            continue
+        _counts_by_kind[_spec.kind] = _counts_by_kind.get(_spec.kind, 0) + len(_proj_data)
+    ml_rows_count = _counts_by_kind.get("ml", 0)
+    llm_contexts_count = _counts_by_kind.get("llm", 0)
+
     # ================================================================
     # Stage 7: FORMAT_FOR_MODEL — model-specific formatting (C-04)
+    # Dispatch by ``spec.kind`` so any projection of a given kind gets the
+    # matching model-formatter treatment without hard-coding its name.
     # ================================================================
     target_models = profile.get("target_models", {})
     if target_models_override:
         target_models = {**target_models, **target_models_override}
-    model_ml_outputs: dict[str, dict] = {}
-    model_llm_outputs: dict[str, list[dict]] = {}
+    model_outputs_by_kind: dict[str, dict[str, Any]] = {}
 
     c04 = profile.get("contracts", {}).get("C-04", {})
     llm_preamble = target_models.get("llm_preamble", "")
 
-    for ml_model_id in target_models.get("ml", []):
-        ml_model_config = c04.get("ml_models", {}).get(ml_model_id)
-        if ml_model_config:
-            result = _format_for_model(
-                ml_rows, sv_bundle, ml_model_id, ml_model_config, "ml",
+    for _proj_name, _proj_data in _projection_outputs.items():
+        _spec = PROJECTION_REGISTRY.get(_proj_name)
+        if _spec is None or _spec.kind not in ("ml", "llm"):
+            continue
+        _models_configs = c04.get(f"{_spec.kind}_models", {})
+        _format_kwargs = {"preamble": llm_preamble} if _spec.kind == "llm" else {}
+        for _model_id in target_models.get(_spec.kind, []):
+            _model_config = _models_configs.get(_model_id)
+            if not _model_config:
+                continue
+            _result = _format_for_model(
+                _proj_data, sv_bundle, _model_id, _model_config, _spec.kind,
+                **_format_kwargs,
             )
-            suffix = ml_model_config.get("output_suffix", ml_model_id)
-            model_ml_outputs[suffix] = result
+            _suffix = _model_config.get("output_suffix", _model_id)
+            model_outputs_by_kind.setdefault(_spec.kind, {})[_suffix] = _result
 
-    for llm_model_id in target_models.get("llm", []):
-        llm_model_config = c04.get("llm_models", {}).get(llm_model_id)
-        if llm_model_config:
-            result = _format_for_model(
-                llm_contexts, sv_bundle, llm_model_id, llm_model_config, "llm",
-                preamble=llm_preamble,
-            )
-            suffix = llm_model_config.get("output_suffix", llm_model_id)
-            model_llm_outputs[suffix] = result
-
-    fmt_errors = 0
     stage_log["FORMAT_FOR_MODEL"] = {
         "status": "OK",
-        "errors": fmt_errors,
+        "errors": 0,
         "warnings": 0,
     }
 
@@ -534,15 +533,23 @@ def run_pipeline(
     }
 
     out.write_sv(sv_bundle)
-    out.write_ml(ml_rows)
 
-    llm_output = llm_contexts[0] if len(llm_contexts) == 1 else llm_contexts
-    out.write_llm(llm_output)
+    # Dispatch writes by spec.kind — no hard-coded projection name lookups.
+    for _proj_name, _proj_data in _projection_outputs.items():
+        _spec = PROJECTION_REGISTRY.get(_proj_name)
+        if _spec is None:
+            continue
+        if _spec.kind == "ml":
+            out.write_ml(_proj_data)
+        elif _spec.kind == "llm":
+            _llm_output = _proj_data[0] if len(_proj_data) == 1 else _proj_data
+            out.write_llm(_llm_output)
+        # generic kinds are already persisted in the unified dispatch loop.
 
-    for suffix, ml_model_data in model_ml_outputs.items():
+    for suffix, ml_model_data in model_outputs_by_kind.get("ml", {}).items():
         out.write_ml_model(ml_model_data, suffix)
 
-    for suffix, llm_model_data in model_llm_outputs.items():
+    for suffix, llm_model_data in model_outputs_by_kind.get("llm", {}).items():
         out.write_llm_model(llm_model_data, suffix)
 
     # Count flag severities across all transactions for report
@@ -601,7 +608,7 @@ def run_pipeline(
         passed_validation_total=len(deduped_txs),
         dropped_total=total_dropped,
         dropped_details_count=len(all_dropped_details),
-        ml_rows_count=len(ml_rows),
+        ml_rows_count=ml_rows_count,
         invariant_checked_total=invariant_checked_total,
         invariant_correct_total=invariant_correct_total,
         critical_invariant_violations_total=critical_invariant_violations_total,
@@ -658,8 +665,8 @@ def run_pipeline(
         transactions_total=total_raw,
         transactions_emitted_sv=len(deduped_txs),
         transactions_dropped=total_dropped,
-        ml_rows_count=len(ml_rows),
-        llm_contexts_count=len(llm_contexts),
+        ml_rows_count=ml_rows_count,
+        llm_contexts_count=llm_contexts_count,
         by_severity=by_severity,
         stage_log=stage_log_array,
         run_flags=run_flags,
@@ -684,8 +691,8 @@ def run_pipeline(
             "transactions_total": total_raw,
             "transactions_emitted_sv": len(deduped_txs),
             "transactions_dropped": total_dropped,
-            "ml_rows": len(ml_rows),
-            "llm_contexts": len(llm_contexts),
+            "ml_rows": ml_rows_count,
+            "llm_contexts": llm_contexts_count,
         },
         "by_severity": by_severity,
         "run_flags": run_flags,

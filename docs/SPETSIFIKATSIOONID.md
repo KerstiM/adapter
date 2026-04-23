@@ -26,8 +26,8 @@ Adapteri käitumine on määratud versioonitud spetsifikatsioonifailidega. Pära
 | C-02 | `C-02_sv_to_ml.yaml` | SV → ML CSV: veerud, filtrid, sortimine, tuletised. |
 | C-03 | `C-03_sv_to_llm.yaml` | SV → LLM kontekst: aknastamine (nt last-N), truncation, sortimine. |
 | C-04 | `C-04_model_formatters.yaml` | Mudelispetsiifilised formaatijad. LLM: promptimallid (Llama 3, Mistral, ChatML/Qwen). ML: kodeeringud (XGBoost label-encoding, CatBoost native). Pipeline etapp 7 (`FORMAT_FOR_MODEL`) kasutab seda lepingut. |
-| C-05 | `C-05_sv_to_stats.yaml` | SV → statistika: kontode ja tehingute kokkuvõtted. Kasutatakse ainult `extensions_eval` profiili `extra_projections` kaudu. |
-| C-06 | `C-06_sv_to_monthly_balance.yaml` | SV → kuubilanss: igakuised saldod kontode kaupa. Kasutatakse ainult `extensions_eval` profiili `extra_projections` kaudu. |
+| C-05 | `C-05_sv_to_stats.yaml` | SV → statistika: kontode ja tehingute kokkuvõtted. Aktiveeritakse `projections` loetelu kaudu (nt `extensions_eval` profiil). |
+| C-06 | `C-06_sv_to_monthly_balance.yaml` | SV → kuubilanss: igakuised saldod kontode kaupa. Aktiveeritakse `projections` loetelu kaudu (nt `extensions_eval` profiil). |
 
 ## Reeglistikud (`spec/rulesets/`) — invariandid
 
@@ -40,5 +40,5 @@ Adapteri käitumine on määratud versioonitud spetsifikatsioonifailidega. Pära
 
 | Fail | Kirjeldus |
 |------|-----------|
-| `default.yaml` | Baasprofiil: seob skeemid (S-00A..S-05), lepingud (C-01..C-04) ja reeglistiku (R-01). Määrab `partial_success_policy` (FAIL tingimused: ERROR ratio > 5%). Lisaprojektsioone ei luba. |
-| `extensions_eval.yaml` | Laiendatud profiil: lisab baasprofiilile skeemid S-06 ja S-07, lepingud C-05 ja C-06 ning lubab `extra_projections` (stats, monthly_balance). Kasutatakse lisaprojektsioonide hindamiseks (`--profile extensions_eval`). |
+| `default.yaml` | Baasprofiil: seob skeemid (S-00A..S-05), lepingud (C-01..C-04) ja reeglistiku (R-01). Määrab `projections: [ml, llm]` ja `partial_success_policy` (FAIL tingimused: ERROR ratio > 5%). |
+| `extensions_eval.yaml` | Laiendatud profiil: lisab skeemid S-06/S-07, lepingud C-05/C-06 ja `projections: [ml, llm, stats, monthly_balance]`. Kasutatakse laiendatud projektsioonide hindamiseks (`--profile extensions_eval`). |

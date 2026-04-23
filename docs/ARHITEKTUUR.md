@@ -183,8 +183,8 @@ Mudelispetsiifilised artefaktid (tekivad ainult siis, kui CLI, API või profiil 
 
 - `projections/ml_xgboost.csv` / `ml_catboost.csv` — ML mudeli-kodeeritud projektsioonid
 - `projections/llm_llama3.txt` / `llm_mistral.txt` / `llm_qwen.txt` / `llm_gemma.txt` — LLM promptimallid
-- `projections/stats_v1.json` — statistika (kui profiil lubab C-05 `extra_projections` kaudu)
-- `projections/monthly_balance_v1.json` — kuubilanss (kui profiil lubab C-06 `extra_projections` kaudu)
+- `projections/stats_v1.json` — statistika (kui profiil lisab C-05 `projections` loetellu)
+- `projections/monthly_balance_v1.json` — kuubilanss (kui profiil lisab C-06 `projections` loetellu)
 
 ---
 
@@ -208,7 +208,9 @@ Raport ei ole "kõrvalprodukt", vaid **põhiartefakt**, mille põhjal tehakse ou
 
 ## Laiendatavus (UK3)
 
-Arhitektuur on kavandatud nii, et uusi projektsioone, formaatijaid ja sisendiallikaid saab lisada olemasolevat koodi muutmata (Open/Closed printsiip). Seda tõestavad viis laiendatavuse tõendit neljal arhitektuuritasandil, mis on testitega kaetud (`tests/unit/test_scalability.py`):
+Arhitektuur on kavandatud nii, et uusi projektsioone, formaatijaid ja sisendiallikaid saab lisada olemasolevat koodi muutmata (Open/Closed printsiip). Seda tõestavad kuus laiendatavuse tõendit neljal arhitektuuritasandil, mis on testitega kaetud (`tests/unit/test_scalability.py`).
+
+**Ühtne projektsiooniregister.** Kõik projektsioonid (C-02 ML, C-03 LLM, C-05 statistika, C-06 kuubilanss) on registreeritud ühtses `PROJECTION_REGISTRY`-s (`backend/application/projection_registry.py`). Pipeline käivitab need ühe dispatch-tsükliga, mis loeb profiili `projections` loetelu. Nimetusi `"põhi-"` vs `"extra-"` projektsioone ei eksisteeri — kõik on võrdsed kodanikud sama mehhanismi all. Uue projektsiooni lisamine on **lokaalne muudatus**: üks puhas funktsioon + üks kirje registrisse + üks nimi profiili faili.
 
 ### Tõend 1 — Projektsiooni laiendatavus (C-05 statistika)
 
@@ -229,7 +231,7 @@ Testis defineeritud `SimpleDictDatasetPort` implementatsioon (struktuuriliselt e
 
 ### Tõend 4 — Projektsiooni laiendatavus, struktuuriliselt uudne kuju (C-06 kuubilanss)
 
-C-06 (kuubilanss) toodab ajaseeria-kujulise cashflow projektsiooni — kuju, mis on struktuuriliselt erinev C-02 (lame), C-03 (kontekstiaken) ja C-05 (lamedad agregaadid) omast. Tõestab, et SV vahekiht toetab ka ajalis-akumulatiivset projektsiooni ilma pipeline'i muutmata. Aktiveeritakse profiili kaudu (`extra_projections: [stats, monthly_balance]`).
+C-06 (kuubilanss) toodab ajaseeria-kujulise cashflow projektsiooni — kuju, mis on struktuuriliselt erinev C-02 (lame), C-03 (kontekstiaken) ja C-05 (lamedad agregaadid) omast. Tõestab, et SV vahekiht toetab ka ajalis-akumulatiivset projektsiooni ilma pipeline'i muutmata. Aktiveeritakse profiili kaudu (`projections: [ml, llm, stats, monthly_balance]`).
 
 ### Tõend 5 — Sisendiformaadi laiendatavus (D7 standing orders)
 
@@ -241,6 +243,10 @@ Pipeline käsitleb uut finantsinstrumendi tüüpi (püsikorraldused) ilma pipeli
 - valueDate fallback nextExecutionDate'ist
 
 Pipeline'i orkestreerimiskoodi (`application/pipeline.py`), olemasolevaid projektsioone ega adaptereid ei muudetud. INFORMATION tehingud läbivad SV standardiseerimise, aga jäetakse korrektselt välja ML ja LLM projektsioonidest.
+
+### Tõend 6 — Ühtne dispatch, uue projektsiooni lokaalne lisamine
+
+Fiktiivne uus projektsioon registreeritakse dünaamiliselt `PROJECTION_REGISTRY`-sse ja aktiveeritakse profiili `projections` loetelu kaudu. Pipeline käivitab selle automaatselt ilma ühegi koodimuudatuseta. `TestUnifiedDispatchExtensibility` klassi testid kontrollivad muuhulgas, et pipeline.py ei sisalda konkreetseid projektsiooninimesid — kõik nimed elavad registris, mitte koodis. See kaotab varasema eristuse "põhi-" (C-02/C-03) vs "extra-" (C-05/C-06) projektsioonide vahel.
 
 ---
 
