@@ -2,8 +2,8 @@
  * Adapter pipeline API service.
  *
  * All data comes from the real backend — zero mock data.
- * Backend: python -m entrypoints.api (stdlib http.server, port 5000)
- * Vite proxy forwards /api → http://localhost:5000
+ * Backend: python -m entrypoints.api (stdlib http.server, port 8000)
+ * Vite proxy forwards /api → http://localhost:8000
  */
 
 const DATASETS = [
