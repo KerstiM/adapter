@@ -3,14 +3,14 @@
 Usage::
 
     cd backend
-    python -m entrypoints.api          # http://127.0.0.1:5000
+    python -m entrypoints.api          # http://127.0.0.1:8000
 
 Environment variables:
     ADAPTER_HTTP_HOST   bind address (default: 127.0.0.1; set to 0.0.0.0
                         only when you understand the consequences — the API
                         returns per-transaction data including, for the
                         D10/D11 datasets, real bank-statement content).
-    ADAPTER_HTTP_PORT   bind port (default: 5000).
+    ADAPTER_HTTP_PORT   bind port (default: 8000).
     ADAPTER_CORS_ORIGINS comma-separated allowlist of allowed Origin headers
                         (default: http://localhost:5173,http://127.0.0.1:5173).
 """
@@ -283,7 +283,31 @@ class Handler(BaseHTTPRequestHandler):
                     data_dir, OUTPUT_DIR, spec_dir=SPEC_DIR,
                     target_models_override=target_models_override,
                 )
-            except Exception as exc:
+            except (KeyError, FileNotFoundError):
+                elapsed_ms = round((time.perf_counter() - t0) * 1000)
+                traceback.print_exc()
+                self._json_response({
+                    "error": "Required specification or dataset artefact not found",
+                    "elapsed_ms": elapsed_ms,
+                }, 404)
+                return
+            except ValueError:
+                elapsed_ms = round((time.perf_counter() - t0) * 1000)
+                traceback.print_exc()
+                self._json_response({
+                    "error": "Invalid pipeline input or configuration",
+                    "elapsed_ms": elapsed_ms,
+                }, 400)
+                return
+            except RuntimeError:
+                elapsed_ms = round((time.perf_counter() - t0) * 1000)
+                traceback.print_exc()
+                self._json_response({
+                    "error": "Internal pipeline state error",
+                    "elapsed_ms": elapsed_ms,
+                }, 500)
+                return
+            except Exception:
                 elapsed_ms = round((time.perf_counter() - t0) * 1000)
                 traceback.print_exc()
                 self._json_response({
@@ -321,7 +345,7 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     host = os.environ.get("ADAPTER_HTTP_HOST", "127.0.0.1")
-    port = int(os.environ.get("ADAPTER_HTTP_PORT", "5000"))
+    port = int(os.environ.get("ADAPTER_HTTP_PORT", "8000"))
     server = HTTPServer((host, port), Handler)
     print(f"API server running on http://{host}:{port}")
     server.serve_forever()
