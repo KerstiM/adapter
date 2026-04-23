@@ -6,7 +6,7 @@ requirement_id,spec_id,spec_type,relation,notes
 Ä1,C-02,contract,NORMATIVE,spec/contracts/C-02_sv_to_ml.yaml v1.0.0
 Ä1,C-03,contract,NORMATIVE,spec/contracts/C-03_sv_to_llm.yaml v1.0.0
 Ä2,PROFILE-DEFAULT,profile,PROFILE_BINDS,spec/profiles/default.yaml v1.0.0 (vaikeprofiil; no-egress käitus)
-Ä3,S-05,schema,REPORT_CONTRACT,spec/schemas/S-05_collected_report_schema.json (praegune versioon frozen v1.1.0 lock'is: 1.3.0)
+Ä3,S-05,schema,REPORT_CONTRACT,spec/schemas/S-05_collected_report_schema.json (live versioon: 1.4.0 — lisab summary.by_severity_issues; frozen v1.1.0 lock'is: 1.3.0)
 Ä3,LOCK,lock,PINS_VERSIONS,frozen/v1.0.0/spec.lock.json ja frozen/v1.1.0/spec.lock.json
 Ä3,GOLDEN-MANIFEST,manifest,PINS_VERSIONS,frozen/v1.0.0/manifest.json ja frozen/v1.1.0/manifest.json
 F1,C-01,contract,NORMATIVE,spec/contracts/C-01_berlin_to_sv.yaml (RAW -> SV kaardistus)

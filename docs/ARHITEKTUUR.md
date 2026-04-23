@@ -97,7 +97,10 @@ Raport eristab kolme tüüpi infot:
 - **run_flags**: jooksupõhised markerid (nt "kasutati fallback'i", "download-only tuvastus"), severity'ga.
 - **dropped_details**: selgitus, miks konkreetne sisendkirje ära jäeti (drop_reason + allikas).
 
-Lisaks on raportis **mõõdikud/kokkuvõte** (counts, by_severity, stage_log) ja CLI-s kuvatakse ka **stop_reason**.
+Lisaks on raportis **mõõdikud/kokkuvõte** (counts, by_severity, by_severity_issues, stage_log) ja CLI-s kuvatakse ka **stop_reason**.
+
+- **by_severity**: ainult tehingutele kleebitud `flags`-väljade severity-jaotus (tx-flagide loendur).
+- **by_severity_issues**: kogu `issues[]` massiivi severity-jaotus — hõlmab ka READ_INPUT, mapping-drop'e ja VALIDATE_SCHEMA issue'eid, mis pole ühegi tehingu külge kleebitud. Summa kattub `len(issues)`-ga ja on CLI-s kuvatav inimloetav indikaator.
 
 ---
 
@@ -131,7 +134,7 @@ backend/
             ml_encoders.py           #     XGBoost label-encoding, CatBoost native
         rules/invariants_r01.py      #   invariandid + dedupe (R-01)
         report/models.py             #   Issue, RunFlag, CollectedRunReport
-        report/ops.py                #   outcome, counts, by_severity
+        report/ops.py                #   outcome, counts, by_severity, by_severity_issues
 
     ports/                           # abstraktsed liidesed (ei I/O, ei Path)
         dataset_port.py              #   sisendi lugemine

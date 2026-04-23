@@ -133,9 +133,9 @@ def main() -> None:
     print(f"  ML rows:      {counts['ml_rows']}")
     print(f"  LLM contexts: {counts['llm_contexts']}")
 
-    sev = summary.get("by_severity", {})
-    if any(v > 0 for v in sev.values()):
-        print(f"  by_severity:  {sev}")
+    sev_issues = summary.get("by_severity_issues", {})
+    if any(v > 0 for v in sev_issues.values()):
+        print(f"  by_severity_issues:  {sev_issues}")
 
     if summary.get("dropped_details"):
         print(f"  dropped_details:")

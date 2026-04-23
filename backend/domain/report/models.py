@@ -100,6 +100,7 @@ class Summary(TypedDict):
     counts: SummaryCounts
     by_stage: list[StageCounts]
     by_severity: SeverityCounts
+    by_severity_issues: SeverityCounts
 
 
 class SLI1Metrics(TypedDict):

@@ -344,6 +344,21 @@ class TestHappyPathPipeline:
 
         assert report["summary"]["by_severity"]["CRITICAL"] == 0
 
+    def test_report_by_severity_issues_matches_issues_array(self, d1_output: tuple) -> None:
+        """by_severity_issues peab kattuma issues[] tõsiduse jaotusega — üks
+        inimloetav indikaator, mis vastab CLI-s prinditavale `issues:` loendile.
+        """
+        _, run_folder = d1_output
+        with open(run_folder / "report.json", encoding="utf-8") as f:
+            report = json.load(f)
+
+        issues = report["issues"]
+        bsi = report["summary"]["by_severity_issues"]
+        for sev in ("CRITICAL", "ERROR", "WARN", "INFO"):
+            expected = sum(1 for i in issues if i.get("severity") == sev)
+            assert bsi[sev] == expected
+        assert sum(bsi.values()) == len(issues)
+
     # --- ML projection tests ---
 
     def test_ml_csv_exists(self, d1_output: tuple) -> None:
@@ -733,6 +748,25 @@ class TestD4FailGate:
         summary, _ = d4_output
         counts = summary["counts"]
         assert counts["transactions_total"] == counts["transactions_emitted_sv"] + counts["transactions_dropped"]
+
+    def test_d4_by_severity_issues_covers_all_pipeline_errors(self, d4_output: tuple) -> None:
+        """by_severity_issues peab katma KÕIK issues[]-i (mitte ainult tx-flage).
+
+        D4 toodab 6 issue't: 1×S-00B (READ_INPUT, ERROR) + 2×C-01 (mapping drop,
+        WARN) + 1×S-01 (VALIDATE_SCHEMA, ERROR) + 2×INV-01 (CHECK_INVARIANTS,
+        ERROR). Vana by_severity näeb ainult viimaseid kahte.
+        """
+        summary, run_folder = d4_output
+        with open(run_folder / "report.json", encoding="utf-8") as f:
+            report = json.load(f)
+
+        bsi = report["summary"]["by_severity_issues"]
+        assert bsi == {"CRITICAL": 0, "ERROR": 4, "WARN": 2, "INFO": 0}
+        assert summary["by_severity_issues"] == bsi
+
+        # Vana by_severity jääb puutumata (tx-flagide loendur)
+        assert report["summary"]["by_severity"]["ERROR"] == 2
+        assert report["summary"]["by_severity"]["WARN"] == 0
 
 
 # ---------------------------------------------------------------------------
