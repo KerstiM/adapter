@@ -17,6 +17,8 @@ from __future__ import annotations
 from collections import defaultdict
 from decimal import Decimal
 
+from domain.projections._shared import iter_projectable
+
 
 def project_monthly_balance(sv_bundle: dict) -> list[dict]:
     """Project SV -> per-account monthly cashflow timeline (C-06).
@@ -44,10 +46,7 @@ def project_monthly_balance(sv_bundle: dict) -> list[dict]:
         lambda: defaultdict(_empty_bucket),
     )
 
-    for tx in sv_bundle.get("transactions", []):
-        if tx["status"] not in ("BOOKED", "PENDING"):
-            continue
-
+    for tx in iter_projectable(sv_bundle):
         account_id = tx["account_id"]
         month = tx["value_date"][:7]
         signed = Decimal(tx["amount"]["signed"])
