@@ -11,38 +11,10 @@ Returns a list of dicts, one per account, each containing the formatted prompt.
 """
 from __future__ import annotations
 
-from domain.projections.model_formatters._common import context_to_json
-
-
-# Chat-template control tokens that must never appear inside an untrusted
-# preamble — otherwise an attacker could close the system turn and inject
-# their own user/assistant messages.
-_CONTROL_TOKENS: dict[str, tuple[str, ...]] = {
-    "llama3": (
-        "<|begin_of_text|>",
-        "<|end_of_text|>",
-        "<|eot_id|>",
-        "<|start_header_id|>",
-        "<|end_header_id|>",
-    ),
-    "mistral": ("<s>", "</s>", "[INST]", "[/INST]"),
-    "chatml": ("<|im_start|>", "<|im_end|>", "<|endoftext|>"),
-}
-
-
-def _strip_chat_control_tokens(text: str, family: str) -> str:
-    """Remove model-family-specific chat control tokens from *text*.
-
-    The preamble is sourced from the profile or the HTTP API, both of which
-    can be untrusted in a multi-tenant setup. Stripping the control tokens
-    here keeps the chat structure under our control.
-    """
-    if not text:
-        return text
-    out = text
-    for token in _CONTROL_TOKENS.get(family, ()):
-        out = out.replace(token, "")
-    return out
+from domain.projections.model_formatters._common import (
+    context_to_json,
+    strip_chat_control_tokens as _strip_chat_control_tokens,
+)
 
 
 def format_llama3(

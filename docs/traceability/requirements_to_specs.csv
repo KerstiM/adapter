@@ -1,0 +1,50 @@
+requirement_id,spec_id,spec_type,relation,notes
+Ä1,S-01,schema,VALIDATES_OUTPUT,spec/schemas/S-01_sv_schema.json v1.0.0 (SV andmeleping)
+Ä1,S-02,schema,VALIDATES_OUTPUT,spec/schemas/S-02_ml_projection_schema.json v1.0.0
+Ä1,S-03,schema,VALIDATES_OUTPUT,spec/schemas/S-03_llm_context_schema.json v1.0.0
+Ä1,C-01,contract,NORMATIVE,spec/contracts/C-01_berlin_to_sv.yaml v1.0.0
+Ä1,C-02,contract,NORMATIVE,spec/contracts/C-02_sv_to_ml.yaml v1.0.0
+Ä1,C-03,contract,NORMATIVE,spec/contracts/C-03_sv_to_llm.yaml v1.0.0
+Ä2,PROFILE-DEFAULT,profile,PROFILE_BINDS,spec/profiles/default.yaml v1.0.0 (vaikeprofiil; no-egress käitus)
+Ä3,S-05,schema,REPORT_CONTRACT,spec/schemas/S-05_collected_report_schema.json (praegune versioon frozen v1.1.0 lock'is: 1.3.0)
+Ä3,LOCK,lock,PINS_VERSIONS,frozen/v1.0.0/spec.lock.json ja frozen/v1.1.0/spec.lock.json
+Ä3,GOLDEN-MANIFEST,manifest,PINS_VERSIONS,frozen/v1.0.0/manifest.json ja frozen/v1.1.0/manifest.json
+F1,C-01,contract,NORMATIVE,spec/contracts/C-01_berlin_to_sv.yaml (RAW -> SV kaardistus)
+F1,S-01,schema,VALIDATES_OUTPUT,spec/schemas/S-01_sv_schema.json (SV kuju)
+F1,S-00A,schema,VALIDATES_INPUT,spec/schemas/S-00A_berlin_accounts.schema.json
+F1,S-00B,schema,VALIDATES_INPUT,spec/schemas/S-00B_berlin_transactions.schema.json
+F1,C-02,contract,NORMATIVE,spec/contracts/C-02_sv_to_ml.yaml (SV -> ML)
+F1,S-02,schema,VALIDATES_OUTPUT,spec/schemas/S-02_ml_projection_schema.json
+F1,C-03,contract,NORMATIVE,spec/contracts/C-03_sv_to_llm.yaml (SV -> LLM)
+F1,S-03,schema,VALIDATES_OUTPUT,spec/schemas/S-03_llm_context_schema.json
+F1,C-04,contract,NORMATIVE,spec/contracts/C-04_model_formatters.yaml (FORMAT_FOR_MODEL etapp)
+F2,S-01,schema,NORMATIVE,spec/schemas/S-01_sv_schema.json (SV minimaalne ulatus)
+F2,C-01,contract,NORMATIVE,spec/contracts/C-01_berlin_to_sv.yaml (väljade kaardistus ja kohustuslikkus)
+F3,S-05,schema,REPORT_CONTRACT,spec/schemas/S-05_collected_report_schema.json (kogutud raport)
+F3,R-01,ruleset,DEFINES_RULES,spec/rulesets/R-01_sv_invariants.yaml (INV-01..INV-09; frozen lock näitab versiooni 1.1.0)
+F3,error_catalog,ruleset,DEFINES_RULES,spec/rulesets/error_catalog.yaml (normatiivne veakoodide kataloog)
+F3,QC_quality_checks,ruleset,DEFINES_RULES,spec/rulesets/QC_quality_checks.yaml (QC1 INFO; ei mõjuta staatust)
+F3,PROFILE-DEFAULT,profile,PROFILE_BINDS,spec/profiles/default.yaml (fail_on: ratio_over_records=0.05)
+F4,LOCK,lock,PINS_VERSIONS,frozen/v*/spec.lock.json (determinismi tõend)
+F4,GOLDEN-MANIFEST,manifest,PINS_VERSIONS,frozen/v*/manifest.json (SHA-256 golden)
+F5,R-01,ruleset,DEFINES_RULES,spec/rulesets/R-01_sv_invariants.yaml (DROP/FLAG; dropped_details)
+F5,S-05,schema,REPORT_CONTRACT,spec/schemas/S-05_collected_report_schema.json (dropped_details[] väli)
+F6,C-04,contract,NORMATIVE,spec/contracts/C-04_model_formatters.yaml (mudelispetsiifilised formaatijad)
+F6,C-05,contract,NORMATIVE,spec/contracts/C-05_sv_to_stats.yaml (extensions_eval)
+F6,C-06,contract,NORMATIVE,spec/contracts/C-06_sv_to_monthly_balance.yaml (extensions_eval)
+F6,S-06,schema,VALIDATES_OUTPUT,spec/schemas/S-06_stats_schema.json
+F6,S-07,schema,VALIDATES_OUTPUT,spec/schemas/S-07_monthly_balance_schema.json
+F6,PROFILE-EXTENSIONS_EVAL,profile,PROFILE_BINDS,spec/profiles/extensions_eval.yaml (extra_projections: stats;monthly_balance)
+MF1,-,-,NORMATIVE,TODO_VERIFY — MF1 ei ole otse seotud ühegi spec-ID-ga; tehnoloogia valik on dokumenteeritud backend/requirements.txt ja README-s
+MF2,PROFILE-DEFAULT,profile,PROFILE_BINDS,spec/profiles/default.yaml (no-egress: viited ainult lokaalsetele failidele)
+MF3,PROFILE-EXTENSIONS_EVAL,profile,PROFILE_BINDS,spec/profiles/extensions_eval.yaml (laienduste aktiveerimine ilma vaikeprofiili muutmata)
+MF3,C-05,contract,NORMATIVE,spec/contracts/C-05_sv_to_stats.yaml (uus projektsioon lokaalse muudatusena)
+MF3,C-06,contract,NORMATIVE,spec/contracts/C-06_sv_to_monthly_balance.yaml
+MF3,S-06,schema,VALIDATES_OUTPUT,spec/schemas/S-06_stats_schema.json
+MF3,S-07,schema,VALIDATES_OUTPUT,spec/schemas/S-07_monthly_balance_schema.json
+MF4,S-05,schema,REPORT_CONTRACT,spec/schemas/S-05_collected_report_schema.json (mõõdikute arvutamise alus)
+MF4,LOCK,lock,PINS_VERSIONS,frozen/v*/spec.lock.json
+MF5,LOCK,lock,PINS_VERSIONS,frozen/v1.0.0/spec.lock.json ja frozen/v1.1.0/spec.lock.json
+MF5,GOLDEN-MANIFEST,manifest,PINS_VERSIONS,frozen/v1.0.0/manifest.json ja frozen/v1.1.0/manifest.json
+MF5,PROFILE-DEFAULT,profile,PROFILE_BINDS,spec/profiles/default.yaml
+MF6,-,-,NORMATIVE,TODO_VERIFY — MF6 ei ole otse seotud ühegi spec-ID-ga; referentsjõudluse orientiir on kodeeritud test_sli_slo.py-sse (_SLI6_THRESHOLD_MS=500.0)
