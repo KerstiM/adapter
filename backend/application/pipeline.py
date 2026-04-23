@@ -512,6 +512,139 @@ def _stage_log_array(stage_log: dict[str, dict]) -> list[dict]:
     ]
 
 
+def _finalize_run(
+    ctx: _RunContext,
+    out: OutputPort,
+    *,
+    sv_bundle: dict,
+    ml_rows: list[dict],
+    llm_contexts: list[dict],
+    deduped_txs: list[dict],
+    dropped_txs: list[dict],
+    dedupe_drops: list[dict],
+    mapping_drops: list[dict],
+    invariant_checked_total: int,
+    total_raw: int,
+    report_extensions_out: dict[str, Any],
+    extra_projections_audit: list[dict],
+    dataset_id: str,
+    input_dir: str,
+) -> dict[str, Any]:
+    """Compute metrics + outcome, write ``report.json``, return caller summary.
+
+    Invoked once at the tail of :func:`run_pipeline` after all eight stages
+    have executed.  Does not mutate ``ctx`` beyond reading its accumulators.
+    """
+    all_dropped_for_severity = dropped_txs + dedupe_drops
+    by_severity = _count_flags_by_severity(deduped_txs, all_dropped_for_severity)
+    by_severity_issues = _count_issues_by_severity(ctx.issues)
+
+    total_dropped = len(dropped_txs) + len(mapping_drops) + len(dedupe_drops)
+    all_dropped_details = _build_dropped_details(dropped_txs, dedupe_drops, mapping_drops)
+
+    # SLI-3 invariant compliance counters:
+    #   invariant_correct_total = invariant_checked_total
+    #       − ERROR invariant drops (dropped_txs)
+    #       − INV-09 dedupe drops (dedupe_drops)
+    #       − kept records with WARN-level invariant flags (INV-04, INV-05).
+    critical_invariant_violations_total = len(dropped_txs)
+    warn_flagged_kept = sum(
+        1 for tx in deduped_txs
+        if any(
+            f["id"].startswith("INV-") and f.get("severity") == "WARN"
+            for f in tx.get("flags", [])
+        )
+    )
+    invariant_correct_total = (
+        invariant_checked_total
+        - len(dropped_txs)
+        - len(dedupe_drops)
+        - warn_flagged_kept
+    )
+
+    # Gate: same fail_severity / fail_ratio used by determine_outcome
+    run_policy = ctx.profile.get("run_policy", {}).get("partial_success_policy", {})
+    fail_on = run_policy.get("fail_on", {})
+    fail_severity = fail_on.get("any_severity", "ERROR")
+    fail_ratio = fail_on.get("ratio_over_records", 0.05)
+
+    error_drops = _count_error_drops(dropped_txs, mapping_drops, fail_severity)
+
+    metrics = _compute_metrics(
+        input_records_total=total_raw,
+        passed_validation_total=len(deduped_txs),
+        dropped_total=total_dropped,
+        dropped_details_count=len(all_dropped_details),
+        ml_rows_count=len(ml_rows),
+        invariant_checked_total=invariant_checked_total,
+        invariant_correct_total=invariant_correct_total,
+        critical_invariant_violations_total=critical_invariant_violations_total,
+        error_drops=error_drops,
+    )
+
+    outcome, stop_reason = _determine_outcome(
+        by_severity=by_severity,
+        issues=ctx.issues,
+        run_flags=ctx.run_flags,
+        dropped_txs=dropped_txs,
+        mapping_drops=mapping_drops,
+        total_raw=total_raw,
+        fail_severity=fail_severity,
+        fail_ratio=fail_ratio,
+    )
+
+    sv_versions = sv_bundle.get("meta", {}).get("spec_versions", {})
+
+    report = _build_report(
+        run_id=ctx.run_id,
+        created_at_utc=ctx.created_at_utc,
+        profile_id=ctx.profile["id"],
+        dataset_id=dataset_id,
+        input_dir=input_dir,
+        outcome=outcome,
+        stop_reason=stop_reason,
+        accounts_total=len(sv_bundle.get("accounts", [])),
+        transactions_total=total_raw,
+        transactions_emitted_sv=len(deduped_txs),
+        transactions_dropped=total_dropped,
+        ml_rows_count=len(ml_rows),
+        llm_contexts_count=len(llm_contexts),
+        by_severity=by_severity,
+        by_severity_issues=by_severity_issues,
+        stage_log=_stage_log_array(ctx.stage_log),
+        run_flags=ctx.run_flags,
+        issues=ctx.issues,
+        dropped_details=all_dropped_details,
+        metrics=metrics,
+        sv_schema_version=sv_versions.get("S-01", "1.0.0"),
+        mapping_version=sv_versions.get("C-01", "1.0.0"),
+        ruleset_version=sv_versions.get("R-01", "1.1.0"),
+        report_extensions=report_extensions_out or None,
+        extra_projections_audit=extra_projections_audit or None,
+    )
+    out.write_report(report)
+
+    return {
+        "outcome": outcome,
+        "stop_reason": stop_reason,
+        "run_id": ctx.run_id,
+        "counts": {
+            "accounts_total": len(sv_bundle.get("accounts", [])),
+            "transactions_total": total_raw,
+            "transactions_emitted_sv": len(deduped_txs),
+            "transactions_dropped": total_dropped,
+            "ml_rows": len(ml_rows),
+            "llm_contexts": len(llm_contexts),
+        },
+        "by_severity": by_severity,
+        "by_severity_issues": by_severity_issues,
+        "run_flags": ctx.run_flags,
+        "issues": ctx.issues,
+        "dropped_details": all_dropped_details,
+        "metrics": metrics,
+    }
+
+
 # ---------------------------------------------------------------------------
 # Main pipeline entry point
 # ---------------------------------------------------------------------------
@@ -628,112 +761,20 @@ def run_pipeline(
         validator, out, ctx,
     )
 
-    # ── Report + summary ──────────────────────────────────────────────────
-    all_dropped_for_severity = dropped_txs + dedupe_drops
-    by_severity = _count_flags_by_severity(deduped_txs, all_dropped_for_severity)
-    by_severity_issues = _count_issues_by_severity(ctx.issues)
-
-    total_dropped = len(dropped_txs) + len(mapping_drops) + len(dedupe_drops)
-    all_dropped_details = _build_dropped_details(dropped_txs, dedupe_drops, mapping_drops)
-
-    # SLI-3 invariant compliance counters:
-    #   invariant_correct_total = invariant_checked_total
-    #       − ERROR invariant drops (dropped_txs)
-    #       − INV-09 dedupe drops (dedupe_drops)
-    #       − kept records with WARN-level invariant flags (INV-04, INV-05).
-    critical_invariant_violations_total = len(dropped_txs)
-    warn_flagged_kept = sum(
-        1 for tx in deduped_txs
-        if any(
-            f["id"].startswith("INV-") and f.get("severity") == "WARN"
-            for f in tx.get("flags", [])
-        )
-    )
-    invariant_correct_total = (
-        invariant_checked_total
-        - len(dropped_txs)
-        - len(dedupe_drops)
-        - warn_flagged_kept
-    )
-
-    # Gate: same fail_severity / fail_ratio used by determine_outcome
-    run_policy = profile.get("run_policy", {}).get("partial_success_policy", {})
-    fail_on = run_policy.get("fail_on", {})
-    fail_severity = fail_on.get("any_severity", "ERROR")
-    fail_ratio = fail_on.get("ratio_over_records", 0.05)
-
-    error_drops = _count_error_drops(dropped_txs, mapping_drops, fail_severity)
-
-    metrics = _compute_metrics(
-        input_records_total=total_raw,
-        passed_validation_total=len(deduped_txs),
-        dropped_total=total_dropped,
-        dropped_details_count=len(all_dropped_details),
-        ml_rows_count=len(ml_rows),
-        invariant_checked_total=invariant_checked_total,
-        invariant_correct_total=invariant_correct_total,
-        critical_invariant_violations_total=critical_invariant_violations_total,
-        error_drops=error_drops,
-    )
-
-    outcome, stop_reason = _determine_outcome(
-        by_severity=by_severity,
-        issues=ctx.issues,
-        run_flags=ctx.run_flags,
+    # Finalize: metrics, outcome, report.json, return summary
+    return _finalize_run(
+        ctx, out,
+        sv_bundle=sv_bundle,
+        ml_rows=ml_rows,
+        llm_contexts=llm_contexts,
+        deduped_txs=deduped_txs,
         dropped_txs=dropped_txs,
+        dedupe_drops=dedupe_drops,
         mapping_drops=mapping_drops,
+        invariant_checked_total=invariant_checked_total,
         total_raw=total_raw,
-        fail_severity=fail_severity,
-        fail_ratio=fail_ratio,
-    )
-
-    sv_versions = sv_bundle.get("meta", {}).get("spec_versions", {})
-
-    report = _build_report(
-        run_id=run_id,
-        created_at_utc=created_at_utc,
-        profile_id=profile["id"],
+        report_extensions_out=report_extensions_out,
+        extra_projections_audit=extra_projections_audit,
         dataset_id=dataset_id,
         input_dir=input_dir,
-        outcome=outcome,
-        stop_reason=stop_reason,
-        accounts_total=len(sv_bundle.get("accounts", [])),
-        transactions_total=total_raw,
-        transactions_emitted_sv=len(deduped_txs),
-        transactions_dropped=total_dropped,
-        ml_rows_count=len(ml_rows),
-        llm_contexts_count=len(llm_contexts),
-        by_severity=by_severity,
-        by_severity_issues=by_severity_issues,
-        stage_log=_stage_log_array(ctx.stage_log),
-        run_flags=ctx.run_flags,
-        issues=ctx.issues,
-        dropped_details=all_dropped_details,
-        metrics=metrics,
-        sv_schema_version=sv_versions.get("S-01", "1.0.0"),
-        mapping_version=sv_versions.get("C-01", "1.0.0"),
-        ruleset_version=sv_versions.get("R-01", "1.1.0"),
-        report_extensions=report_extensions_out or None,
-        extra_projections_audit=extra_projections_audit or None,
     )
-    out.write_report(report)
-
-    return {
-        "outcome": outcome,
-        "stop_reason": stop_reason,
-        "run_id": run_id,
-        "counts": {
-            "accounts_total": len(sv_bundle.get("accounts", [])),
-            "transactions_total": total_raw,
-            "transactions_emitted_sv": len(deduped_txs),
-            "transactions_dropped": total_dropped,
-            "ml_rows": len(ml_rows),
-            "llm_contexts": len(llm_contexts),
-        },
-        "by_severity": by_severity,
-        "by_severity_issues": by_severity_issues,
-        "run_flags": ctx.run_flags,
-        "issues": ctx.issues,
-        "dropped_details": all_dropped_details,
-        "metrics": metrics,
-    }
