@@ -5,7 +5,7 @@ The domain layer (backend/domain/) must contain only pure business logic.
 It must NOT import:
   - I/O or platform modules: pathlib, os, sys
   - External libraries:      requests, pandas
-  - Internal adapter/CLI:    backend.adapters, backend.cli, adapters, cli
+  - Internal adapter/entrypoints: backend.adapters, backend.entrypoints, adapters, entrypoints
 
 Any violation means the domain layer has acquired an I/O or infrastructure
 dependency, which breaks the hexagonal-architecture contract.
@@ -40,7 +40,7 @@ FORBIDDEN_EXTERNAL = {"requests", "pandas"}
 
 # Internal packages that domain must never reach into.
 FORBIDDEN_INTERNAL = {
-    "adapters", "cli", "backend.adapters", "backend.cli",
+    "adapters", "backend.adapters",
     "ports", "application", "entrypoints",
     "backend.ports", "backend.application", "backend.entrypoints",
 }
