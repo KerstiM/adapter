@@ -17,7 +17,8 @@ truncate:
 
 output:
   format: JSON
-  file: "out/llm_context.json"
+  file: "projections/llm_context_v1.json"
+  schema: "S-03"
   cardinality: >
     One context object per account.  When the SV bundle contains a single
     account the output is a plain JSON object; when it contains multiple

@@ -85,7 +85,7 @@ class FsSpecAdapter:
             resolved["run_policy"] = raw["run_policy"]
 
         # Forward optional profile-level keys as-is
-        for optional_key in ("report_extensions", "target_models", "extra_projections"):
+        for optional_key in ("report_extensions", "target_models", "projections"):
             if optional_key in raw:
                 resolved[optional_key] = raw[optional_key]
 

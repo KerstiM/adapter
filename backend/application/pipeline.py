@@ -20,14 +20,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from application.projection_registry import PROJECTION_REGISTRY
 from domain.mapping.c01_raw_to_sv import (
     build_sv_bundle as _build_sv_bundle,
-)
-from domain.projections.c02_sv_to_ml import project_ml as _project_ml
-from domain.projections.c03_sv_to_llm import project_llm as _project_llm
-from domain.projections.c05_sv_to_stats import project_stats as _project_stats
-from domain.projections.c06_sv_to_monthly_balance import (
-    project_monthly_balance as _project_monthly_balance,
 )
 from domain.projections.model_formatters import format_for_model as _format_for_model
 from domain.report.ops import (
@@ -58,15 +53,6 @@ from ports.validation_port import ValidationPort
 def _is_download_only(data: dict) -> bool:
     """Check if a transaction response is download-only (C-01 rule)."""
     return bool((data.get("_links") or {}).get("download", {}).get("href"))
-
-
-# ---------------------------------------------------------------------------
-# Extra-projection dispatch: name -> (pure function, contract key)
-# ---------------------------------------------------------------------------
-_EXTRA_PROJECTION_DISPATCH: dict[str, tuple[Any, str]] = {
-    "stats": (_project_stats, "C-05"),
-    "monthly_balance": (_project_monthly_balance, "C-06"),
-}
 
 
 # ---------------------------------------------------------------------------
@@ -326,53 +312,64 @@ def _stage_check_invariants(
     return invariant_checked_total, deduped_txs, dropped_txs, dedupe_drops
 
 
-def _stage_project(
-    sv_bundle: dict,
-    ctx: _RunContext,
-) -> tuple[list[dict], list[dict]]:
-    """Stages 5 & 6 — ML (C-02) and LLM (C-03) projections."""
-    ml_rows = _project_ml(sv_bundle)
-    ctx.stage_log["PROJECT_ML"] = {"status": "OK", "errors": 0, "warnings": 0}
-
-    llm_contexts = _project_llm(sv_bundle, ctx.profile)
-    ctx.stage_log["PROJECT_LLM"] = {"status": "OK", "errors": 0, "warnings": 0}
-
-    return ml_rows, llm_contexts
-
-
-def _stage_report_extensions_and_extras(
+def _stage_projections_and_generic_writes(
     sv_bundle: dict,
     validator: ValidationPort,
     out: OutputPort,
     ctx: _RunContext,
-) -> tuple[dict[str, Any], list[dict]]:
-    """Opt-in report extensions and extra projections (profile-gated)."""
+) -> tuple[dict[str, Any], dict[str, Any], list[dict], int, int]:
+    """Stages 5-6 + report_extensions + extra_projections — unified registry dispatch.
+
+    Single loop over ``profile["projections"]`` drives everything:
+
+    * Each registered projection runs exactly once.  Kind ``ml`` / ``llm``
+      results are cached for Stage 7 + Stage 8 kind-based writes.
+    * Kind ``generic`` results are schema-validated, written via
+      ``OutputPort.write_extra_projection``, and recorded in the audit trail.
+    * Any projection whose name also appears in ``profile["report_extensions"]``
+      is cached so it can be embedded in ``report.json["extensions"]``.
+
+    Returns ``(projection_outputs, report_extensions_out, extra_projections_audit,
+    ml_rows_count, llm_contexts_count)``.
+    """
     profile = ctx.profile
-    report_extensions_out: dict[str, Any] = {}
-    projection_cache: dict[str, Any] = {}
+    projection_outputs: dict[str, Any] = {}
+    projection_names = list(profile.get("projections", ["ml", "llm"]))
+    report_extension_names = list(profile.get("report_extensions", []))
 
-    for ext_name in profile.get("report_extensions", []):
-        if ext_name == "monthly_balance":
-            projection_cache["monthly_balance"] = _project_monthly_balance(sv_bundle)
-            report_extensions_out["monthly_balance"] = projection_cache["monthly_balance"]
+    # Compute every projection needed for writing, audit, or report embedding.
+    names_to_compute: list[str] = []
+    for name in projection_names + report_extension_names:
+        if name not in names_to_compute:
+            names_to_compute.append(name)
 
-    extra_projections_audit: list[dict] = []
-    for proj_name in profile.get("extra_projections", []):
-        dispatch = _EXTRA_PROJECTION_DISPATCH.get(proj_name)
-        if dispatch is None:
+    for proj_name in names_to_compute:
+        spec = PROJECTION_REGISTRY.get(proj_name)
+        if spec is None:
             continue
-        proj_fn, contract_key = dispatch
+        proj_args = (sv_bundle, profile) if spec.needs_profile else (sv_bundle,)
+        projection_outputs[proj_name] = spec.fn(*proj_args)
 
-        contract = profile.get("contracts", {}).get(contract_key, {})
+    # Write + audit only for projections explicitly listed in `projections`.
+    extra_projections_audit: list[dict] = []
+    for proj_name in projection_names:
+        spec = PROJECTION_REGISTRY.get(proj_name)
+        if spec is None or proj_name not in projection_outputs:
+            continue
+        proj_data = projection_outputs[proj_name]
+
+        if spec.kind == "ml":
+            ctx.stage_log["PROJECT_ML"] = {"status": "OK", "errors": 0, "warnings": 0}
+            continue
+        if spec.kind == "llm":
+            ctx.stage_log["PROJECT_LLM"] = {"status": "OK", "errors": 0, "warnings": 0}
+            continue
+
+        contract = profile.get("contracts", {}).get(spec.contract_key, {})
         output_cfg = contract.get("output") or {}
         schema_key = output_cfg.get("schema")
         output_file = output_cfg.get("file", f"projections/{proj_name}_v1.json")
         output_filename = output_file.rsplit("/", 1)[-1]
-
-        if proj_name in projection_cache:
-            proj_data = projection_cache[proj_name]
-        else:
-            proj_data = proj_fn(sv_bundle)
 
         validation_result = "PASS"
         if schema_key and schema_key in profile.get("schemas", {}):
@@ -398,7 +395,7 @@ def _stage_report_extensions_and_extras(
         extra_projections_audit.append({
             "name": proj_name,
             "enabled": True,
-            "contract_id": contract.get("id", contract_key),
+            "contract_id": contract.get("id", spec.contract_key),
             "contract_version": contract.get("version", "unknown"),
             "schema_id": schema_key,
             "output_file": f"projections/{output_filename}",
@@ -406,55 +403,77 @@ def _stage_report_extensions_and_extras(
             "validation_result": validation_result,
         })
 
-    return report_extensions_out, extra_projections_audit
+    # Ensure stage_log has entries for PROJECT_ML / PROJECT_LLM even when
+    # the corresponding projection is absent from profile["projections"].
+    ctx.stage_log.setdefault("PROJECT_ML", {"status": "OK", "errors": 0, "warnings": 0})
+    ctx.stage_log.setdefault("PROJECT_LLM", {"status": "OK", "errors": 0, "warnings": 0})
+
+    # report_extensions — embed cached projection outputs in report.json.
+    report_extensions_out: dict[str, Any] = {
+        ext_name: projection_outputs[ext_name]
+        for ext_name in report_extension_names
+        if ext_name in projection_outputs
+    }
+
+    # Aggregate counts by spec.kind for downstream reporting/metrics.
+    counts_by_kind: dict[str, int] = {}
+    for proj_name, proj_data in projection_outputs.items():
+        spec = PROJECTION_REGISTRY.get(proj_name)
+        if spec is None:
+            continue
+        counts_by_kind[spec.kind] = counts_by_kind.get(spec.kind, 0) + len(proj_data)
+    ml_rows_count = counts_by_kind.get("ml", 0)
+    llm_contexts_count = counts_by_kind.get("llm", 0)
+
+    return (
+        projection_outputs,
+        report_extensions_out,
+        extra_projections_audit,
+        ml_rows_count,
+        llm_contexts_count,
+    )
 
 
 def _stage_format_for_model(
-    ml_rows: list[dict],
-    llm_contexts: list[dict],
+    projection_outputs: dict[str, Any],
     sv_bundle: dict,
     target_models_override: dict[str, Any] | None,
     ctx: _RunContext,
-) -> tuple[dict[str, dict], dict[str, list[dict]]]:
-    """Stage 7 — per-target-model formatting (C-04)."""
+) -> dict[str, dict[str, Any]]:
+    """Stage 7 — per-target-model formatting (C-04), dispatched by ``spec.kind``."""
     target_models = ctx.profile.get("target_models", {})
     if target_models_override:
         target_models = {**target_models, **target_models_override}
-    model_ml_outputs: dict[str, dict] = {}
-    model_llm_outputs: dict[str, list[dict]] = {}
+    model_outputs_by_kind: dict[str, dict[str, Any]] = {}
 
     c04 = ctx.profile.get("contracts", {}).get("C-04", {})
     llm_preamble = target_models.get("llm_preamble", "")
 
-    for ml_model_id in target_models.get("ml", []):
-        ml_model_config = c04.get("ml_models", {}).get(ml_model_id)
-        if ml_model_config:
+    for proj_name, proj_data in projection_outputs.items():
+        spec = PROJECTION_REGISTRY.get(proj_name)
+        if spec is None or spec.kind not in ("ml", "llm"):
+            continue
+        models_configs = c04.get(f"{spec.kind}_models", {})
+        format_kwargs = {"preamble": llm_preamble} if spec.kind == "llm" else {}
+        for model_id in target_models.get(spec.kind, []):
+            model_config = models_configs.get(model_id)
+            if not model_config:
+                continue
             result = _format_for_model(
-                ml_rows, sv_bundle, ml_model_id, ml_model_config, "ml",
+                proj_data, sv_bundle, model_id, model_config, spec.kind,
+                **format_kwargs,
             )
-            suffix = ml_model_config.get("output_suffix", ml_model_id)
-            model_ml_outputs[suffix] = result
-
-    for llm_model_id in target_models.get("llm", []):
-        llm_model_config = c04.get("llm_models", {}).get(llm_model_id)
-        if llm_model_config:
-            result = _format_for_model(
-                llm_contexts, sv_bundle, llm_model_id, llm_model_config, "llm",
-                preamble=llm_preamble,
-            )
-            suffix = llm_model_config.get("output_suffix", llm_model_id)
-            model_llm_outputs[suffix] = result
+            suffix = model_config.get("output_suffix", model_id)
+            model_outputs_by_kind.setdefault(spec.kind, {})[suffix] = result
 
     ctx.stage_log["FORMAT_FOR_MODEL"] = {"status": "OK", "errors": 0, "warnings": 0}
-    return model_ml_outputs, model_llm_outputs
+    return model_outputs_by_kind
 
 
 def _stage_write_outputs(
     sv_bundle: dict,
-    ml_rows: list[dict],
-    llm_contexts: list[dict],
-    model_ml_outputs: dict[str, dict],
-    model_llm_outputs: dict[str, list[dict]],
+    projection_outputs: dict[str, Any],
+    model_outputs_by_kind: dict[str, dict[str, Any]],
     validator: ValidationPort,
     out: OutputPort,
     ctx: _RunContext,
@@ -479,14 +498,22 @@ def _stage_write_outputs(
     }
 
     out.write_sv(sv_bundle)
-    out.write_ml(ml_rows)
 
-    llm_output = llm_contexts[0] if len(llm_contexts) == 1 else llm_contexts
-    out.write_llm(llm_output)
+    # Dispatch writes by spec.kind — no hard-coded projection name lookups.
+    # Generic kinds are already persisted in _stage_projections_and_generic_writes.
+    for proj_name, proj_data in projection_outputs.items():
+        spec = PROJECTION_REGISTRY.get(proj_name)
+        if spec is None:
+            continue
+        if spec.kind == "ml":
+            out.write_ml(proj_data)
+        elif spec.kind == "llm":
+            llm_output = proj_data[0] if len(proj_data) == 1 else proj_data
+            out.write_llm(llm_output)
 
-    for suffix, ml_model_data in model_ml_outputs.items():
+    for suffix, ml_model_data in model_outputs_by_kind.get("ml", {}).items():
         out.write_ml_model(ml_model_data, suffix)
-    for suffix, llm_model_data in model_llm_outputs.items():
+    for suffix, llm_model_data in model_outputs_by_kind.get("llm", {}).items():
         out.write_llm_model(llm_model_data, suffix)
 
     ctx.stage_log["WRITE_OUTPUTS"] = {"status": "OK", "errors": 0, "warnings": 0}
@@ -517,8 +544,8 @@ def _finalize_run(
     out: OutputPort,
     *,
     sv_bundle: dict,
-    ml_rows: list[dict],
-    llm_contexts: list[dict],
+    ml_rows_count: int,
+    llm_contexts_count: int,
     deduped_txs: list[dict],
     dropped_txs: list[dict],
     dedupe_drops: list[dict],
@@ -575,7 +602,7 @@ def _finalize_run(
         passed_validation_total=len(deduped_txs),
         dropped_total=total_dropped,
         dropped_details_count=len(all_dropped_details),
-        ml_rows_count=len(ml_rows),
+        ml_rows_count=ml_rows_count,
         invariant_checked_total=invariant_checked_total,
         invariant_correct_total=invariant_correct_total,
         critical_invariant_violations_total=critical_invariant_violations_total,
@@ -607,8 +634,8 @@ def _finalize_run(
         transactions_total=total_raw,
         transactions_emitted_sv=len(deduped_txs),
         transactions_dropped=total_dropped,
-        ml_rows_count=len(ml_rows),
-        llm_contexts_count=len(llm_contexts),
+        ml_rows_count=ml_rows_count,
+        llm_contexts_count=llm_contexts_count,
         by_severity=by_severity,
         by_severity_issues=by_severity_issues,
         stage_log=_stage_log_array(ctx.stage_log),
@@ -633,8 +660,8 @@ def _finalize_run(
             "transactions_total": total_raw,
             "transactions_emitted_sv": len(deduped_txs),
             "transactions_dropped": total_dropped,
-            "ml_rows": len(ml_rows),
-            "llm_contexts": len(llm_contexts),
+            "ml_rows": ml_rows_count,
+            "llm_contexts": llm_contexts_count,
         },
         "by_severity": by_severity,
         "by_severity_issues": by_severity_issues,
@@ -742,22 +769,23 @@ def run_pipeline(
     invariant_checked_total, deduped_txs, dropped_txs, dedupe_drops = \
         _stage_check_invariants(sv_bundle, ctx)
 
-    # Stages 5 & 6: PROJECT_ML, PROJECT_LLM
-    ml_rows, llm_contexts = _stage_project(sv_bundle, ctx)
-
-    # Opt-in report extensions + extra projections (profile-gated)
-    report_extensions_out, extra_projections_audit = \
-        _stage_report_extensions_and_extras(sv_bundle, validator, out, ctx)
+    # Stages 5-6 + report_extensions + extra_projections (unified registry dispatch)
+    (
+        projection_outputs,
+        report_extensions_out,
+        extra_projections_audit,
+        ml_rows_count,
+        llm_contexts_count,
+    ) = _stage_projections_and_generic_writes(sv_bundle, validator, out, ctx)
 
     # Stage 7: FORMAT_FOR_MODEL
-    model_ml_outputs, model_llm_outputs = _stage_format_for_model(
-        ml_rows, llm_contexts, sv_bundle, target_models_override, ctx,
+    model_outputs_by_kind = _stage_format_for_model(
+        projection_outputs, sv_bundle, target_models_override, ctx,
     )
 
     # Stage 8: WRITE_OUTPUTS (re-validate + persist)
     _stage_write_outputs(
-        sv_bundle, ml_rows, llm_contexts,
-        model_ml_outputs, model_llm_outputs,
+        sv_bundle, projection_outputs, model_outputs_by_kind,
         validator, out, ctx,
     )
 
@@ -765,8 +793,8 @@ def run_pipeline(
     return _finalize_run(
         ctx, out,
         sv_bundle=sv_bundle,
-        ml_rows=ml_rows,
-        llm_contexts=llm_contexts,
+        ml_rows_count=ml_rows_count,
+        llm_contexts_count=llm_contexts_count,
         deduped_txs=deduped_txs,
         dropped_txs=dropped_txs,
         dedupe_drops=dedupe_drops,
