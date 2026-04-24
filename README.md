@@ -12,22 +12,22 @@ Normatiivne käitumine on kirjeldatud `spec/` kataloogi versioonitud skeemide, l
 cd backend && pip install -r requirements.txt
 
 # Üks dataset (prefix-match: D1 → D1_synth_valid_small)
-python backend/run_adapter.py --data D1 --out backend/out
+python backend/entrypoints/cli_run_adapter.py --data D1 --out backend/out
 
 # Konkreetsete mudelitega
-python backend/run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --target-ml xgboost
+python backend/entrypoints/cli_run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --target-ml xgboost
 
 # Mitu mudelit korraga
-python backend/run_adapter.py --data D1 \
+python backend/entrypoints/cli_run_adapter.py --data D1 \
   --target-llm llama3.1-8b-instruct mistral-7b-instruct-v0.3 qwen2.5-7b-instruct \
   --target-ml xgboost catboost
 
 # Kohandatud LLM preamble
-python backend/run_adapter.py --data D1 --target-llm llama3.1-8b-instruct \
+python backend/entrypoints/cli_run_adapter.py --data D1 --target-llm llama3.1-8b-instruct \
   --llm-preamble "Analüüsi pangatehinguid ja tuvasta anomaaliad."
 
 # Kõik datasetid
-for d in datasets/D*; do python backend/run_adapter.py --data "$d" --out backend/out; done
+for d in datasets/D*; do python backend/entrypoints/cli_run_adapter.py --data "$d" --out backend/out; done
 ```
 
 CLI argumendid:
@@ -95,8 +95,6 @@ Lokaalselt käivitatav modulaarne monoliit. Tuumloogika on I/O-st lahutatud **po
 
 ```
 backend/
-    run_adapter.py                   # CLI sisenemispunkt (argparse → wiring)
-
     domain/                          # puhas äriloogika, ei tee I/O-d
         mapping/c01_raw_to_sv.py     #   RAW → SV kaardistus (C-01)
         projections/c02_sv_to_ml.py  #   SV → ML projektsioon (C-02)
@@ -117,7 +115,8 @@ backend/
     application/                     # orkestreerimine, räägib ainult portidega
         pipeline.py                  #   8-etapiline pipeline (run_pipeline)
 
-    entrypoints/                     # driving-adapter: portide kokkuühendamine
+    entrypoints/                     # driving-adapter: väline maailm → pipeline
+        cli_run_adapter.py           #   CLI sisenemispunkt (argparse → wiring)
         wiring_fs.py                 #   FS-adapterid + kell → run_pipeline
         api.py                       #   stdlib HTTP API server (port 5000)
 
@@ -161,7 +160,7 @@ Toetatud mudelid on defineeritud lepingus [`spec/contracts/C-04_model_formatters
 
 1. **CLI argumendid** — ülekirjutavad profiili seadistuse:
    ```bash
-   python backend/run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --target-ml xgboost
+   python backend/entrypoints/cli_run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --target-ml xgboost
    ```
 
 2. **API päring** — `POST /api/run` kehas:
@@ -337,7 +336,7 @@ Sammhaaval juhend pipeline tulemuste reprodutseerimiseks.
 
 3. **Käivita pipeline**
    ```bash
-   python backend/run_adapter.py --data D1 --out backend/out
+   python backend/entrypoints/cli_run_adapter.py --data D1 --out backend/out
    ```
 
 4. **Käivita testid ja SLI/SLO valideerimine**

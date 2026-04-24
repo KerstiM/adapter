@@ -1,18 +1,29 @@
 """
-Entry point for the adapter pipeline.
+CLI driving adapter for the pipeline.
 
-Usage:
-    python run_adapter.py --data D4
-    python run_adapter.py --data D1_synth_valid_small
-    python run_adapter.py --data ../datasets/D4_synth_errors_seed42
-    python run_adapter.py                          # defaults to D1_synth_valid_small
+Usage (from repo root):
+    python backend/entrypoints/cli_run_adapter.py --data D4
+    python backend/entrypoints/cli_run_adapter.py --data D1_synth_valid_small
+    python backend/entrypoints/cli_run_adapter.py --data ../datasets/D4_synth_errors_seed42
+    python backend/entrypoints/cli_run_adapter.py                    # defaults to D1_synth_valid_small
+
+Or, from the backend/ directory:
+    python -m entrypoints.cli_run_adapter --data D4
 """
 import argparse
+import sys
 from pathlib import Path
 
-from entrypoints.wiring_fs import run_pipeline_fs
+# When this file is executed directly as a script (python backend/entrypoints/cli_run_adapter.py),
+# Python puts the script's own directory on sys.path instead of backend/. Add backend/ so the
+# absolute `from entrypoints.wiring_fs import ...` below resolves in both invocation modes.
+_BACKEND_ROOT = Path(__file__).resolve().parent.parent
+if str(_BACKEND_ROOT) not in sys.path:
+    sys.path.insert(0, str(_BACKEND_ROOT))
 
-ROOT = Path(__file__).resolve().parent.parent
+from entrypoints.wiring_fs import run_pipeline_fs  # noqa: E402
+
+ROOT = Path(__file__).resolve().parent.parent.parent
 SEARCH_DIRS = [ROOT / "datasets"]
 
 

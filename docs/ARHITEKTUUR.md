@@ -26,7 +26,8 @@ Operatiivsed käsud ja käivitamisnäited: [`docs/runbook.md`](runbook.md).
 │  ┌─────────────────────────────────────────────────────────────┐  │
 │  │                    entrypoints/                              │  │
 │  │          wiring_fs.py (composition root)                     │  │
-│  │          run_adapter.py (CLI)                                │  │
+│  │          cli_run_adapter.py (CLI)                            │  │
+│  │          api.py (HTTP)                                       │  │
 │  └──────────┬──────────────────────────────┬───────────────────┘  │
 │             │ loob adapterid               │ delegeerib           │
 │             ▼                              ▼                      │
@@ -120,8 +121,6 @@ Väärtused: **SUCCESS**, **PARTIAL_SUCCESS**, **FAIL**.
 
 ```text
 backend/
-    run_adapter.py                   # CLI entry point (argparse → wiring)
-
     domain/                          # puhas äriloogika, ei tee I/O-d
         mapping/c01_raw_to_sv.py     #   RAW → SV kaardistus (C-01)
         projections/c02_sv_to_ml.py  #   SV → ML projektsioon (C-02)
@@ -145,7 +144,8 @@ backend/
     application/                     # orkestreerimine, räägib ainult portidega
         pipeline.py                  #   8-etapiline pipeline (run_pipeline)
 
-    entrypoints/                     # driving-adapter: portide kokkuühendamine
+    entrypoints/                     # driving-adapter: väline maailm → pipeline
+        cli_run_adapter.py           #   CLI entry point (argparse → wiring)
         wiring_fs.py                 #   FS-adapterid → run_pipeline
         api.py                       #   stdlib HTTP API server (port 5000)
 

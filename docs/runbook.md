@@ -10,9 +10,9 @@ Adapter toetab kolme tüüpi jookse. Kõigi puhul tekib eraldi
 
 | Režiim | Käsk (näide) | Lisanduvad failid kaustas `projections/` |
 |---|---|---|
-| **Baas (mudelita)** | `python backend/run_adapter.py --data D1` | `ml_v1.csv`, `llm_context_v1.json` |
-| **Mudelitega** | `python backend/run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --target-ml xgboost` | baas + mudelispetsiifilised vormindused (`llm_context_v1_<perekond>.json`, `ml_v1_<mudel>.json`) |
-| **Laiendatud profiil** | `python backend/run_adapter.py --data D1 --profile extensions_eval` | baas + `stats_v1.json`, `monthly_balance_v1.json` |
+| **Baas (mudelita)** | `python backend/entrypoints/cli_run_adapter.py --data D1` | `ml_v1.csv`, `llm_context_v1.json` |
+| **Mudelitega** | `python backend/entrypoints/cli_run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --target-ml xgboost` | baas + mudelispetsiifilised vormindused (`llm_context_v1_<perekond>.json`, `ml_v1_<mudel>.json`) |
+| **Laiendatud profiil** | `python backend/entrypoints/cli_run_adapter.py --data D1 --profile extensions_eval` | baas + `stats_v1.json`, `monthly_balance_v1.json` |
 
 > **NB.** Adapter ei kutsu välja LLM-i ega ML-mudelit — see vaid genereerib
 > deterministlikud sisendfailid (`projections/`), mida saab anda välistele
@@ -30,7 +30,7 @@ väljundi kaustastruktuur ning lipp→fail tabel.
 
 ## CLI (peamised argumendid)
 
-CLI entrypoint on [`backend/run_adapter.py`](backend/run_adapter.py:1).
+CLI entrypoint on [`backend/entrypoints/cli_run_adapter.py`](backend/entrypoints/cli_run_adapter.py:1).
 
 - `--data` / `-d`: dataset'i nimi või kaust.
   - Toetab:
@@ -54,19 +54,19 @@ CLI mudeli-argumendid ülekirjutavad profiili `target_models` sektsiooni. Kui mu
 ### PowerShell / bash
 
 ```powershell
-python backend/run_adapter.py --data D6 --out backend/out
+python backend/entrypoints/cli_run_adapter.py --data D6 --out backend/out
 ```
 
 Näide (täpne kaust):
 
 ```powershell
-python backend/run_adapter.py --data datasets/D6_synth_dupes_seed99 --out backend/out
+python backend/entrypoints/cli_run_adapter.py --data datasets/D6_synth_dupes_seed99 --out backend/out
 ```
 
 ### cmd.exe
 
 ```bat
-python backend\run_adapter.py --data D6 --out backend\out
+python backend\entrypoints\cli_run_adapter.py --data D6 --out backend\out
 ```
 
 ## 1a) Käivita konkreetsete mudelitega
@@ -74,13 +74,13 @@ python backend\run_adapter.py --data D6 --out backend\out
 ### Üks LLM ja üks ML mudel
 
 ```bash
-python backend/run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --target-ml xgboost
+python backend/entrypoints/cli_run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --target-ml xgboost
 ```
 
 ### Mitu mudelit korraga
 
 ```bash
-python backend/run_adapter.py --data D1 \
+python backend/entrypoints/cli_run_adapter.py --data D1 \
   --target-llm llama3.1-8b-instruct mistral-7b-instruct-v0.3 qwen2.5-7b-instruct \
   --target-ml xgboost catboost
 ```
@@ -88,7 +88,7 @@ python backend/run_adapter.py --data D1 \
 ### Kohandatud LLM preamble
 
 ```bash
-python backend/run_adapter.py --data D1 \
+python backend/entrypoints/cli_run_adapter.py --data D1 \
   --target-llm llama3.1-8b-instruct \
   --llm-preamble "Analüüsi pangatehinguid ja tuvasta anomaaliad."
 ```
@@ -96,19 +96,19 @@ python backend/run_adapter.py --data D1 \
 ### Laiendatud profiil (statistika + kuubilanss)
 
 ```bash
-python backend/run_adapter.py --data D1 --profile extensions_eval --out backend/out
+python backend/entrypoints/cli_run_adapter.py --data D1 --profile extensions_eval --out backend/out
 ```
 
 ### PowerShell
 
 ```powershell
-python backend/run_adapter.py --data D1 --target-llm llama3.1-8b-instruct mistral-7b-instruct-v0.3 --target-ml xgboost catboost
+python backend/entrypoints/cli_run_adapter.py --data D1 --target-llm llama3.1-8b-instruct mistral-7b-instruct-v0.3 --target-ml xgboost catboost
 ```
 
 ### cmd.exe
 
 ```bat
-python backend\run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --target-ml xgboost
+python backend\entrypoints\cli_run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --target-ml xgboost
 ```
 
 ## 2) Käivita kõigi dataset'ide peal (artefaktid jäävad alles)
@@ -117,19 +117,19 @@ python backend\run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --targ
 
 ```powershell
 Get-ChildItem datasets -Directory -Filter 'D*' |
-  ForEach-Object { python backend/run_adapter.py --data $_.Name --out backend/out }
+  ForEach-Object { python backend/entrypoints/cli_run_adapter.py --data $_.Name --out backend/out }
 ```
 
 ### cmd.exe
 
 ```bat
-for /d %D in (datasets\D*) do @python backend\run_adapter.py --data %D --out backend\out
+for /d %D in (datasets\D*) do @python backend\entrypoints\cli_run_adapter.py --data %D --out backend\out
 ```
 
 ### bash / zsh
 
 ```bash
-for d in datasets/D*/; do python backend/run_adapter.py --data "$d" --out backend/out; done
+for d in datasets/D*/; do python backend/entrypoints/cli_run_adapter.py --data "$d" --out backend/out; done
 ```
 
 Iga jooks tekitab eraldi run folderi, seega jooksud ei kirjuta üksteist üle.
