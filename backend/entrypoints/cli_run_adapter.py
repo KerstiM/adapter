@@ -1,14 +1,34 @@
 """
 CLI driving adapter for the pipeline.
 
-Usage (from repo root):
-    python backend/entrypoints/cli_run_adapter.py --data D4
-    python backend/entrypoints/cli_run_adapter.py --data D1_synth_valid_small
-    python backend/entrypoints/cli_run_adapter.py --data ../datasets/D4_synth_errors_seed42
-    python backend/entrypoints/cli_run_adapter.py                    # defaults to D1_synth_valid_small
+Examples (run from repo root):
 
-Or, from the backend/ directory:
-    python -m entrypoints.cli_run_adapter --data D4
+    # Single dataset — short prefix name (D1 → D1_synth_valid_small)
+    python backend/entrypoints/cli_run_adapter.py --data D1
+
+    # Full folder name or path also work
+    python backend/entrypoints/cli_run_adapter.py --data D1_synth_valid_small
+    python backend/entrypoints/cli_run_adapter.py --data datasets/D4_synth_errors_seed42
+
+    # No args → defaults to D1_synth_valid_small
+    python backend/entrypoints/cli_run_adapter.py
+
+    # All datasets under datasets/
+    for d in datasets/D*; do
+        python backend/entrypoints/cli_run_adapter.py --data "$d"
+    done
+
+    # With target models
+    python backend/entrypoints/cli_run_adapter.py --data D1 \\
+        --target-llm llama3.1-8b-instruct --target-ml xgboost
+
+    # Custom output folder (default: <repo>/.pipeline_out/, gitignored)
+    python backend/entrypoints/cli_run_adapter.py --data D1 --out backend/out
+
+From the backend/ directory:
+    python -m entrypoints.cli_run_adapter --data D1
+
+Full flag reference: --help.
 """
 import argparse
 import sys
