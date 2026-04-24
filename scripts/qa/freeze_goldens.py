@@ -37,6 +37,10 @@ from _utils import (
     sha256_file,
 )
 
+# Declared manifest fields that aren't produced by a pipeline run.
+# Carried forward across re-freezes so they aren't silently stripped.
+PRESERVED_MANIFEST_FIELDS: tuple[str, ...] = ("expected_raw_validation",)
+
 
 def check_spec_lock(frozen_dir: Path) -> bool:
     """Verify spec.lock.json exists and is non-trivial."""
@@ -201,12 +205,28 @@ def main() -> None:
         else:
             fail += 1
 
+    # Carry forward declared, manifest-only fields from the old entry into
+    # the new one (the pipeline-run summary doesn't know about them).
+    for ds_id, new_entry in new_entries.items():
+        old_entry = existing_entries.get(ds_id, {})
+        for key in PRESERVED_MANIFEST_FIELDS:
+            if key in old_entry and key not in new_entry:
+                new_entry[key] = old_entry[key]
+
     # Merge: new entries override existing ones; preserve unaffected datasets
     merged = dict(existing_entries)
     merged.update(new_entries)
 
+    # Prune entries whose dataset directory no longer exists on disk
+    # (e.g. renamed or removed). Filesystem is the source of truth.
+    valid_ids = {d.name for d in discover_datasets(None)}
+    pruned = sorted(set(merged) - valid_ids)
+    for ds_id in pruned:
+        print(f"  PRUNE {ds_id}: no dataset directory on disk — removing manifest entry")
+        merged.pop(ds_id)
+
     # Write manifest with all entries (sorted by dataset_id)
-    if new_entries:
+    if new_entries or pruned:
         sorted_entries = [merged[k] for k in sorted(merged)]
         write_manifest(frozen_dir, sorted_entries)
 
