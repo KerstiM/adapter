@@ -53,7 +53,9 @@ class FsSpecAdapter:
 
         profile_path = self._spec_dir / "profiles" / f"{profile_id}.yaml"
         if not profile_path.exists():
-            raise KeyError(f"Profile {profile_id!r} not found at {profile_path}")
+            raise FileNotFoundError(
+                f"Profile {profile_id!r} not found at {profile_path}"
+            )
 
         raw = self._load_yaml(profile_path)
 

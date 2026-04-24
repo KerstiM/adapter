@@ -5,6 +5,8 @@ No I/O, no jsonschema/pathlib/os imports.
 """
 from __future__ import annotations
 
+from domain.projections._shared import iter_projectable
+
 
 def project_llm(sv_bundle: dict, profile: dict) -> list[dict]:
     """Project SV -> LLM context JSON (C-03), one per account.
@@ -20,9 +22,7 @@ def project_llm(sv_bundle: dict, profile: dict) -> list[dict]:
 
     # Group transactions by account
     by_account: dict[str, list[dict]] = {}
-    for tx in sv_bundle.get("transactions", []):
-        if tx["status"] not in ("BOOKED", "PENDING"):
-            continue
+    for tx in iter_projectable(sv_bundle):
         by_account.setdefault(tx["account_id"], []).append(tx)
 
     contexts = []

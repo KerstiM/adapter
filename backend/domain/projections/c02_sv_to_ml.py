@@ -5,6 +5,8 @@ No I/O, no jsonschema/pathlib/os imports.
 """
 from __future__ import annotations
 
+from domain.projections._shared import iter_projectable
+
 
 def project_ml(sv_bundle: dict) -> list[dict]:
     """Project SV -> ML CSV rows (C-02).
@@ -13,10 +15,7 @@ def project_ml(sv_bundle: dict) -> list[dict]:
     Sort: account_id, value_date, record_id.
     """
     rows = []
-    for tx in sv_bundle.get("transactions", []):
-        if tx["status"] not in ("BOOKED", "PENDING"):
-            continue
-
+    for tx in iter_projectable(sv_bundle):
         rows.append({
             "account_id": tx["account_id"],
             "record_id": tx["record_id"],

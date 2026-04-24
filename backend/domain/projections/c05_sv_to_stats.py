@@ -13,6 +13,8 @@ from __future__ import annotations
 from collections import defaultdict
 from decimal import Decimal
 
+from domain.projections._shared import iter_projectable
+
 
 def project_stats(sv_bundle: dict) -> list[dict]:
     """Project SV -> per-account aggregated statistics (C-05).
@@ -36,9 +38,7 @@ def project_stats(sv_bundle: dict) -> list[dict]:
         One statistics dict per account.
     """
     by_account: dict[str, list[dict]] = defaultdict(list)
-    for tx in sv_bundle.get("transactions", []):
-        if tx["status"] not in ("BOOKED", "PENDING"):
-            continue
+    for tx in iter_projectable(sv_bundle):
         by_account[tx["account_id"]].append(tx)
 
     results: list[dict] = []
