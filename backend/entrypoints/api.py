@@ -295,23 +295,13 @@ class Handler(BaseHTTPRequestHandler):
                     "elapsed_ms": elapsed_ms,
                 }, 404)
                 return
-            except ValueError:
-                elapsed_ms = round((time.perf_counter() - t0) * 1000)
-                traceback.print_exc()
-                self._json_response({
-                    "error": "Invalid pipeline input or configuration",
-                    "elapsed_ms": elapsed_ms,
-                }, 400)
-                return
-            except RuntimeError:
-                elapsed_ms = round((time.perf_counter() - t0) * 1000)
-                traceback.print_exc()
-                self._json_response({
-                    "error": "Internal pipeline state error",
-                    "elapsed_ms": elapsed_ms,
-                }, 500)
-                return
             except Exception:
+                # Everything else — including ValueError (e.g. unknown model
+                # family in C-04, negative invariant counters in compute_metrics)
+                # and RuntimeError — is a server/config fault by the time it
+                # reaches here.  User-supplied fields (Content-Length, JSON body,
+                # llmPreamble, dataset id) are validated + mapped to 4xx inline
+                # above, before run_pipeline_fs is called.
                 elapsed_ms = round((time.perf_counter() - t0) * 1000)
                 traceback.print_exc()
                 self._json_response({
