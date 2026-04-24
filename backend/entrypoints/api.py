@@ -283,7 +283,11 @@ class Handler(BaseHTTPRequestHandler):
                     data_dir, OUTPUT_DIR, spec_dir=SPEC_DIR,
                     target_models_override=target_models_override,
                 )
-            except (KeyError, FileNotFoundError):
+            except FileNotFoundError:
+                # Raised by spec adapters when a profile YAML or spec file
+                # it references is missing on disk.  KeyError is intentionally
+                # NOT caught here: a stray dict-access KeyError deep in the
+                # pipeline is an internal bug, not a 404.
                 elapsed_ms = round((time.perf_counter() - t0) * 1000)
                 traceback.print_exc()
                 self._json_response({
