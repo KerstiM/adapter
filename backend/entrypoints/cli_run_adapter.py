@@ -31,6 +31,7 @@ From the backend/ directory:
 Full flag reference: --help.
 """
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -45,6 +46,19 @@ from entrypoints.wiring_fs import run_pipeline_fs  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 SEARCH_DIRS = [ROOT / "datasets"]
+
+# Color handling — emit ANSI only when stdout is a real terminal and the
+# user hasn't opted out via NO_COLOR (https://no-color.org).
+_USE_COLOR = sys.stdout.isatty() and "NO_COLOR" not in os.environ
+_BOLD = "\033[1m" if _USE_COLOR else ""
+_CYAN = "\033[96m" if _USE_COLOR else ""
+_GREEN = "\033[92m" if _USE_COLOR else ""
+_YELLOW = "\033[93m" if _USE_COLOR else ""
+_RED = "\033[91m" if _USE_COLOR else ""
+_RESET = "\033[0m" if _USE_COLOR else ""
+
+_OUTCOME_COLOR = {"SUCCESS": _GREEN, "PARTIAL_SUCCESS": _YELLOW, "FAIL": _RED}
+_SEVERITY_COLOR = {"ERROR": _RED, "WARN": _YELLOW, "INFO": _CYAN}
 
 
 def _resolve_data_dir(name: str) -> Path:
@@ -136,6 +150,11 @@ def main() -> None:
         if args.llm_preamble is not None:
             target_models_override["llm_preamble"] = args.llm_preamble
 
+    bar = "=" * 72
+    print()
+    print(f"{_BOLD}{_CYAN}{bar}{_RESET}")
+    print(f"{_BOLD}{_CYAN}  Running: {data_dir.name}{_RESET}")
+    print(f"{_BOLD}{_CYAN}{bar}{_RESET}")
     print(f"Dataset:    {data_dir}")
     print(f"Output to:  {output_dir}")
     if args.profile != "default":
@@ -153,14 +172,18 @@ def main() -> None:
         target_models_override=target_models_override,
     )
 
-    print(f"Outcome:    {summary['outcome']}")
+    outcome = summary["outcome"]
+    outcome_color = _OUTCOME_COLOR.get(outcome, "")
+    print(f"Outcome:    {outcome_color}{_BOLD}{outcome}{_RESET}")
     print(f"stop_reason: {summary.get('stop_reason', '?')}")
     print(f"Run folder: {summary['run_folder']}")
     counts = summary["counts"]
     print(f"  accounts:     {counts['accounts_total']}")
     print(f"  transactions: {counts['transactions_total']}")
     print(f"  emitted (SV): {counts['transactions_emitted_sv']}")
-    print(f"  dropped:      {counts['transactions_dropped']}")
+    dropped = counts['transactions_dropped']
+    dropped_color = _YELLOW if dropped > 0 else ""
+    print(f"  dropped:      {dropped_color}{dropped}{_RESET if dropped_color else ''}")
     print(f"  ML rows:      {counts['ml_rows']}")
     print(f"  LLM contexts: {counts['llm_contexts']}")
 
@@ -176,17 +199,23 @@ def main() -> None:
     if summary["run_flags"]:
         print(f"  run_flags:    {len(summary['run_flags'])}")
         for flag in summary["run_flags"]:
-            print(f"    [{flag['severity']}] {flag['id']}: {flag['message']}")
+            sev = flag['severity']
+            c = _SEVERITY_COLOR.get(sev, "")
+            print(f"    {c}[{sev}]{_RESET if c else ''} {flag['id']}: {flag['message']}")
 
     if summary["issues"]:
         print(f"  issues:       {len(summary['issues'])}")
         for issue in summary["issues"]:
             if isinstance(issue, dict):
-                print(f"    [{issue.get('severity', '?')}] {issue.get('code', '?')}: {issue.get('message', '')}")
+                sev = issue.get('severity', '?')
+                c = _SEVERITY_COLOR.get(sev, "")
+                print(f"    {c}[{sev}]{_RESET if c else ''} {issue.get('code', '?')}: {issue.get('message', '')}")
             else:
                 print(f"    {issue}")
     else:
         print("  issues:       0")
+
+    print(f"{_BOLD}{_CYAN}{bar}{_RESET}")
 
 
 if __name__ == "__main__":
