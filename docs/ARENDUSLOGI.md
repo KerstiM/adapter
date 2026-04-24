@@ -169,8 +169,8 @@ DSR iteratsioonid on märgistatud tsükliga: **ehita → hinda → õpi → koha
     (sama `golden/`-is)
   - Koodi-viited uuendatud: `.pre-commit-config.yaml`, `.gitignore`,
     `scripts/freeze_goldens.py`, `scripts/reanonymise_pii.py`,
-    `frontend/vue-project/src/services/api.js`,
-    `frontend/vue-project/src/data/docs.js`,
+    `frontend/src/services/api.js`,
+    `frontend/src/data/docs.js`,
     `backend/tests/test_integration_fs.py`
   - D10 ja D11 README-desse lisatud sektsioon **"Töötlusaste ja GDPR-staatus"**
     viitega GDPR art 4(5)-le

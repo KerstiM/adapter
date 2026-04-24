@@ -11,8 +11,7 @@ node_modules/
 dist/
 dist-ssr/
 coverage/
-frontend/vue-project/.vite/
-frontend/package-lock.json
+frontend/.vite/
 *.local
 
 # Logid

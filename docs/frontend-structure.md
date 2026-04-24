@@ -5,7 +5,7 @@
 - **Raamistik**: Vue 3 (Composition API, `<script setup>`)
 - **Ehitustööriist**: Vite 7.1.11
 - **Ruuter**: vue-router 4.6.3 (kaks marsruuti: `/` → Dashboard, `/docs` → DocsView)
-- **Juurkaust**: `frontend/vue-project/`
+- **Juurkaust**: `frontend/`
 
 ---
 

@@ -20,8 +20,8 @@ export default defineConfig({
       '/api': 'http://localhost:8000',
     },
     fs: {
-      // Allow ?raw imports from docs/ and datasets/ outside the vue-project root
-      allow: ['../../../..'],
+      // Allow ?raw imports from docs/ and datasets/ outside the frontend root
+      allow: ['../../..'],
     },
   },
 })
