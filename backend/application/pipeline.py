@@ -70,10 +70,11 @@ def _validate_against_schema(
 ) -> list[dict]:
     """Validate *data* against *schema* via the injected validator and return Issue dicts.
 
-    A successful validation returns an empty list.  A failure yields a single
-    Issue dict with the given *code*/*stage*/*source_lineage* and the first
-    schema error reported by the validator.  This helper backs all four of
-    the pipeline's schema-validation stages (S-00A/B/C on RAW input, S-01 on
+    A successful validation returns an empty list.  Each error reported by
+    the validator becomes one Issue dict carrying the given
+    *code*/*stage*/*source_lineage*; the validator's own message is
+    prefixed with the schema id.  This helper backs all four of the
+    pipeline's schema-validation stages (S-00A/B/C on RAW input, S-01 on
     the SV bundle).
     """
     raw_errors = validator.validate(data, schema)
