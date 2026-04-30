@@ -26,6 +26,7 @@ import traceback
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 
+from entrypoints._llm_preview_view import build_llm_preview_view
 from entrypoints.wiring_fs import run_pipeline_fs
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -70,83 +71,28 @@ def _read_ml_preview(run_folder: Path) -> dict | None:
 
 
 def _read_llm_preview(run_folder: Path, *, include_raw: bool = False) -> dict | None:
-    """Read LLM context and transform to the shape the frontend expects.
+    """Load the LLM context file and assemble the frontend preview response.
 
-    Raw format (single account):  { meta: {...}, tx: [...] }
-    Raw format (multi-account):   [ { meta: {...}, tx: [...] }, ... ]
-    Frontend:    { narrative, accountSummary: {periodStart, periodEnd, totalIncome,
-                   totalExpenses, netFlow}, topCategories: [{category, total, count}] }
-
-    The raw per-transaction context is omitted from the response by default
-    because it can contain counterparty names and remittance text. Pass
-    ``include_raw=True`` only when the caller is trusted (e.g. localhost dev).
+    Thin I/O wrapper: handles file lookup + single-vs-multi-account format,
+    delegates the view-shape construction to
+    :func:`build_llm_preview_view`, then attaches ``rawContexts`` only when
+    the caller has opted in (``include_raw=True``).  ``rawContexts`` is
+    omitted by default because it can contain counterparty names and
+    remittance text; expose it only to trusted callers (e.g. localhost dev).
     """
     llm_path = run_folder / "projections" / "llm_context_v1.json"
     if not llm_path.exists():
         return None
     llm_raw = json.loads(llm_path.read_text())
     raw_contexts = llm_raw if isinstance(llm_raw, list) else [llm_raw]
-
-    # Multi-account datasets produce a list of contexts; use the first one for summary
-    raw = raw_contexts[0] if raw_contexts else None
-    if raw is None:
+    if not raw_contexts:
         return None
 
-    meta = raw.get("meta", {})
-    txs = raw.get("tx", [])
-
-    if not txs:
+    view = build_llm_preview_view(raw_contexts[0])
+    if view is None:
         return None
-
-    # Compute account summary from transactions
-    dates = [t["d"] for t in txs if t.get("d")]
-    total_income = 0.0
-    total_expenses = 0.0
-    category_map: dict[str, dict] = {}
-
-    for tx in txs:
-        amount = float(tx.get("a", 0))
-        direction = tx.get("dir", "")
-        reason = tx.get("r", "Other") or "Other"
-
-        if direction == "IN" or amount > 0:
-            total_income += abs(amount)
-        else:
-            total_expenses += abs(amount)
-
-        # Group by reason as category
-        cat = reason.split()[0] if reason else "Other"
-        if cat not in category_map:
-            category_map[cat] = {"category": cat, "total": 0.0, "count": 0}
-        category_map[cat]["total"] += amount
-        category_map[cat]["count"] += 1
-
-    net_flow = total_income - total_expenses
-    period_start = min(dates) if dates else "—"
-    period_end = max(dates) if dates else "—"
-
-    top_categories = sorted(category_map.values(), key=lambda c: abs(c["total"]), reverse=True)
-
-    iban = meta.get("iban", "")
-    currency = meta.get("currency", "EUR")
-    narrative = (
-        f"Account {iban}: {len(txs)} transactions "
-        f"from {period_start} to {period_end}. "
-        f"Total income {total_income:.2f} {currency}, "
-        f"expenses {total_expenses:.2f} {currency}, "
-        f"net flow {net_flow:+.2f} {currency}."
-    )
-
     return {
-        "narrative": narrative,
-        "accountSummary": {
-            "periodStart": period_start,
-            "periodEnd": period_end,
-            "totalIncome": total_income,
-            "totalExpenses": total_expenses,
-            "netFlow": net_flow,
-        },
-        "topCategories": top_categories,
+        **view,
         "rawContexts": raw_contexts if include_raw else [],
     }
 
