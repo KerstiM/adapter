@@ -260,6 +260,95 @@ def determine_outcome(
         return "SUCCESS", "all validations passed"
 
 
+def _compute_sli2(passed_validation_total: int, input_records_total: int) -> dict:
+    """SLI-2: validation pass-through ratio.
+
+    Töötlusse võetud sisendtehingute osakaal, mis jääb pärast kaardistust,
+    invariantide kontrolli ja deduplikatsiooni standardiseeritud
+    vaheesitusse alles.  = passed_validation_total / input_records_total
+    """
+    ratio = (
+        passed_validation_total / input_records_total
+        if input_records_total > 0
+        else 1.0
+    )
+    return {"validation_pass_through_ratio": round(ratio, 4)}
+
+
+def _compute_qc2(dropped_details_count: int, dropped_total: int) -> dict:
+    """QC-2: drop-reporting coverage (operational control).
+
+    All dropped records must appear in dropped_details[].
+    Strict equality: over-reporting is treated as inconsistency.
+    """
+    if dropped_total > 0:
+        ratio = dropped_details_count / dropped_total
+        all_reported = dropped_details_count == dropped_total
+    else:
+        ratio = 1.0
+        all_reported = True
+    return {
+        "drop_reporting_ratio": round(ratio, 4),
+        "all_drops_reported": all_reported,
+    }
+
+
+def _compute_sli3(
+    invariant_checked_total: int,
+    invariant_correct_total: int,
+    critical_invariant_violations_total: int,
+) -> dict:
+    """SLI-3: invariant compliance ratio.
+
+    invariant_checked_total (nimetaja) = records entering Stage 4
+        (CHECK_INVARIANTS) after mapping, before dedupe.  Mapping drops
+        (Stage 2) EI KUULU nimetajasse, sest need kirjed ei jõua kunagi
+        invariantide kontrollini.
+
+    invariant_correct_total (lugeja) = invariant_checked_total
+        − ERROR-taseme invariantrikkumistega langetatud kirjed
+        − INV-09 deduplikatsioonis eemaldatud kirjed
+        − alles jäävad WARN-lipuga kirjed
+
+    critical_invariant_violations_total = records with ERROR-level invariant
+        violations only.  Excludes mapping drops, dedupe drops, WARN-only.
+    """
+    ratio = (
+        invariant_correct_total / invariant_checked_total
+        if invariant_checked_total > 0
+        else 1.0
+    )
+    return {
+        "invariant_compliance_ratio": round(ratio, 4),
+        "invariant_checked_total": invariant_checked_total,
+        "invariant_correct_total": invariant_correct_total,
+        "critical_invariant_violations_total": critical_invariant_violations_total,
+    }
+
+
+def _compute_gate(error_drops: int, input_records_total: int) -> dict:
+    """Gate: operational error-drop fail policy (NOT an SLI).
+
+    Uses count_error_drops() upstream — same logic as determine_outcome().
+    """
+    ratio = error_drops / input_records_total if input_records_total > 0 else 0.0
+    return {
+        "error_drop_ratio": round(ratio, 4),
+        "error_drops": error_drops,
+    }
+
+
+def _compute_info(ml_rows_count: int, input_records_total: int) -> dict:
+    """Info: ML emission ratio (informative, NOT an SLI).
+
+    End-to-end survival from raw input to ML projection.  Always ≤ SLI-2
+    because ML projection excludes INFORMATION-status records that
+    survive validation.
+    """
+    ratio = ml_rows_count / input_records_total if input_records_total > 0 else 0.0
+    return {"ml_emission_ratio": round(ratio, 4)}
+
+
 def compute_metrics(
     input_records_total: int,
     passed_validation_total: int,
@@ -273,117 +362,34 @@ def compute_metrics(
 ) -> dict:
     """Compute derived quality and operational metrics.
 
+    Thin orchestrator — see ``_compute_sli2``/``_compute_qc2``/``_compute_sli3``/
+    ``_compute_gate``/``_compute_info`` (and module-level
+    ``compute_sli1_coverage``) for the per-group definitions.
+
     Counter mapping (current codebase → frozen definitions):
       transactions_total        → input_records_total  (= total_raw in pipeline)
       transactions_emitted_sv   → passed_validation_total  (= len(deduped_txs))
       transactions_dropped      → dropped_total
 
     Identity: input_records_total == passed_validation_total + dropped_total
-
-    input_records_total is the single canonical raw-record counter used by
-    both SLI-2 (pass-through ratio) and gate (error-drop ratio).  In
-    pipeline.py this is total_raw — the count of all raw transactions across
-    all report files before any processing.
-
-    Returns a dict with five metric groups:
-
-      sli2  — Validation pass-through ratio (official quality metric).
-              Töötlusse võetud sisendtehingute osakaal, mis jääb pärast
-              kaardistust, invariantide kontrolli ja deduplikatsiooni
-              standardiseeritud vaheesitusse alles.
-              = passed_validation_total / input_records_total
-
-      qc2   — Drop-reporting coverage (operational control).
-              = dropped_details_count / dropped_total  (must equal 1.0)
-              All dropped records must appear in dropped_details[].
-              Strict equality: over-reporting is treated as inconsistency.
-
-      sli3  — Invariant compliance ratio (official quality metric).
-              = invariant_correct_total / invariant_checked_total
-
-              invariant_checked_total (nimetaja) = records entering Stage 4
-                  (CHECK_INVARIANTS) after mapping, before dedupe.
-                  Captured as len(sv_bundle["transactions"]) before
-                  calling check_invariants().
-                  Mapping drops (Stage 2) EI KUULU nimetajasse, sest need
-                  kirjed ei jõua kunagi invariantide kontrollini.
-
-              invariant_correct_total (lugeja) = invariant_checked_total
-                  − ERROR-taseme invariantrikkumistega langetatud kirjed
-                  − INV-09 deduplikatsioonis eemaldatud kirjed
-                  − alles jäävad WARN-lipuga kirjed
-                  Must be >= 0.
-
-              critical_invariant_violations_total = records with
-                  ERROR-level invariant violations only.
-                  Excludes mapping drops, dedupe drops, WARN-only records.
-
-      gate  — Operational error-drop fail policy (NOT an SLI).
-              error_drop_ratio = error_drops / input_records_total
-              Uses count_error_drops() — same logic as determine_outcome().
-
-      info  — ML emission ratio (informative, NOT an SLI).
-              = ml_rows_count / input_records_total
-              End-to-end survival from raw input to ML projection.
-              Always ≤ SLI-2 because ML projection excludes INFORMATION-status
-              records that survive validation.
     """
-    sli2_ratio = (
-        passed_validation_total / input_records_total
-        if input_records_total > 0
-        else 1.0
-    )
-
-    if dropped_total > 0:
-        qc2_ratio = dropped_details_count / dropped_total
-        qc2_all_reported = dropped_details_count == dropped_total
-    else:
-        qc2_ratio = 1.0
-        qc2_all_reported = True
-
     if invariant_correct_total < 0:
         raise ValueError(
             f"invariant_correct_total must be >= 0, got {invariant_correct_total} "
             f"(checked={invariant_checked_total})"
         )
-    sli3_ratio = (
-        invariant_correct_total / invariant_checked_total
-        if invariant_checked_total > 0
-        else 1.0
-    )
-
-    error_drop_ratio = error_drops / input_records_total if input_records_total > 0 else 0.0
-
-    ml_emission_ratio = (
-        ml_rows_count / input_records_total
-        if input_records_total > 0
-        else 0.0
-    )
-
-    sli1 = compute_sli1_coverage()
 
     return {
-        "sli1": sli1,
-        "sli2": {
-            "validation_pass_through_ratio": round(sli2_ratio, 4),
-        },
-        "qc2": {
-            "drop_reporting_ratio": round(qc2_ratio, 4),
-            "all_drops_reported": qc2_all_reported,
-        },
-        "sli3": {
-            "invariant_compliance_ratio": round(sli3_ratio, 4),
-            "invariant_checked_total": invariant_checked_total,
-            "invariant_correct_total": invariant_correct_total,
-            "critical_invariant_violations_total": critical_invariant_violations_total,
-        },
-        "gate": {
-            "error_drop_ratio": round(error_drop_ratio, 4),
-            "error_drops": error_drops,
-        },
-        "info": {
-            "ml_emission_ratio": round(ml_emission_ratio, 4),
-        },
+        "sli1": compute_sli1_coverage(),
+        "sli2": _compute_sli2(passed_validation_total, input_records_total),
+        "qc2": _compute_qc2(dropped_details_count, dropped_total),
+        "sli3": _compute_sli3(
+            invariant_checked_total,
+            invariant_correct_total,
+            critical_invariant_violations_total,
+        ),
+        "gate": _compute_gate(error_drops, input_records_total),
+        "info": _compute_info(ml_rows_count, input_records_total),
     }
 
 
