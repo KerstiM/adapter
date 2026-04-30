@@ -59,22 +59,24 @@ _RESET = "\033[0m" if _USE_COLOR else ""
 
 _OUTCOME_COLOR = {"SUCCESS": _GREEN, "PARTIAL_SUCCESS": _YELLOW, "FAIL": _RED}
 _SEVERITY_COLOR = {"ERROR": _RED, "WARN": _YELLOW, "INFO": _CYAN}
+_BAR = "=" * 72
 
 
 def _resolve_data_dir(name: str) -> Path:
     """Resolve a dataset name or path to an actual directory.
 
     Tries in order:
-      1. Exact path (absolute or relative)
+      1. Exact path as given, or path relative to repo root
       2. Exact folder name under datasets/
       3. Prefix match: folder equals *name* (case-insensitive) or starts
          with *name* + ``"_"`` (case-insensitive).  The ``"_"`` fence
          prevents ``D1`` from matching ``D10_*``.
     """
-    # 1. Direct path
-    p = Path(name)
-    if p.is_dir() and (p / "accounts.json").exists():
-        return p
+    # 1. Direct path — try as-given and resolved against repo root so that
+    #    e.g. ``datasets/D1_*`` works from both repo root and backend/.
+    for p in (Path(name), ROOT / name):
+        if p.is_dir() and (p / "accounts.json").exists():
+            return p
 
     # 2 & 3. Search known dirs
     name_upper = name.upper()
@@ -102,6 +104,117 @@ def _resolve_data_dir(name: str) -> Path:
     raise SystemExit(f"Dataset '{name}' not found. Checked: {', '.join(str(d) for d in SEARCH_DIRS)}")
 
 
+def _build_target_models_override(args: argparse.Namespace) -> dict | None:
+    """Collapse the three --target-* CLI flags into a single override dict.
+
+    Returns ``None`` when none of the flags were supplied so the pipeline
+    falls back to the profile's defaults.
+    """
+    if args.target_llm is None and args.target_ml is None and args.llm_preamble is None:
+        return None
+    override: dict = {}
+    if args.target_llm is not None:
+        override["llm"] = args.target_llm
+    if args.target_ml is not None:
+        override["ml"] = args.target_ml
+    if args.llm_preamble is not None:
+        override["llm_preamble"] = args.llm_preamble
+    return override
+
+
+def _resolve_output_dir(out_arg: str | None) -> Path:
+    """Resolve --out to an output directory path.
+
+    Returns the default ``ROOT/.pipeline_out`` when *out_arg* is empty.
+    Absolute paths are honoured as-is; relative paths resolve against the
+    repo root (not the caller's CWD).
+    """
+    if not out_arg:
+        return ROOT / ".pipeline_out"
+    out_path = Path(out_arg)
+    return out_path if out_path.is_absolute() else ROOT / out_path
+
+
+def _print_run_header(
+    data_dir: Path,
+    output_dir: Path,
+    profile: str,
+    target_models_override: dict | None,
+) -> None:
+    """Print the dataset/output/profile banner shown before the pipeline run."""
+    print()
+    print(f"{_BOLD}{_CYAN}{_BAR}{_RESET}")
+    print(f"{_BOLD}{_CYAN}  Running: {data_dir.name}{_RESET}")
+    print(f"{_BOLD}{_CYAN}{_BAR}{_RESET}")
+    print(f"Dataset:    {data_dir}")
+    print(f"Output to:  {output_dir}")
+    if profile != "default":
+        print(f"Profile:    {profile}")
+    if target_models_override:
+        if target_models_override.get("llm"):
+            print(f"Target LLM: {', '.join(target_models_override['llm'])}")
+        if target_models_override.get("ml"):
+            print(f"Target ML:  {', '.join(target_models_override['ml'])}")
+    print()
+
+
+def _print_outcome_and_counts(summary: dict) -> None:
+    """Print outcome line + counts table + by_severity_issues overview."""
+    outcome = summary["outcome"]
+    outcome_color = _OUTCOME_COLOR.get(outcome, "")
+    print(f"Outcome:    {outcome_color}{_BOLD}{outcome}{_RESET}")
+    print(f"stop_reason: {summary.get('stop_reason', '?')}")
+    print(f"Run folder: {summary['run_folder']}")
+    counts = summary["counts"]
+    print(f"  accounts:     {counts['accounts_total']}")
+    print(f"  transactions: {counts['transactions_total']}")
+    print(f"  emitted (SV): {counts['transactions_emitted_sv']}")
+    dropped = counts['transactions_dropped']
+    dropped_color = _YELLOW if dropped > 0 else ""
+    print(f"  dropped:      {dropped_color}{dropped}{_RESET if dropped_color else ''}")
+    print(f"  ML rows:      {counts['ml_rows']}")
+    print(f"  LLM contexts: {counts['llm_contexts']}")
+
+    sev_issues = summary.get("by_severity_issues", {})
+    if any(v > 0 for v in sev_issues.values()):
+        print(f"  by_severity_issues:  {sev_issues}")
+
+
+def _print_dropped_details(dropped_details: list[dict] | None) -> None:
+    """Print per-record drop reasons, one line each.  No-op when empty."""
+    if not dropped_details:
+        return
+    print(f"  dropped_details:")
+    for d in dropped_details:
+        print(f"    {d.get('input_path', '?')} ({d.get('source_file', '?')}): {d.get('drop_reason', '?')}")
+
+
+def _print_run_flags(run_flags: list[dict]) -> None:
+    """Print run-level flags with severity coloring.  No-op when empty."""
+    if not run_flags:
+        return
+    print(f"  run_flags:    {len(run_flags)}")
+    for flag in run_flags:
+        sev = flag['severity']
+        c = _SEVERITY_COLOR.get(sev, "")
+        print(f"    {c}[{sev}]{_RESET if c else ''} {flag['id']}: {flag['message']}")
+
+
+def _print_issues(issues: list) -> None:
+    """Print pipeline issues with severity coloring; print "0" line when none."""
+    if not issues:
+        print("  issues:       0")
+        return
+    print(f"  issues:       {len(issues)}")
+    for issue in issues:
+        if isinstance(issue, dict):
+            sev = issue.get('severity', '?')
+            c = _SEVERITY_COLOR.get(sev, "")
+            print(f"    {c}[{sev}]{_RESET if c else ''} {issue.get('code', '?')}: {issue.get('message', '')}")
+        else:
+            print(f"    {issue}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run the adapter pipeline.")
     parser.add_argument("--data", "-d", default=None,
@@ -127,44 +240,11 @@ def main() -> None:
                              "Default: default")
     args = parser.parse_args()
 
-    if args.data:
-        data_dir = _resolve_data_dir(args.data)
-    else:
-        data_dir = _resolve_data_dir("D1_synth_valid_small")
+    data_dir = _resolve_data_dir(args.data or "D1_synth_valid_small")
+    output_dir = _resolve_output_dir(args.out)
+    target_models_override = _build_target_models_override(args)
 
-    if args.out:
-        out_path = Path(args.out)
-        # Resolve relative --out paths against repo root, not CWD
-        output_dir = out_path if out_path.is_absolute() else ROOT / out_path
-    else:
-        output_dir = ROOT / ".pipeline_out"
-
-    # Build target_models override from CLI flags
-    target_models_override = None
-    if args.target_llm is not None or args.target_ml is not None or args.llm_preamble is not None:
-        target_models_override = {}
-        if args.target_llm is not None:
-            target_models_override["llm"] = args.target_llm
-        if args.target_ml is not None:
-            target_models_override["ml"] = args.target_ml
-        if args.llm_preamble is not None:
-            target_models_override["llm_preamble"] = args.llm_preamble
-
-    bar = "=" * 72
-    print()
-    print(f"{_BOLD}{_CYAN}{bar}{_RESET}")
-    print(f"{_BOLD}{_CYAN}  Running: {data_dir.name}{_RESET}")
-    print(f"{_BOLD}{_CYAN}{bar}{_RESET}")
-    print(f"Dataset:    {data_dir}")
-    print(f"Output to:  {output_dir}")
-    if args.profile != "default":
-        print(f"Profile:    {args.profile}")
-    if target_models_override:
-        if target_models_override.get("llm"):
-            print(f"Target LLM: {', '.join(target_models_override['llm'])}")
-        if target_models_override.get("ml"):
-            print(f"Target ML:  {', '.join(target_models_override['ml'])}")
-    print()
+    _print_run_header(data_dir, output_dir, args.profile, target_models_override)
 
     summary = run_pipeline_fs(
         data_dir, output_dir, spec_dir=ROOT / "spec",
@@ -172,50 +252,11 @@ def main() -> None:
         target_models_override=target_models_override,
     )
 
-    outcome = summary["outcome"]
-    outcome_color = _OUTCOME_COLOR.get(outcome, "")
-    print(f"Outcome:    {outcome_color}{_BOLD}{outcome}{_RESET}")
-    print(f"stop_reason: {summary.get('stop_reason', '?')}")
-    print(f"Run folder: {summary['run_folder']}")
-    counts = summary["counts"]
-    print(f"  accounts:     {counts['accounts_total']}")
-    print(f"  transactions: {counts['transactions_total']}")
-    print(f"  emitted (SV): {counts['transactions_emitted_sv']}")
-    dropped = counts['transactions_dropped']
-    dropped_color = _YELLOW if dropped > 0 else ""
-    print(f"  dropped:      {dropped_color}{dropped}{_RESET if dropped_color else ''}")
-    print(f"  ML rows:      {counts['ml_rows']}")
-    print(f"  LLM contexts: {counts['llm_contexts']}")
-
-    sev_issues = summary.get("by_severity_issues", {})
-    if any(v > 0 for v in sev_issues.values()):
-        print(f"  by_severity_issues:  {sev_issues}")
-
-    if summary.get("dropped_details"):
-        print(f"  dropped_details:")
-        for d in summary["dropped_details"]:
-            print(f"    {d.get('input_path', '?')} ({d.get('source_file', '?')}): {d.get('drop_reason', '?')}")
-
-    if summary["run_flags"]:
-        print(f"  run_flags:    {len(summary['run_flags'])}")
-        for flag in summary["run_flags"]:
-            sev = flag['severity']
-            c = _SEVERITY_COLOR.get(sev, "")
-            print(f"    {c}[{sev}]{_RESET if c else ''} {flag['id']}: {flag['message']}")
-
-    if summary["issues"]:
-        print(f"  issues:       {len(summary['issues'])}")
-        for issue in summary["issues"]:
-            if isinstance(issue, dict):
-                sev = issue.get('severity', '?')
-                c = _SEVERITY_COLOR.get(sev, "")
-                print(f"    {c}[{sev}]{_RESET if c else ''} {issue.get('code', '?')}: {issue.get('message', '')}")
-            else:
-                print(f"    {issue}")
-    else:
-        print("  issues:       0")
-
-    print(f"{_BOLD}{_CYAN}{bar}{_RESET}")
+    _print_outcome_and_counts(summary)
+    _print_dropped_details(summary.get("dropped_details"))
+    _print_run_flags(summary["run_flags"])
+    _print_issues(summary["issues"])
+    print(f"{_BOLD}{_CYAN}{_BAR}{_RESET}")
 
 
 if __name__ == "__main__":
