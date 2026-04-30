@@ -115,6 +115,39 @@ class _RunContext:
     stage_log: dict[str, dict] = field(default_factory=dict)
 
 
+def _set_stage_log(
+    ctx: _RunContext,
+    stage: str,
+    *,
+    errors: int = 0,
+    warnings: int = 0,
+    status: str | None = None,
+) -> None:
+    """Record the ``stage_log`` entry for *stage*.
+
+    When *status* is omitted it is derived from the counters:
+        errors > 0   -> "ERROR"
+        warnings > 0 -> "WARN"
+        otherwise    -> "OK"
+
+    Pass *status* explicitly for stages that use a non-standard mapping
+    (e.g. READ_INPUT downgrades schema errors to "WARN" so the run can
+    still proceed).
+    """
+    if status is None:
+        if errors > 0:
+            status = "ERROR"
+        elif warnings > 0:
+            status = "WARN"
+        else:
+            status = "OK"
+    ctx.stage_log[stage] = {
+        "status": status,
+        "errors": errors,
+        "warnings": warnings,
+    }
+
+
 # ---------------------------------------------------------------------------
 # Stage helpers — each mutates ctx and returns stage-specific outputs
 # ---------------------------------------------------------------------------
@@ -197,11 +230,12 @@ def _stage_read_input(
         for key in ("booked", "pending", "information"):
             total_raw += len(tx_obj.get(key, []))
 
-    ctx.stage_log["READ_INPUT"] = {
-        "status": "OK" if stage_errors == 0 else "WARN",
-        "errors": stage_errors,
-        "warnings": stage_warnings,
-    }
+    _set_stage_log(
+        ctx, "READ_INPUT",
+        errors=stage_errors,
+        warnings=stage_warnings,
+        status="OK" if stage_errors == 0 else "WARN",
+    )
     return accounts_data, report_files, total_raw
 
 
@@ -236,11 +270,7 @@ def _stage_standardize_to_sv(
                 "source_lineage": md.get("source_file", ""),
             },
         })
-    ctx.stage_log["STANDARDIZE_TO_SV"] = {
-        "status": "OK" if stage_warnings == 0 else "WARN",
-        "errors": 0,
-        "warnings": stage_warnings,
-    }
+    _set_stage_log(ctx, "STANDARDIZE_TO_SV", warnings=stage_warnings)
     return sv_bundle, mapping_drops
 
 
@@ -259,11 +289,7 @@ def _stage_validate_sv_schema(
         source_lineage="sv.json",
     )
     ctx.issues.extend(sv_errors)
-    ctx.stage_log["VALIDATE_SCHEMA"] = {
-        "status": "OK" if not sv_errors else "ERROR",
-        "errors": len(sv_errors),
-        "warnings": 0,
-    }
+    _set_stage_log(ctx, "VALIDATE_SCHEMA", errors=len(sv_errors))
 
 
 def _stage_check_invariants(
@@ -302,14 +328,7 @@ def _stage_check_invariants(
                 },
             })
 
-    ctx.stage_log["CHECK_INVARIANTS"] = {
-        "status": (
-            "OK" if inv_errors == 0 and inv_warnings == 0
-            else ("ERROR" if inv_errors > 0 else "WARN")
-        ),
-        "errors": inv_errors,
-        "warnings": inv_warnings,
-    }
+    _set_stage_log(ctx, "CHECK_INVARIANTS", errors=inv_errors, warnings=inv_warnings)
     return invariant_checked_total, deduped_txs, dropped_txs, dedupe_drops
 
 
@@ -360,10 +379,10 @@ def _stage_projections_and_generic_writes(
         proj_data = projection_outputs[proj_name]
 
         if spec.kind == "ml":
-            ctx.stage_log["PROJECT_ML"] = {"status": "OK", "errors": 0, "warnings": 0}
+            _set_stage_log(ctx, "PROJECT_ML")
             continue
         if spec.kind == "llm":
-            ctx.stage_log["PROJECT_LLM"] = {"status": "OK", "errors": 0, "warnings": 0}
+            _set_stage_log(ctx, "PROJECT_LLM")
             continue
 
         contract = profile.get("contracts", {}).get(spec.contract_key, {})
@@ -467,7 +486,7 @@ def _stage_format_for_model(
             suffix = model_config.get("output_suffix", model_id)
             model_outputs_by_kind.setdefault(spec.kind, {})[suffix] = result
 
-    ctx.stage_log["FORMAT_FOR_MODEL"] = {"status": "OK", "errors": 0, "warnings": 0}
+    _set_stage_log(ctx, "FORMAT_FOR_MODEL")
     return model_outputs_by_kind
 
 
@@ -492,11 +511,7 @@ def _stage_write_outputs(
         source_lineage="sv.json",
     )
     ctx.issues.extend(sv_errors_post)
-    ctx.stage_log["VALIDATE_SCHEMA"] = {
-        "status": "OK" if not sv_errors_post else "ERROR",
-        "errors": len(sv_errors_post),
-        "warnings": 0,
-    }
+    _set_stage_log(ctx, "VALIDATE_SCHEMA", errors=len(sv_errors_post))
 
     out.write_sv(sv_bundle)
 
@@ -517,7 +532,7 @@ def _stage_write_outputs(
     for suffix, llm_model_data in model_outputs_by_kind.get("llm", {}).items():
         out.write_llm_model(llm_model_data, suffix)
 
-    ctx.stage_log["WRITE_OUTPUTS"] = {"status": "OK", "errors": 0, "warnings": 0}
+    _set_stage_log(ctx, "WRITE_OUTPUTS")
 
 
 _STAGE_ORDER = (
