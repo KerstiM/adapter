@@ -85,7 +85,7 @@ def _read_llm_preview(run_folder: Path, *, include_raw: bool = False) -> dict | 
         return None
     llm_raw = json.loads(llm_path.read_text())
     raw_contexts = llm_raw if isinstance(llm_raw, list) else [llm_raw]
-    if not raw_contexts:
+    if not raw_contexts or raw_contexts[0] is None:
         return None
 
     view = build_llm_preview_view(raw_contexts[0])

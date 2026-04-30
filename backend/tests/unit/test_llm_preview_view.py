@@ -85,6 +85,13 @@ class TestReadLlmPreview:
         _write_ctx(tmp_path, [])
         assert _read_llm_preview(tmp_path) is None
 
+    def test_first_context_null_returns_none(self, tmp_path: Path) -> None:
+        # Regression: pre-refactor code returned None when the first context
+        # was None; the slimmed wrapper must keep that guard so a malformed
+        # [null] payload does not propagate to build_llm_preview_view.
+        _write_ctx(tmp_path, [None])
+        assert _read_llm_preview(tmp_path) is None
+
     def test_default_omits_raw_contexts(self, tmp_path: Path) -> None:
         ctx = _ctx(tx=[{"d": "2025-01-01", "a": 10.0, "dir": "IN", "r": "X"}])
         _write_ctx(tmp_path, ctx)
