@@ -1,5 +1,5 @@
 id: default
-version: "1.0.0"
+version: "1.1.0"
 
 schemas:
   S-00A: "spec/schemas/S-00A_berlin_accounts.schema.json"
@@ -24,6 +24,9 @@ projections:
   - ml
   - llm
 
+# Kvaliteedivärav: profiilipõhiselt konfigureeritav.
+# Semantika: inclusive (>=) — jooks läheb FAIL-i, kui drop_ratio >= ratio_over_records.
+# Vaikimisi 0,05 (5%) on prototüübi demonstreerimise jaoks valitud levinud standard
 run_policy:
   partial_success_policy:
     fail_on:

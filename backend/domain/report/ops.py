@@ -246,11 +246,15 @@ def determine_outcome(
     Returns (outcome, stop_reason) based on gate policy.
     Uses count_error_drops() for the error-drop count — the same helper
     used by gate metrics to ensure identical counting logic.
+
+    Gate semantics: **inclusive** (`drop_ratio >= fail_ratio` → FAIL).
+    Threshold is profile-configured (`run_policy.partial_success_policy.
+    fail_on.ratio_over_records`); default 0.05 is for prototype demo.
     """
     error_drops = count_error_drops(dropped_txs, mapping_drops, fail_severity)
 
     drop_ratio = error_drops / total_raw if total_raw > 0 else 0.0
-    if drop_ratio > fail_ratio:
+    if drop_ratio >= fail_ratio:
         return "FAIL", f"error drop ratio {drop_ratio:.4f} exceeds threshold {fail_ratio}"
     elif by_severity["ERROR"] > 0 or any(i.get("severity") == "ERROR" for i in issues):
         return "PARTIAL_SUCCESS", "errors present but below fail threshold"
@@ -330,6 +334,8 @@ def _compute_gate(error_drops: int, input_records_total: int) -> dict:
     """Gate: operational error-drop fail policy (NOT an SLI).
 
     Uses count_error_drops() upstream — same logic as determine_outcome().
+    Threshold (`fail_ratio`) lives in the profile under
+    `run_policy.partial_success_policy.fail_on.ratio_over_records`.
     """
     ratio = error_drops / input_records_total if input_records_total > 0 else 0.0
     return {
