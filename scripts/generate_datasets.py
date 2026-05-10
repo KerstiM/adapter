@@ -511,6 +511,130 @@ def generate_d4(gen: DatasetGenerator, start_date: date, end_date: date, n: int 
     }
 
 
+def _generate_partial_with_e01_drops(
+    name: str,
+    description_summary: str,
+    expected_outcome: str,
+    gen: DatasetGenerator,
+    start_date: date,
+    end_date: date,
+    n_clean: int,
+    n_errors: int,
+    target_ratio_min: float,
+    target_ratio_max: float,
+) -> dict:
+    """Helper: build a dataset with `n_clean` valid booked + `n_errors` E01 (invalid
+    currency 'EURO') drops. Used by D12/D13/D14 to populate the (0%, 10%) gap
+    in error_drop_ratio for sensitivity analysis of the quality gate.
+
+    Sanity-check: resulting drop_ratio must lie within (target_ratio_min,
+    target_ratio_max) — the inverse direction of D4's `> 0.05` check, since
+    these datasets target ratios *below* the default fail threshold (D14 is
+    the only one above 5%, and its bounds are validated independently).
+    """
+    acct = gen.generate_account(country="DE", name=f"{name} Account")
+
+    booked, pending = gen.generate_transactions_batch(
+        acct["iban"], n_booked=n_clean, n_pending=0,
+        start_date=start_date, end_date=end_date,
+        match_sign=True,
+    )
+
+    variations = []
+    for i in range(n_errors):
+        bad_tx = gen.generate_transaction(
+            acct["iban"], start_date, end_date,
+            bad_currency="EURO",  # 4 chars, violates ^[A-Z]{3}$ → E01 ERROR DROP
+            match_sign_to_direction=True,
+            remittance=f"E01 invalid currency EURO #{i + 1}",
+        )
+        booked.append(bad_tx)
+        variations.append(
+            f"E01_INVALID_CURRENCY #{i + 1}: currency='EURO' → ERROR DROP"
+        )
+
+    total_records = len(booked) + len(pending)
+    drop_ratio = n_errors / total_records
+    if not (target_ratio_min < drop_ratio < target_ratio_max):
+        raise ValueError(
+            f"{name} sanity check failed: {n_errors}/{total_records} = "
+            f"{drop_ratio:.4f} not in ({target_ratio_min}, {target_ratio_max})."
+        )
+
+    return {
+        "name": name,
+        "description": (
+            f"{description_summary} {n_errors} E01-violations out of "
+            f"{total_records} records ({drop_ratio:.2%}) — used for parameteric "
+            "sensitivity analysis of the operational quality gate."
+        ),
+        "expected_outcome": expected_outcome,
+        "accounts": _build_accounts_json([acct]),
+        "transactions": _build_transactions_json(acct["iban"], booked, pending),
+        "meta": {
+            "n_booked": len(booked),
+            "n_pending": len(pending),
+            "expected_dropped": n_errors,
+            "drop_ratio": round(drop_ratio, 4),
+            "variations": variations,
+        },
+    }
+
+
+def generate_d12(gen: DatasetGenerator, start_date: date, end_date: date, n: int | None) -> dict:
+    """D12_synth_partial_low_seed42: ~0.5% drop ratio (1/200).
+
+    Demonstrates that a low error rate stays PARTIAL_SUCCESS even under a
+    strict 1% threshold — anchors the lower end of the sensitivity-analysis
+    range that D4 (10.26%) and 0%-baseline datasets do not cover.
+    """
+    return _generate_partial_with_e01_drops(
+        name="D12_synth_partial_low_seed42",
+        description_summary="Low-rate error injection for gate sensitivity analysis.",
+        expected_outcome="PARTIAL_SUCCESS",
+        gen=gen, start_date=start_date, end_date=end_date,
+        n_clean=199, n_errors=1,
+        target_ratio_min=0.0,
+        target_ratio_max=0.01,
+    )
+
+
+def generate_d13(gen: DatasetGenerator, start_date: date, end_date: date, n: int | None) -> dict:
+    """D13_synth_partial_mid_seed42: ~3% drop ratio (3/100).
+
+    Key sensitivity-analysis specimen: PARTIAL_SUCCESS at 5% threshold,
+    FAIL at 1% threshold — proves that the gate mechanism responds to
+    threshold changes rather than being trivially saturated.
+    """
+    return _generate_partial_with_e01_drops(
+        name="D13_synth_partial_mid_seed42",
+        description_summary="Mid-rate error injection for gate sensitivity analysis.",
+        expected_outcome="PARTIAL_SUCCESS",
+        gen=gen, start_date=start_date, end_date=end_date,
+        n_clean=97, n_errors=3,
+        target_ratio_min=0.01,
+        target_ratio_max=0.05,
+    )
+
+
+def generate_d14(gen: DatasetGenerator, start_date: date, end_date: date, n: int | None) -> dict:
+    """D14_synth_partial_high_seed42: ~7% drop ratio (7/100).
+
+    Key sensitivity-analysis specimen: FAIL at 5% threshold, PARTIAL_SUCCESS
+    at 10% threshold — proves that FAIL is not automatic and the threshold
+    is the actual deciding parameter.
+    """
+    return _generate_partial_with_e01_drops(
+        name="D14_synth_partial_high_seed42",
+        description_summary="High-rate error injection for gate sensitivity analysis.",
+        expected_outcome="FAILED",
+        gen=gen, start_date=start_date, end_date=end_date,
+        n_clean=93, n_errors=7,
+        target_ratio_min=0.05,
+        target_ratio_max=0.10,
+    )
+
+
 def generate_d5(gen: DatasetGenerator, start_date: date, end_date: date, n: int | None) -> dict:
     """D5_synth_edges_seed99: edge cases that are schema-valid but borderline."""
     n_booked = n or 20
@@ -974,6 +1098,9 @@ DATASET_GENERATORS = {
     "D6": (generate_d6, 99),
     "D8": (generate_d8, 88),
     "D9": (generate_d9, 9),
+    "D12": (generate_d12, 42),
+    "D13": (generate_d13, 42),
+    "D14": (generate_d14, 42),
 }
 
 
