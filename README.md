@@ -250,12 +250,14 @@ Pipeline lõpptulem (outcome) on üks kolmest:
 | Outcome | Tähendus |
 |---------|----------|
 | `SUCCESS` | Vigu ei esinenud. INFO-tasemel run_flags võivad esineda. |
-| `PARTIAL_SUCCESS` | Esineb WARN/ERROR-tasemel probleeme, kuid fail-gate lävend ei ületatud. |
-| `FAIL` | Fail-gate käivitus: ERROR-tasemel drop'ide osakaal ületas lävendi (vaikimisi 5%). |
+| `PARTIAL_SUCCESS` | Esineb WARN/ERROR-tasemel probleeme, kuid fail-gate lävendit ei saavutatud. |
+| `FAIL` | Fail-gate käivitus: ERROR-tasemel drop'ide osakaal on suurem või võrdne lävendiga (vaikimisi `≥ 5%`). |
 
 Fail-gate konfiguratsioon on profiilis `spec/profiles/default.yaml`:
 - `run_policy.partial_success_policy.fail_on.any_severity` — minimaalne tõsidus (vaikimisi `ERROR`)
 - `run_policy.partial_success_policy.fail_on.ratio_over_records` — drop'ide osakaal (vaikimisi `0.05`)
+
+Värav rakendub **inclusive** semantikaga: `error_drop_ratio >= ratio_over_records → FAIL`. Lävend on profiilipõhiselt konfigureeritav (`spec/profiles/*.yaml`); vaikimisi 5% on prototüübi demonstreerimise jaoks valitud kompromiss, tootmiskasutuses tuleks see kalibreerida ajaloolise ERROR-osakaalu jaotuse vastu.
 
 ---
 

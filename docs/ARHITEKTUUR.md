@@ -274,6 +274,21 @@ Käesolev jaotis loetleb metodoloogilised piirangud ja väited, mille empiirilin
 
 - **D10/D11 "reaalsed anonüümistatud" andmestikud on ühe allika omad.** 101 ja 148 tehingut ühe panga ühe kliendi kontojaotustest. Need ei ole populatsiooniliselt esinduslikud ja ei kata pangatoodete variatsiooni (erinevad IBAN-formaadid, transiitkontod, välisvaluutad, korrektsioonikanded).
 - **5 % vea-lävend on inseneri hinnang, mitte rikkerežiimi-analüüsist tuletatud.** `partial_success` ja `fail` vahe 5 %-s on valitud mõistliku kokkuleppena (vt `spec/profiles/default.yaml`), mitte kvantitatiivsest analüüsist rikete mõjude kohta. Piir on inclusive (`≥ 5 % → FAIL`), testitud täpselt piiril (5,00 %) ja piiri ümber (4,76 %, 5,26 %).
+- **Kvaliteedivärav on parameetriline mehhanism, mitte 5 %-spetsiifiline.** Lävend (`ratio_over_records`) on profiilipõhiselt konfigureeritav (`spec/profiles/*.yaml`); kood ja testid (`backend/tests/sli_slo/test_sli_slo.py::test_gate_boundary_inclusive_semantics`) valideerivad inclusive-`>=` semantikat suvalisel lävendil (1 %, 3 %, 5 %). Töö panus on mehhanism — mitte konkreetse 5 % numbri valideerimine, mis nõuaks tootmismahtude andmeid.
+
+#### Tundlikkusanalüüs: gate'i käitumine erinevatel lävenditel
+
+Andmestikud D12–D14 on sünteetilised süstid vahemikku (0 %, 10 %), mille olemasolu täidab varasema bipolaarsuse — D1–D3, D5, D8–D11 olid 0 % juures (SUCCESS) ja D4 10,26 % juures (FAIL), st lävendi varieerimisel polnud ühelegi olemasolevale andmestikule mõju. D12–D14 võimaldavad demonstreerida, et lävendi muutus tegelikult muudab tulemust:
+
+| Andmestik | error_drop_ratio | @ 1 % | @ 5 % (default) | @ 10 % |
+|---|---|---|---|---|
+| D1–D3, D5, D8–D11 | 0,00 % | SUCCESS | SUCCESS | SUCCESS |
+| D12_synth_partial_low_seed42 | 0,50 % (1/200) | PARTIAL | PARTIAL | PARTIAL |
+| D13_synth_partial_mid_seed42 | 3,00 % (3/100) | FAIL (3 ≥ 1) | PARTIAL (3 < 5) | PARTIAL |
+| D14_synth_partial_high_seed42 | 7,00 % (7/100) | FAIL | FAIL (7 ≥ 5) | PARTIAL (7 < 10) |
+| D4_synth_errors_seed42 | 10,26 % | FAIL | FAIL | FAIL (10,26 ≥ 10) |
+
+D13 ja D14 on **võtmeproovid**: D13 muudab staatust 1 % ja 5 % vahel, D14 muudab staatust 5 % ja 10 % vahel. See näitab, et FAIL ei ole automaatne ja lävendi number on tegelikult otsustav parameeter.
 
 ### Arhitektuurilised kontrollid
 
@@ -283,6 +298,3 @@ Käesolev jaotis loetleb metodoloogilised piirangud ja väited, mille empiirilin
 
 - **Berlin Group AIS versioon ei ole skeemides fikseeritud.** S-00A/B/C skeemid kasutavad Berlin Group NextGenPSD2 tavakokkulepete pragmaatilist alamhulka (2025. aasta avalike konventsioonide põhjal), aga konkreetne spetsifikatsiooni versioon (nt v1.3.13) ei ole skeemide `title` ega `$comment` väljades kirjas. ISO 20022 element-nimede tabel puudub C-01 lepingust. See on teadlik scope-piirang: töö eesmärk oli demonstreerida standardiseerimise ja reeglistiku arhitektuuri, mitte implementeerida täielik Berlin Group AIS klient.
 
-### UK3 laiendatavuse tõendid
-
-- **Tõendid 1–5 on demonstratsioonid, mitte formaalselt falsifitseeritavad väited.** "Pipeline'i ei muudetud" tähendus sõltub sellest, millist faili loetakse pipeline'i osaks. Selle asemel, et formuleerida operatiivne predikaat ("muudetud failide hulk ⊂ {X}") ning seda git-log'ist automaatselt tuletada, on iga tõend narratiivne enesekirjeldus. Edasiseks tööks oleks iga laiendi puhul fikseerida "muudetud failide valge nimekiri" ja siduda see testiga.
