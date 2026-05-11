@@ -2,9 +2,9 @@ requirement_id,test_id,test_artifact,relation,notes
 Ä1,TJ-03,backend/tests/test_integration_fs.py,SUPPORTING,E2E happy-path D1 + skeemivalideerimine
 Ä1,TJ-01,backend/tests/sli_slo/test_sli_slo.py,SUPPORTING,SLI4 determinismi test kinnitab võrreldavad väljundid
 Ä1,TJ-02,scripts/qa/verify_goldens.py,REGRESSION,Golden SHA-256 võrdlus frozen manifesti vastu
-Ä2,-,backend/tests/unit/test_import_boundaries.py,SUPPORTING,Tõendab tuuma eraldatust I/O-st (ADR-03)
-Ä2,-,backend/tests/unit/test_api_security.py,SUPPORTING,Adapteri liidese turvaeeldused
-Ä2,-,backend/tests/unit/test_spec_fs_path_traversal.py,SUPPORTING,Faili-adapteri pathi-traversali kontroll
+Ä2,TJ-09,backend/tests/unit/test_import_boundaries.py,PRIMARY_EVIDENCE,Tõendab tuuma eraldatust I/O-st (ADR-03)
+Ä2,TJ-09,backend/tests/unit/test_api_security.py,PRIMARY_EVIDENCE,Adapteri liidese turvaeeldused
+Ä2,TJ-09,backend/tests/unit/test_spec_fs_path_traversal.py,PRIMARY_EVIDENCE,Faili-adapteri pathi-traversali kontroll
 Ä3,TJ-01,backend/tests/sli_slo/test_sli_slo.py,PRIMARY_EVIDENCE,SLI1-SLI5 + QC2 + Gate kontroll raportist
 Ä3,TJ-07,backend/tests/unit/test_scalability.py,SUPPORTING,SLI6 referentsjõudluse mõõtmine
 Ä3,TJ-02,scripts/qa/run_full_qa.py,REGRESSION,Täiskontroll + golden-võrdlus + determinismi suitsutest
@@ -27,7 +27,7 @@ F6,TJ-06,backend/tests/unit/test_c05_stats.py,PRIMARY_EVIDENCE,C-05 stats lisapr
 F6,TJ-08,backend/tests/unit/test_c06_monthly_balance.py,PRIMARY_EVIDENCE,C-06 monthly_balance lisaprojektsioon
 F6,-,backend/tests/unit/test_model_formatters.py,SUPPORTING,C-04 versioonitud formaatijad
 MF1,-,backend/requirements.txt,SUPPORTING,Fikseeritud sõltuvused (jsonschema 4.25.1; PyYAML 6.0.1; pytest 9.0.3)
-MF2,-,backend/tests/unit/test_import_boundaries.py,SUPPORTING,Domain ei impordi võrguga seotud mooduleid
+MF2,TJ-09,backend/tests/unit/test_import_boundaries.py,PRIMARY_EVIDENCE,Domain ei impordi võrguga seotud mooduleid
 MF3,TJ-06,backend/tests/unit/test_c05_stats.py,PRIMARY_EVIDENCE,Skeemievolutsioon lokaalse muudatusena (C-05)
 MF3,TJ-08,backend/tests/unit/test_c06_monthly_balance.py,PRIMARY_EVIDENCE,Skeemievolutsioon lokaalse muudatusena (C-06)
 MF4,-,backend/tests/unit/test_import_boundaries.py,SUPPORTING,Tuuma eraldatus I/O-st (K3 testitavus)

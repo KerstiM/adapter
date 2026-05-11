@@ -10,7 +10,7 @@ See kaust sisaldab repositooriumi detailset, normatiivset nõuete jälgitavust. 
 |------|------|
 | [`traceability_matrix.csv`](traceability_matrix.csv) | Põhimatriks — üks rida per nõue (Ä1–Ä3, F1–F6, MF1–MF6). Juhtdokument. |
 | [`requirements_to_specs.csv`](requirements_to_specs.csv) | Nõue → spetsifikatsioon (skeem / leping / reeglistik / profiil / LOCK / GOLDEN-MANIFEST). |
-| [`requirements_to_tests.csv`](requirements_to_tests.csv) | Nõue → testijuht (TJ-01..TJ-08) ja repo testifail. |
+| [`requirements_to_tests.csv`](requirements_to_tests.csv) | Nõue → testijuht (TJ-01..TJ-09) ja repo testifail. |
 | [`requirements_to_artifacts.csv`](requirements_to_artifacts.csv) | Nõue → tõendusartefakt (sv.json, report.json, projektsioonid, benchmark-logi). |
 | [`requirements_to_adr.csv`](requirements_to_adr.csv) | Nõue → arhitektuuriotsus (ADR-01..ADR-08). |
 | [`id_dictionary.md`](id_dictionary.md) | ID-perede kokkuvõte: mida Ä/F/MF/QS/SLI/QC/ADR/S/C/R/PROFILE/LOCK/D/TJ tähistavad. |

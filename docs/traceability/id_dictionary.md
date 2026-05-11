@@ -134,3 +134,4 @@ Tüübid: **A** = avalik näidis, **S** = sünteetiline (fikseeritud `seed`), **
 | TJ-06 | Skeemievolutsioon / laiendatavuse stsenaarium (SLI5). | `backend/tests/unit/test_c05_stats.py` |
 | TJ-07 | Referentsjõudluse sanity-check (SLI6). | `backend/tests/unit/test_scalability.py` |
 | TJ-08 | `extensions_eval` profiili lisaprojektsioonid (SLI5). | `backend/tests/unit/test_c06_monthly_balance.py` |
+| TJ-09 | Arhitektuurilise eraldatuse ja turvaeelduste kontroll (Ä2, MF2): tuuma I/O-eraldatus, API turvaeeldused, path-traversal kaitse. | `backend/tests/unit/test_import_boundaries.py`, `backend/tests/unit/test_api_security.py`, `backend/tests/unit/test_spec_fs_path_traversal.py` |
