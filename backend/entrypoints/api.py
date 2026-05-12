@@ -21,6 +21,7 @@ import csv
 import io
 import json
 import os
+import socket
 import time
 import traceback
 from http.server import HTTPServer, BaseHTTPRequestHandler
@@ -150,6 +151,30 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def _body_error_response(self, data, status):
+        # macOS sends TCP RST instead of FIN when close() runs with unread
+        # bytes in the receive buffer (the request body we rejected before
+        # reading). The RST races with the response and the client sees
+        # ConnectionResetError mid-read. Half-close the write side after
+        # sending so the FIN is clean, then drain briefly so close() has
+        # nothing left to RST.
+        self._json_response(data, status)
+        self.close_connection = True
+        try:
+            self.wfile.flush()
+        except OSError:
+            pass
+        try:
+            self.connection.shutdown(socket.SHUT_WR)
+        except OSError:
+            pass
+        try:
+            self.connection.settimeout(0.5)
+            while self.connection.recv(65536):
+                pass
+        except OSError:
+            pass
+
     def _read_body(self) -> tuple[dict | None, tuple[dict, int] | None]:
         """Read and parse the request body.
 
@@ -194,7 +219,7 @@ class Handler(BaseHTTPRequestHandler):
             body, err = self._read_body()
             if err is not None:
                 error_payload, status = err
-                self._json_response(error_payload, status)
+                self._body_error_response(error_payload, status)
                 return
             dataset_id = body.get("datasetId", "D1")
 
