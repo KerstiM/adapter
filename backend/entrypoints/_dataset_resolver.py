@@ -47,11 +47,25 @@ def resolve_dataset_by_name(
         if not search_dir.is_dir():
             continue
 
+        # 1. Exact name match wins outright — a literal "D1" folder
+        #    must resolve even when "D1_*" siblings exist, otherwise
+        #    a precise dataset ID could be rejected as ambiguous.
+        exact = next(
+            (d for d in sorted(search_dir.iterdir())
+             if d.is_dir()
+             and d.name.upper() == name_upper
+             and (d / "accounts.json").exists()),
+            None,
+        )
+        if exact is not None:
+            return exact
+
+        # 2. Prefix match with "_" fence — collect candidates and
+        #    raise on ambiguity rather than silently picking one.
         matches = sorted(
             d for d in search_dir.iterdir()
             if d.is_dir()
-            and (d.name.upper() == name_upper
-                 or d.name.upper().startswith(name_upper + "_"))
+            and d.name.upper().startswith(name_upper + "_")
             and (d / "accounts.json").exists()
         )
         if len(matches) == 1:

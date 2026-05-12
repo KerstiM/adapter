@@ -47,6 +47,15 @@ def test_ambiguous_match_raises(tmp_path):
     assert exc.value.matches == ["D1_one", "D1_two"]
 
 
+def test_exact_match_wins_over_prefix_siblings(tmp_path):
+    # A literal "D1" folder must resolve to itself even when "D1_*"
+    # siblings exist — otherwise an exact dataset ID would be rejected
+    # as ambiguous, which is a regression from the prior CLI/API logic.
+    _make_dataset(tmp_path, "D1")
+    _make_dataset(tmp_path, "D1_synth_valid_small")
+    assert resolve_dataset_by_name("D1", [tmp_path]) == tmp_path / "D1"
+
+
 def test_unknown_dataset_returns_none(tmp_path):
     _make_dataset(tmp_path, "D1_synth_valid_small")
     assert resolve_dataset_by_name("D99", [tmp_path]) is None
