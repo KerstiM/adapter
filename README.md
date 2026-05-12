@@ -91,15 +91,9 @@ Turvaregressioonid on kaetud [`backend/tests/unit/test_api_security.py`](backend
 
 ## Arhitektuur (Ports & Adapters)
 
-Lokaalselt käivitatav modulaarne monoliit. Tuumloogika on I/O-st lahutatud **portide** kaudu:
+Ports & Adapters arhitektuur: tuumloogika (`backend/domain/`) on I/O-st lahutatud portide (`backend/ports/`) kaudu, mida realiseerivad `backend/adapters/`. Orkestreerimine: `backend/application/pipeline.py`. Driving-adapterid (CLI, HTTP API): `backend/entrypoints/`.
 
-- `backend/domain/` — puhas äriloogika (kaardistus, projektsioonid, reeglid, raport); ei tee I/O-d.
-- `backend/ports/` — abstraktsed liidesed (`DatasetPort`, `OutputPort`, `SpecPort`, `ClockPort`, `ValidationPort`).
-- `backend/application/` — orkestreerimine (`pipeline.py`); räägib ainult portidega.
-- `backend/entrypoints/` — driving-adapterid: `cli_run_adapter.py`, `wiring_fs.py`, `api.py`.
-- `backend/adapters/` — portide teostused (`fs/`, `validation/`, `system/`, `testing/`).
-
-Täpne failipuu, importimisreeglid ja iga porti liidese täielik kirjeldus: [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md).
+Failipuu, importimisreeglid ja portide täielik kirjeldus: [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md).
 
 ---
 
@@ -152,32 +146,7 @@ Kui mudeleid ei ole valitud (ei CLI-s, API-s ega profiilis), genereeritakse ainu
 
 ## Determinism ja kell
 
-Adapter pipeline kasutab **kella** (`ClockPort`) kahe asja jaoks:
-1. **`now_utc()`** — ISO 8601 UTC ajatempel (nt `"2026-02-24T14:30:00Z"`), mis salvestatakse SV meta, koondraport ja LLM kontekst metaandmetesse ning kasutatakse väljundkausta nimetamiseks.
-2. **`new_run_id()`** — unikaalne jooksutunnus (nt `"3f8a1c2b9d04"`).
-
-### Kella teostused
-
-| Klass | Asukoht | Kasutus |
-|-------|---------|---------|
-| `RealClock` | `adapters/system/clock_real.py` | **Tootmine**: `datetime.now(timezone.utc)` + `uuid.uuid4()` |
-| `FixedClock` | `adapters/testing/clock_fixed.py` | **Testid**: fikseeritud ajatempel + run_id (kasutatakse nii unit- kui integratsioonitestides) |
-
-### Kuidas determinism tagatakse
-
-- **Tuum (`domain/`)** ei kutsu kunagi `datetime.now()` ega `uuid`. Kella väärtused edastatakse tuumale lihtsate stringidena (`run_id`, `created_at_utc`).
-- **SV sisu, ML projektsioon ja LLM kontekst** on determineeritud sisenditest — kellaaeg mõjutab ainult metaandmeid (`meta.run_id`, `meta.created_at_utc`).
-- **Testides** süstitakse `FixedClock`, mis tagastab alati sama ajatempli ja run_id → väljundfailid on baidipõhiselt identsed jooksude vahel.
-- **Tootmises** süstitakse `RealClock`, mis annab igale jooksule unikaalse ajatempli ja ID.
-
-### ISO 8601 formaat
-
-Kogu projektis kasutatakse ühtset ajatempli formaati, mis on defineeritud ühes kohas:
-
-```python
-# adapters/system/clock_real.py
-ISO_UTC_FORMAT = "%Y-%m-%dT%H:%M:%SZ"   # nt "2026-02-24T14:30:00Z"
-```
+Pipeline kasutab `ClockPort`-i ajatempli (`now_utc()`) ja jooksu-ID (`new_run_id()`) jaoks. Tootmises süstitakse `RealClock` (`datetime.now(utc)` + `uuid4`), testides `FixedClock` — sama kell + sama sisend annab baidi-identse väljundi. Tuum (`domain/`) ei kutsu kunagi `datetime.now()` ega `uuid`. Mehhanismi taust ja piirangud: [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md).
 
 ---
 
@@ -208,31 +177,13 @@ Täpsem spetsifikatsioonide indeks: [`docs/SPETSIFIKATSIOONID.md`](docs/SPETSIFI
 
 ## Osaline õnnestumine ja outcome
 
-Pipeline lõpptulem (outcome) on üks kolmest:
-
-| Outcome | Tähendus |
-|---------|----------|
-| `SUCCESS` | Vigu ei esinenud. INFO-tasemel run_flags võivad esineda. |
-| `PARTIAL_SUCCESS` | Esineb WARN/ERROR-tasemel probleeme, kuid fail-gate lävendit ei saavutatud. |
-| `FAIL` | Fail-gate käivitus: ERROR-tasemel drop'ide osakaal on suurem või võrdne lävendiga (vaikimisi `≥ 5%`). |
-
-Fail-gate konfiguratsioon on profiilis `spec/profiles/default.yaml`:
-- `run_policy.partial_success_policy.fail_on.any_severity` — minimaalne tõsidus (vaikimisi `ERROR`)
-- `run_policy.partial_success_policy.fail_on.ratio_over_records` — drop'ide osakaal (vaikimisi `0.05`)
-
-Värav rakendub **inclusive** semantikaga: `error_drop_ratio >= ratio_over_records → FAIL`. Lävend on profiilipõhiselt konfigureeritav (`spec/profiles/*.yaml`); vaikimisi 5% on prototüübi demonstreerimise jaoks valitud kompromiss, tootmiskasutuses tuleks see kalibreerida ajaloolise ERROR-osakaalu jaotuse vastu.
+`outcome` on üks kolmest: `SUCCESS` (vigu pole), `PARTIAL_SUCCESS` (WARN/ERROR esinevad, kuid alla lävendi) või `FAIL` (ERROR-drop osakaal `≥ ratio_over_records`, vaikimisi 5%). Värava semantika on inclusive (`>=`); lävend on profiilipõhine (`spec/profiles/*.yaml`). Taust ja kalibratsiooni piirangud: [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md).
 
 ---
 
 ## Dokumentatsioon
 
-| Dokument | Kirjeldus |
-|----------|-----------|
-| [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md) | Ports & Adapters arhitektuur, pipeline, failipuu |
-| [`docs/ARENDUSLOGI.md`](docs/ARENDUSLOGI.md) | Tehtud otsused, valideerimisparandused, lõhed |
-| [`docs/TESTIMINE.md`](docs/TESTIMINE.md) | Testiklassid, käivitamisjuhised |
-| [`docs/SPETSIFIKATSIOONID.md`](docs/SPETSIFIKATSIOONID.md) | Skeemide, lepingute ja reeglistike indeks |
-| [`docs/runbook.md`](docs/runbook.md) | Operatiivsed käivitamiskäsud |
+Arhitektuur: [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md). Spec-indeks: [`docs/SPETSIFIKATSIOONID.md`](docs/SPETSIFIKATSIOONID.md). Testid: [`docs/TESTIMINE.md`](docs/TESTIMINE.md). Käsud: [`docs/runbook.md`](docs/runbook.md). Arendusotsuste logi: [`docs/ARENDUSLOGI.md`](docs/ARENDUSLOGI.md).
 
 ---
 

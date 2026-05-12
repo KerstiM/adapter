@@ -216,45 +216,20 @@ Raport ei ole "kõrvalprodukt", vaid **põhiartefakt**, mille põhjal tehakse ou
 
 ## Laiendatavus (UK3)
 
-Arhitektuur on kavandatud nii, et uusi projektsioone, formaatijaid ja sisendiallikaid saab lisada olemasolevat koodi muutmata (Open/Closed printsiip). Seda tõestavad kuus laiendatavuse tõendit neljal arhitektuuritasandil, mis on testitega kaetud (`tests/unit/test_scalability.py`).
+Open/Closed: uusi projektsioone, formaatijaid ja sisendiallikaid saab lisada tuumkoodi muutmata. Kõik projektsioonid (C-02 ML, C-03 LLM, C-05 stats, C-06 monthly_balance) elavad ühtses `PROJECTION_REGISTRY`-s (`backend/application/projection_registry.py`); pipeline käivitab need ühe dispatch-tsükliga, mis loeb profiili `projections` loetelu. Uue projektsiooni lisamine = üks puhas funktsioon + üks register-kirje + üks nimi profiili.
 
-**Ühtne projektsiooniregister.** Kõik projektsioonid (C-02 ML, C-03 LLM, C-05 statistika, C-06 kuubilanss) on registreeritud ühtses `PROJECTION_REGISTRY`-s (`backend/application/projection_registry.py`). Pipeline käivitab need ühe dispatch-tsükliga, mis loeb profiili `projections` loetelu. Nimetusi `"põhi-"` vs `"extra-"` projektsioone ei eksisteeri — kõik on võrdsed kodanikud sama mehhanismi all. Uue projektsiooni lisamine on **lokaalne muudatus**: üks puhas funktsioon + üks kirje registrisse + üks nimi profiili faili.
+Kuus arhitektuuritasandi tõendit (kaetud `tests/unit/test_scalability.py`-s):
 
-### Tõend 1 — Projektsiooni laiendatavus (C-05 statistika)
+| # | Tase | Näide | Mida muudeti | Mida EI muudetud |
+|---|------|-------|--------------|------------------|
+| 1 | Projektsioon | C-05 statistika | Uus puhas funktsioon + register-kirje | pipeline, pordid, adapterid |
+| 2 | Formaater | C-04 Gemma 2 | 1 leping-kirje + 1 dispatch-kirje (`model_formatters/__init__.py`) | pipeline, pordid, adapterid, teised formaatijad |
+| 3 | Sisendiadapter | `SimpleDictDatasetPort` testis | Uus Protocol-teostus (struktuuriliselt erinev FS-adapterist) | pipeline, port-liides, domain |
+| 4 | Projektsioon (struktuuriliselt uus) | C-06 kuubilanss | Ajaseeria-kuju projektsioon, aktiveeritud profiili kaudu | pipeline, SV vahekiht, teised projektsioonid |
+| 5 | Sisendiformaat | D7 püsikorraldused | S-00C skeem + valikuline `read_standing_orders_optional()` + INFORMATION-staatus C-01-s | `application/pipeline.py`, olemasolevad projektsioonid, adapterid |
+| 6 | Dispatch | Fiktiivne projektsioon | Dünaamiline register-registreerimine + profiili `projections` loetelu | pipeline (`TestUnifiedDispatchExtensibility` valideerib, et `pipeline.py` ei sisalda projektsiooninimesid) |
 
-Uus reeglipõhine projektsioon C-05 (statistika) lisati eraldiseisvana. Pipeline'i, porte ega adaptereid ei muudetud. SV vaheesitus on stabiilne laienduspunkt — iga uus projektsioon on puhas funktsioon, mis võtab SVBundle sisendiks.
-
-### Tõend 2 — Formaateri laiendatavus (C-04 dispatch, Gemma)
-
-Uus LLM formaateri moodul Gemma 2 (`domain/projections/model_formatters/llm_gemma.py`) lisati dispatch-tabelisse. Muutused:
-
-- 1 kirje `C-04_model_formatters.yaml` lepingusse (`gemma-2-2b-it` perekonnaga `gemma`)
-- 1 import + 1 dict-entry `model_formatters/__init__.py`-s
-
-Pipeline'i, porte, adaptereid ega olemasolevaid formaatijaid ei muudetud. Moodul järgib täpselt sama signatuuri ja mustrit nagu olemasolevad formaatijad (llama3, mistral, chatml). Git-diff on ise tõestus — see näitab, kui väike on muudatus.
-
-### Tõend 3 — Sisendiadapteri laiendatavus (DatasetPort)
-
-Testis defineeritud `SimpleDictDatasetPort` implementatsioon (struktuuriliselt erinev `FakeDatasetPort`-st ja FS-adapterist) läbib pipeline'i end-to-end. Pordi `Protocol` (duck typing) ei sõltu konkreetsest sisemisest struktuurist — piisab meetodite olemasolust.
-
-### Tõend 4 — Projektsiooni laiendatavus, struktuuriliselt uudne kuju (C-06 kuubilanss)
-
-C-06 (kuubilanss) toodab ajaseeria-kujulise cashflow projektsiooni — kuju, mis on struktuuriliselt erinev C-02 (lame), C-03 (kontekstiaken) ja C-05 (lamedad agregaadid) omast. Tõestab, et SV vahekiht toetab ka ajalis-akumulatiivset projektsiooni ilma pipeline'i muutmata. Aktiveeritakse profiili kaudu (`projections: [ml, llm, stats, monthly_balance]`).
-
-### Tõend 5 — Sisendiformaadi laiendatavus (D7 standing orders)
-
-Pipeline käsitleb uut finantsinstrumendi tüüpi (püsikorraldused) ilma pipeline'i tuumkoodi muutmata. Muudatused:
-
-- S-00C skeem (`spec/schemas/S-00C_berlin_standing_orders.schema.json`)
-- Valikuline portimeetod `read_standing_orders_optional()` DatasetPort'is
-- INFORMATION staatuse tugi kaardistuses (C-01)
-- valueDate fallback nextExecutionDate'ist
-
-Pipeline'i orkestreerimiskoodi (`application/pipeline.py`), olemasolevaid projektsioone ega adaptereid ei muudetud. INFORMATION tehingud läbivad SV standardiseerimise, aga jäetakse korrektselt välja ML ja LLM projektsioonidest.
-
-### Tõend 6 — Ühtne dispatch, uue projektsiooni lokaalne lisamine
-
-Fiktiivne uus projektsioon registreeritakse dünaamiliselt `PROJECTION_REGISTRY`-sse ja aktiveeritakse profiili `projections` loetelu kaudu. Pipeline käivitab selle automaatselt ilma ühegi koodimuudatuseta. `TestUnifiedDispatchExtensibility` klassi testid kontrollivad muuhulgas, et pipeline.py ei sisalda konkreetseid projektsiooninimesid — kõik nimed elavad registris, mitte koodis. See kaotab varasema eristuse "põhi-" (C-02/C-03) vs "extra-" (C-05/C-06) projektsioonide vahel.
+Iga rida tõestab Open/Closed printsiipi: laiendus on **lokaalne**, tuumkoodi (`application/pipeline.py`, `domain/`) ei puudutata. Git-diff suurus on iseseisev tõestus.
 
 ---
 

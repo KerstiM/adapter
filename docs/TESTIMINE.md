@@ -36,18 +36,16 @@ Testivad end-to-end voo: sisend → SV → ML/LLM → raport → skeemivalideeri
 
 ### SLI/SLO-testid (`backend/tests/sli_slo/`)
 
-Kvaliteedimõõdikute automatiseeritud valideerimine. 72 testi, mis kontrollivad:
-
-| SLI | Kirjeldus |
-|-----|-----------|
-| SLI-1 | Skeemikatvus: prioriteetsete väljade kaetus (≥ 0.95) |
-| SLI-2 | Valideerimisläbilaskvus: puhta sisendi korral 100% |
-| QC-2 | Drop-raporteerimine: kõik dropitud kirjed on `dropped_details[]`-s selgitatud |
-| SLI-3 | Invariantide vastavus: kriitilisi rikkumisi 0 |
-| Gate | Veadropide osakaal: <5% → PARTIAL_SUCCESS, ≥5% → FAIL |
-| SLI-4 | Determinism: N=5 jooksu identsed artefaktid |
-| SLI-5 | Auditiraja täielikkus: kõik kohustuslikud metaväljad olemas |
-| SLI-6 | Viitejõudlus: D9 (1000 tx) mediaan ≤ 500 ms |
+| Mõõdik | Tähendus | Sihttase |
+|--------|----------|----------|
+| SLI-1 | Skeemikatvus — prioriteetsete SV väljade kaetus | ≥ 0.95 |
+| SLI-2 | Valideerimisläbilaskvus — puhta sisendi alleshoid | = 1.0 |
+| SLI-3 | Invariantide vastavus — ERROR-rikkumiste puudumine | kriitilisi = 0 |
+| SLI-4 | Determinism — N=5 jooksu baidi-identsed artefaktid | identsus |
+| SLI-5 | Auditiraja täielikkus — kohustuslikud metaväljad raportis | kõik olemas |
+| SLI-6 | Viitejõudlus — D9 (1000 tx) jooksuaja mediaan | ≤ 500 ms |
+| QC-2 | Drop-raporteerimine — iga dropp on `dropped_details[]`-s | kõik kaetud |
+| Gate | Fail-värav — ERROR-drop osakaal sisendist | ≥ 5% → FAIL |
 
 Tulemused: [`backend/tests/sli_slo/RESULTS.md`](../backend/tests/sli_slo/RESULTS.md).
 
@@ -114,6 +112,4 @@ python scripts/qa/run_full_qa.py --skip-golden
 
 ## Eeldused
 
-```bash
-pip install jsonschema pyyaml
-```
+Sõltuvused: `pip install -r backend/requirements.txt` (vt README "Käivitamine").
