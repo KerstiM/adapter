@@ -12,39 +12,11 @@ ADAPTER_VERSION = "0.1.0"
 SEVERITY_RANK: dict[str, int] = {"INFO": 0, "WARN": 1, "ERROR": 2, "CRITICAL": 3}
 
 
-# ---------------------------------------------------------------------------
-# SLI-1: Skeemikatvus — prioriteetsete SV väljade katvus
-# ---------------------------------------------------------------------------
-#
-# SLI-1 = covered_priority_fields / all_priority_fields
-#
-# SLI-1 on spetsifikatsioonitaseme näitaja. See mõõdab, kui suurele osale
-# standardiseeritud vaheesituse (SV) prioriteetsetest väljadest on määratud
-# üheselt tõlgendatav täitmis- või tuletamisloogika.
-#
-# See näitaja ei sõltu konkreetsest andmestikust ega jooksust.
-#
-# Teostus: eksplitsiitne, käsitsi hooldatav katvusdeklaratsioon.
-# Iga kirje allolevas sõnastikus seob SV väljatee (dotted path)
-# tõeväärtusega, mis näitab, kas C-01 defineerib sellele väljale
-# kaardistus- või tuletamisloogika.
-#
-# Tegemist ei ole automaatselt tuletatud tõestusega, vaid käsitsi
-# hooldatava deklaratsiooniga, mis peab püsima C-01 teostusega kooskõlas.
-#
-# Skoobi otsus — kaasatud:
-#   Kõik SV tehingutaseme väljad S-01-st, millele C-01
-#   map_single_transaction() defineerib kaardistuse või tuletuse:
-#   - äriväljad (identiteet, kuupäevad, summad, vastaspool jne)
-#   - allikaviited (source.input_file, source.input_path), sest
-#     jälgitavus on lõputöö disainieesmärk
-#
-# Skoobi otsus — välistatud:
-#   - SVBundle.meta (jooksu kontekst, ei ole C-01 kaardistus)
-#   - SVBundle.accounts (kaardistatud eraldi)
-#   - flags[] (kvaliteediannotatsioonid, mitte andmeväljad)
-# ---------------------------------------------------------------------------
-
+# SLI-1 katvusdeklaratsioon: SV prioriteetsete väljade kohta, millele C-01
+# defineerib kaardistuse või tuletuse. Käsitsi hooldatav — peab püsima C-01
+# `map_single_transaction()` teostusega kooskõlas. Skoop: kõik tehingutaseme
+# väljad S-01-st (sh `source.*` jälgitavuseks); välja jäävad `SVBundle.meta`,
+# `accounts` (kaardistatud eraldi) ja `flags[]` (annotatsioonid, mitte väljad).
 SLI1_FIELD_COVERAGE: dict[str, bool] = {
     # Identity & classification
     "record_id":            True,   # SHA-256 hash derived from composite key

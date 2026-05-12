@@ -75,7 +75,7 @@ Täpsem runbook: [`docs/runbook.md`](docs/runbook.md).
 Prototüüp on mõeldud **lokaalseks käivitamiseks** (no-egress, vt lõputöö ptk 1).
 Koodi turvapiirid on joondatud selle eeldusega:
 
-- **HTTP API** (`backend/entrypoints/api.py`) seotakse vaikimisi `127.0.0.1:5000` peale, ilma autentimiseta. Hosti ja porti saab override'ida keskkonnamuutujatega `ADAPTER_HTTP_HOST` ja `ADAPTER_HTTP_PORT` — **ärge seadke `0.0.0.0` ilma eelneva autentimis-proxi ja võrgupiiranguteta**, sest `/api/run` vastuses olev `llmPreview.rawContexts` (kui `includeRaw: true` on päringus) sisaldab tehingutasemel andmeid.
+- **HTTP API** (`backend/entrypoints/api.py`) seotakse vaikimisi `127.0.0.1:8000` peale, ilma autentimiseta. Hosti ja porti saab override'ida keskkonnamuutujatega `ADAPTER_HTTP_HOST` ja `ADAPTER_HTTP_PORT` — **ärge seadke `0.0.0.0` ilma eelneva autentimis-proxi ja võrgupiiranguteta**, sest `/api/run` vastuses olev `llmPreview.rawContexts` (kui `includeRaw: true` on päringus) sisaldab tehingutasemel andmeid.
 - **CORS** on vaikimisi kitsendatud päritoludele `http://localhost:5173` ja `http://127.0.0.1:5173` (Vite dev-server). Allowlist'i saab laiendada keskkonnamuutujaga `ADAPTER_CORS_ORIGINS` (komadega eraldatud loetelu). Wildcard (`*`) ei ole toetatud.
 - **`rawContexts` on opt-in**: `POST /api/run` vastus sisaldab täielikke LLM-kontekste ainult siis, kui keha sisaldab `"includeRaw": true`. Ilma selleta näidatakse vaid kokkuvõte (narratiiv, kontoagregatsioon, tippkategooriad) — isikutuvastavad tehingudetailid jäävad kõrvale.
 - **Päringu keha** on piiratud 1 MB-le (`MAX_BODY_BYTES`); vigane JSON, puuduv või negatiivne `Content-Length` tagastatakse 400/413-ga enne allokeerimist.
@@ -91,52 +91,15 @@ Turvaregressioonid on kaetud [`backend/tests/unit/test_api_security.py`](backend
 
 ## Arhitektuur (Ports & Adapters)
 
-Lokaalselt käivitatav modulaarne monoliit. Tuumloogika on I/O-st lahutatud **portide** kaudu.
+Lokaalselt käivitatav modulaarne monoliit. Tuumloogika on I/O-st lahutatud **portide** kaudu:
 
-```
-backend/
-    domain/                          # puhas äriloogika, ei tee I/O-d
-        mapping/c01_raw_to_sv.py     #   RAW → SV kaardistus (C-01)
-        projections/c02_sv_to_ml.py  #   SV → ML projektsioon (C-02)
-        projections/c03_sv_to_llm.py #   SV → LLM kontekst (C-03)
-        projections/c05_sv_to_stats.py       # statistika (C-05)
-        projections/c06_sv_to_monthly_balance.py  # kuubilanss (C-06)
-        projections/model_formatters/#   C-04 mudeliformaatijad
-        rules/invariants_r01.py      #   invariandid + dedupe (R-01)
-        report/models.py             #   Issue, RunFlag, CollectedRunReport
-        report/ops.py                #   outcome, counts, by_severity
+- `backend/domain/` — puhas äriloogika (kaardistus, projektsioonid, reeglid, raport); ei tee I/O-d.
+- `backend/ports/` — abstraktsed liidesed (`DatasetPort`, `OutputPort`, `SpecPort`, `ClockPort`, `ValidationPort`).
+- `backend/application/` — orkestreerimine (`pipeline.py`); räägib ainult portidega.
+- `backend/entrypoints/` — driving-adapterid: `cli_run_adapter.py`, `wiring_fs.py`, `api.py`.
+- `backend/adapters/` — portide teostused (`fs/`, `validation/`, `system/`, `testing/`).
 
-    ports/                           # abstraktsed liidesed (ei I/O, ei Path)
-        dataset_port.py              #   sisendi lugemine
-        output_port.py               #   artefaktide kirjutamine
-        spec_port.py                 #   skeemid, lepingud, profiilid
-        clock_port.py                #   aeg + run ID (determinism)
-
-    application/                     # orkestreerimine, räägib ainult portidega
-        pipeline.py                  #   8-etapiline pipeline (run_pipeline)
-
-    entrypoints/                     # driving-adapter: väline maailm → pipeline
-        cli_run_adapter.py           #   CLI sisenemispunkt (argparse → wiring)
-        wiring_fs.py                 #   FS-adapterid + kell → run_pipeline
-        api.py                       #   stdlib HTTP API server (port 5000)
-
-    adapters/
-        fs/                          # failisüsteemi I/O teostused
-            dataset_fs.py            #     datasets/ lugemine
-            output_fs.py             #     run folder + failide kirjutamine
-            spec_fs.py               #     spec/ laadimine
-        system/                      # tootmise adapterid
-            clock_real.py            #     RealClock (süsteemiaeg + uuid4)
-        testing/                     # testide adapterid
-            clock_fixed.py           #     FixedClock (deterministlik kell)
-
-    tests/                           # testid (vt allpool)
-```
-
-**Importimisreegel:** `domain` → ei impordi `adapters`, `ports`, `pathlib`, `os`.
-`application` → impordib `domain` + `ports`, ei tee I/O-d. `adapters` → teostavad portide liideseid (duck typing).
-
-Täpsem arhitektuurikirjeldus: [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md).
+Täpne failipuu, importimisreeglid ja iga porti liidese täielik kirjeldus: [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md).
 
 ---
 

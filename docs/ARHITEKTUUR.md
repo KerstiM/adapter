@@ -140,6 +140,7 @@ backend/
         output_port.py               #   artefaktide kirjutamine
         spec_port.py                 #   skeemid, lepingud, profiilid
         clock_port.py                #   aeg + run ID (determinism)
+        validation_port.py           #   JSON Schema valideerimine
 
     application/                     # orkestreerimine, räägib ainult portidega
         pipeline.py                  #   8-etapiline pipeline (run_pipeline)
@@ -147,12 +148,15 @@ backend/
     entrypoints/                     # driving-adapter: väline maailm → pipeline
         cli_run_adapter.py           #   CLI entry point (argparse → wiring)
         wiring_fs.py                 #   FS-adapterid → run_pipeline
-        api.py                       #   stdlib HTTP API server (port 5000)
+        api.py                       #   stdlib HTTP API server (port 8000)
 
     adapters/fs/                     # failisüsteemi I/O teostused
         dataset_fs.py                #   datasets/ lugemine failisüsteemist
         output_fs.py                 #   run folder + failide kirjutamine
         spec_fs.py                   #   spec/ laadimine failisüsteemist
+
+    adapters/validation/             # valideerimisteostus
+        jsonschema_adapter.py        #   JsonSchemaValidationAdapter (jsonschema teek)
 
     adapters/system/                 # tootmise adapterid
         clock_real.py                #   RealClock (datetime.now(utc) + uuid4)
@@ -168,7 +172,7 @@ backend/
 ## Importimisreegel (sõltuvuspiir)
 
 - **`domain`** → ei impordi `adapters`, `ports`, `pathlib`, `os`. Ainult standardlib (`hashlib`, `decimal`, `datetime`).
-- **`application`** → impordib `domain` + `ports`; kasutab ka `jsonschema` valideerimiseks. Ei tee I/O-d.
+- **`application`** → impordib `domain` + `ports`; valideerimine käib `ValidationPort` kaudu (`jsonschema` teek elab `adapters/validation/`-s). Ei tee I/O-d.
 - **`ports`** → ainult liidesed (`Protocol`-klassid); ei I/O, ei `Path`.
 - **`adapters`** → teostavad `ports/` Protocol-liideseid (strukturaalne alamtüüpimine); impordivad I/O teegid (`json`, `csv`, `pathlib`, `yaml`).
 - **`entrypoints`** → impordib `application` ja `adapters`; composition root (portide liideseid otse ei impordi).
@@ -197,6 +201,7 @@ Mudelispetsiifilised artefaktid (tekivad ainult siis, kui CLI, API või profiil 
 - `SpecPort`: `load_profile(profile_id)`, `load_schema(id)`, `load_contract(id)`, `load_ruleset(id)`
 - `OutputPort`: `init_run_folder(run_id, created_at_utc)`, `write_sv(bundle)`, `write_ml(rows)`, `write_llm(context)`, `write_report(report)`, `write_ml_model(output, model_suffix)`, `write_llm_model(output, model_suffix)`, `write_extra_projection(data, filename)`
 - `ClockPort`: `now_utc()`, `new_run_id()`
+- `ValidationPort`: `validate(data, schema) → list[dict]` (JSON Schema valideerimine; teostus `adapters/`-s, et `jsonschema` teek tuumast väljas püsiks)
 
 ---
 

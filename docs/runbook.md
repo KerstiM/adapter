@@ -203,7 +203,7 @@ CLI prindib alati:
 API server (`python -m entrypoints.api`) toetab mudeli valikut `POST /api/run` päringus:
 
 ```bash
-curl -X POST http://localhost:5000/api/run \
+curl -X POST http://localhost:8000/api/run \
   -H "Content-Type: application/json" \
   -d '{
     "datasetId": "D1",
