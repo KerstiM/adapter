@@ -6,6 +6,12 @@ __pycache__/
 *.py[cod]
 *.pyo
 
+# Coverage.py
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
 # Node / Vue frontend
 node_modules/
 dist/
