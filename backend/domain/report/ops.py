@@ -118,18 +118,32 @@ def derive_sli1_coverage_from_sv(
     return coverage
 
 
+def _count_severities(items) -> dict[str, int]:
+    """Count ``"severity"`` values across any iterable of dicts.
+
+    The known severity levels are fixed (CRITICAL/ERROR/WARN/INFO); other
+    values are silently ignored.  Shared kernel for the two public
+    counters below — keeps the level set in one place.
+    """
+    counts: dict[str, int] = {"CRITICAL": 0, "ERROR": 0, "WARN": 0, "INFO": 0}
+    for item in items:
+        sev = item.get("severity", "")
+        if sev in counts:
+            counts[sev] += 1
+    return counts
+
+
 def count_flags_by_severity(
     sv_transactions: list[dict],
     dropped: list[dict],
 ) -> dict[str, int]:
     """Count flag severities across all transactions (valid + dropped)."""
-    counts: dict[str, int] = {"CRITICAL": 0, "ERROR": 0, "WARN": 0, "INFO": 0}
-    for tx in sv_transactions + dropped:
-        for flag in tx.get("flags", []):
-            sev = flag.get("severity", "")
-            if sev in counts:
-                counts[sev] += 1
-    return counts
+    flags = (
+        flag
+        for tx in sv_transactions + dropped
+        for flag in tx.get("flags", [])
+    )
+    return _count_severities(flags)
 
 
 def count_issues_by_severity(issues: list[dict]) -> dict[str, int]:
@@ -139,12 +153,7 @@ def count_issues_by_severity(issues: list[dict]) -> dict[str, int]:
     this covers all pipeline-level issues including READ_INPUT schema
     errors, STANDARDIZE_TO_SV mapping drops, and VALIDATE_SCHEMA errors.
     """
-    counts: dict[str, int] = {"CRITICAL": 0, "ERROR": 0, "WARN": 0, "INFO": 0}
-    for issue in issues:
-        sev = issue.get("severity", "")
-        if sev in counts:
-            counts[sev] += 1
-    return counts
+    return _count_severities(issues)
 
 
 def build_dropped_details(
