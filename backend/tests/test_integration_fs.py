@@ -1467,6 +1467,9 @@ ALL_DATASETS: list[str] = [
     "D9_synth_perf_seed9",
     "D10_real_deid_oct16",
     "D11_real_deid_2024",
+    "D12_synth_partial_low_seed42",
+    "D13_synth_partial_mid_seed42",
+    "D14_synth_partial_high_seed42",
 ]
 
 
