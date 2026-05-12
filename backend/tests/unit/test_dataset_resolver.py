@@ -72,3 +72,36 @@ def test_missing_search_dir_is_silently_skipped(tmp_path):
     _make_dataset(tmp_path, "D1_real")
     assert resolve_dataset_by_name("D1", [missing, tmp_path]) == \
         tmp_path / "D1_real"
+
+
+def test_absolute_path_in_name_is_rejected(tmp_path):
+    # A directory containing accounts.json outside any search_dir must
+    # not be reachable by passing its absolute path as the dataset name.
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (outside / "accounts.json").write_text("{}")
+    search_dir = tmp_path / "datasets"
+    search_dir.mkdir()
+    assert resolve_dataset_by_name(str(outside), [search_dir]) is None
+
+
+def test_dotdot_traversal_in_name_is_rejected(tmp_path):
+    # ".." segments must not escape the search_dir sandbox even if a
+    # sibling folder with accounts.json exists.
+    sibling = tmp_path / "sibling"
+    sibling.mkdir()
+    (sibling / "accounts.json").write_text("{}")
+    search_dir = tmp_path / "datasets"
+    search_dir.mkdir()
+    assert resolve_dataset_by_name("../sibling", [search_dir]) is None
+
+
+def test_backslash_in_name_is_rejected(tmp_path):
+    # Windows-style separators must not be treated as a valid name.
+    _make_dataset(tmp_path, "D1_real")
+    assert resolve_dataset_by_name("..\\D1_real", [tmp_path]) is None
+
+
+def test_empty_name_returns_none(tmp_path):
+    _make_dataset(tmp_path, "D1_real")
+    assert resolve_dataset_by_name("", [tmp_path]) is None

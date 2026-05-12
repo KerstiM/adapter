@@ -36,14 +36,16 @@ def resolve_dataset_by_name(
     Returns ``None`` when no candidate qualifies; raises
     :class:`AmbiguousDatasetError` when more than one does.
     """
+    # Reject anything that isn't a single name component — prevents
+    # absolute paths and ".." traversal from escaping search_dirs when
+    # called with untrusted input (e.g. an HTTP request body).
+    if not name or "/" in name or "\\" in name or name in (".", ".."):
+        return None
+
     name_upper = name.upper()
     for search_dir in search_dirs:
         if not search_dir.is_dir():
             continue
-
-        exact = search_dir / name
-        if exact.is_dir() and (exact / "accounts.json").exists():
-            return exact
 
         matches = sorted(
             d for d in search_dir.iterdir()
