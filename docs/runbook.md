@@ -4,24 +4,15 @@ See dokument koondab **operatiivsed käsud** (üks dataset, kõik datasetid, val
 
 ## Käivitusrežiimid lühidalt
 
-Adapter toetab kolme tüüpi jookse. Kõigi puhul tekib eraldi
-`<timestamp>_<run_id>/` kaust ja igal juhul toodetakse `sv.json` ja
-`report.json`; erinevus on `projections/` sisus.
+Iga töötlus tekitab `<timestamp>_<run_id>/` kausta `sv.json` ja `report.json`-ga. `projections/` sisu sõltub argumentidest:
 
-| Režiim | Käsk (näide) | Lisanduvad failid kaustas `projections/` |
-|---|---|---|
-| **Baas (mudelita)** | `python backend/entrypoints/cli_run_adapter.py --data D1` | `ml_v1.csv`, `llm_context_v1.json` |
-| **Mudelitega** | `python backend/entrypoints/cli_run_adapter.py --data D1 --target-llm llama3.1-8b-instruct --target-ml xgboost` | baas + mudelispetsiifilised vormindused (`llm_context_v1_<perekond>.json`, `ml_v1_<mudel>.json`) |
-| **Laiendatud profiil** | `python backend/entrypoints/cli_run_adapter.py --data D1 --profile extensions_eval` | baas + `stats_v1.json`, `monthly_balance_v1.json` |
+| Režiim | Käsk |
+|---|---|
+| Baas | `python backend/entrypoints/cli_run_adapter.py --data D1` |
+| Mudeli-vorming | `... --target-llm llama3.1-8b-instruct --target-ml xgboost` |
+| Laiendatud profiil | `... --profile extensions_eval` |
 
-> **NB.** Adapter ei kutsu välja LLM-i ega ML-mudelit — see vaid genereerib
-> deterministlikud sisendfailid (`projections/`), mida saab anda välistele
-> mudelitele. `--target-llm` ja `--target-ml` valivad **vormingu** (vt
-> [`spec/contracts/C-04_model_formatters.yaml`](../spec/contracts/C-04_model_formatters.yaml)),
-> mitte ei käivita inferentsi.
-
-Allpool on iga režiimi täpsem käivitusjuhend ja jaotises **4** kogu
-väljundi kaustastruktuur ning lipp→fail tabel.
+`--target-*` valib **vormingu** (`spec/contracts/C-04_model_formatters.yaml`), mitte ei käivita inferentsi.
 
 ## Eeldused
 
@@ -203,7 +194,7 @@ CLI prindib alati:
 API server (`python -m entrypoints.api`) toetab mudeli valikut `POST /api/run` päringus:
 
 ```bash
-curl -X POST http://localhost:5000/api/run \
+curl -X POST http://localhost:8000/api/run \
   -H "Content-Type: application/json" \
   -d '{
     "datasetId": "D1",

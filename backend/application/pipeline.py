@@ -680,7 +680,9 @@ def _finalize_run(
         - warn_flagged_kept
     )
 
-    # Gate: same fail_severity / fail_ratio used by determine_outcome
+    # Gate: same fail_severity / fail_ratio used by determine_outcome.
+    # Inclusive semantics: drop_ratio >= fail_ratio → FAIL. Threshold key:
+    # run_policy.partial_success_policy.fail_on.ratio_over_records (profile).
     run_policy = ctx.profile.get("run_policy", {}).get("partial_success_policy", {})
     fail_on = run_policy.get("fail_on", {})
     fail_severity = fail_on.get("any_severity", "ERROR")

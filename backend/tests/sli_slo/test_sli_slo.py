@@ -50,16 +50,33 @@ import pytest
 from application.pipeline import run_pipeline
 from tests.fakes import FakeDatasetPort, FakeOutputPort, FakeSpecPort, FakeValidationPort, FixedClock
 from tests.fakes.builders import make_accounts as _accounts, make_tx as _tx, make_report as _report
+from tests.fakes.fake_spec_port import _default_profile
 
 
-def _run(*, accounts: dict | None = None, booked: list | None = None, pending: list | None = None, clock: FixedClock | None = None) -> tuple[dict, FakeOutputPort]:
-    """Käivita pipeline etteantud andmetega; tagasta (kokkuvõte, väljundport)."""
+def _run(
+    *,
+    accounts: dict | None = None,
+    booked: list | None = None,
+    pending: list | None = None,
+    clock: FixedClock | None = None,
+    fail_ratio: float | None = None,
+) -> tuple[dict, FakeOutputPort]:
+    """Käivita pipeline etteantud andmetega; tagasta (kokkuvõte, väljundport).
+
+    Kui ``fail_ratio`` on antud, override'itakse profiili kvaliteedivärava
+    lävend (`run_policy.partial_success_policy.fail_on.ratio_over_records`).
+    """
     dataset = FakeDatasetPort(
         accounts=accounts or _accounts(),
         transaction_reports={"transactions.json": _report(booked=booked or [], pending=pending or [])},
     )
     out = FakeOutputPort()
-    spec = FakeSpecPort()
+    if fail_ratio is None:
+        spec = FakeSpecPort()
+    else:
+        profile = _default_profile()
+        profile["run_policy"]["partial_success_policy"]["fail_on"]["ratio_over_records"] = fail_ratio
+        spec = FakeSpecPort(profile_override=profile)
     _clock = clock or FixedClock()
     summary = run_pipeline(
         dataset=dataset,
@@ -675,21 +692,21 @@ class TestGateFailPolicy:
         summary, _ = _run(booked=good + [bad])
         assert summary["outcome"] == "FAIL"
 
-    def test_exactly_5pct_error_rate_is_partial_success(self) -> None:
-        """Piirijuhtum: 1 vigane 20-st = täpselt 5,00 % → PARTIAL_SUCCESS.
+    def test_exactly_5pct_error_rate_is_fail(self) -> None:
+        """Piirijuhtum: 1 vigane 20-st = täpselt 5,00 % → FAIL.
 
-        See pinnutab gate'i semantika: fail-lävend on **range** (`> 5 %`),
-        mitte inklusiivne. Täpselt lävendil olev jooks loetakse osaliselt
-        õnnestunuks.
+        Pinnutab gate'i semantika: fail-lävend on **inclusive** (`>= 5 %`).
+        Täpselt lävendil olev jooks loetakse läbikukkunuks (konservatiivne
+        valik, et vältida „piiril on OK" tõlgendust).
         """
         bad = _tx(currency="xx", transaction_id="BAD")
         good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(19)]
         summary, _ = _run(booked=good + [bad])
-        assert summary["outcome"] == "PARTIAL_SUCCESS"
+        assert summary["outcome"] == "FAIL"
         assert summary["metrics"]["gate"]["error_drop_ratio"] == 0.05
 
     def test_just_above_5pct_error_rate_is_fail(self) -> None:
-        """Piirijuhtum: 1 vigane 19-st ≈ 5,26 % → FAIL (> 5 % range)."""
+        """Piirijuhtum: 1 vigane 19-st ≈ 5,26 % → FAIL (>= 5 % inclusive)."""
         bad = _tx(currency="xx", transaction_id="BAD")
         good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(18)]
         summary, _ = _run(booked=good + [bad])
@@ -737,6 +754,44 @@ class TestGateFailPolicy:
         # 20% > 5% → must be FAIL
         assert summary["outcome"] == "FAIL"
         assert gate["error_drop_ratio"] > 0.05
+
+    @pytest.mark.parametrize(
+        "n_total,n_errors,fail_ratio,expected_outcome",
+        [
+            # 1% boundary
+            (101, 1, 0.01, "PARTIAL_SUCCESS"),  # 0.99% → PARTIAL
+            (100, 1, 0.01, "FAIL"),             # exactly 1.00% → FAIL (inclusive)
+            # 3% boundary — proves the mechanism is not 1%/5%-specific
+            (100, 2, 0.03, "PARTIAL_SUCCESS"),  # 2.00% → PARTIAL
+            (100, 3, 0.03, "FAIL"),             # exactly 3.00% → FAIL
+            # 5% boundary (regression vs default profile)
+            (21,  1, 0.05, "PARTIAL_SUCCESS"),  # 4.76% → PARTIAL
+            (20,  1, 0.05, "FAIL"),             # exactly 5.00% → FAIL
+        ],
+        ids=[
+            "1pct-just-below",
+            "1pct-at-boundary",
+            "3pct-just-below",
+            "3pct-at-boundary",
+            "5pct-just-below",
+            "5pct-at-boundary",
+        ],
+    )
+    def test_gate_boundary_inclusive_semantics(
+        self, n_total: int, n_errors: int, fail_ratio: float, expected_outcome: str
+    ) -> None:
+        """Gate'i inclusive `>=` semantika kehtib suvalisel lävendil.
+
+        Iga lävendi (1%, 3%, 5%) jaoks kontrollitakse kahte juhtumit:
+        just-below (PARTIAL_SUCCESS) ja täpselt-piiril (FAIL). See valideerib,
+        et värav käitub parameetrilise mehhanismina, mitte konkreetse 5%
+        väärtuse koodi-spetsiifilise ankruna.
+        """
+        n_clean = n_total - n_errors
+        good = [_tx(transaction_id=f"G{i}", amount=str(10 + i)) for i in range(n_clean)]
+        bad = [_tx(currency="xx", transaction_id=f"BAD{i}") for i in range(n_errors)]
+        summary, _ = _run(booked=good + bad, fail_ratio=fail_ratio)
+        assert summary["outcome"] == expected_outcome
 
 
 # ---------------------------------------------------------------------------

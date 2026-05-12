@@ -1,7 +1,7 @@
 {
   "frozen_version": "v1.0.0",
-  "frozen_at": "2026-04-24T12:12:42Z",
-  "spec_lock_sha256": "cf7e876e056bf4249a1d350e1c425e0aeb195ab626d03c55feac06a0ad81cf22",
+  "frozen_at": "2026-05-10T12:22:24Z",
+  "spec_lock_sha256": "5142a3b9f1cfb16d650b7e2686a9e5bcc081adfb0f9478c73a018e1312b4914b",
   "datasets": [
     {
       "dataset_id": "D10_real_deid_oct16",
@@ -54,6 +54,87 @@
         "ml_rows": 148,
         "llm_contexts": 2
       }
+    },
+    {
+      "dataset_id": "D12_synth_partial_low_seed42",
+      "expected_outcome": "PARTIAL_SUCCESS",
+      "golden": {
+        "sv.json": {
+          "sha256": "52e971b47fc219397c922aa430d4798ac33536aa31ebf6b9d632bb4503158a35"
+        },
+        "report.json": {
+          "sha256": "484d49da5dcd584ec54de5542d5931508950a0bf5d63a4e88d25867a7c4ab4af"
+        },
+        "ml_v1.csv": {
+          "sha256": "e57a63d03ffa3b0d31e4b08728c1727f37dfe3a6fb59f77c67e97642f791c874"
+        },
+        "llm_context_v1.json": {
+          "sha256": "0ae661b7743b17c9c49269b22abc62d8abc9da796e3e1335c11fb1e64deddd2a"
+        }
+      },
+      "counts": {
+        "accounts_total": 1,
+        "transactions_total": 200,
+        "transactions_emitted_sv": 199,
+        "transactions_dropped": 1,
+        "ml_rows": 199,
+        "llm_contexts": 1
+      },
+      "expected_raw_validation": "FAIL"
+    },
+    {
+      "dataset_id": "D13_synth_partial_mid_seed42",
+      "expected_outcome": "PARTIAL_SUCCESS",
+      "golden": {
+        "sv.json": {
+          "sha256": "7ef6fabb352042ecf2a00a270407a4f1a69b4f3e4f79ea81356d96f300211444"
+        },
+        "report.json": {
+          "sha256": "623fb1b7c24a23e40d4c3ea4f5ced66370da82cf85b3249a5f6394afe6f5ead9"
+        },
+        "ml_v1.csv": {
+          "sha256": "c12698de2c42cafdf00c90df92675766a85b904eee60067cb916277475bb55b2"
+        },
+        "llm_context_v1.json": {
+          "sha256": "e855169fe9ff9e29a4022dd0f43b4e9dfc3c3d9345bc5e1610ed0e5d93789391"
+        }
+      },
+      "counts": {
+        "accounts_total": 1,
+        "transactions_total": 100,
+        "transactions_emitted_sv": 97,
+        "transactions_dropped": 3,
+        "ml_rows": 97,
+        "llm_contexts": 1
+      },
+      "expected_raw_validation": "FAIL"
+    },
+    {
+      "dataset_id": "D14_synth_partial_high_seed42",
+      "expected_outcome": "FAIL",
+      "golden": {
+        "sv.json": {
+          "sha256": "3596bfdb8850f6cbd0adf709c8838cf6529eff5380e1944f643a3cfe2c2e6f45"
+        },
+        "report.json": {
+          "sha256": "c53e525d499d008388c16e6b1ca4a0c0fc1430131b881afab105b419fce2be39"
+        },
+        "ml_v1.csv": {
+          "sha256": "b9124b0f960ce508c687de724d031baec0ca64527547a7a84e2cdd6da5f89f38"
+        },
+        "llm_context_v1.json": {
+          "sha256": "55ff9c7c651093370c580a77850ff7b3379bb25988715fc4e6aaf0aea7578add"
+        }
+      },
+      "counts": {
+        "accounts_total": 1,
+        "transactions_total": 100,
+        "transactions_emitted_sv": 93,
+        "transactions_dropped": 7,
+        "ml_rows": 93,
+        "llm_contexts": 1
+      },
+      "expected_raw_validation": "FAIL"
     },
     {
       "dataset_id": "D1_synth_valid_small",

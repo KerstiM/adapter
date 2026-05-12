@@ -1,0 +1,12 @@
+{
+  "accounts": [
+    {
+      "cashAccountType": "CACC",
+      "currency": "EUR",
+      "iban": "DE43321819600133890838",
+      "name": "D14_synth_partial_high_seed42 Account",
+      "product": "Current Account",
+      "resourceId": "bdd640fb-0667-4ad1-9c80-317fa3b1799d"
+    }
+  ]
+}

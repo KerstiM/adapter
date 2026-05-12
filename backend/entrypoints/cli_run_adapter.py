@@ -42,6 +42,10 @@ _BACKEND_ROOT = Path(__file__).resolve().parent.parent
 if str(_BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(_BACKEND_ROOT))
 
+from entrypoints._dataset_resolver import (  # noqa: E402
+    AmbiguousDatasetError,
+    resolve_dataset_by_name,
+)
 from entrypoints.wiring_fs import run_pipeline_fs  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -65,43 +69,24 @@ _BAR = "=" * 72
 def _resolve_data_dir(name: str) -> Path:
     """Resolve a dataset name or path to an actual directory.
 
-    Tries in order:
-      1. Exact path as given, or path relative to repo root
-      2. Exact folder name under datasets/
-      3. Prefix match: folder equals *name* (case-insensitive) or starts
-         with *name* + ``"_"`` (case-insensitive).  The ``"_"`` fence
-         prevents ``D1`` from matching ``D10_*``.
+    CLI accepts a direct path (absolute or relative) in addition to the
+    name-based lookup shared with the HTTP API.
     """
-    # 1. Direct path — try as-given and resolved against repo root so that
-    #    e.g. ``datasets/D1_*`` works from both repo root and backend/.
     for p in (Path(name), ROOT / name):
         if p.is_dir() and (p / "accounts.json").exists():
             return p
 
-    # 2 & 3. Search known dirs
-    name_upper = name.upper()
-    for search_dir in SEARCH_DIRS:
-        if not search_dir.is_dir():
-            continue
-        # Exact folder-name match
-        candidate = search_dir / name
-        if candidate.is_dir() and (candidate / "accounts.json").exists():
-            return candidate
-        # Prefix match – require name + "_" so "D1" won't match "D10_*"
-        matches = sorted(
-            d for d in search_dir.iterdir()
-            if d.is_dir()
-            and (d.name.upper() == name_upper
-                 or d.name.upper().startswith(name_upper + "_"))
-            and (d / "accounts.json").exists()
-        )
-        if len(matches) == 1:
-            return matches[0]
-        if len(matches) > 1:
-            names = ", ".join(m.name for m in matches)
-            raise SystemExit(f"Ambiguous dataset '{name}', matches: {names}")
+    try:
+        match = resolve_dataset_by_name(name, SEARCH_DIRS)
+    except AmbiguousDatasetError as e:
+        raise SystemExit(str(e))
+    if match is not None:
+        return match
 
-    raise SystemExit(f"Dataset '{name}' not found. Checked: {', '.join(str(d) for d in SEARCH_DIRS)}")
+    raise SystemExit(
+        f"Dataset '{name}' not found. Checked: "
+        f"{', '.join(str(d) for d in SEARCH_DIRS)}"
+    )
 
 
 def _build_target_models_override(args: argparse.Namespace) -> dict | None:

@@ -1,0 +1,3010 @@
+{
+  "account": {
+    "iban": "DE43321819600133890838"
+  },
+  "transactions": {
+    "booked": [
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-01-04",
+        "creditorAccount": {
+          "iban": "FR8925832067998136462251790"
+        },
+        "creditorName": "Olivia Kask",
+        "remittanceInformationUnstructured": "Freelance payment ODS1EEUR",
+        "transactionAmount": {
+          "amount": "-542.22",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000146",
+        "valueDate": "2024-01-06"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-01-06",
+        "creditorAccount": {
+          "iban": "GB73397767199038498302"
+        },
+        "creditorName": "Markus Tamm",
+        "remittanceInformationUnstructured": "Rent payment January",
+        "transactionAmount": {
+          "amount": "-8554.25",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000155",
+        "valueDate": "2024-01-07"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-01-08",
+        "debtorAccount": {
+          "iban": "PL93084887256394278816580392"
+        },
+        "debtorName": "Julia Berg",
+        "remittanceInformationUnstructured": "Service fee",
+        "transactionAmount": {
+          "amount": "8126.60",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000121",
+        "valueDate": "2024-01-10"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-01-10",
+        "creditorAccount": {
+          "iban": "GB74395339421047095214"
+        },
+        "creditorName": "Julia Kask",
+        "remittanceInformationUnstructured": "Grocery store purchase",
+        "transactionAmount": {
+          "amount": "-2745.53",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000028",
+        "valueDate": "2024-01-12"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-01-15",
+        "creditorAccount": {
+          "iban": "FR0229612018366752545991022"
+        },
+        "creditorName": "Tomas Nilsson",
+        "remittanceInformationUnstructured": "Service fee",
+        "transactionAmount": {
+          "amount": "-7027.28",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000035",
+        "valueDate": "2024-01-15"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-01-15",
+        "creditorAccount": {
+          "iban": "GB79647158904290257252"
+        },
+        "creditorName": "Marie Kowalski",
+        "remittanceInformationUnstructured": "Invoice JP6MKT7S",
+        "transactionAmount": {
+          "amount": "-4931.00",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000188",
+        "valueDate": "2024-01-15"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-01-14",
+        "creditorAccount": {
+          "iban": "NL5866296194311426"
+        },
+        "creditorName": "Emma Paju",
+        "remittanceInformationUnstructured": "Loan repayment January",
+        "transactionAmount": {
+          "amount": "-7835.69",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000069",
+        "valueDate": "2024-01-16"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-01-18",
+        "debtorAccount": {
+          "iban": "PL31203875099770088600848408"
+        },
+        "debtorName": "Luca Saar",
+        "remittanceInformationUnstructured": "Tax payment ZP7G7SIW",
+        "transactionAmount": {
+          "amount": "7643.62",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000066",
+        "valueDate": "2024-01-18"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-01-16",
+        "creditorAccount": {
+          "iban": "EE848728299796884578"
+        },
+        "creditorName": "Elena Paju",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "-8603.82",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000136",
+        "valueDate": "2024-01-18"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-01-19",
+        "debtorAccount": {
+          "iban": "FR3534624751079911838425135"
+        },
+        "debtorName": "Julia Nilsson",
+        "remittanceInformationUnstructured": "Transfer to savings",
+        "transactionAmount": {
+          "amount": "4192.83",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000008",
+        "valueDate": "2024-01-21"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-01-20",
+        "debtorAccount": {
+          "iban": "FR8692322602563421607337543"
+        },
+        "debtorName": "Viktor Lepp",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "6820.98",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000010",
+        "valueDate": "2024-01-21"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-01-20",
+        "creditorAccount": {
+          "iban": "SE1100225579415521667467"
+        },
+        "creditorName": "Elena Oja",
+        "remittanceInformationUnstructured": "Service fee",
+        "transactionAmount": {
+          "amount": "-8016.15",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000108",
+        "valueDate": "2024-01-21"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-01-21",
+        "creditorAccount": {
+          "iban": "NL0385677005184498"
+        },
+        "creditorName": "Laura Kowalski",
+        "remittanceInformationUnstructured": "Refund order GXNX4SN6",
+        "transactionAmount": {
+          "amount": "-2318.27",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000122",
+        "valueDate": "2024-01-21"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-01-22",
+        "debtorAccount": {
+          "iban": "SE3969078447364710276773"
+        },
+        "debtorName": "Ingrid Smith",
+        "remittanceInformationUnstructured": "Grocery store purchase",
+        "transactionAmount": {
+          "amount": "455.57",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000050",
+        "valueDate": "2024-01-22"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-01-22",
+        "debtorAccount": {
+          "iban": "SE9827080869782922169958"
+        },
+        "debtorName": "Emma Kuusk",
+        "remittanceInformationUnstructured": "Online purchase N961J88Q",
+        "transactionAmount": {
+          "amount": "7721.67",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000112",
+        "valueDate": "2024-01-24"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-01-28",
+        "debtorAccount": {
+          "iban": "PL21753540838663177971775170"
+        },
+        "debtorName": "Henrik Paju",
+        "remittanceInformationUnstructured": "Salary January",
+        "transactionAmount": {
+          "amount": "5056.17",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000110",
+        "valueDate": "2024-01-28"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-01-27",
+        "creditorAccount": {
+          "iban": "FR7905528183253817933554864"
+        },
+        "creditorName": "Peeter Berg",
+        "remittanceInformationUnstructured": "Invoice CMRSEZYT",
+        "transactionAmount": {
+          "amount": "-8879.88",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000181",
+        "valueDate": "2024-01-29"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-01-27",
+        "creditorAccount": {
+          "iban": "FR6504554781376742662991234"
+        },
+        "creditorName": "Clara Oja",
+        "remittanceInformationUnstructured": "Insurance premium Q1",
+        "transactionAmount": {
+          "amount": "-3976.18",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000186",
+        "valueDate": "2024-01-29"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-01-31",
+        "creditorAccount": {
+          "iban": "NL3872624731781080"
+        },
+        "creditorName": "Peeter Dubois",
+        "remittanceInformationUnstructured": "Salary February",
+        "transactionAmount": {
+          "amount": "-8006.12",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000006",
+        "valueDate": "2024-02-01"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-01-31",
+        "creditorAccount": {
+          "iban": "PL30548687403450541566765277"
+        },
+        "creditorName": "Liisa Kask",
+        "remittanceInformationUnstructured": "Grocery store purchase",
+        "transactionAmount": {
+          "amount": "-370.80",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000045",
+        "valueDate": "2024-02-02"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-02-02",
+        "debtorAccount": {
+          "iban": "EE955798877492424375"
+        },
+        "debtorName": "Olivia Nilsson",
+        "remittanceInformationUnstructured": "Transfer to savings",
+        "transactionAmount": {
+          "amount": "8349.63",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000183",
+        "valueDate": "2024-02-02"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-02-02",
+        "debtorAccount": {
+          "iban": "FR9251925462914865281685054"
+        },
+        "debtorName": "Sophie Rossi",
+        "remittanceInformationUnstructured": "Rent payment February",
+        "transactionAmount": {
+          "amount": "5580.07",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000040",
+        "valueDate": "2024-02-03"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-02-02",
+        "debtorAccount": {
+          "iban": "GB32501249552893891190"
+        },
+        "debtorName": "Peeter Jansen",
+        "remittanceInformationUnstructured": "Freelance payment HGK6T9DH",
+        "transactionAmount": {
+          "amount": "7545.74",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000191",
+        "valueDate": "2024-02-03"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-02-04",
+        "debtorAccount": {
+          "iban": "NL0673830284395995"
+        },
+        "debtorName": "Viktor Kask",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "4464.96",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000062",
+        "valueDate": "2024-02-04"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-02-08",
+        "creditorAccount": {
+          "iban": "FR1605297516136968164535218"
+        },
+        "creditorName": "Clara Oja",
+        "remittanceInformationUnstructured": "Donation to charity",
+        "transactionAmount": {
+          "amount": "-5734.42",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000037",
+        "valueDate": "2024-02-09"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-02-11",
+        "creditorAccount": {
+          "iban": "GB81806356512694486959"
+        },
+        "creditorName": "Anna Tamm",
+        "remittanceInformationUnstructured": "Transfer to savings",
+        "transactionAmount": {
+          "amount": "-2578.79",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000126",
+        "valueDate": "2024-02-12"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-02-13",
+        "debtorAccount": {
+          "iban": "PL24058008514036965666683272"
+        },
+        "debtorName": "Olivia Berg",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "6115.29",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000165",
+        "valueDate": "2024-02-15"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-02-14",
+        "debtorAccount": {
+          "iban": "DE53293183933529042284"
+        },
+        "debtorName": "Stefan Tamm",
+        "remittanceInformationUnstructured": "Service fee",
+        "transactionAmount": {
+          "amount": "6417.40",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000031",
+        "valueDate": "2024-02-16"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-02-16",
+        "debtorAccount": {
+          "iban": "FR5189520284576521328338988"
+        },
+        "debtorName": "Elena Rossi",
+        "remittanceInformationUnstructured": "Loan repayment February",
+        "transactionAmount": {
+          "amount": "5437.57",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000189",
+        "valueDate": "2024-02-18"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-02-18",
+        "debtorAccount": {
+          "iban": "GB19657013290227846997"
+        },
+        "debtorName": "Sophie Mets",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "3081.05",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000164",
+        "valueDate": "2024-02-19"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-02-20",
+        "creditorAccount": {
+          "iban": "FR5341928327648350305641395"
+        },
+        "creditorName": "Carlos Mueller",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "-4534.65",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000002",
+        "valueDate": "2024-02-21"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-02-22",
+        "creditorAccount": {
+          "iban": "GB62757059640165820297"
+        },
+        "creditorName": "Tomas Kuusk",
+        "remittanceInformationUnstructured": "Invoice EIXN8BFQ",
+        "transactionAmount": {
+          "amount": "-6609.52",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000046",
+        "valueDate": "2024-02-22"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-02-23",
+        "debtorAccount": {
+          "iban": "NL2104696325953278"
+        },
+        "debtorName": "Laura Kuusk",
+        "remittanceInformationUnstructured": "Insurance premium Q1",
+        "transactionAmount": {
+          "amount": "4665.25",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000051",
+        "valueDate": "2024-02-24"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-02-25",
+        "creditorAccount": {
+          "iban": "GB65610143888993756798"
+        },
+        "creditorName": "Stefan Kask",
+        "remittanceInformationUnstructured": "Rent payment February",
+        "transactionAmount": {
+          "amount": "-1664.22",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000073",
+        "valueDate": "2024-02-25"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-02-25",
+        "creditorAccount": {
+          "iban": "NL6815798123878003"
+        },
+        "creditorName": "Ingrid Berg",
+        "remittanceInformationUnstructured": "Online purchase TMOFMMWI",
+        "transactionAmount": {
+          "amount": "-8674.23",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000149",
+        "valueDate": "2024-02-25"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-03-01",
+        "debtorAccount": {
+          "iban": "DE11554262218909275326"
+        },
+        "debtorName": "Andres Berg",
+        "remittanceInformationUnstructured": "Refund order Y4DD1VN8",
+        "transactionAmount": {
+          "amount": "4777.52",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000081",
+        "valueDate": "2024-03-02"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-03-01",
+        "debtorAccount": {
+          "iban": "NL2940572025909479"
+        },
+        "debtorName": "Markus Smith",
+        "remittanceInformationUnstructured": "Freelance payment M2LHGCSO",
+        "transactionAmount": {
+          "amount": "4285.65",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000115",
+        "valueDate": "2024-03-02"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-03-02",
+        "debtorAccount": {
+          "iban": "PL79868727743487347143455812"
+        },
+        "debtorName": "Viktor Nilsson",
+        "remittanceInformationUnstructured": "Rent payment March",
+        "transactionAmount": {
+          "amount": "8014.36",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000014",
+        "valueDate": "2024-03-03"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-03-01",
+        "creditorAccount": {
+          "iban": "DE15851743280634615717"
+        },
+        "creditorName": "Tomas Berg",
+        "remittanceInformationUnstructured": "Loan repayment March",
+        "transactionAmount": {
+          "amount": "-3335.06",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000173",
+        "valueDate": "2024-03-03"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-03-03",
+        "creditorAccount": {
+          "iban": "EE758917839084700766"
+        },
+        "creditorName": "Felix Mets",
+        "remittanceInformationUnstructured": "Donation to charity",
+        "transactionAmount": {
+          "amount": "-5261.32",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000032",
+        "valueDate": "2024-03-05"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-03-03",
+        "debtorAccount": {
+          "iban": "NL2611178006811492"
+        },
+        "debtorName": "Felix Mets",
+        "remittanceInformationUnstructured": "Salary March",
+        "transactionAmount": {
+          "amount": "6620.56",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000135",
+        "valueDate": "2024-03-05"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-03-06",
+        "debtorAccount": {
+          "iban": "PL90295939172513552157043315"
+        },
+        "debtorName": "Julia Berg",
+        "remittanceInformationUnstructured": "Transfer to savings",
+        "transactionAmount": {
+          "amount": "9487.92",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000093",
+        "valueDate": "2024-03-06"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-03-05",
+        "debtorAccount": {
+          "iban": "SE1656049451983273158514"
+        },
+        "debtorName": "Markus Nilsson",
+        "remittanceInformationUnstructured": "Refund order IPU1WYUV",
+        "transactionAmount": {
+          "amount": "5865.06",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000034",
+        "valueDate": "2024-03-07"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-03-07",
+        "creditorAccount": {
+          "iban": "GB94101372151070296670"
+        },
+        "creditorName": "Ingrid Mets",
+        "remittanceInformationUnstructured": "Utility bill March",
+        "transactionAmount": {
+          "amount": "-3723.02",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000089",
+        "valueDate": "2024-03-07"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-03-06",
+        "debtorAccount": {
+          "iban": "DE29218515691545226752"
+        },
+        "debtorName": "Elena Kask",
+        "remittanceInformationUnstructured": "Loan repayment March",
+        "transactionAmount": {
+          "amount": "9187.88",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000092",
+        "valueDate": "2024-03-07"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-03-08",
+        "debtorAccount": {
+          "iban": "DE01581995604661839826"
+        },
+        "debtorName": "Markus Oja",
+        "remittanceInformationUnstructured": "Rent payment March",
+        "transactionAmount": {
+          "amount": "4310.36",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000070",
+        "valueDate": "2024-03-08"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-03-07",
+        "creditorAccount": {
+          "iban": "EE427990772625701658"
+        },
+        "creditorName": "Marie Tamm",
+        "remittanceInformationUnstructured": "Invoice K1ZWUHYW",
+        "transactionAmount": {
+          "amount": "-2391.38",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000180",
+        "valueDate": "2024-03-08"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-03-09",
+        "debtorAccount": {
+          "iban": "NL7556464170805310"
+        },
+        "debtorName": "Sophie Nilsson",
+        "remittanceInformationUnstructured": "Service fee",
+        "transactionAmount": {
+          "amount": "503.80",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000016",
+        "valueDate": "2024-03-10"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-03-09",
+        "debtorAccount": {
+          "iban": "FR1881252056647423122099499"
+        },
+        "debtorName": "Julia Mueller",
+        "remittanceInformationUnstructured": "Refund order IIYMYRSV",
+        "transactionAmount": {
+          "amount": "6562.65",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000151",
+        "valueDate": "2024-03-10"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-03-10",
+        "creditorAccount": {
+          "iban": "SE8333945228851587996846"
+        },
+        "creditorName": "Markus Nilsson",
+        "remittanceInformationUnstructured": "Service fee",
+        "transactionAmount": {
+          "amount": "-8430.89",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000113",
+        "valueDate": "2024-03-11"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-03-12",
+        "creditorAccount": {
+          "iban": "PL04389836403761379180552696"
+        },
+        "creditorName": "Andres Rossi",
+        "remittanceInformationUnstructured": "Grocery store purchase",
+        "transactionAmount": {
+          "amount": "-6446.55",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000082",
+        "valueDate": "2024-03-12"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-03-13",
+        "debtorAccount": {
+          "iban": "GB61586578091343161172"
+        },
+        "debtorName": "Laura Nilsson",
+        "remittanceInformationUnstructured": "Loan repayment March",
+        "transactionAmount": {
+          "amount": "749.21",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000026",
+        "valueDate": "2024-03-14"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-03-12",
+        "creditorAccount": {
+          "iban": "NL6796927868765326"
+        },
+        "creditorName": "Katrin Mets",
+        "remittanceInformationUnstructured": "Refund order AR0ZJ7UB",
+        "transactionAmount": {
+          "amount": "-6579.60",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000166",
+        "valueDate": "2024-03-14"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-03-15",
+        "creditorAccount": {
+          "iban": "FR7198386384066658004397359"
+        },
+        "creditorName": "Markus Kask",
+        "remittanceInformationUnstructured": "Freelance payment 0H0GQ9C8",
+        "transactionAmount": {
+          "amount": "-2040.80",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000114",
+        "valueDate": "2024-03-15"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-03-17",
+        "debtorAccount": {
+          "iban": "PL48564679970246299606530745"
+        },
+        "debtorName": "Julia Lepp",
+        "remittanceInformationUnstructured": "Invoice M2L44Y9I",
+        "transactionAmount": {
+          "amount": "9249.35",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000098",
+        "valueDate": "2024-03-17"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-03-15",
+        "creditorAccount": {
+          "iban": "DE54364597010822078113"
+        },
+        "creditorName": "Mart Kask",
+        "remittanceInformationUnstructured": "Loan repayment March",
+        "transactionAmount": {
+          "amount": "-4975.65",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000177",
+        "valueDate": "2024-03-17"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-03-19",
+        "creditorAccount": {
+          "iban": "PL52182307681040915701840943"
+        },
+        "creditorName": "Felix Rossi",
+        "remittanceInformationUnstructured": "Grocery store purchase",
+        "transactionAmount": {
+          "amount": "-9236.43",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000160",
+        "valueDate": "2024-03-19"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-03-20",
+        "debtorAccount": {
+          "iban": "FR5933441969315727919409610"
+        },
+        "debtorName": "Katrin Saar",
+        "remittanceInformationUnstructured": "Online purchase 1M3O55IX",
+        "transactionAmount": {
+          "amount": "4604.23",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000145",
+        "valueDate": "2024-03-20"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-03-24",
+        "debtorAccount": {
+          "iban": "PL61386120750110248193466766"
+        },
+        "debtorName": "Liisa Jansen",
+        "remittanceInformationUnstructured": "Grocery store purchase",
+        "transactionAmount": {
+          "amount": "6269.70",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000117",
+        "valueDate": "2024-03-26"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-03-28",
+        "debtorAccount": {
+          "iban": "EE923747407482175946"
+        },
+        "debtorName": "Sophie Dubois",
+        "remittanceInformationUnstructured": "Loan repayment March",
+        "transactionAmount": {
+          "amount": "6095.30",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000027",
+        "valueDate": "2024-03-28"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-03-26",
+        "debtorAccount": {
+          "iban": "PL39774063356939290600780686"
+        },
+        "debtorName": "Olivia Paju",
+        "remittanceInformationUnstructured": "Insurance premium Q1",
+        "transactionAmount": {
+          "amount": "865.66",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000179",
+        "valueDate": "2024-03-28"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-03-29",
+        "debtorAccount": {
+          "iban": "PL72400499154788728743152742"
+        },
+        "debtorName": "Jan Berg",
+        "remittanceInformationUnstructured": "Invoice 02U1G463",
+        "transactionAmount": {
+          "amount": "9339.28",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000057",
+        "valueDate": "2024-03-30"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-03-28",
+        "creditorAccount": {
+          "iban": "NL0988392053021465"
+        },
+        "creditorName": "Liisa Rossi",
+        "remittanceInformationUnstructured": "Donation to charity",
+        "transactionAmount": {
+          "amount": "-4390.28",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000128",
+        "valueDate": "2024-03-30"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-04-03",
+        "creditorAccount": {
+          "iban": "NL0604633312797573"
+        },
+        "creditorName": "Mart Jansen",
+        "remittanceInformationUnstructured": "Utility bill April",
+        "transactionAmount": {
+          "amount": "-4738.99",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000152",
+        "valueDate": "2024-04-04"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-04-06",
+        "creditorAccount": {
+          "iban": "DE71678112669121535396"
+        },
+        "creditorName": "Carlos Mueller",
+        "remittanceInformationUnstructured": "Salary April",
+        "transactionAmount": {
+          "amount": "-9390.87",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000193",
+        "valueDate": "2024-04-06"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-04-07",
+        "creditorAccount": {
+          "iban": "EE730371837645208814"
+        },
+        "creditorName": "Peeter Dubois",
+        "remittanceInformationUnstructured": "Insurance premium Q2",
+        "transactionAmount": {
+          "amount": "-8282.68",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000139",
+        "valueDate": "2024-04-08"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-04-08",
+        "debtorAccount": {
+          "iban": "FR9116655355904259792703352"
+        },
+        "debtorName": "Laura Oja",
+        "remittanceInformationUnstructured": "Service fee",
+        "transactionAmount": {
+          "amount": "2423.91",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000147",
+        "valueDate": "2024-04-10"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-04-10",
+        "debtorAccount": {
+          "iban": "PL58181412478261375060685361"
+        },
+        "debtorName": "Jan Paju",
+        "remittanceInformationUnstructured": "Grocery store purchase",
+        "transactionAmount": {
+          "amount": "8730.14",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000042",
+        "valueDate": "2024-04-12"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-04-13",
+        "creditorAccount": {
+          "iban": "SE2048996423536937854777"
+        },
+        "creditorName": "Julia Dubois",
+        "remittanceInformationUnstructured": "Rent payment April",
+        "transactionAmount": {
+          "amount": "-4139.88",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000065",
+        "valueDate": "2024-04-14"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-04-13",
+        "creditorAccount": {
+          "iban": "PL37589975711305548851027261"
+        },
+        "creditorName": "Carlos Kask",
+        "remittanceInformationUnstructured": "Transfer to savings",
+        "transactionAmount": {
+          "amount": "-9503.59",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000111",
+        "valueDate": "2024-04-15"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-04-15",
+        "creditorAccount": {
+          "iban": "NL9092791456083318"
+        },
+        "creditorName": "Luca Dubois",
+        "remittanceInformationUnstructured": "Salary April",
+        "transactionAmount": {
+          "amount": "-5231.34",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000176",
+        "valueDate": "2024-04-15"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-04-15",
+        "creditorAccount": {
+          "iban": "NL4903521356804420"
+        },
+        "creditorName": "Peeter Mets",
+        "remittanceInformationUnstructured": "Utility bill April",
+        "transactionAmount": {
+          "amount": "-4634.00",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000088",
+        "valueDate": "2024-04-16"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-04-17",
+        "debtorAccount": {
+          "iban": "NL1290878141413975"
+        },
+        "debtorName": "Andres Smith",
+        "remittanceInformationUnstructured": "Grocery store purchase",
+        "transactionAmount": {
+          "amount": "1610.38",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000119",
+        "valueDate": "2024-04-18"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-04-23",
+        "debtorAccount": {
+          "iban": "GB54198763514846853664"
+        },
+        "debtorName": "Julia Lepp",
+        "remittanceInformationUnstructured": "Refund order SYT5WSGR",
+        "transactionAmount": {
+          "amount": "7177.34",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000198",
+        "valueDate": "2024-04-25"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-04-24",
+        "debtorAccount": {
+          "iban": "DE75622086353654195180"
+        },
+        "debtorName": "Anna Dubois",
+        "remittanceInformationUnstructured": "Rent payment April",
+        "transactionAmount": {
+          "amount": "441.33",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000085",
+        "valueDate": "2024-04-26"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-04-29",
+        "debtorAccount": {
+          "iban": "GB03965223955905992937"
+        },
+        "debtorName": "Andres Smith",
+        "remittanceInformationUnstructured": "Freelance payment LRDIHSA7",
+        "transactionAmount": {
+          "amount": "2479.32",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000091",
+        "valueDate": "2024-04-29"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-04-28",
+        "creditorAccount": {
+          "iban": "PL27026728857448906120347175"
+        },
+        "creditorName": "Liisa Saar",
+        "remittanceInformationUnstructured": "Transfer to savings",
+        "transactionAmount": {
+          "amount": "-8563.22",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000133",
+        "valueDate": "2024-04-30"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-05-01",
+        "creditorAccount": {
+          "iban": "NL9233095849825449"
+        },
+        "creditorName": "Stefan Oja",
+        "remittanceInformationUnstructured": "Transfer to savings",
+        "transactionAmount": {
+          "amount": "-8610.62",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000078",
+        "valueDate": "2024-05-01"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-05-04",
+        "creditorAccount": {
+          "iban": "DE24065965756924593752"
+        },
+        "creditorName": "Liisa Kuusk",
+        "remittanceInformationUnstructured": "Utility bill May",
+        "transactionAmount": {
+          "amount": "-5938.46",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000071",
+        "valueDate": "2024-05-06"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-05-05",
+        "creditorAccount": {
+          "iban": "DE79080759579472846392"
+        },
+        "creditorName": "Peeter Lepp",
+        "remittanceInformationUnstructured": "Invoice SP7BM41Q",
+        "transactionAmount": {
+          "amount": "-1560.80",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000131",
+        "valueDate": "2024-05-07"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-05-08",
+        "creditorAccount": {
+          "iban": "GB73928557498218274485"
+        },
+        "creditorName": "Markus Rossi",
+        "remittanceInformationUnstructured": "Insurance premium Q2",
+        "transactionAmount": {
+          "amount": "-7066.55",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000141",
+        "valueDate": "2024-05-08"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-05-11",
+        "debtorAccount": {
+          "iban": "NL7799799552717744"
+        },
+        "debtorName": "Ingrid Mets",
+        "remittanceInformationUnstructured": "Refund order CSLQC3C5",
+        "transactionAmount": {
+          "amount": "6024.38",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000038",
+        "valueDate": "2024-05-11"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-05-12",
+        "debtorAccount": {
+          "iban": "NL0873753001197218"
+        },
+        "debtorName": "Luca Rossi",
+        "remittanceInformationUnstructured": "Salary May",
+        "transactionAmount": {
+          "amount": "3579.86",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000107",
+        "valueDate": "2024-05-14"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-05-14",
+        "creditorAccount": {
+          "iban": "NL3430980500978820"
+        },
+        "creditorName": "Felix Paju",
+        "remittanceInformationUnstructured": "Freelance payment CGVYIE6I",
+        "transactionAmount": {
+          "amount": "-4230.65",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000007",
+        "valueDate": "2024-05-15"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-05-16",
+        "debtorAccount": {
+          "iban": "EE354033173936385467"
+        },
+        "debtorName": "Liisa Jansen",
+        "remittanceInformationUnstructured": "Freelance payment XLM5Q201",
+        "transactionAmount": {
+          "amount": "8736.32",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000064",
+        "valueDate": "2024-05-17"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-05-15",
+        "creditorAccount": {
+          "iban": "GB35723246651364424936"
+        },
+        "creditorName": "Felix Kask",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "-9346.42",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000199",
+        "valueDate": "2024-05-17"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-05-17",
+        "creditorAccount": {
+          "iban": "DE80214427031207356475"
+        },
+        "creditorName": "Anna Saar",
+        "remittanceInformationUnstructured": "Insurance premium Q2",
+        "transactionAmount": {
+          "amount": "-1878.70",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000138",
+        "valueDate": "2024-05-19"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-05-19",
+        "creditorAccount": {
+          "iban": "NL2830965207446660"
+        },
+        "creditorName": "Laura Rossi",
+        "remittanceInformationUnstructured": "Refund order ZUG0IT26",
+        "transactionAmount": {
+          "amount": "-8615.05",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000102",
+        "valueDate": "2024-05-21"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-05-19",
+        "debtorAccount": {
+          "iban": "DE97925132719500528127"
+        },
+        "debtorName": "Andres Tamm",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "3958.68",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000140",
+        "valueDate": "2024-05-21"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-05-21",
+        "creditorAccount": {
+          "iban": "NL2562168936392649"
+        },
+        "creditorName": "Anna Smith",
+        "remittanceInformationUnstructured": "Grocery store purchase",
+        "transactionAmount": {
+          "amount": "-8786.89",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000150",
+        "valueDate": "2024-05-21"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-05-23",
+        "creditorAccount": {
+          "iban": "EE245650609835841687"
+        },
+        "creditorName": "Anna Lepp",
+        "remittanceInformationUnstructured": "Service fee",
+        "transactionAmount": {
+          "amount": "-2858.20",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000052",
+        "valueDate": "2024-05-24"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-05-25",
+        "debtorAccount": {
+          "iban": "FR0649308536866326634163894"
+        },
+        "debtorName": "Henrik Paju",
+        "remittanceInformationUnstructured": "Transfer to savings",
+        "transactionAmount": {
+          "amount": "6878.00",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000137",
+        "valueDate": "2024-05-26"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-05-28",
+        "debtorAccount": {
+          "iban": "SE9407929049047128144294"
+        },
+        "debtorName": "Stefan Rossi",
+        "remittanceInformationUnstructured": "Transfer to savings",
+        "transactionAmount": {
+          "amount": "6950.81",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000168",
+        "valueDate": "2024-05-28"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-05-30",
+        "creditorAccount": {
+          "iban": "EE885685574443135182"
+        },
+        "creditorName": "Tomas Kowalski",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "-6918.17",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000019",
+        "valueDate": "2024-05-30"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-05-28",
+        "creditorAccount": {
+          "iban": "PL88006167567700284276246719"
+        },
+        "creditorName": "Laura Nilsson",
+        "remittanceInformationUnstructured": "Donation to charity",
+        "transactionAmount": {
+          "amount": "-4903.01",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000195",
+        "valueDate": "2024-05-30"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-05-31",
+        "creditorAccount": {
+          "iban": "SE4823662994680443699577"
+        },
+        "creditorName": "Elena Berg",
+        "remittanceInformationUnstructured": "Insurance premium Q2",
+        "transactionAmount": {
+          "amount": "-6669.26",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000012",
+        "valueDate": "2024-06-02"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-06-05",
+        "debtorAccount": {
+          "iban": "EE929662782827422579"
+        },
+        "debtorName": "Katrin Berg",
+        "remittanceInformationUnstructured": "Invoice 58RHNUXO",
+        "transactionAmount": {
+          "amount": "3733.68",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000076",
+        "valueDate": "2024-06-05"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-06-13",
+        "debtorAccount": {
+          "iban": "EE963938276153966958"
+        },
+        "debtorName": "Markus Kuusk",
+        "remittanceInformationUnstructured": "Loan repayment June",
+        "transactionAmount": {
+          "amount": "7924.51",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000163",
+        "valueDate": "2024-06-15"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-06-16",
+        "creditorAccount": {
+          "iban": "EE530463745499045301"
+        },
+        "creditorName": "Mart Saar",
+        "remittanceInformationUnstructured": "Insurance premium Q2",
+        "transactionAmount": {
+          "amount": "-6692.88",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000058",
+        "valueDate": "2024-06-16"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-06-18",
+        "debtorAccount": {
+          "iban": "GB40196556981693406088"
+        },
+        "debtorName": "Laura Mueller",
+        "remittanceInformationUnstructured": "Donation to charity",
+        "transactionAmount": {
+          "amount": "8770.50",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000011",
+        "valueDate": "2024-06-18"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-06-18",
+        "debtorAccount": {
+          "iban": "SE4431069872050614973103"
+        },
+        "debtorName": "Markus Smith",
+        "remittanceInformationUnstructured": "Rent payment June",
+        "transactionAmount": {
+          "amount": "4093.39",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000095",
+        "valueDate": "2024-06-18"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-06-20",
+        "debtorAccount": {
+          "iban": "NL0037917693676320"
+        },
+        "debtorName": "Andres Jansen",
+        "remittanceInformationUnstructured": "Online purchase 11DPG8SB",
+        "transactionAmount": {
+          "amount": "6728.28",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000013",
+        "valueDate": "2024-06-20"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-06-19",
+        "creditorAccount": {
+          "iban": "FR3092511426258273902196207"
+        },
+        "creditorName": "Viktor Saar",
+        "remittanceInformationUnstructured": "Salary June",
+        "transactionAmount": {
+          "amount": "-3243.02",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000175",
+        "valueDate": "2024-06-21"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-06-21",
+        "creditorAccount": {
+          "iban": "PL99727875588675339636057662"
+        },
+        "creditorName": "Tomas Rossi",
+        "remittanceInformationUnstructured": "Insurance premium Q2",
+        "transactionAmount": {
+          "amount": "-8205.67",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000025",
+        "valueDate": "2024-06-23"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-06-23",
+        "debtorAccount": {
+          "iban": "DE77514010512382825867"
+        },
+        "debtorName": "Carlos Paju",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "5211.62",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000074",
+        "valueDate": "2024-06-24"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-06-23",
+        "creditorAccount": {
+          "iban": "PL17525007432927129666676008"
+        },
+        "creditorName": "Clara Mueller",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "-1433.10",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000104",
+        "valueDate": "2024-06-24"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-06-24",
+        "debtorAccount": {
+          "iban": "GB40369003432445107622"
+        },
+        "debtorName": "Viktor Paju",
+        "remittanceInformationUnstructured": "Utility bill June",
+        "transactionAmount": {
+          "amount": "2833.18",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000036",
+        "valueDate": "2024-06-25"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-06-25",
+        "creditorAccount": {
+          "iban": "PL84842199330833016571208267"
+        },
+        "creditorName": "Liisa Jansen",
+        "remittanceInformationUnstructured": "Insurance premium Q2",
+        "transactionAmount": {
+          "amount": "-7473.63",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000056",
+        "valueDate": "2024-06-26"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-06-26",
+        "creditorAccount": {
+          "iban": "EE904268181845184894"
+        },
+        "creditorName": "Liisa Kuusk",
+        "remittanceInformationUnstructured": "Loan repayment June",
+        "transactionAmount": {
+          "amount": "-2263.73",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000129",
+        "valueDate": "2024-06-27"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-06-29",
+        "creditorAccount": {
+          "iban": "GB33410166687002176591"
+        },
+        "creditorName": "Sophie Kuusk",
+        "remittanceInformationUnstructured": "Online purchase TBH55RBC",
+        "transactionAmount": {
+          "amount": "-791.11",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000067",
+        "valueDate": "2024-06-30"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-06-30",
+        "creditorAccount": {
+          "iban": "NL7114773201017026"
+        },
+        "creditorName": "Olivia Smith",
+        "remittanceInformationUnstructured": "Refund order YFWDC112",
+        "transactionAmount": {
+          "amount": "-9875.23",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000194",
+        "valueDate": "2024-07-01"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-06-30",
+        "debtorAccount": {
+          "iban": "GB14766072832684245088"
+        },
+        "debtorName": "Viktor Rossi",
+        "remittanceInformationUnstructured": "Rent payment July",
+        "transactionAmount": {
+          "amount": "2899.07",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000118",
+        "valueDate": "2024-07-02"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-07-03",
+        "creditorAccount": {
+          "iban": "FR0084271094777520471167190"
+        },
+        "creditorName": "Markus Saar",
+        "remittanceInformationUnstructured": "Rent payment July",
+        "transactionAmount": {
+          "amount": "-142.47",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000020",
+        "valueDate": "2024-07-03"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-07-05",
+        "debtorAccount": {
+          "iban": "SE8073741672434266179796"
+        },
+        "debtorName": "Markus Mueller",
+        "remittanceInformationUnstructured": "Freelance payment S7YT2M6T",
+        "transactionAmount": {
+          "amount": "5922.67",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000072",
+        "valueDate": "2024-07-05"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-07-06",
+        "debtorAccount": {
+          "iban": "DE02578729825952694958"
+        },
+        "debtorName": "Sophie Kask",
+        "remittanceInformationUnstructured": "Tax payment SRURALDO",
+        "transactionAmount": {
+          "amount": "6025.02",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000053",
+        "valueDate": "2024-07-06"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-07-05",
+        "debtorAccount": {
+          "iban": "NL7956878339187851"
+        },
+        "debtorName": "Katrin Paju",
+        "remittanceInformationUnstructured": "Online purchase UCTSUFLS",
+        "transactionAmount": {
+          "amount": "2192.06",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000059",
+        "valueDate": "2024-07-07"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-07-08",
+        "debtorAccount": {
+          "iban": "EE543102786814473947"
+        },
+        "debtorName": "Olivia Kowalski",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "5739.64",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000047",
+        "valueDate": "2024-07-09"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-07-11",
+        "debtorAccount": {
+          "iban": "SE5128682300478686337524"
+        },
+        "debtorName": "Viktor Saar",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "6827.61",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000061",
+        "valueDate": "2024-07-12"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-07-10",
+        "creditorAccount": {
+          "iban": "DE09025590561655650333"
+        },
+        "creditorName": "Tomas Nilsson",
+        "remittanceInformationUnstructured": "Donation to charity",
+        "transactionAmount": {
+          "amount": "-7664.93",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000196",
+        "valueDate": "2024-07-12"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-07-17",
+        "creditorAccount": {
+          "iban": "EE047743490211586938"
+        },
+        "creditorName": "Carlos Mueller",
+        "remittanceInformationUnstructured": "Invoice 43PT5R5R",
+        "transactionAmount": {
+          "amount": "-8855.03",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000096",
+        "valueDate": "2024-07-17"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-07-16",
+        "debtorAccount": {
+          "iban": "EE054668893734670656"
+        },
+        "debtorName": "Julia Berg",
+        "remittanceInformationUnstructured": "Loan repayment July",
+        "transactionAmount": {
+          "amount": "8567.46",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000015",
+        "valueDate": "2024-07-18"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-07-18",
+        "debtorAccount": {
+          "iban": "GB18255371478596969155"
+        },
+        "debtorName": "Clara Mets",
+        "remittanceInformationUnstructured": "Tax payment QGY27VYL",
+        "transactionAmount": {
+          "amount": "2058.64",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000075",
+        "valueDate": "2024-07-18"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-07-19",
+        "debtorAccount": {
+          "iban": "DE72233206163294511686"
+        },
+        "debtorName": "Olivia Saar",
+        "remittanceInformationUnstructured": "Freelance payment LJQ52WSP",
+        "transactionAmount": {
+          "amount": "5021.51",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000097",
+        "valueDate": "2024-07-21"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-07-20",
+        "creditorAccount": {
+          "iban": "EE618892414183285691"
+        },
+        "creditorName": "Olivia Oja",
+        "remittanceInformationUnstructured": "Transfer to savings",
+        "transactionAmount": {
+          "amount": "-6286.07",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000083",
+        "valueDate": "2024-07-22"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-07-25",
+        "creditorAccount": {
+          "iban": "FR5439878015739930561648408"
+        },
+        "creditorName": "Liisa Nilsson",
+        "remittanceInformationUnstructured": "Tax payment 1SSRKXLC",
+        "transactionAmount": {
+          "amount": "-2212.76",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000116",
+        "valueDate": "2024-07-25"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-07-25",
+        "creditorAccount": {
+          "iban": "GB27231843222591365177"
+        },
+        "creditorName": "Henrik Tamm",
+        "remittanceInformationUnstructured": "Insurance premium Q3",
+        "transactionAmount": {
+          "amount": "-4869.12",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000123",
+        "valueDate": "2024-07-26"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-07-28",
+        "creditorAccount": {
+          "iban": "GB18261990623445655743"
+        },
+        "creditorName": "Felix Mets",
+        "remittanceInformationUnstructured": "Salary July",
+        "transactionAmount": {
+          "amount": "-4585.12",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000087",
+        "valueDate": "2024-07-30"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-07-30",
+        "creditorAccount": {
+          "iban": "GB70623972652735435209"
+        },
+        "creditorName": "Marie Paju",
+        "remittanceInformationUnstructured": "Invoice KDQP1HKF",
+        "transactionAmount": {
+          "amount": "-8913.75",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000178",
+        "valueDate": "2024-07-30"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-07-29",
+        "creditorAccount": {
+          "iban": "PL34043842797881914858078361"
+        },
+        "creditorName": "Marie Tamm",
+        "remittanceInformationUnstructured": "Loan repayment July",
+        "transactionAmount": {
+          "amount": "-4887.50",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000077",
+        "valueDate": "2024-07-31"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-07-31",
+        "creditorAccount": {
+          "iban": "NL6487049478730024"
+        },
+        "creditorName": "Katrin Jansen",
+        "remittanceInformationUnstructured": "Transfer to savings",
+        "transactionAmount": {
+          "amount": "-7102.75",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000187",
+        "valueDate": "2024-07-31"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-08-01",
+        "debtorAccount": {
+          "iban": "EE950145561681472145"
+        },
+        "debtorName": "Stefan Mueller",
+        "remittanceInformationUnstructured": "Freelance payment OHHCU9TD",
+        "transactionAmount": {
+          "amount": "6721.23",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000156",
+        "valueDate": "2024-08-01"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-08-02",
+        "creditorAccount": {
+          "iban": "SE6542351161559407816184"
+        },
+        "creditorName": "Anna Mueller",
+        "remittanceInformationUnstructured": "Tax payment W5NGCX19",
+        "transactionAmount": {
+          "amount": "-5893.06",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000001",
+        "valueDate": "2024-08-02"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-08-05",
+        "creditorAccount": {
+          "iban": "DE01226916697848018451"
+        },
+        "creditorName": "Katrin Paju",
+        "remittanceInformationUnstructured": "Transfer to savings",
+        "transactionAmount": {
+          "amount": "-3620.60",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000003",
+        "valueDate": "2024-08-07"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-08-10",
+        "creditorAccount": {
+          "iban": "FR0983930103105183473829973"
+        },
+        "creditorName": "Andres Mets",
+        "remittanceInformationUnstructured": "Service fee",
+        "transactionAmount": {
+          "amount": "-1210.92",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000005",
+        "valueDate": "2024-08-12"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-08-13",
+        "creditorAccount": {
+          "iban": "NL7367850821486289"
+        },
+        "creditorName": "Stefan Mets",
+        "remittanceInformationUnstructured": "Invoice G5HCBBMH",
+        "transactionAmount": {
+          "amount": "-7288.26",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000099",
+        "valueDate": "2024-08-14"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-08-17",
+        "creditorAccount": {
+          "iban": "NL7116241124127238"
+        },
+        "creditorName": "Clara Mets",
+        "remittanceInformationUnstructured": "Donation to charity",
+        "transactionAmount": {
+          "amount": "-7999.23",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000182",
+        "valueDate": "2024-08-19"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-08-18",
+        "debtorAccount": {
+          "iban": "FR2111751868926860259222206"
+        },
+        "debtorName": "Marie Smith",
+        "remittanceInformationUnstructured": "Transfer to savings",
+        "transactionAmount": {
+          "amount": "8825.59",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000154",
+        "valueDate": "2024-08-20"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-08-23",
+        "creditorAccount": {
+          "iban": "NL5797279855241406"
+        },
+        "creditorName": "Peeter Tamm",
+        "remittanceInformationUnstructured": "Invoice FU84XYJO",
+        "transactionAmount": {
+          "amount": "-6354.46",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000100",
+        "valueDate": "2024-08-25"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-08-25",
+        "debtorAccount": {
+          "iban": "PL50948014138113863383928861"
+        },
+        "debtorName": "Felix Oja",
+        "remittanceInformationUnstructured": "Service fee",
+        "transactionAmount": {
+          "amount": "3609.90",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000143",
+        "valueDate": "2024-08-27"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-09-02",
+        "creditorAccount": {
+          "iban": "NL3685160481754965"
+        },
+        "creditorName": "Emma Mets",
+        "remittanceInformationUnstructured": "Salary September",
+        "transactionAmount": {
+          "amount": "-8042.51",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000029",
+        "valueDate": "2024-09-03"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-09-03",
+        "creditorAccount": {
+          "iban": "SE3565880434165182755394"
+        },
+        "creditorName": "Ingrid Dubois",
+        "remittanceInformationUnstructured": "Rent payment September",
+        "transactionAmount": {
+          "amount": "-676.47",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000130",
+        "valueDate": "2024-09-03"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-09-02",
+        "creditorAccount": {
+          "iban": "GB02771670145089935889"
+        },
+        "creditorName": "Sophie Kowalski",
+        "remittanceInformationUnstructured": "Salary September",
+        "transactionAmount": {
+          "amount": "-1813.42",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000109",
+        "valueDate": "2024-09-04"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-09-15",
+        "debtorAccount": {
+          "iban": "FR1724825135346554947170999"
+        },
+        "debtorName": "Markus Mueller",
+        "remittanceInformationUnstructured": "Salary September",
+        "transactionAmount": {
+          "amount": "8406.54",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000103",
+        "valueDate": "2024-09-16"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-09-23",
+        "creditorAccount": {
+          "iban": "FR9909133412328120679740344"
+        },
+        "creditorName": "Tomas Oja",
+        "remittanceInformationUnstructured": "Loan repayment September",
+        "transactionAmount": {
+          "amount": "-9085.13",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000021",
+        "valueDate": "2024-09-24"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-09-25",
+        "creditorAccount": {
+          "iban": "GB54973348434437575844"
+        },
+        "creditorName": "Emma Nilsson",
+        "remittanceInformationUnstructured": "Salary September",
+        "transactionAmount": {
+          "amount": "-9566.89",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000055",
+        "valueDate": "2024-09-26"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-09-26",
+        "debtorAccount": {
+          "iban": "PL69454414967393852580010618"
+        },
+        "debtorName": "Markus Kowalski",
+        "remittanceInformationUnstructured": "Salary September",
+        "transactionAmount": {
+          "amount": "974.54",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000170",
+        "valueDate": "2024-09-28"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-09-29",
+        "debtorAccount": {
+          "iban": "PL06138782931027079032020417"
+        },
+        "debtorName": "Jan Nilsson",
+        "remittanceInformationUnstructured": "Refund order GV3DR2H2",
+        "transactionAmount": {
+          "amount": "371.39",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000174",
+        "valueDate": "2024-09-30"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-10-01",
+        "debtorAccount": {
+          "iban": "GB62229270653794738347"
+        },
+        "debtorName": "Stefan Saar",
+        "remittanceInformationUnstructured": "Online purchase 4N89QKNS",
+        "transactionAmount": {
+          "amount": "6619.62",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000041",
+        "valueDate": "2024-10-03"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-10-05",
+        "debtorAccount": {
+          "iban": "DE24994717464887719065"
+        },
+        "debtorName": "Katrin Mets",
+        "remittanceInformationUnstructured": "Refund order JD84U89Y",
+        "transactionAmount": {
+          "amount": "9084.20",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000022",
+        "valueDate": "2024-10-05"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-10-03",
+        "debtorAccount": {
+          "iban": "NL9261429396856218"
+        },
+        "debtorName": "Elena Tamm",
+        "remittanceInformationUnstructured": "Loan repayment October",
+        "transactionAmount": {
+          "amount": "1794.36",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000068",
+        "valueDate": "2024-10-05"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-10-05",
+        "debtorAccount": {
+          "iban": "NL7104054115262181"
+        },
+        "debtorName": "Julia Dubois",
+        "remittanceInformationUnstructured": "Grocery store purchase",
+        "transactionAmount": {
+          "amount": "8288.23",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000094",
+        "valueDate": "2024-10-06"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-10-05",
+        "creditorAccount": {
+          "iban": "EE896118367365766156"
+        },
+        "creditorName": "Stefan Rossi",
+        "remittanceInformationUnstructured": "Grocery store purchase",
+        "transactionAmount": {
+          "amount": "-3809.66",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000033",
+        "valueDate": "2024-10-07"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-10-09",
+        "debtorAccount": {
+          "iban": "SE9375973832060385050641"
+        },
+        "debtorName": "Tomas Rossi",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "3689.82",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000086",
+        "valueDate": "2024-10-10"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-10-11",
+        "debtorAccount": {
+          "iban": "FR2493214958702070160166299"
+        },
+        "debtorName": "Carlos Nilsson",
+        "remittanceInformationUnstructured": "Donation to charity",
+        "transactionAmount": {
+          "amount": "2066.57",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000161",
+        "valueDate": "2024-10-13"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-10-17",
+        "debtorAccount": {
+          "iban": "DE74773329456255770171"
+        },
+        "debtorName": "Clara Kuusk",
+        "remittanceInformationUnstructured": "Grocery store purchase",
+        "transactionAmount": {
+          "amount": "8128.69",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000162",
+        "valueDate": "2024-10-17"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-10-16",
+        "creditorAccount": {
+          "iban": "NL8478189137189490"
+        },
+        "creditorName": "Henrik Mets",
+        "remittanceInformationUnstructured": "Online purchase M2QSQ0P8",
+        "transactionAmount": {
+          "amount": "-1132.53",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000167",
+        "valueDate": "2024-10-17"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-10-15",
+        "creditorAccount": {
+          "iban": "GB05696591713578529456"
+        },
+        "creditorName": "Clara Paju",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "-2666.92",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000197",
+        "valueDate": "2024-10-17"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-10-20",
+        "debtorAccount": {
+          "iban": "GB90413797723692929842"
+        },
+        "debtorName": "Mart Berg",
+        "remittanceInformationUnstructured": "Loan repayment October",
+        "transactionAmount": {
+          "amount": "1664.25",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000124",
+        "valueDate": "2024-10-20"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-10-22",
+        "debtorAccount": {
+          "iban": "FR2967175655125674680715451"
+        },
+        "debtorName": "Ingrid Kuusk",
+        "remittanceInformationUnstructured": "Service fee",
+        "transactionAmount": {
+          "amount": "4705.53",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000023",
+        "valueDate": "2024-10-22"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-10-21",
+        "creditorAccount": {
+          "iban": "SE3721386589026012796114"
+        },
+        "creditorName": "Viktor Lepp",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "-7358.08",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000127",
+        "valueDate": "2024-10-22"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-10-20",
+        "debtorAccount": {
+          "iban": "FR8771694722569961125355449"
+        },
+        "debtorName": "Tomas Kowalski",
+        "remittanceInformationUnstructured": "Donation to charity",
+        "transactionAmount": {
+          "amount": "9793.74",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000134",
+        "valueDate": "2024-10-22"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-10-31",
+        "debtorAccount": {
+          "iban": "PL92692124471746542140665044"
+        },
+        "debtorName": "Peeter Mets",
+        "remittanceInformationUnstructured": "Rent payment November",
+        "transactionAmount": {
+          "amount": "7081.04",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000171",
+        "valueDate": "2024-11-02"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-11-08",
+        "creditorAccount": {
+          "iban": "EE935978207151820377"
+        },
+        "creditorName": "Markus Kask",
+        "remittanceInformationUnstructured": "Freelance payment SFNKOMV2",
+        "transactionAmount": {
+          "amount": "-4627.65",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000039",
+        "valueDate": "2024-11-10"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-11-08",
+        "debtorAccount": {
+          "iban": "DE01194707200642569087"
+        },
+        "debtorName": "Clara Smith",
+        "remittanceInformationUnstructured": "Insurance premium Q4",
+        "transactionAmount": {
+          "amount": "9126.17",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000172",
+        "valueDate": "2024-11-10"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-11-15",
+        "debtorAccount": {
+          "iban": "FR7710932480861317127484677"
+        },
+        "debtorName": "Markus Saar",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "2036.38",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000024",
+        "valueDate": "2024-11-16"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-11-14",
+        "creditorAccount": {
+          "iban": "SE6856624628733427086688"
+        },
+        "creditorName": "Jan Kowalski",
+        "remittanceInformationUnstructured": "Rent payment November",
+        "transactionAmount": {
+          "amount": "-5558.95",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000063",
+        "valueDate": "2024-11-16"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-11-21",
+        "debtorAccount": {
+          "iban": "GB57015430391171822782"
+        },
+        "debtorName": "Mart Tamm",
+        "remittanceInformationUnstructured": "Transfer to savings",
+        "transactionAmount": {
+          "amount": "1529.24",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000004",
+        "valueDate": "2024-11-23"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-11-21",
+        "debtorAccount": {
+          "iban": "GB01824225358414384249"
+        },
+        "debtorName": "Katrin Oja",
+        "remittanceInformationUnstructured": "Freelance payment DXVUGW6M",
+        "transactionAmount": {
+          "amount": "7678.04",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000049",
+        "valueDate": "2024-11-23"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-11-22",
+        "debtorAccount": {
+          "iban": "PL03886086803476447264908277"
+        },
+        "debtorName": "Emma Kuusk",
+        "remittanceInformationUnstructured": "Salary November",
+        "transactionAmount": {
+          "amount": "5206.97",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000153",
+        "valueDate": "2024-11-24"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-11-26",
+        "creditorAccount": {
+          "iban": "DE14626383806578759856"
+        },
+        "creditorName": "Markus Paju",
+        "remittanceInformationUnstructured": "Transfer to savings",
+        "transactionAmount": {
+          "amount": "-4120.51",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000090",
+        "valueDate": "2024-11-27"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-11-28",
+        "creditorAccount": {
+          "iban": "FR3147379965075273545494808"
+        },
+        "creditorName": "Felix Smith",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "-4649.27",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000018",
+        "valueDate": "2024-11-29"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-12-01",
+        "debtorAccount": {
+          "iban": "PL36729466711684577590175186"
+        },
+        "debtorName": "Clara Nilsson",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "2497.52",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000079",
+        "valueDate": "2024-12-01"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-12-02",
+        "creditorAccount": {
+          "iban": "PL56659398368457760049082404"
+        },
+        "creditorName": "Elena Nilsson",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "-9335.26",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000144",
+        "valueDate": "2024-12-02"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-12-01",
+        "creditorAccount": {
+          "iban": "PL82945651181022031731096789"
+        },
+        "creditorName": "Viktor Paju",
+        "remittanceInformationUnstructured": "Loan repayment December",
+        "transactionAmount": {
+          "amount": "-1899.50",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000142",
+        "valueDate": "2024-12-03"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-12-05",
+        "debtorAccount": {
+          "iban": "FR4935348740164005242786801"
+        },
+        "debtorName": "Peeter Saar",
+        "remittanceInformationUnstructured": "Salary December",
+        "transactionAmount": {
+          "amount": "2645.39",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000009",
+        "valueDate": "2024-12-05"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-12-04",
+        "debtorAccount": {
+          "iban": "GB88880670654051531952"
+        },
+        "debtorName": "Carlos Mets",
+        "remittanceInformationUnstructured": "Invoice MMX3Y9RG",
+        "transactionAmount": {
+          "amount": "5235.32",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000044",
+        "valueDate": "2024-12-06"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-12-06",
+        "debtorAccount": {
+          "iban": "PL22583132370589578291146786"
+        },
+        "debtorName": "Tomas Rossi",
+        "remittanceInformationUnstructured": "Service fee",
+        "transactionAmount": {
+          "amount": "5500.42",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000048",
+        "valueDate": "2024-12-07"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-12-05",
+        "debtorAccount": {
+          "iban": "SE0275884252410564814917"
+        },
+        "debtorName": "Clara Saar",
+        "remittanceInformationUnstructured": "Insurance premium Q4",
+        "transactionAmount": {
+          "amount": "1195.31",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000084",
+        "valueDate": "2024-12-07"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-12-07",
+        "creditorAccount": {
+          "iban": "DE28140693751509398343"
+        },
+        "creditorName": "Peeter Paju",
+        "remittanceInformationUnstructured": "Invoice D4Y89ORV",
+        "transactionAmount": {
+          "amount": "-3387.50",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000185",
+        "valueDate": "2024-12-07"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-12-12",
+        "debtorAccount": {
+          "iban": "PL51240568299629145046173574"
+        },
+        "debtorName": "Viktor Nilsson",
+        "remittanceInformationUnstructured": "Subscription renewal",
+        "transactionAmount": {
+          "amount": "2083.41",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000159",
+        "valueDate": "2024-12-13"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-12-14",
+        "creditorAccount": {
+          "iban": "PL07286790874064039106518017"
+        },
+        "creditorName": "Olivia Kuusk",
+        "remittanceInformationUnstructured": "Invoice KGEX08N6",
+        "transactionAmount": {
+          "amount": "-910.32",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000060",
+        "valueDate": "2024-12-14"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-12-15",
+        "debtorAccount": {
+          "iban": "DE27706324241541520643"
+        },
+        "debtorName": "Emma Tamm",
+        "remittanceInformationUnstructured": "Utility bill December",
+        "transactionAmount": {
+          "amount": "996.65",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000080",
+        "valueDate": "2024-12-15"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-12-15",
+        "creditorAccount": {
+          "iban": "GB03494466574374896910"
+        },
+        "creditorName": "Ingrid Mueller",
+        "remittanceInformationUnstructured": "Freelance payment 984UVKYR",
+        "transactionAmount": {
+          "amount": "-9115.23",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000101",
+        "valueDate": "2024-12-15"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-12-15",
+        "debtorAccount": {
+          "iban": "GB90881172980686508637"
+        },
+        "debtorName": "Mart Paju",
+        "remittanceInformationUnstructured": "Service fee",
+        "transactionAmount": {
+          "amount": "6055.50",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000125",
+        "valueDate": "2024-12-16"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-12-16",
+        "debtorAccount": {
+          "iban": "SE0972896230913075626368"
+        },
+        "debtorName": "Laura Dubois",
+        "remittanceInformationUnstructured": "Service fee",
+        "transactionAmount": {
+          "amount": "5969.49",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000054",
+        "valueDate": "2024-12-18"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-12-18",
+        "creditorAccount": {
+          "iban": "GB85015569902355770272"
+        },
+        "creditorName": "Tomas Rossi",
+        "remittanceInformationUnstructured": "Donation to charity",
+        "transactionAmount": {
+          "amount": "-7902.16",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000158",
+        "valueDate": "2024-12-19"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-12-18",
+        "debtorAccount": {
+          "iban": "NL4013223423216110"
+        },
+        "debtorName": "Stefan Nilsson",
+        "remittanceInformationUnstructured": "Service fee",
+        "transactionAmount": {
+          "amount": "8170.56",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000190",
+        "valueDate": "2024-12-19"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-12-20",
+        "creditorAccount": {
+          "iban": "NL1044789856257532"
+        },
+        "creditorName": "Sophie Rossi",
+        "remittanceInformationUnstructured": "Online purchase 7OI0E0VG",
+        "transactionAmount": {
+          "amount": "-1290.18",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000105",
+        "valueDate": "2024-12-21"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-ESCT",
+        "bookingDate": "2024-12-19",
+        "debtorAccount": {
+          "iban": "EE205336452577754781"
+        },
+        "debtorName": "Carlos Nilsson",
+        "remittanceInformationUnstructured": "Rent payment December",
+        "transactionAmount": {
+          "amount": "5655.95",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000120",
+        "valueDate": "2024-12-21"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-12-21",
+        "creditorAccount": {
+          "iban": "NL8338848792069804"
+        },
+        "creditorName": "Anna Nilsson",
+        "remittanceInformationUnstructured": "Rent payment December",
+        "transactionAmount": {
+          "amount": "-4501.16",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000148",
+        "valueDate": "2024-12-21"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-12-22",
+        "creditorAccount": {
+          "iban": "DE43289861434103697117"
+        },
+        "creditorName": "Anna Mets",
+        "remittanceInformationUnstructured": "Refund order TWUZKAMU",
+        "transactionAmount": {
+          "amount": "-4486.56",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000043",
+        "valueDate": "2024-12-22"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-12-21",
+        "creditorAccount": {
+          "iban": "SE3691559428434795527636"
+        },
+        "creditorName": "Anna Tamm",
+        "remittanceInformationUnstructured": "Loan repayment December",
+        "transactionAmount": {
+          "amount": "-3157.19",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000132",
+        "valueDate": "2024-12-23"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-12-23",
+        "creditorAccount": {
+          "iban": "PL24190496631931491905865185"
+        },
+        "creditorName": "Stefan Lepp",
+        "remittanceInformationUnstructured": "Invoice 43D8W3ZP",
+        "transactionAmount": {
+          "amount": "-1678.72",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000017",
+        "valueDate": "2024-12-24"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-12-23",
+        "creditorAccount": {
+          "iban": "FR7113826758692617964053773"
+        },
+        "creditorName": "Jan Kask",
+        "remittanceInformationUnstructured": "Tax payment N9N6XCJ8",
+        "transactionAmount": {
+          "amount": "-1167.64",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000030",
+        "valueDate": "2024-12-24"
+      },
+      {
+        "bankTransactionCode": "PMNT-RDDT-ESDD",
+        "bookingDate": "2024-12-24",
+        "creditorAccount": {
+          "iban": "FR1292766372395041027674783"
+        },
+        "creditorName": "Olivia Kask",
+        "remittanceInformationUnstructured": "Utility bill December",
+        "transactionAmount": {
+          "amount": "-1808.91",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000169",
+        "valueDate": "2024-12-24"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-12-26",
+        "creditorAccount": {
+          "iban": "GB99529978772934301071"
+        },
+        "creditorName": "Elena Smith",
+        "remittanceInformationUnstructured": "Loan repayment December",
+        "transactionAmount": {
+          "amount": "-6088.83",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000157",
+        "valueDate": "2024-12-27"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-12-26",
+        "debtorAccount": {
+          "iban": "FR9274523805525782841067275"
+        },
+        "debtorName": "Peeter Kask",
+        "remittanceInformationUnstructured": "Rent payment December",
+        "transactionAmount": {
+          "amount": "1613.38",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000184",
+        "valueDate": "2024-12-28"
+      },
+      {
+        "bankTransactionCode": "PMNT-IRCT-XBCT",
+        "bookingDate": "2024-12-27",
+        "creditorAccount": {
+          "iban": "SE1256638361517182754801"
+        },
+        "creditorName": "Mart Kuusk",
+        "remittanceInformationUnstructured": "Grocery store purchase",
+        "transactionAmount": {
+          "amount": "-6981.62",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000192",
+        "valueDate": "2024-12-28"
+      },
+      {
+        "bankTransactionCode": "PMNT-ICDT-STDO",
+        "bookingDate": "2024-12-28",
+        "debtorAccount": {
+          "iban": "PL89090100167618472304618499"
+        },
+        "debtorName": "Ingrid Smith",
+        "remittanceInformationUnstructured": "Loan repayment December",
+        "transactionAmount": {
+          "amount": "3752.55",
+          "currency": "EUR"
+        },
+        "transactionId": "TX00000106",
+        "valueDate": "2024-12-30"
+      },
+      {
+        "bankTransactionCode": "PMNT-MCOP-OTHR",
+        "bookingDate": "2024-04-13",
+        "creditorAccount": {
+          "iban": "SE8207001594165162319818"
+        },
+        "creditorName": "Laura Smith",
+        "remittanceInformationUnstructured": "E01 invalid currency EURO #1",
+        "transactionAmount": {
+          "amount": "-1365.17",
+          "currency": "EURO"
+        },
+        "transactionId": "TX00000200",
+        "valueDate": "2024-04-13"
+      }
+    ],
+    "pending": []
+  }
+}

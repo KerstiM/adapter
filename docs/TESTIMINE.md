@@ -6,60 +6,54 @@
 
 ## Testiklassid
 
-### Unit-testid (`backend/tests/unit/`)
-
-Kasutavad **fake-porte** — `FakeDatasetPort`, `FakeOutputPort`, `FakeSpecPort`, `FixedClock`.
-Pipeline jookseb täielikult mälus, failisüsteemi ei puudutata.
-
-| Fail | Testib |
-|------|--------|
-| `test_pipeline_with_fakes.py` | Pipeline äriloogika: mapping, invariandid, projektsioonid, outcome |
-| `test_import_boundaries.py` | Kihistus: `domain/` ei impordi keelatud mooduleid (AST skaneerimine) |
-| `test_model_formatters.py` | C-04 mudeliformaatijad: XGBoost label-encoding, CatBoost native, Llama 3 / Mistral / Qwen promptimallid |
-| `test_pipeline_with_model_target.py` | Pipeline end-to-end mudelisihtmärgiga: kõik 5 mudelit (3 LLM + 2 ML) |
-| `test_scalability.py` | Skaleeritavus ja jõudlus: D8 (10k tehingut) ja D9 (1k tehingut) mediaanaeg, stddev, determinism |
-
-Fake-portide allikad: `backend/tests/fakes/`. Kellaadapter testides: `adapters/testing/clock_fixed.py`.
-
-### Integratsioonitestid (`backend/tests/tests.py`)
-
-Kasutavad **päris FS-adaptereid** läbi `entrypoints/wiring_fs.py`.
-Väljund kirjutatakse `tmp_path` kausta (pytest fixture).
-
-Testivad end-to-end voo: sisend → SV → ML/LLM → raport → skeemivalideerimine.
-
-### Arhitektuuritestid
-
-| Fail | Testib |
-|------|--------|
-| `test_import_boundaries.py` | `domain/` importe AST-ga — keelatud impordid (pathlib, os, adapters) |
+- **Unit-testid** (`backend/tests/unit/`) — kasutavad fake-porte (`FakeDatasetPort`, `FakeOutputPort`, `FakeSpecPort`, `FixedClock`); pipeline jookseb mälus, ilma FS-ita.
+- **Integratsioonitestid** (`backend/tests/test_integration_fs.py`) — päris FS-adapterid läbi `entrypoints/wiring_fs.py`, väljund `tmp_path` kausta.
+- **Arhitektuuritestid** — `test_import_boundaries.py` skaneerib AST-iga `domain/` importe, et keelatud moodulid (pathlib, os, adapters) ei lekiks tuumkihti.
+- **SLI/SLO-testid** (`backend/tests/sli_slo/`) — vt mõõdikute tabel allpool.
+- **QA / E2E** (`scripts/qa/run_full_qa.py`) — koondskript, mis kontrollib spec-terviklikkust, sisendi valideerimist, väljundit, golden-snapshotite ja determinismi.
 
 ### SLI/SLO-testid (`backend/tests/sli_slo/`)
 
-Kvaliteedimõõdikute automatiseeritud valideerimine. 72 testi, mis kontrollivad:
-
-| SLI | Kirjeldus |
-|-----|-----------|
-| SLI-1 | Skeemikatvus: prioriteetsete väljade kaetus (≥ 0.95) |
-| SLI-2 | Valideerimisläbilaskvus: puhta sisendi korral 100% |
-| QC-2 | Drop-raporteerimine: kõik dropitud kirjed on `dropped_details[]`-s selgitatud |
-| SLI-3 | Invariantide vastavus: kriitilisi rikkumisi 0 |
-| Gate | Veadropide osakaal: <5% → PARTIAL_SUCCESS, ≥5% → FAIL |
-| SLI-4 | Determinism: N=5 jooksu identsed artefaktid |
-| SLI-5 | Auditiraja täielikkus: kõik kohustuslikud metaväljad olemas |
-| SLI-6 | Viitejõudlus: D9 (1000 tx) mediaan ≤ 500 ms |
+| Mõõdik | Tähendus | Sihttase |
+|--------|----------|----------|
+| SLI-1 | Skeemikatvus — prioriteetsete SV väljade kaetus | ≥ 0.95 |
+| SLI-2 | Valideerimisläbilaskvus — puhta sisendi alleshoid | = 1.0 |
+| SLI-3 | Invariantide vastavus — ERROR-rikkumiste puudumine | kriitilisi = 0 |
+| SLI-4 | Determinism — N=5 jooksu baidi-identsed artefaktid | identsus |
+| SLI-5 | Auditiraja täielikkus — kohustuslikud metaväljad raportis | kõik olemas |
+| SLI-6 | Viitejõudlus — D9 (1000 tx) jooksuaja mediaan | ≤ 500 ms |
+| QC-2 | Drop-raporteerimine — iga dropp on `dropped_details[]`-s | kõik kaetud |
+| Gate | Fail-värav — ERROR-drop osakaal sisendist | ≥ 5% → FAIL |
 
 Tulemused: [`backend/tests/sli_slo/RESULTS.md`](../backend/tests/sli_slo/RESULTS.md).
 
-### QA / E2E valideerimine (`scripts/qa/`)
+---
 
-Eraldi skript `run_full_qa.py`, mis jooksutab järjest:
+## Testifailide ülevaade
 
-1. **Spetsifikatsiooni terviklikkus** — profiili viited, failide olemasolu
-2. **Dataseti sisendi valideerimine** — skeemi- ja semantilised kontrollid
-3. **Pipeline väljundi valideerimine** — skeemid + artefaktide ristkontroll
-4. **Golden-snapshotide võrdlus** — SHA-256 võrdlus frozen goldenitega
-5. **Determinismi suitsutestimine** — pipeline annab kordusjooksul sama tulemuse
+**Kokku 452 testi 19 failis.**
+
+| Testifail | Tests | Mida katab |
+|-----------|-------|------------|
+| `tests/test_integration_fs.py` | 168 | End-to-end pipeline päris FS-adapteritega (kõik datasetid, mudelid, profiilid, golden-võrdlused) |
+| `tests/sli_slo/test_sli_slo.py` | 89 | SLI-1..SLI-6, QC-2, Gate (sihttasemed, väravakäitumine, tundlikkusanalüüs) |
+| `tests/unit/test_scalability.py` | 39 | UK3 laiendatavus (C-05, C-06, Gemma, register-dispatch) + jõudluse mediaan (D8/D9) + chat-token strip |
+| `tests/unit/test_pipeline_with_fakes.py` | 23 | Pipeline mälu-režiimis fake-portidega (äriloogika, mapping, projektsioonid, outcome) |
+| `tests/unit/test_model_formatters.py` | 21 | C-04 formaatijad: Llama 3 / Mistral / ChatML / Gemma promptimallid + XGBoost / CatBoost kodeeringud |
+| `tests/unit/test_invariants_r01.py` | 14 | R-01 invariandid INV-01..INV-05 + INV-09 dedupe |
+| `tests/unit/test_llm_preview_view.py` | 12 | LLM preview view-builder (puhas funktsioon, ekstraheeritud api.py-st) |
+| `tests/unit/test_api_security.py` | 12 | HTTP-handler turvapiir: CORS, body-suurus, preamble-pikkus, rawContexts opt-in |
+| `tests/unit/test_pipeline_with_model_target.py` | 11 | Pipeline end-to-end mudelisihtmärgiga (3 LLM + 2 ML) |
+| `tests/unit/test_json_format.py` | 11 | `stable_json` / `api_json` / `compact_json` formaadid (golden/API/LLM-prompt) |
+| `tests/unit/test_dataset_resolver.py` | 9 | Jagatud dataset-name resolver CLI ja API jaoks (case-insensitive, underscore-fence) |
+| `tests/unit/test_severity_counters.py` | 9 | `_count_severities` kernel + `count_flags_by_severity` + `count_issues_by_severity` |
+| `tests/unit/test_input_edge_cases.py` | 8 | Piiripealsed sisendid (EDGE-01..EDGE-08) |
+| `tests/unit/test_quality_checks.py` | 6 | QC-1 INFO-tasemel kontroll (ei mõjuta staatust) |
+| `tests/unit/test_c05_stats.py` | 6 | C-05 statistika projektsioon (extensions_eval profiil) |
+| `tests/unit/test_c06_monthly_balance.py` | 5 | C-06 kuubilanss projektsioon |
+| `tests/unit/test_spec_fs_path_traversal.py` | 4 | Spec-adapter path traversal kaitse (`../../etc/passwd`) |
+| `tests/unit/test_adapter_parity.py` | 4 | Fake vs päris FS-adapterite paariskontroll |
+| `tests/unit/test_import_boundaries.py` | 1 | `domain/` ei impordi keelatud mooduleid (AST) |
 
 ---
 
@@ -114,6 +108,4 @@ python scripts/qa/run_full_qa.py --skip-golden
 
 ## Eeldused
 
-```bash
-pip install jsonschema pyyaml
-```
+Sõltuvused: `pip install -r backend/requirements.txt` (vt README "Käivitamine").

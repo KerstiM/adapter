@@ -140,6 +140,7 @@ backend/
         output_port.py               #   artefaktide kirjutamine
         spec_port.py                 #   skeemid, lepingud, profiilid
         clock_port.py                #   aeg + run ID (determinism)
+        validation_port.py           #   JSON Schema valideerimine
 
     application/                     # orkestreerimine, räägib ainult portidega
         pipeline.py                  #   8-etapiline pipeline (run_pipeline)
@@ -147,12 +148,15 @@ backend/
     entrypoints/                     # driving-adapter: väline maailm → pipeline
         cli_run_adapter.py           #   CLI entry point (argparse → wiring)
         wiring_fs.py                 #   FS-adapterid → run_pipeline
-        api.py                       #   stdlib HTTP API server (port 5000)
+        api.py                       #   stdlib HTTP API server (port 8000)
 
     adapters/fs/                     # failisüsteemi I/O teostused
         dataset_fs.py                #   datasets/ lugemine failisüsteemist
         output_fs.py                 #   run folder + failide kirjutamine
         spec_fs.py                   #   spec/ laadimine failisüsteemist
+
+    adapters/validation/             # valideerimisteostus
+        jsonschema_adapter.py        #   JsonSchemaValidationAdapter (jsonschema teek)
 
     adapters/system/                 # tootmise adapterid
         clock_real.py                #   RealClock (datetime.now(utc) + uuid4)
@@ -168,7 +172,7 @@ backend/
 ## Importimisreegel (sõltuvuspiir)
 
 - **`domain`** → ei impordi `adapters`, `ports`, `pathlib`, `os`. Ainult standardlib (`hashlib`, `decimal`, `datetime`).
-- **`application`** → impordib `domain` + `ports`; kasutab ka `jsonschema` valideerimiseks. Ei tee I/O-d.
+- **`application`** → impordib `domain` + `ports`; valideerimine käib `ValidationPort` kaudu (`jsonschema` teek elab `adapters/validation/`-s). Ei tee I/O-d.
 - **`ports`** → ainult liidesed (`Protocol`-klassid); ei I/O, ei `Path`.
 - **`adapters`** → teostavad `ports/` Protocol-liideseid (strukturaalne alamtüüpimine); impordivad I/O teegid (`json`, `csv`, `pathlib`, `yaml`).
 - **`entrypoints`** → impordib `application` ja `adapters`; composition root (portide liideseid otse ei impordi).
@@ -197,6 +201,7 @@ Mudelispetsiifilised artefaktid (tekivad ainult siis, kui CLI, API või profiil 
 - `SpecPort`: `load_profile(profile_id)`, `load_schema(id)`, `load_contract(id)`, `load_ruleset(id)`
 - `OutputPort`: `init_run_folder(run_id, created_at_utc)`, `write_sv(bundle)`, `write_ml(rows)`, `write_llm(context)`, `write_report(report)`, `write_ml_model(output, model_suffix)`, `write_llm_model(output, model_suffix)`, `write_extra_projection(data, filename)`
 - `ClockPort`: `now_utc()`, `new_run_id()`
+- `ValidationPort`: `validate(data, schema) → list[dict]` (JSON Schema valideerimine; teostus `adapters/`-s, et `jsonschema` teek tuumast väljas püsiks)
 
 ---
 
@@ -211,45 +216,20 @@ Raport ei ole "kõrvalprodukt", vaid **põhiartefakt**, mille põhjal tehakse ou
 
 ## Laiendatavus (UK3)
 
-Arhitektuur on kavandatud nii, et uusi projektsioone, formaatijaid ja sisendiallikaid saab lisada olemasolevat koodi muutmata (Open/Closed printsiip). Seda tõestavad kuus laiendatavuse tõendit neljal arhitektuuritasandil, mis on testitega kaetud (`tests/unit/test_scalability.py`).
+Open/Closed: uusi projektsioone, formaatijaid ja sisendiallikaid saab lisada tuumkoodi muutmata. Kõik projektsioonid (C-02 ML, C-03 LLM, C-05 stats, C-06 monthly_balance) elavad ühtses `PROJECTION_REGISTRY`-s (`backend/application/projection_registry.py`); pipeline käivitab need ühe dispatch-tsükliga, mis loeb profiili `projections` loetelu. Uue projektsiooni lisamine = üks puhas funktsioon + üks register-kirje + üks nimi profiili.
 
-**Ühtne projektsiooniregister.** Kõik projektsioonid (C-02 ML, C-03 LLM, C-05 statistika, C-06 kuubilanss) on registreeritud ühtses `PROJECTION_REGISTRY`-s (`backend/application/projection_registry.py`). Pipeline käivitab need ühe dispatch-tsükliga, mis loeb profiili `projections` loetelu. Nimetusi `"põhi-"` vs `"extra-"` projektsioone ei eksisteeri — kõik on võrdsed kodanikud sama mehhanismi all. Uue projektsiooni lisamine on **lokaalne muudatus**: üks puhas funktsioon + üks kirje registrisse + üks nimi profiili faili.
+Kuus arhitektuuritasandi tõendit (kaetud `tests/unit/test_scalability.py`-s):
 
-### Tõend 1 — Projektsiooni laiendatavus (C-05 statistika)
+| # | Tase | Näide | Mida muudeti | Mida EI muudetud |
+|---|------|-------|--------------|------------------|
+| 1 | Projektsioon | C-05 statistika | Uus puhas funktsioon + register-kirje | pipeline, pordid, adapterid |
+| 2 | Formaater | C-04 Gemma 2 | 1 leping-kirje + 1 dispatch-kirje (`model_formatters/__init__.py`) | pipeline, pordid, adapterid, teised formaatijad |
+| 3 | Sisendiadapter | `SimpleDictDatasetPort` testis | Uus Protocol-teostus (struktuuriliselt erinev FS-adapterist) | pipeline, port-liides, domain |
+| 4 | Projektsioon (struktuuriliselt uus) | C-06 kuubilanss | Ajaseeria-kuju projektsioon, aktiveeritud profiili kaudu | pipeline, SV vahekiht, teised projektsioonid |
+| 5 | Sisendiformaat | D7 püsikorraldused | S-00C skeem + valikuline `read_standing_orders_optional()` + INFORMATION-staatus C-01-s | `application/pipeline.py`, olemasolevad projektsioonid, adapterid |
+| 6 | Dispatch | Fiktiivne projektsioon | Dünaamiline register-registreerimine + profiili `projections` loetelu | pipeline (`TestUnifiedDispatchExtensibility` valideerib, et `pipeline.py` ei sisalda projektsiooninimesid) |
 
-Uus reeglipõhine projektsioon C-05 (statistika) lisati eraldiseisvana. Pipeline'i, porte ega adaptereid ei muudetud. SV vaheesitus on stabiilne laienduspunkt — iga uus projektsioon on puhas funktsioon, mis võtab SVBundle sisendiks.
-
-### Tõend 2 — Formaateri laiendatavus (C-04 dispatch, Gemma)
-
-Uus LLM formaateri moodul Gemma 2 (`domain/projections/model_formatters/llm_gemma.py`) lisati dispatch-tabelisse. Muutused:
-
-- 1 kirje `C-04_model_formatters.yaml` lepingusse (`gemma-2-2b-it` perekonnaga `gemma`)
-- 1 import + 1 dict-entry `model_formatters/__init__.py`-s
-
-Pipeline'i, porte, adaptereid ega olemasolevaid formaatijaid ei muudetud. Moodul järgib täpselt sama signatuuri ja mustrit nagu olemasolevad formaatijad (llama3, mistral, chatml). Git-diff on ise tõestus — see näitab, kui väike on muudatus.
-
-### Tõend 3 — Sisendiadapteri laiendatavus (DatasetPort)
-
-Testis defineeritud `SimpleDictDatasetPort` implementatsioon (struktuuriliselt erinev `FakeDatasetPort`-st ja FS-adapterist) läbib pipeline'i end-to-end. Pordi `Protocol` (duck typing) ei sõltu konkreetsest sisemisest struktuurist — piisab meetodite olemasolust.
-
-### Tõend 4 — Projektsiooni laiendatavus, struktuuriliselt uudne kuju (C-06 kuubilanss)
-
-C-06 (kuubilanss) toodab ajaseeria-kujulise cashflow projektsiooni — kuju, mis on struktuuriliselt erinev C-02 (lame), C-03 (kontekstiaken) ja C-05 (lamedad agregaadid) omast. Tõestab, et SV vahekiht toetab ka ajalis-akumulatiivset projektsiooni ilma pipeline'i muutmata. Aktiveeritakse profiili kaudu (`projections: [ml, llm, stats, monthly_balance]`).
-
-### Tõend 5 — Sisendiformaadi laiendatavus (D7 standing orders)
-
-Pipeline käsitleb uut finantsinstrumendi tüüpi (püsikorraldused) ilma pipeline'i tuumkoodi muutmata. Muudatused:
-
-- S-00C skeem (`spec/schemas/S-00C_berlin_standing_orders.schema.json`)
-- Valikuline portimeetod `read_standing_orders_optional()` DatasetPort'is
-- INFORMATION staatuse tugi kaardistuses (C-01)
-- valueDate fallback nextExecutionDate'ist
-
-Pipeline'i orkestreerimiskoodi (`application/pipeline.py`), olemasolevaid projektsioone ega adaptereid ei muudetud. INFORMATION tehingud läbivad SV standardiseerimise, aga jäetakse korrektselt välja ML ja LLM projektsioonidest.
-
-### Tõend 6 — Ühtne dispatch, uue projektsiooni lokaalne lisamine
-
-Fiktiivne uus projektsioon registreeritakse dünaamiliselt `PROJECTION_REGISTRY`-sse ja aktiveeritakse profiili `projections` loetelu kaudu. Pipeline käivitab selle automaatselt ilma ühegi koodimuudatuseta. `TestUnifiedDispatchExtensibility` klassi testid kontrollivad muuhulgas, et pipeline.py ei sisalda konkreetseid projektsiooninimesid — kõik nimed elavad registris, mitte koodis. See kaotab varasema eristuse "põhi-" (C-02/C-03) vs "extra-" (C-05/C-06) projektsioonide vahel.
+Iga rida tõestab Open/Closed printsiipi: laiendus on **lokaalne**, tuumkoodi (`application/pipeline.py`, `domain/`) ei puudutata. Git-diff suurus on iseseisev tõestus.
 
 ---
 
@@ -274,6 +254,21 @@ Käesolev jaotis loetleb metodoloogilised piirangud ja väited, mille empiirilin
 
 - **D10/D11 "reaalsed anonüümistatud" andmestikud on ühe allika omad.** 101 ja 148 tehingut ühe panga ühe kliendi kontojaotustest. Need ei ole populatsiooniliselt esinduslikud ja ei kata pangatoodete variatsiooni (erinevad IBAN-formaadid, transiitkontod, välisvaluutad, korrektsioonikanded).
 - **5 % vea-lävend on inseneri hinnang, mitte rikkerežiimi-analüüsist tuletatud.** `partial_success` ja `fail` vahe 5 %-s on valitud mõistliku kokkuleppena (vt `spec/profiles/default.yaml`), mitte kvantitatiivsest analüüsist rikete mõjude kohta. Piir on inclusive (`≥ 5 % → FAIL`), testitud täpselt piiril (5,00 %) ja piiri ümber (4,76 %, 5,26 %).
+- **Kvaliteedivärav on parameetriline mehhanism, mitte 5 %-spetsiifiline.** Lävend (`ratio_over_records`) on profiilipõhiselt konfigureeritav (`spec/profiles/*.yaml`); kood ja testid (`backend/tests/sli_slo/test_sli_slo.py::test_gate_boundary_inclusive_semantics`) valideerivad inclusive-`>=` semantikat suvalisel lävendil (1 %, 3 %, 5 %). Töö panus on mehhanism — mitte konkreetse 5 % numbri valideerimine, mis nõuaks tootmismahtude andmeid.
+
+#### Tundlikkusanalüüs: gate'i käitumine erinevatel lävenditel
+
+Andmestikud D12–D14 on sünteetilised süstid vahemikku (0 %, 10 %), mille olemasolu täidab varasema bipolaarsuse — D1–D3, D5, D8–D11 olid 0 % juures (SUCCESS) ja D4 10,26 % juures (FAIL), st lävendi varieerimisel polnud ühelegi olemasolevale andmestikule mõju. D12–D14 võimaldavad demonstreerida, et lävendi muutus tegelikult muudab tulemust:
+
+| Andmestik | error_drop_ratio | @ 1 % | @ 5 % (default) | @ 10 % |
+|---|---|---|---|---|
+| D1–D3, D5, D8–D11 | 0,00 % | SUCCESS | SUCCESS | SUCCESS |
+| D12_synth_partial_low_seed42 | 0,50 % (1/200) | PARTIAL | PARTIAL | PARTIAL |
+| D13_synth_partial_mid_seed42 | 3,00 % (3/100) | FAIL (3 ≥ 1) | PARTIAL (3 < 5) | PARTIAL |
+| D14_synth_partial_high_seed42 | 7,00 % (7/100) | FAIL | FAIL (7 ≥ 5) | PARTIAL (7 < 10) |
+| D4_synth_errors_seed42 | 10,26 % | FAIL | FAIL | FAIL (10,26 ≥ 10) |
+
+D13 ja D14 on **võtmeproovid**: D13 muudab staatust 1 % ja 5 % vahel, D14 muudab staatust 5 % ja 10 % vahel. See näitab, et FAIL ei ole automaatne ja lävendi number on tegelikult otsustav parameeter.
 
 ### Arhitektuurilised kontrollid
 
@@ -283,6 +278,3 @@ Käesolev jaotis loetleb metodoloogilised piirangud ja väited, mille empiirilin
 
 - **Berlin Group AIS versioon ei ole skeemides fikseeritud.** S-00A/B/C skeemid kasutavad Berlin Group NextGenPSD2 tavakokkulepete pragmaatilist alamhulka (2025. aasta avalike konventsioonide põhjal), aga konkreetne spetsifikatsiooni versioon (nt v1.3.13) ei ole skeemide `title` ega `$comment` väljades kirjas. ISO 20022 element-nimede tabel puudub C-01 lepingust. See on teadlik scope-piirang: töö eesmärk oli demonstreerida standardiseerimise ja reeglistiku arhitektuuri, mitte implementeerida täielik Berlin Group AIS klient.
 
-### UK3 laiendatavuse tõendid
-
-- **Tõendid 1–5 on demonstratsioonid, mitte formaalselt falsifitseeritavad väited.** "Pipeline'i ei muudetud" tähendus sõltub sellest, millist faili loetakse pipeline'i osaks. Selle asemel, et formuleerida operatiivne predikaat ("muudetud failide hulk ⊂ {X}") ning seda git-log'ist automaatselt tuletada, on iga tõend narratiivne enesekirjeldus. Edasiseks tööks oleks iga laiendi puhul fikseerida "muudetud failide valge nimekiri" ja siduda see testiga.

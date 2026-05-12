@@ -70,7 +70,7 @@ def _default_profile() -> dict[str, Any]:
     """Return a profile that mirrors production schemas, contracts and rulesets."""
     return {
         "id": "default",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "schemas": _load_real_schemas(),
         "contracts": _load_real_yaml(_CONTRACTS_DIR, _CONTRACT_FILES),
         "rulesets": _load_real_yaml(_RULESETS_DIR, _RULESET_FILES),

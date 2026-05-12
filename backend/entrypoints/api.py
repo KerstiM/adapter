@@ -26,6 +26,11 @@ import traceback
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 
+from domain._shared.json_format import api_json
+from entrypoints._dataset_resolver import (
+    AmbiguousDatasetError,
+    resolve_dataset_by_name,
+)
 from entrypoints._llm_preview_view import build_llm_preview_view
 from entrypoints.wiring_fs import run_pipeline_fs
 
@@ -45,11 +50,12 @@ def _allowed_origins() -> set[str]:
 
 
 def _resolve_dataset(dataset_id: str) -> Path | None:
-    for d in sorted(DATASETS_DIR.iterdir()):
-        if d.is_dir() and (d.name == dataset_id or d.name.startswith(dataset_id + "_")):
-            if (d / "accounts.json").exists():
-                return d
-    return None
+    """Shared name-based resolution with the CLI (see `_dataset_resolver`).
+
+    ``AmbiguousDatasetError`` is surfaced as a 400 to the caller in
+    ``do_POST``; ``None`` becomes a 404.
+    """
+    return resolve_dataset_by_name(dataset_id, [DATASETS_DIR])
 
 
 def _read_report(run_folder: Path) -> dict:
@@ -137,7 +143,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Access-Control-Allow-Headers", "Content-Type")
 
     def _json_response(self, data, status=200):
-        body = json.dumps(data, ensure_ascii=False).encode()
+        body = api_json(data).encode()
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
         self._cors()
@@ -218,7 +224,11 @@ class Handler(BaseHTTPRequestHandler):
 
             include_raw = bool(body.get("includeRaw", False))
 
-            data_dir = _resolve_dataset(dataset_id)
+            try:
+                data_dir = _resolve_dataset(dataset_id)
+            except AmbiguousDatasetError as e:
+                self._json_response({"error": str(e)}, 400)
+                return
             if data_dir is None:
                 self._json_response({"error": f"Dataset '{dataset_id}' not found"}, 404)
                 return
@@ -229,6 +239,12 @@ class Handler(BaseHTTPRequestHandler):
                     data_dir, OUTPUT_DIR, spec_dir=SPEC_DIR,
                     target_models_override=target_models_override,
                 )
+                run_folder = Path(summary.pop("run_folder"))
+                report = _read_report(run_folder)
+                stage_log = report.get("summary", {}).get("by_stage", [])
+                ml_preview = _read_ml_preview(run_folder)
+                llm_preview = _read_llm_preview(run_folder, include_raw=include_raw)
+                model_projections = _read_model_projections(run_folder)
             except FileNotFoundError:
                 # Raised by spec adapters when a profile YAML or spec file
                 # it references is missing on disk.  KeyError is intentionally
@@ -242,12 +258,12 @@ class Handler(BaseHTTPRequestHandler):
                 }, 404)
                 return
             except Exception:
-                # Everything else — including ValueError (e.g. unknown model
-                # family in C-04, negative invariant counters in compute_metrics)
-                # and RuntimeError — is a server/config fault by the time it
-                # reaches here.  User-supplied fields (Content-Length, JSON body,
-                # llmPreamble, dataset id) are validated + mapped to 4xx inline
-                # above, before run_pipeline_fs is called.
+                # Server/config faults: ValueError (unknown model family in
+                # C-04, negative invariant counters in compute_metrics),
+                # RuntimeError, KeyError (missing run_folder key — invariant
+                # violation from wiring_fs), and JSONDecodeError (corrupt
+                # output artefact).  User-supplied fields are validated and
+                # mapped to 4xx inline above, before run_pipeline_fs is called.
                 elapsed_ms = round((time.perf_counter() - t0) * 1000)
                 traceback.print_exc()
                 self._json_response({
@@ -255,19 +271,8 @@ class Handler(BaseHTTPRequestHandler):
                     "elapsed_ms": elapsed_ms,
                 }, 500)
                 return
+
             elapsed_ms = round((time.perf_counter() - t0) * 1000)
-
-            run_folder = Path(summary.pop("run_folder", ""))
-
-            # Read real output files
-            report = _read_report(run_folder)
-            stage_log = report.get("summary", {}).get("by_stage", [])
-            ml_preview = _read_ml_preview(run_folder)
-            llm_preview = _read_llm_preview(run_folder, include_raw=include_raw)
-
-            # Read model-specific projection files with content
-            model_projections = _read_model_projections(run_folder)
-
             self._json_response({
                 "result": summary,
                 "elapsed_ms": elapsed_ms,

@@ -12,39 +12,11 @@ ADAPTER_VERSION = "0.1.0"
 SEVERITY_RANK: dict[str, int] = {"INFO": 0, "WARN": 1, "ERROR": 2, "CRITICAL": 3}
 
 
-# ---------------------------------------------------------------------------
-# SLI-1: Skeemikatvus — prioriteetsete SV väljade katvus
-# ---------------------------------------------------------------------------
-#
-# SLI-1 = covered_priority_fields / all_priority_fields
-#
-# SLI-1 on spetsifikatsioonitaseme näitaja. See mõõdab, kui suurele osale
-# standardiseeritud vaheesituse (SV) prioriteetsetest väljadest on määratud
-# üheselt tõlgendatav täitmis- või tuletamisloogika.
-#
-# See näitaja ei sõltu konkreetsest andmestikust ega jooksust.
-#
-# Teostus: eksplitsiitne, käsitsi hooldatav katvusdeklaratsioon.
-# Iga kirje allolevas sõnastikus seob SV väljatee (dotted path)
-# tõeväärtusega, mis näitab, kas C-01 defineerib sellele väljale
-# kaardistus- või tuletamisloogika.
-#
-# Tegemist ei ole automaatselt tuletatud tõestusega, vaid käsitsi
-# hooldatava deklaratsiooniga, mis peab püsima C-01 teostusega kooskõlas.
-#
-# Skoobi otsus — kaasatud:
-#   Kõik SV tehingutaseme väljad S-01-st, millele C-01
-#   map_single_transaction() defineerib kaardistuse või tuletuse:
-#   - äriväljad (identiteet, kuupäevad, summad, vastaspool jne)
-#   - allikaviited (source.input_file, source.input_path), sest
-#     jälgitavus on lõputöö disainieesmärk
-#
-# Skoobi otsus — välistatud:
-#   - SVBundle.meta (jooksu kontekst, ei ole C-01 kaardistus)
-#   - SVBundle.accounts (kaardistatud eraldi)
-#   - flags[] (kvaliteediannotatsioonid, mitte andmeväljad)
-# ---------------------------------------------------------------------------
-
+# SLI-1 katvusdeklaratsioon: SV prioriteetsete väljade kohta, millele C-01
+# defineerib kaardistuse või tuletuse. Käsitsi hooldatav — peab püsima C-01
+# `map_single_transaction()` teostusega kooskõlas. Skoop: kõik tehingutaseme
+# väljad S-01-st (sh `source.*` jälgitavuseks); välja jäävad `SVBundle.meta`,
+# `accounts` (kaardistatud eraldi) ja `flags[]` (annotatsioonid, mitte väljad).
 SLI1_FIELD_COVERAGE: dict[str, bool] = {
     # Identity & classification
     "record_id":            True,   # SHA-256 hash derived from composite key
@@ -146,18 +118,32 @@ def derive_sli1_coverage_from_sv(
     return coverage
 
 
+def _count_severities(items) -> dict[str, int]:
+    """Count ``"severity"`` values across any iterable of dicts.
+
+    The known severity levels are fixed (CRITICAL/ERROR/WARN/INFO); other
+    values are silently ignored.  Shared kernel for the two public
+    counters below — keeps the level set in one place.
+    """
+    counts: dict[str, int] = {"CRITICAL": 0, "ERROR": 0, "WARN": 0, "INFO": 0}
+    for item in items:
+        sev = item.get("severity", "")
+        if sev in counts:
+            counts[sev] += 1
+    return counts
+
+
 def count_flags_by_severity(
     sv_transactions: list[dict],
     dropped: list[dict],
 ) -> dict[str, int]:
     """Count flag severities across all transactions (valid + dropped)."""
-    counts: dict[str, int] = {"CRITICAL": 0, "ERROR": 0, "WARN": 0, "INFO": 0}
-    for tx in sv_transactions + dropped:
-        for flag in tx.get("flags", []):
-            sev = flag.get("severity", "")
-            if sev in counts:
-                counts[sev] += 1
-    return counts
+    flags = (
+        flag
+        for tx in sv_transactions + dropped
+        for flag in tx.get("flags", [])
+    )
+    return _count_severities(flags)
 
 
 def count_issues_by_severity(issues: list[dict]) -> dict[str, int]:
@@ -167,12 +153,7 @@ def count_issues_by_severity(issues: list[dict]) -> dict[str, int]:
     this covers all pipeline-level issues including READ_INPUT schema
     errors, STANDARDIZE_TO_SV mapping drops, and VALIDATE_SCHEMA errors.
     """
-    counts: dict[str, int] = {"CRITICAL": 0, "ERROR": 0, "WARN": 0, "INFO": 0}
-    for issue in issues:
-        sev = issue.get("severity", "")
-        if sev in counts:
-            counts[sev] += 1
-    return counts
+    return _count_severities(issues)
 
 
 def build_dropped_details(
@@ -246,11 +227,15 @@ def determine_outcome(
     Returns (outcome, stop_reason) based on gate policy.
     Uses count_error_drops() for the error-drop count — the same helper
     used by gate metrics to ensure identical counting logic.
+
+    Gate semantics: **inclusive** (`drop_ratio >= fail_ratio` → FAIL).
+    Threshold is profile-configured (`run_policy.partial_success_policy.
+    fail_on.ratio_over_records`); default 0.05 is for prototype demo.
     """
     error_drops = count_error_drops(dropped_txs, mapping_drops, fail_severity)
 
     drop_ratio = error_drops / total_raw if total_raw > 0 else 0.0
-    if drop_ratio > fail_ratio:
+    if drop_ratio >= fail_ratio:
         return "FAIL", f"error drop ratio {drop_ratio:.4f} exceeds threshold {fail_ratio}"
     elif by_severity["ERROR"] > 0 or any(i.get("severity") == "ERROR" for i in issues):
         return "PARTIAL_SUCCESS", "errors present but below fail threshold"
@@ -330,6 +315,8 @@ def _compute_gate(error_drops: int, input_records_total: int) -> dict:
     """Gate: operational error-drop fail policy (NOT an SLI).
 
     Uses count_error_drops() upstream — same logic as determine_outcome().
+    Threshold (`fail_ratio`) lives in the profile under
+    `run_policy.partial_success_policy.fail_on.ratio_over_records`.
     """
     ratio = error_drops / input_records_total if input_records_total > 0 else 0.0
     return {

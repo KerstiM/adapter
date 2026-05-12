@@ -6,7 +6,7 @@ serialisation helpers.
 """
 from __future__ import annotations
 
-import json
+from domain._shared.json_format import compact_json
 
 
 # Chat-template control tokens that must never appear inside an untrusted
@@ -29,12 +29,8 @@ _CONTROL_TOKENS: dict[str, tuple[str, ...]] = {
 
 
 def context_to_json(ctx: dict) -> str:
-    """Serialise a single LLM context dict to compact JSON.
-
-    Compact (no whitespace) is intentional: these strings are embedded
-    inside chat-template prompts where extra whitespace wastes tokens.
-    """
-    return json.dumps(ctx, ensure_ascii=False, separators=(",", ":"))
+    """Serialise a single LLM context dict to compact JSON for prompt embedding."""
+    return compact_json(ctx)
 
 
 def strip_chat_control_tokens(text: str, family: str) -> str:

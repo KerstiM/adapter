@@ -75,7 +75,7 @@ Täpsem runbook: [`docs/runbook.md`](docs/runbook.md).
 Prototüüp on mõeldud **lokaalseks käivitamiseks** (no-egress, vt lõputöö ptk 1).
 Koodi turvapiirid on joondatud selle eeldusega:
 
-- **HTTP API** (`backend/entrypoints/api.py`) seotakse vaikimisi `127.0.0.1:5000` peale, ilma autentimiseta. Hosti ja porti saab override'ida keskkonnamuutujatega `ADAPTER_HTTP_HOST` ja `ADAPTER_HTTP_PORT` — **ärge seadke `0.0.0.0` ilma eelneva autentimis-proxi ja võrgupiiranguteta**, sest `/api/run` vastuses olev `llmPreview.rawContexts` (kui `includeRaw: true` on päringus) sisaldab tehingutasemel andmeid.
+- **HTTP API** (`backend/entrypoints/api.py`) seotakse vaikimisi `127.0.0.1:8000` peale, ilma autentimiseta. Hosti ja porti saab override'ida keskkonnamuutujatega `ADAPTER_HTTP_HOST` ja `ADAPTER_HTTP_PORT` — **ärge seadke `0.0.0.0` ilma eelneva autentimis-proxi ja võrgupiiranguteta**, sest `/api/run` vastuses olev `llmPreview.rawContexts` (kui `includeRaw: true` on päringus) sisaldab tehingutasemel andmeid.
 - **CORS** on vaikimisi kitsendatud päritoludele `http://localhost:5173` ja `http://127.0.0.1:5173` (Vite dev-server). Allowlist'i saab laiendada keskkonnamuutujaga `ADAPTER_CORS_ORIGINS` (komadega eraldatud loetelu). Wildcard (`*`) ei ole toetatud.
 - **`rawContexts` on opt-in**: `POST /api/run` vastus sisaldab täielikke LLM-kontekste ainult siis, kui keha sisaldab `"includeRaw": true`. Ilma selleta näidatakse vaid kokkuvõte (narratiiv, kontoagregatsioon, tippkategooriad) — isikutuvastavad tehingudetailid jäävad kõrvale.
 - **Päringu keha** on piiratud 1 MB-le (`MAX_BODY_BYTES`); vigane JSON, puuduv või negatiivne `Content-Length` tagastatakse 400/413-ga enne allokeerimist.
@@ -91,52 +91,9 @@ Turvaregressioonid on kaetud [`backend/tests/unit/test_api_security.py`](backend
 
 ## Arhitektuur (Ports & Adapters)
 
-Lokaalselt käivitatav modulaarne monoliit. Tuumloogika on I/O-st lahutatud **portide** kaudu.
+Ports & Adapters arhitektuur: tuumloogika (`backend/domain/`) on I/O-st lahutatud portide (`backend/ports/`) kaudu, mida realiseerivad `backend/adapters/`. Orkestreerimine: `backend/application/pipeline.py`. Driving-adapterid (CLI, HTTP API): `backend/entrypoints/`.
 
-```
-backend/
-    domain/                          # puhas äriloogika, ei tee I/O-d
-        mapping/c01_raw_to_sv.py     #   RAW → SV kaardistus (C-01)
-        projections/c02_sv_to_ml.py  #   SV → ML projektsioon (C-02)
-        projections/c03_sv_to_llm.py #   SV → LLM kontekst (C-03)
-        projections/c05_sv_to_stats.py       # statistika (C-05)
-        projections/c06_sv_to_monthly_balance.py  # kuubilanss (C-06)
-        projections/model_formatters/#   C-04 mudeliformaatijad
-        rules/invariants_r01.py      #   invariandid + dedupe (R-01)
-        report/models.py             #   Issue, RunFlag, CollectedRunReport
-        report/ops.py                #   outcome, counts, by_severity
-
-    ports/                           # abstraktsed liidesed (ei I/O, ei Path)
-        dataset_port.py              #   sisendi lugemine
-        output_port.py               #   artefaktide kirjutamine
-        spec_port.py                 #   skeemid, lepingud, profiilid
-        clock_port.py                #   aeg + run ID (determinism)
-
-    application/                     # orkestreerimine, räägib ainult portidega
-        pipeline.py                  #   8-etapiline pipeline (run_pipeline)
-
-    entrypoints/                     # driving-adapter: väline maailm → pipeline
-        cli_run_adapter.py           #   CLI sisenemispunkt (argparse → wiring)
-        wiring_fs.py                 #   FS-adapterid + kell → run_pipeline
-        api.py                       #   stdlib HTTP API server (port 5000)
-
-    adapters/
-        fs/                          # failisüsteemi I/O teostused
-            dataset_fs.py            #     datasets/ lugemine
-            output_fs.py             #     run folder + failide kirjutamine
-            spec_fs.py               #     spec/ laadimine
-        system/                      # tootmise adapterid
-            clock_real.py            #     RealClock (süsteemiaeg + uuid4)
-        testing/                     # testide adapterid
-            clock_fixed.py           #     FixedClock (deterministlik kell)
-
-    tests/                           # testid (vt allpool)
-```
-
-**Importimisreegel:** `domain` → ei impordi `adapters`, `ports`, `pathlib`, `os`.
-`application` → impordib `domain` + `ports`, ei tee I/O-d. `adapters` → teostavad portide liideseid (duck typing).
-
-Täpsem arhitektuurikirjeldus: [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md).
+Failipuu, importimisreeglid ja portide täielik kirjeldus: [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md).
 
 ---
 
@@ -189,32 +146,7 @@ Kui mudeleid ei ole valitud (ei CLI-s, API-s ega profiilis), genereeritakse ainu
 
 ## Determinism ja kell
 
-Adapter pipeline kasutab **kella** (`ClockPort`) kahe asja jaoks:
-1. **`now_utc()`** — ISO 8601 UTC ajatempel (nt `"2026-02-24T14:30:00Z"`), mis salvestatakse SV meta, koondraport ja LLM kontekst metaandmetesse ning kasutatakse väljundkausta nimetamiseks.
-2. **`new_run_id()`** — unikaalne jooksutunnus (nt `"3f8a1c2b9d04"`).
-
-### Kella teostused
-
-| Klass | Asukoht | Kasutus |
-|-------|---------|---------|
-| `RealClock` | `adapters/system/clock_real.py` | **Tootmine**: `datetime.now(timezone.utc)` + `uuid.uuid4()` |
-| `FixedClock` | `adapters/testing/clock_fixed.py` | **Testid**: fikseeritud ajatempel + run_id (kasutatakse nii unit- kui integratsioonitestides) |
-
-### Kuidas determinism tagatakse
-
-- **Tuum (`domain/`)** ei kutsu kunagi `datetime.now()` ega `uuid`. Kella väärtused edastatakse tuumale lihtsate stringidena (`run_id`, `created_at_utc`).
-- **SV sisu, ML projektsioon ja LLM kontekst** on determineeritud sisenditest — kellaaeg mõjutab ainult metaandmeid (`meta.run_id`, `meta.created_at_utc`).
-- **Testides** süstitakse `FixedClock`, mis tagastab alati sama ajatempli ja run_id → väljundfailid on baidipõhiselt identsed jooksude vahel.
-- **Tootmises** süstitakse `RealClock`, mis annab igale jooksule unikaalse ajatempli ja ID.
-
-### ISO 8601 formaat
-
-Kogu projektis kasutatakse ühtset ajatempli formaati, mis on defineeritud ühes kohas:
-
-```python
-# adapters/system/clock_real.py
-ISO_UTC_FORMAT = "%Y-%m-%dT%H:%M:%SZ"   # nt "2026-02-24T14:30:00Z"
-```
+Pipeline kasutab `ClockPort`-i ajatempli (`now_utc()`) ja jooksu-ID (`new_run_id()`) jaoks. Tootmises süstitakse `RealClock` (`datetime.now(utc)` + `uuid4`), testides `FixedClock` — sama kell + sama sisend annab baidi-identse väljundi. Tuum (`domain/`) ei kutsu kunagi `datetime.now()` ega `uuid`. Mehhanismi taust ja piirangud: [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md).
 
 ---
 
@@ -245,63 +177,26 @@ Täpsem spetsifikatsioonide indeks: [`docs/SPETSIFIKATSIOONID.md`](docs/SPETSIFI
 
 ## Osaline õnnestumine ja outcome
 
-Pipeline lõpptulem (outcome) on üks kolmest:
-
-| Outcome | Tähendus |
-|---------|----------|
-| `SUCCESS` | Vigu ei esinenud. INFO-tasemel run_flags võivad esineda. |
-| `PARTIAL_SUCCESS` | Esineb WARN/ERROR-tasemel probleeme, kuid fail-gate lävend ei ületatud. |
-| `FAIL` | Fail-gate käivitus: ERROR-tasemel drop'ide osakaal ületas lävendi (vaikimisi 5%). |
-
-Fail-gate konfiguratsioon on profiilis `spec/profiles/default.yaml`:
-- `run_policy.partial_success_policy.fail_on.any_severity` — minimaalne tõsidus (vaikimisi `ERROR`)
-- `run_policy.partial_success_policy.fail_on.ratio_over_records` — drop'ide osakaal (vaikimisi `0.05`)
+`outcome` on üks kolmest: `SUCCESS` (vigu pole), `PARTIAL_SUCCESS` (WARN/ERROR esinevad, kuid alla lävendi) või `FAIL` (ERROR-drop osakaal `≥ ratio_over_records`, vaikimisi 5%). Värava semantika on inclusive (`>=`); lävend on profiilipõhine (`spec/profiles/*.yaml`). Taust ja kalibratsiooni piirangud: [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md).
 
 ---
 
 ## Dokumentatsioon
 
-| Dokument | Kirjeldus |
-|----------|-----------|
-| [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md) | Ports & Adapters arhitektuur, pipeline, failipuu |
-| [`docs/ARENDUSLOGI.md`](docs/ARENDUSLOGI.md) | Tehtud otsused, valideerimisparandused, lõhed |
-| [`docs/TESTIMINE.md`](docs/TESTIMINE.md) | Testiklassid, käivitamisjuhised |
-| [`docs/SPETSIFIKATSIOONID.md`](docs/SPETSIFIKATSIOONID.md) | Skeemide, lepingute ja reeglistike indeks |
-| [`docs/runbook.md`](docs/runbook.md) | Operatiivsed käivitamiskäsud |
+Arhitektuur: [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md). Spec-indeks: [`docs/SPETSIFIKATSIOONID.md`](docs/SPETSIFIKATSIOONID.md). Testid: [`docs/TESTIMINE.md`](docs/TESTIMINE.md). Käsud: [`docs/runbook.md`](docs/runbook.md). Arendusotsuste logi: [`docs/ARENDUSLOGI.md`](docs/ARENDUSLOGI.md).
 
 ---
 
 ## Testistrateegia
 
-```
-backend/tests/
-    unit/
-        test_pipeline_with_fakes.py       # pipeline läbi fake-portide (mälus, I/O-vaba)
-        test_import_boundaries.py         # domain ei impordi keelatud mooduleid
-        test_model_formatters.py          # C-04 mudeliformaatijate testid
-        test_pipeline_with_model_target.py # pipeline + mudelisihtmärk end-to-end
-        test_scalability.py               # UK3 laiendatavuse tõendid + integratsioon
-    fakes/                                # in-memory port-teostused testidele
-        fake_dataset_port.py
-        fake_output_port.py
-        fake_spec_port.py
-    sli_slo/
-        test_sli_slo.py                   # SLI/SLO metrikate testid (72 testi)
-    tests.py                              # integratsioonitestid (FS + tmp_path)
-```
+Testikategooriad:
+- **Unit-testid** (`backend/tests/unit/`) — fake-portidega, pipeline jookseb mälus (kaardistus, invariandid, projektsioonid, formaatijad, outcome).
+- **Integratsioonitestid** (`backend/tests/test_integration_fs.py`) — päris FS-adapterid, väljund `tmp_path` alla; testib voogu sisend → SV → ML/LLM → raport → skeemivalideerimine.
+- **SLI/SLO-testid** (`backend/tests/sli_slo/`) — SLI-1..SLI-6 + QC-2 + Gate sihttasemed.
+- **Arhitektuuritestid** — `test_import_boundaries.py` skaneerib AST-iga `domain/` importe.
+- **Determinismitest** — pipeline 5 korda sama fikseeritud kellaga, kõik väljundid baidi-identsed.
 
-**Unit-testid** (`unit/`) kasutavad fake-porte — `FakeDatasetPort`, `FakeOutputPort`, `FakeSpecPort` ja `FixedClock` (asub `adapters/testing/clock_fixed.py`).
-Pipeline jookseb täielikult mälus, failisüsteemi ei puudutata. Testivad äriloogikat: kaardistus, invariandid, projektsioonid, mudeliformaatijad, outcome.
-
-**Integratsioonitestid** (`tests.py`) kasutavad päris FS-adaptereid läbi `entrypoints/wiring_fs.py`.
-Kellaadapterina süstitakse `FixedClock` (fikseeritud ajatempel + run_id).
-Väljund kirjutatakse `tmp_path` kausta (pytest fixture). Testivad end-to-end voo: sisend → SV → ML/LLM → koondraport → skeemivalideerimine.
-
-**Determinismitest** (`TestDeterminism`) käivitab pipeline viis korda sama fikseeritud kellaga ja kontrollib, et kõik väljundfailid on identsed.
-
-**Arhitektuuritestid** tagavad kihistuse: `test_import_boundaries.py` skaneerib `domain/` importe AST-ga.
-
-Käivitamine:
+Failide täieliku loendi ja testide arvu kaupa vt [`docs/TESTIMINE.md`](docs/TESTIMINE.md).
 
 ```bash
 cd backend && python -m pytest tests/ -v

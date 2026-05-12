@@ -133,7 +133,7 @@ Kogu andmevahetus backend'iga — null mock-andmeid.
 | `getModels()` | Tagastab 6 mudelit: 3 LLM (Llama 3.1, Mistral 7B, Qwen 2.5) + 2 ML (XGBoost, CatBoost) |
 | `runPipeline(datasetId, selectedModelIds)` | POST `/api/run` → pipeline tulemus. `selectedModelIds` on massiiv mudeli-ID-dest. |
 
-Backend: `python -m entrypoints.api` (stdlib http.server, port 5000). Vite proxy: `/api` → backend.
+Backend: `python -m entrypoints.api` (stdlib http.server, port 8000). Vite proxy: `/api` → backend.
 
 ---
 
