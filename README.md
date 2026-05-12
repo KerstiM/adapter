@@ -189,35 +189,14 @@ Arhitektuur: [`docs/ARHITEKTUUR.md`](docs/ARHITEKTUUR.md). Spec-indeks: [`docs/S
 
 ## Testistrateegia
 
-```
-backend/tests/
-    unit/
-        test_pipeline_with_fakes.py       # pipeline läbi fake-portide (mälus, I/O-vaba)
-        test_import_boundaries.py         # domain ei impordi keelatud mooduleid
-        test_model_formatters.py          # C-04 mudeliformaatijate testid
-        test_pipeline_with_model_target.py # pipeline + mudelisihtmärk end-to-end
-        test_scalability.py               # UK3 laiendatavuse tõendid + integratsioon
-    fakes/                                # in-memory port-teostused testidele
-        fake_dataset_port.py
-        fake_output_port.py
-        fake_spec_port.py
-    sli_slo/
-        test_sli_slo.py                   # SLI/SLO metrikate testid (72 testi)
-    tests.py                              # integratsioonitestid (FS + tmp_path)
-```
+Testikategooriad:
+- **Unit-testid** (`backend/tests/unit/`) — fake-portidega, pipeline jookseb mälus (kaardistus, invariandid, projektsioonid, formaatijad, outcome).
+- **Integratsioonitestid** (`backend/tests/test_integration_fs.py`) — päris FS-adapterid, väljund `tmp_path` alla; testib voogu sisend → SV → ML/LLM → raport → skeemivalideerimine.
+- **SLI/SLO-testid** (`backend/tests/sli_slo/`) — SLI-1..SLI-6 + QC-2 + Gate sihttasemed.
+- **Arhitektuuritestid** — `test_import_boundaries.py` skaneerib AST-iga `domain/` importe.
+- **Determinismitest** — pipeline 5 korda sama fikseeritud kellaga, kõik väljundid baidi-identsed.
 
-**Unit-testid** (`unit/`) kasutavad fake-porte — `FakeDatasetPort`, `FakeOutputPort`, `FakeSpecPort` ja `FixedClock` (asub `adapters/testing/clock_fixed.py`).
-Pipeline jookseb täielikult mälus, failisüsteemi ei puudutata. Testivad äriloogikat: kaardistus, invariandid, projektsioonid, mudeliformaatijad, outcome.
-
-**Integratsioonitestid** (`tests.py`) kasutavad päris FS-adaptereid läbi `entrypoints/wiring_fs.py`.
-Kellaadapterina süstitakse `FixedClock` (fikseeritud ajatempel + run_id).
-Väljund kirjutatakse `tmp_path` kausta (pytest fixture). Testivad end-to-end voo: sisend → SV → ML/LLM → koondraport → skeemivalideerimine.
-
-**Determinismitest** (`TestDeterminism`) käivitab pipeline viis korda sama fikseeritud kellaga ja kontrollib, et kõik väljundfailid on identsed.
-
-**Arhitektuuritestid** tagavad kihistuse: `test_import_boundaries.py` skaneerib `domain/` importe AST-ga.
-
-Käivitamine:
+Failide täieliku loendi ja testide arvu kaupa vt [`docs/TESTIMINE.md`](docs/TESTIMINE.md).
 
 ```bash
 cd backend && python -m pytest tests/ -v
