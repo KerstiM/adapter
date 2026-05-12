@@ -26,6 +26,10 @@ import traceback
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 
+from entrypoints._dataset_resolver import (
+    AmbiguousDatasetError,
+    resolve_dataset_by_name,
+)
 from entrypoints._llm_preview_view import build_llm_preview_view
 from entrypoints.wiring_fs import run_pipeline_fs
 
@@ -45,11 +49,12 @@ def _allowed_origins() -> set[str]:
 
 
 def _resolve_dataset(dataset_id: str) -> Path | None:
-    for d in sorted(DATASETS_DIR.iterdir()):
-        if d.is_dir() and (d.name == dataset_id or d.name.startswith(dataset_id + "_")):
-            if (d / "accounts.json").exists():
-                return d
-    return None
+    """Shared name-based resolution with the CLI (see `_dataset_resolver`).
+
+    ``AmbiguousDatasetError`` is surfaced as a 400 to the caller in
+    ``do_POST``; ``None`` becomes a 404.
+    """
+    return resolve_dataset_by_name(dataset_id, [DATASETS_DIR])
 
 
 def _read_report(run_folder: Path) -> dict:
@@ -218,7 +223,11 @@ class Handler(BaseHTTPRequestHandler):
 
             include_raw = bool(body.get("includeRaw", False))
 
-            data_dir = _resolve_dataset(dataset_id)
+            try:
+                data_dir = _resolve_dataset(dataset_id)
+            except AmbiguousDatasetError as e:
+                self._json_response({"error": str(e)}, 400)
+                return
             if data_dir is None:
                 self._json_response({"error": f"Dataset '{dataset_id}' not found"}, 404)
                 return
