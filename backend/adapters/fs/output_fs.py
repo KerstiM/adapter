@@ -29,9 +29,10 @@ Usage::
 from __future__ import annotations
 
 import csv
-import json
 from pathlib import Path
 from typing import Any
+
+from domain._shared.json_format import stable_json
 
 
 # ---------------------------------------------------------------------------
@@ -52,11 +53,6 @@ _ML_FIELDNAMES: list[str] = [
     "counterparty_name",
     "remittance",
 ]
-
-
-def _stable_json(obj: Any) -> str:
-    """Deterministic JSON serialisation (sorted keys, 2-space indent)."""
-    return json.dumps(obj, indent=2, sort_keys=True, ensure_ascii=False)
 
 
 def _ts_prefix(created_at_utc: str) -> str:
@@ -109,7 +105,7 @@ class FsOutputAdapter:
         assert self._run_folder is not None
         path = self._run_folder / "sv.json"
         with open(path, "w", encoding="utf-8") as f:
-            f.write(_stable_json(bundle))
+            f.write(stable_json(bundle))
             f.write("\n")
 
     def write_ml(self, rows: list[dict[str, Any]]) -> None:
@@ -128,7 +124,7 @@ class FsOutputAdapter:
         assert self._proj_folder is not None
         path = self._proj_folder / "llm_context_v1.json"
         with open(path, "w", encoding="utf-8") as f:
-            f.write(_stable_json(context))
+            f.write(stable_json(context))
             f.write("\n")
 
     def write_report(self, report: dict[str, Any]) -> None:
@@ -137,7 +133,7 @@ class FsOutputAdapter:
         assert self._run_folder is not None
         path = self._run_folder / "report.json"
         with open(path, "w", encoding="utf-8") as f:
-            f.write(_stable_json(report))
+            f.write(stable_json(report))
             f.write("\n")
 
     def write_ml_model(self, output: dict[str, Any], model_suffix: str) -> None:
@@ -146,7 +142,7 @@ class FsOutputAdapter:
         assert self._proj_folder is not None
         path = self._proj_folder / f"ml_v1_{model_suffix}.json"
         with open(path, "w", encoding="utf-8") as f:
-            f.write(_stable_json(output))
+            f.write(stable_json(output))
             f.write("\n")
 
     def write_llm_model(self, output: list[dict[str, Any]], model_suffix: str) -> None:
@@ -155,7 +151,7 @@ class FsOutputAdapter:
         assert self._proj_folder is not None
         path = self._proj_folder / f"llm_context_v1_{model_suffix}.json"
         with open(path, "w", encoding="utf-8") as f:
-            f.write(_stable_json(output))
+            f.write(stable_json(output))
             f.write("\n")
 
     def write_extra_projection(self, data: list[dict[str, Any]], filename: str) -> None:
@@ -164,7 +160,7 @@ class FsOutputAdapter:
         assert self._proj_folder is not None
         path = self._proj_folder / filename
         with open(path, "w", encoding="utf-8") as f:
-            f.write(_stable_json(data))
+            f.write(stable_json(data))
             f.write("\n")
 
     # ------------------------------------------------------------------

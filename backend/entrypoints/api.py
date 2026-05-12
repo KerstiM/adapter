@@ -26,6 +26,7 @@ import traceback
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 
+from domain._shared.json_format import api_json
 from entrypoints._dataset_resolver import (
     AmbiguousDatasetError,
     resolve_dataset_by_name,
@@ -142,7 +143,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Access-Control-Allow-Headers", "Content-Type")
 
     def _json_response(self, data, status=200):
-        body = json.dumps(data, ensure_ascii=False).encode()
+        body = api_json(data).encode()
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
         self._cors()
