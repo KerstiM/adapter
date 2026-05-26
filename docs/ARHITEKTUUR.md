@@ -188,8 +188,8 @@ backend/
 
 Mudelispetsiifilised artefaktid (tekivad ainult siis, kui CLI, API või profiil määrab sihtmudelid):
 
-- `projections/ml_xgboost.csv` / `ml_catboost.csv` — ML mudeli-kodeeritud projektsioonid
-- `projections/llm_llama3.txt` / `llm_mistral.txt` / `llm_qwen.txt` / `llm_gemma.txt` — LLM promptimallid
+- `projections/ml_v1_xgboost.json` / `ml_v1_catboost.json` — ML mudeli-kodeeritud projektsioonid
+- `projections/llm_context_v1_llama3.json` / `llm_context_v1_mistral.json` / `llm_context_v1_qwen.json` / `llm_context_v1_gemma.json` — LLM promptimallid
 - `projections/stats_v1.json` — statistika (kui profiil lisab C-05 `projections` loetellu)
 - `projections/monthly_balance_v1.json` — kuubilanss (kui profiil lisab C-06 `projections` loetellu)
 
@@ -240,7 +240,7 @@ Käesolev jaotis loetleb metodoloogilised piirangud ja väited, mille empiirilin
 ### Reprodutseeritavus ja korrektsus
 
 - **Golden-kontroll on regressiooni-tuvastus, mitte korrektsuse oraakel.** `frozen/v1.0.0/golden/`-is olevad artefaktid on genereeritud sama pipeline'iga, mida nad valideerivad (`scripts/qa/freeze_goldens.py`). Kui pipeline produtseeriks vale väljundi, talletuks vale vastus goldeniks ja `verify_goldens.py` raporteeriks PASS. Golden-võrdlus tuvastab muutusi jooksude vahel, aga ei ole sõltumatu tõend väljundi tähendusliku õigsuse kohta.
-- **Determinism on empiiriline, mitte formaalne tõend.** SLI-4 ja QA skript jooksutavad pipeline'i 5 korda 11 andmestiku peal ja nõuavad baidi-identseid väljundeid. See on tugev empiiriline kinnitus, aga mitte formaalne tõestus, et pipeline on kõikide võimalike sisendite ja keskkondade korral deterministlik.
+- **Determinism on empiiriline, mitte formaalne tõend.** SLI-4 ja QA skript jooksutavad pipeline'i 5 korda iga `discover_datasets()` poolt avastatud andmestiku peal (hetkel 14: D1–D14) ja nõuavad baidi-identseid väljundeid. See on tugev empiiriline kinnitus, aga mitte formaalne tõestus, et pipeline on kõikide võimalike sisendite ja keskkondade korral deterministlik.
 - **`frozen/v1.0.0/spec.lock.json` on staatiline artefakt.** Fail on repo-s olemas, aga `scripts/qa/build_spec_lock.py` ei ole automaatselt käivitatav ühegi CI-etapi ega entrypoint'i poolt. `report.run.spec_lock_sha256` väli skeemis S-05 on valikuline ega täideta jooksuaegselt. Spec-triivi tuvastamine eeldab käsitsi `build_spec_lock.py` kutsumist ja hashi võrdlust.
 
 ### Mõõtmise metoodika
