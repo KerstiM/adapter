@@ -1,20 +1,20 @@
 // Static doc registry — markdown files bundled at compile time via Vite's ?raw imports
 
-import specsRaw    from '../../../../docs/SPETSIFIKATSIOONID.md?raw'
-import archRaw     from '../../../../docs/ARHITEKTUUR.md?raw'
-import runbookRaw  from '../../../../docs/runbook.md?raw'
+import specsRaw    from '../../../docs/SPETSIFIKATSIOONID.md?raw'
+import archRaw     from '../../../docs/ARHITEKTUUR.md?raw'
+import runbookRaw  from '../../../docs/runbook.md?raw'
 
-import d1Raw  from '../../../../datasets/D1_synth_valid_small/README.md?raw'
-import d2Raw  from '../../../../datasets/D2_synth_mixed_large/README.md?raw'
-import d3Raw  from '../../../../datasets/D3_synth_valid_seed42/README.md?raw'
-import d4Raw  from '../../../../datasets/D4_synth_errors_seed42/README.md?raw'
-import d5Raw  from '../../../../datasets/D5_synth_edges_seed99/README.md?raw'
-import d6Raw  from '../../../../datasets/D6_synth_dupes_seed99/README.md?raw'
-import d7Raw  from '../../../../datasets/D7_standing_orders_seed77/README.md?raw'
-import d8Raw  from '../../../../datasets/D8_load_test_10k_seed88/README.md?raw'
-import d9Raw  from '../../../../datasets/D9_synth_perf_seed9/README.md?raw'
-import d10Raw from '../../../../datasets/D10_real_deid_oct16/README.md?raw'
-import d11Raw from '../../../../datasets/D11_real_deid_2024/README.md?raw'
+import d1Raw  from '../../../datasets/D1_synth_valid_small/README.md?raw'
+import d2Raw  from '../../../datasets/D2_synth_mixed_large/README.md?raw'
+import d3Raw  from '../../../datasets/D3_synth_valid_seed42/README.md?raw'
+import d4Raw  from '../../../datasets/D4_synth_errors_seed42/README.md?raw'
+import d5Raw  from '../../../datasets/D5_synth_edges_seed99/README.md?raw'
+import d6Raw  from '../../../datasets/D6_synth_dupes_seed99/README.md?raw'
+import d7Raw  from '../../../datasets/D7_standing_orders_seed77/README.md?raw'
+import d8Raw  from '../../../datasets/D8_load_test_10k_seed88/README.md?raw'
+import d9Raw  from '../../../datasets/D9_synth_perf_seed9/README.md?raw'
+import d10Raw from '../../../datasets/D10_real_deid_oct16/README.md?raw'
+import d11Raw from '../../../datasets/D11_real_deid_2024/README.md?raw'
 
 export const CORE_DOCS = [
   {
