@@ -44,6 +44,9 @@
     "D9": "Synthetic, performance",
     "D10": "Real, anonymised",
     "D11": "Real, anon. 2024 (2 accounts)",
+    "D12": "Synthetic, gate sensitivity (low)",
+    "D13": "Synthetic, gate sensitivity (mid)",
+    "D14": "Synthetic, gate sensitivity (high)",
     "CUSTOM": "Your own data"
   },
   "model": {

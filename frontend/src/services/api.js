@@ -18,6 +18,9 @@ const DATASETS = [
   { id: 'D9', name: 'D9_synth_perf_seed9', records: 1000 },
   { id: 'D10', name: 'D10_real_deid_oct16', records: 101 },
   { id: 'D11', name: 'D11_real_deid_2024', records: 148, accounts: 2 },
+  { id: 'D12', name: 'D12_synth_partial_low_seed42', records: 200 },
+  { id: 'D13', name: 'D13_synth_partial_mid_seed42', records: 100 },
+  { id: 'D14', name: 'D14_synth_partial_high_seed42', records: 100 },
 ]
 
 const MODELS = [

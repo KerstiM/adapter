@@ -44,6 +44,9 @@
     "D9": "Sünteetiline, jõudlustest",
     "D10": "Reaalne, anonümiseeritud",
     "D11": "Reaalne, anon. 2024 (2 kontot)",
+    "D12": "Sünteetiline, värava tundlikkus (madal)",
+    "D13": "Sünteetiline, värava tundlikkus (keskmine)",
+    "D14": "Sünteetiline, värava tundlikkus (kõrge)",
     "CUSTOM": "Sinu oma andmed"
   },
   "model": {

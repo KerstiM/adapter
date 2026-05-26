@@ -15,6 +15,9 @@ import d8Raw  from '../../../datasets/D8_load_test_10k_seed88/README.md?raw'
 import d9Raw  from '../../../datasets/D9_synth_perf_seed9/README.md?raw'
 import d10Raw from '../../../datasets/D10_real_deid_oct16/README.md?raw'
 import d11Raw from '../../../datasets/D11_real_deid_2024/README.md?raw'
+import d12Raw from '../../../datasets/D12_synth_partial_low_seed42/README.md?raw'
+import d13Raw from '../../../datasets/D13_synth_partial_mid_seed42/README.md?raw'
+import d14Raw from '../../../datasets/D14_synth_partial_high_seed42/README.md?raw'
 
 export const CORE_DOCS = [
   {
@@ -49,6 +52,9 @@ export const DATASET_DOCS = [
   { id: 'd9',  datasetId: 'D9',  title: 'D9 – Synth, performance',          content: d9Raw  },
   { id: 'd10', datasetId: 'D10', title: 'D10 – Real, de-identified 2016',   content: d10Raw },
   { id: 'd11', datasetId: 'D11', title: 'D11 – Real, de-identified 2024',   content: d11Raw },
+  { id: 'd12', datasetId: 'D12', title: 'D12 – Synth, gate sensitivity (low)',  content: d12Raw },
+  { id: 'd13', datasetId: 'D13', title: 'D13 – Synth, gate sensitivity (mid)',  content: d13Raw },
+  { id: 'd14', datasetId: 'D14', title: 'D14 – Synth, gate sensitivity (high)', content: d14Raw },
 ]
 
 export const ALL_DOCS = [...CORE_DOCS, ...DATASET_DOCS]
